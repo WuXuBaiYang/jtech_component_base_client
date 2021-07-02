@@ -21,6 +21,9 @@ class JEvent {
   //消息总线对象
   final eventBus = EventBus(sync: true);
 
+  //初始化方法
+  Future init() async {}
+
   //注册事件
   void on<T extends BaseEventModel>({required OnEventListen listen}) {
     eventBus.on<T>().listen((event) {
@@ -38,6 +41,3 @@ class JEvent {
     eventBus.fire(event);
   }
 }
-
-//单例调用
-final jEvent = JEvent();

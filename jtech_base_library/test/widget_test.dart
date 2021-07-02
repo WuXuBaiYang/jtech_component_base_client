@@ -3,7 +3,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/event/base_event_model.dart';
-import 'package:jtech_base_library/event/jevent.dart';
 
 void main() {
   testWidgets("基类测试", (tester) async {
@@ -11,10 +10,10 @@ void main() {
   });
 
   test("消息总线测试", () {
-    jEvent.send(CusEvent("测试方法"));
-    jEvent.onOnce().then((value) {
-      print("");
-    });
+    Uri u = Uri.parse("/home/message?p1=xx&p2=&p3=0");
+    var a = u.queryParameters;
+    var b = u.path;
+    print("object");
   });
 }
 
