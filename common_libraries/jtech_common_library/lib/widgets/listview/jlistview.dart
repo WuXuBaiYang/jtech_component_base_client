@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_common_library/widgets/list/BaseListView.dart';
+import 'package:jtech_common_library/widgets/listview/BaseListView.dart';
 
 /*
 * 通用列表组件
