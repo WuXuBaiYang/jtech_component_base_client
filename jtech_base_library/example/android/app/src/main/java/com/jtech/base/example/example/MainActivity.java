@@ -1,4 +1,4 @@
-package com.jtech.base.example.example;
+package com.jtech.base.example;
 
 import io.flutter.embedding.android.FlutterActivity;
 
