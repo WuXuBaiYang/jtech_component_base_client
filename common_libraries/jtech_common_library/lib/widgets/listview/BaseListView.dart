@@ -4,7 +4,7 @@ import 'package:jtech_common_library/widgets/base/ValueChangeNotifier.dart';
 
 //列表子项构造器
 typedef ListItemBuilder<V> = Widget Function(
-    BuildContext context, V item, int index);
+    BuildContext context, V? item, int index);
 //列表分割线构造器
 typedef ListDividerBuilder = Widget Function(BuildContext context, int index);
 
@@ -16,10 +16,10 @@ typedef ListDividerBuilder = Widget Function(BuildContext context, int index);
 abstract class BaseListView<T extends JListViewController<V>, V>
     extends BaseStatefulWidget {
   //列表控制器
-  final T? controller;
+  final T controller;
 
   //列表子项构造器
-  final ListItemBuilder<V>? itemBuilder;
+  final ListItemBuilder<V> itemBuilder;
 
   //列表分割线构造器
   final ListDividerBuilder? dividerBuilder;
@@ -77,6 +77,12 @@ class JListViewController<V> {
 
   //页码减少
   void pageSub({int subSize = 1}) => pageIndex -= subSize;
+
+  //获取数据长度
+  int get dataLength => dataList.length;
+
+  //获取列表子项
+  V getItem(int index) => dataList[index];
 
   //注册监听数据变化
   void registerOnDataChange(OnDateChangeListener<V> listener) {
