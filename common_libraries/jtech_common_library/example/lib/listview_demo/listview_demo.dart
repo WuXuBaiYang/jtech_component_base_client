@@ -27,7 +27,7 @@ class ListViewDemo extends BasePage {
           leading: Icons.home,
         );
       }));
-      controller.putData(testData);
+      controller.setData(testData);
     });
   }
 

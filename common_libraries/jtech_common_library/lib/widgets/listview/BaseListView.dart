@@ -4,7 +4,7 @@ import 'package:jtech_common_library/widgets/base/ValueChangeNotifier.dart';
 
 //列表子项构造器
 typedef ListItemBuilder<V> = Widget Function(
-    BuildContext context, V? item, int index);
+    BuildContext context, V item, int index);
 
 //列表分割线构造器
 typedef ListDividerBuilder = Widget Function(BuildContext context, int index);
@@ -69,7 +69,7 @@ class JListViewController<V> {
   int pageSize;
 
   JListViewController({
-    this.initPageIndex = 0,
+    this.initPageIndex = 1,
     this.pageSize = 15,
     List<V>? dataList = const [],
   })  : pageIndex = initPageIndex,
@@ -80,10 +80,10 @@ class JListViewController<V> {
       (_tempDateList?.isEmpty ?? true) ? _dataList.value : _tempDateList!;
 
   //页码增加
-  void pageAdd({int addSize = 1}) => pageIndex += addSize;
+  void pageAdd({int addStep = 1}) => pageIndex += addStep;
 
-  //页码减少
-  void pageSub({int subSize = 1}) => pageIndex -= subSize;
+  //初始化页码
+  void initPage() => pageIndex = initPageIndex;
 
   //获取数据长度
   int get dataLength => dataList.length;
@@ -98,8 +98,13 @@ class JListViewController<V> {
     });
   }
 
-  //放置数据，insertIndex=-1时放置在队列末尾
-  void putData(
+  //覆盖数据
+  void setData(List<V> newData) {
+    _dataList.setValue(newData);
+  }
+
+  //添加数据，insertIndex=-1时放置在队列末尾
+  void addData(
     List<V> newData, {
     int insertIndex = -1,
     bool clearData = false,

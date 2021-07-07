@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 * @Time 2021/7/6 下午2:21
 */
 class ListItemModel {
-  String? title;
-  String? des;
-  IconData? leading;
+  String title;
+  String des;
+  IconData leading;
 
   ListItemModel({
     required this.title,

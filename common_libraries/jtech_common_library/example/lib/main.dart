@@ -1,4 +1,5 @@
 import 'package:example/listview_demo/listview_demo.dart';
+import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 
@@ -23,6 +24,7 @@ class MyHomePage extends BasePage {
   //demo测试页面
   final Map<String, BasePage> pages = {
     "基本列表组件": ListViewDemo(),
+    "刷新列表组件": RefreshListViewDemo(),
   };
 
   @override
