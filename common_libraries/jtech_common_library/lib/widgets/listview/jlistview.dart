@@ -10,11 +10,15 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
   //判断是否可滚动
   final bool canScroll;
 
+  //是否展示分割线
+  final bool showDivider;
+
   JListView({
     required JListViewController<V> controller,
     required ListItemBuilder<V> itemBuilder,
     ListDividerBuilder? dividerBuilder,
     this.canScroll = true,
+    this.showDivider = false,
   }) : super(
           controller: controller,
           itemBuilder: itemBuilder,
@@ -31,13 +35,17 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
         var item = controller.getItem(index);
         return itemBuilder(context, item, index);
       },
-      separatorBuilder: (context, index) {
-        return dividerBuilder!(context, index);
-      },
+      separatorBuilder: _buildDivider,
     );
   }
 
   //滚动控制
   ScrollPhysics? get scrollPhysics =>
       canScroll ? null : NeverScrollableScrollPhysics();
+
+  //构建分割线
+  Widget _buildDivider(BuildContext context, int index) {
+    if (!showDivider || null == dividerBuilder) return Container();
+    return dividerBuilder!(context, index);
+  }
 }

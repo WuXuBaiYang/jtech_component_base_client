@@ -1,3 +1,4 @@
+import 'package:example/listview_demo/listview_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 
@@ -19,13 +20,32 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends BasePage {
+  //demo测试页面
+  final Map<String, BasePage> pages = {
+    "基本列表组件": ListViewDemo(),
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("example_common"),
       ),
-      body: Container(),
+      body: ListView.separated(
+        separatorBuilder: (_, __) => Divider(),
+        itemCount: pages.length,
+        itemBuilder: (_, index) {
+          String title = pages.keys.elementAt(index);
+          return ListTile(
+            title: Text(title),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return pages.values.elementAt(index);
+              }));
+            },
+          );
+        },
+      ),
     );
   }
 }
