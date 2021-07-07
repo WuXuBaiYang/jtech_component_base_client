@@ -53,37 +53,19 @@ typedef OnSearchListener<V> = bool Function(V item);
 * @Time 2021/7/5 上午10:26
 */
 class JListViewController<V> {
-  //分页-默认初始页面
-  final int initPageIndex;
-
   //持有列表数据
   ListValueChangeNotifier<V> _dataList;
 
   //临时列表数据
   List<V>? _tempDateList;
 
-  //分页-页码
-  int pageIndex;
-
-  //分页-单页数据量
-  int pageSize;
-
   JListViewController({
-    this.initPageIndex = 1,
-    this.pageSize = 15,
     List<V>? dataList = const [],
-  })  : pageIndex = initPageIndex,
-        _dataList = ListValueChangeNotifier(dataList);
+  }) : _dataList = ListValueChangeNotifier(dataList);
 
   //获取数据集合
   List<V> get dataList =>
       (_tempDateList?.isEmpty ?? true) ? _dataList.value : _tempDateList!;
-
-  //页码增加
-  void pageAdd({int addStep = 1}) => pageIndex += addStep;
-
-  //初始化页码
-  void initPage() => pageIndex = initPageIndex;
 
   //获取数据长度
   int get dataLength => dataList.length;
@@ -117,8 +99,8 @@ class JListViewController<V> {
     }
   }
 
-  //数据搜索
-  void search(OnSearchListener listener) {
+  //数据过滤
+  void filter(OnSearchListener listener) {
     _tempDateList = [];
     for (V item in _dataList.value) {
       if (listener(item)) _tempDateList?.add(item);
@@ -126,8 +108,8 @@ class JListViewController<V> {
     _dataList.update(true);
   }
 
-  //清除搜索内容
-  void clearSearch() {
+  //清除过滤内容
+  void clearFilter() {
     _tempDateList = null;
     _dataList.update(true);
   }

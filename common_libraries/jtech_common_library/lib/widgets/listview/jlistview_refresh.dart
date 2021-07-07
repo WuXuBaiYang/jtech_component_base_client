@@ -112,14 +112,32 @@ class JRefreshListViewController<V> extends JListViewController<V> {
   //页码累积数量
   final int pageAddStep;
 
-  JRefreshListViewController(
-      {bool initialRefresh = false, this.pageAddStep = 1})
-      : refreshController = RefreshController(initialRefresh: initialRefresh);
+  //分页-单页数据量
+  final int pageSize;
+
+  //分页-默认初始页面
+  final int initPageIndex;
+
+  //分页-页码
+  int pageIndex;
+
+  JRefreshListViewController({
+    this.initPageIndex = 1,
+    this.pageSize = 15,
+    this.pageAddStep = 1,
+    bool initialRefresh = false,
+  })  : pageIndex = initPageIndex,
+        refreshController = RefreshController(initialRefresh: initialRefresh);
+
+  //页码增加
+  void addPageIndex({int? addStep}) => pageIndex += addStep ?? pageAddStep;
+
+  //初始化页码
+  void resetPageIndex() => pageIndex = initPageIndex;
 
   //根据刷新状态获取请求页码
-  int getRequestPageIndex(bool loadMore) {
-    return loadMore ? pageIndex + pageAddStep : initPageIndex;
-  }
+  int getRequestPageIndex(bool loadMore) =>
+      loadMore ? pageIndex + pageAddStep : initPageIndex;
 
   //完成操作
   void requestCompleted(List<V> newData, {bool loadMore = false}) {
@@ -134,30 +152,24 @@ class JRefreshListViewController<V> extends JListViewController<V> {
   void refreshCompleted(List<V> newData) {
     refreshController.refreshCompleted(resetFooterState: true);
     setData(newData);
-    initPage();
+    resetPageIndex();
   }
 
   //加载完成
   void loadCompleted(List<V> newData) {
     refreshController.loadComplete();
     addData(newData);
-    pageAdd();
+    addPageIndex();
   }
 
   //失败
-  void requestFail(bool loadMore) {
-    loadMore ? loadFail() : refreshFail();
-  }
+  void requestFail(bool loadMore) => loadMore ? loadFail() : refreshFail();
 
   //刷新失败
-  void refreshFail() {
-    refreshController.refreshFailed();
-  }
+  void refreshFail() => refreshController.refreshFailed();
 
   //加载失败
-  void loadFail() {
-    refreshController.loadFailed();
-  }
+  void loadFail() => refreshController.loadFailed();
 }
 
 //下拉刷新头部样式构建回调
