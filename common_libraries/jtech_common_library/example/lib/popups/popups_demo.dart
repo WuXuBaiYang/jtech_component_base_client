@@ -11,7 +11,21 @@ class PopupsDemo extends BasePage {
   //测试弹窗方法
   final Map<String, Function> testPopups = {
     "显示加载弹窗，3秒后关闭": (BuildContext context) async {
-      jCommon.popups.dialog.showLoadingDialog(context);
+      jCommon.popups.dialog.showLoading(context);
+      await Future.delayed(Duration(seconds: 3));
+      jCommon.popups.dialog.hideLoadingDialog();
+    },
+    "显示自定义加载弹窗，3秒后关闭": (BuildContext context) async {
+      jCommon.popups.dialog.showLoading(context, builder: (_) {
+        return Card(
+          child: Column(
+            children: [
+              CircularProgressIndicator(),
+              Text("自定义弹窗"),
+            ],
+          ),
+        );
+      });
       await Future.delayed(Duration(seconds: 3));
       jCommon.popups.dialog.hideLoadingDialog();
     },
