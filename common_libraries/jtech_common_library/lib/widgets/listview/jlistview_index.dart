@@ -126,17 +126,21 @@ class JIndexListViewController<V extends BaseIndexModel>
   List<String> get indexDataList => SuspensionUtil.getTagIndexList(dataList);
 
   @override
+  @protected
   void setData(List<V> newData) => throw Exception("索引组件禁止调用该方法");
 
   @override
+  @protected
   void addData(List<V> newData,
           {int insertIndex = -1, bool clearData = false}) =>
       throw Exception("索引组件禁止调用该方法");
 
   @override
+  @protected
   void filter(OnSearchListener listener) => throw Exception("索引组件禁止调用该方法");
 
   @override
+  @protected
   void clearFilter() => throw Exception("索引组件禁止调用该方法");
 }
 
