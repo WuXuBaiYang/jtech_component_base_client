@@ -28,7 +28,7 @@ abstract class BaseListView<T extends JListViewController<V>, V>
   BaseListView({
     required this.controller,
     required this.itemBuilder,
-    required this.dividerBuilder,
+    this.dividerBuilder,
   });
 
   @override

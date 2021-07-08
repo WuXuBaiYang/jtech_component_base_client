@@ -17,7 +17,7 @@ class RefreshListViewDemo extends BasePage {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("基本列表测试"),
+        title: Text("加载列表测试"),
       ),
       body: JRefreshListView<ListItemModel>(
         initialRefresh: true,
