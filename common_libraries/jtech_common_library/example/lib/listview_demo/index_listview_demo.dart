@@ -86,18 +86,6 @@ class IndexListViewDemo extends BasePage {
             subtitle: Text(item.des),
           );
         },
-        // susConfig: IndexListViewSusConfig(
-        //   itemBuilder: (_, item, index) {
-        //     return Container(
-        //       width: 100,
-        //       height: 100,
-        //       color: Colors.green[400],
-        //       child: Center(
-        //         child: Text(item.tagIndex ?? ""),
-        //       ),
-        //     );
-        //   },
-        // ),
       ),
     );
   }

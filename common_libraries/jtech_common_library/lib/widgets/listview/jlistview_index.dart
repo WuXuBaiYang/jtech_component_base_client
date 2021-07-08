@@ -20,9 +20,11 @@ class JIndexListView<V extends BaseIndexModel>
   JIndexListView({
     required JIndexListViewController<V> controller,
     required ListItemBuilder<V> itemBuilder,
-    this.susConfig = const SusConfig(),
-    this.indexBarConfig = const IndexBarConfig(),
-  }) : super(
+    SusConfig? susConfig,
+    IndexBarConfig? indexBarConfig,
+  })  : susConfig = susConfig ?? SusConfig(),
+        indexBarConfig = indexBarConfig ?? IndexBarConfig(),
+        super(
           controller: controller,
           itemBuilder: itemBuilder,
         );
@@ -45,7 +47,13 @@ class JIndexListView<V extends BaseIndexModel>
       },
       //侧边索引条参数
       indexBarData: indexBarConfig.dataList ?? controller.indexDataList,
-      ///
+      indexBarWidth: indexBarConfig.width,
+      indexBarHeight: indexBarConfig.height,
+      indexBarItemHeight: indexBarConfig.itemHeight,
+      indexBarAlignment: indexBarConfig.alignment,
+      indexBarMargin: indexBarConfig.margin,
+      indexBarOptions: indexBarConfig.options,
+      indexHintBuilder: _buildIndexBarHint,
     );
   }
 
@@ -66,6 +74,12 @@ class JIndexListView<V extends BaseIndexModel>
     return susConfig.itemBuilder!(context, item, index);
   }
 
+  //构建索引条弹出提出项
+  Widget _buildIndexBarHint(BuildContext context, String tag) {
+    if (null == indexBarConfig.hintBuilder) return _buildDefIndexBarHint(tag);
+    return indexBarConfig.hintBuilder!(context, tag);
+  }
+
   //构建默认索引
   Widget _buildDefSusItem(V item) {
     return Container(
@@ -78,6 +92,18 @@ class JIndexListView<V extends BaseIndexModel>
           fontSize: 18,
         ),
       ),
+    );
+  }
+
+  //构建索引条默认弹出提示框
+  Widget _buildDefIndexBarHint(String tag) {
+    IndexBarOptions options = indexBarConfig.options;
+    return Container(
+      width: options.indexHintWidth,
+      height: options.indexHintHeight,
+      decoration: options.indexHintDecoration,
+      alignment: options.indexHintChildAlignment,
+      child: Text(tag, style: options.indexHintTextStyle),
     );
   }
 }
@@ -129,21 +155,24 @@ class SusConfig<V extends BaseIndexModel> {
   //位置
   final Offset? position;
 
-  const SusConfig({
+  SusConfig({
     this.itemBuilder,
     this.itemHeight = 40,
     this.position,
   });
 }
 
+//索引条弹出提示框构造器
+typedef IndexBarHintBuilder = Widget Function(BuildContext context, String tag);
+
 /*
 * 索引条配置参数
 * @author wuxubaiyang
 * @Time 2021/7/8 上午11:35
 */
-class IndexBarConfig<V extends BaseIndexModel> {
+class IndexBarConfig {
   //索引条屏幕弹出提示构造器
-  final ListItemBuilder<V>? hintBuilder;
+  final IndexBarHintBuilder? hintBuilder;
 
   //索引条数据
   final List<String>? dataList;
@@ -163,7 +192,11 @@ class IndexBarConfig<V extends BaseIndexModel> {
   //索引条外间距
   final EdgeInsetsGeometry? margin;
 
-  const IndexBarConfig({
+  //索引条配置参数
+  @protected
+  final IndexBarOptions options;
+
+  IndexBarConfig({
     this.hintBuilder,
     this.dataList,
     this.width = 30,
@@ -171,7 +204,55 @@ class IndexBarConfig<V extends BaseIndexModel> {
     this.itemHeight = 16,
     this.alignment = Alignment.centerRight,
     this.margin,
-  });
+    //索引条详细配置参数
+    bool needRebuild = false,
+    bool ignoreDragCancel = false,
+    Color? color,
+    Color? downColor,
+    Decoration? decoration,
+    Decoration? downDecoration,
+    TextStyle textStyle =
+        const TextStyle(fontSize: 12, color: Color(0xFF666666)),
+    TextStyle? downTextStyle,
+    TextStyle? selectTextStyle,
+    Decoration? downItemDecoration,
+    Decoration? selectItemDecoration,
+    double indexHintWidth = 72,
+    double indexHintHeight = 72,
+    Decoration indexHintDecoration = const BoxDecoration(
+      color: Colors.black87,
+      shape: BoxShape.rectangle,
+      borderRadius: BorderRadius.all(Radius.circular(6)),
+    ),
+    TextStyle indexHintTextStyle =
+        const TextStyle(fontSize: 24.0, color: Colors.white),
+    Alignment indexHintAlignment = Alignment.center,
+    Alignment indexHintChildAlignment = Alignment.center,
+    Offset? indexHintPosition,
+    Offset indexHintOffset = Offset.zero,
+    List<String> localImages = const [],
+  }) : options = IndexBarOptions(
+          needRebuild: needRebuild,
+          ignoreDragCancel: ignoreDragCancel,
+          color: color,
+          downColor: downColor,
+          decoration: decoration,
+          downDecoration: downDecoration,
+          textStyle: textStyle,
+          downTextStyle: downTextStyle,
+          selectTextStyle: selectTextStyle,
+          downItemDecoration: downItemDecoration,
+          selectItemDecoration: selectItemDecoration,
+          indexHintWidth: indexHintWidth,
+          indexHintHeight: indexHintHeight,
+          indexHintDecoration: indexHintDecoration,
+          indexHintTextStyle: indexHintTextStyle,
+          indexHintAlignment: indexHintAlignment,
+          indexHintChildAlignment: indexHintChildAlignment,
+          indexHintPosition: indexHintPosition,
+          indexHintOffset: indexHintOffset,
+          localImages: localImages,
+        );
 }
 
 /*
