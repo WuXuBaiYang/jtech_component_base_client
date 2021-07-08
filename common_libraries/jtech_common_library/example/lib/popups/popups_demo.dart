@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/widgets/popups/jdialog.dart';
 
 /*
 * 弹窗系统事件
@@ -28,6 +29,36 @@ class PopupsDemo extends BasePage {
       });
       await Future.delayed(Duration(seconds: 3));
       jCommon.popups.dialog.hideLoadingDialog();
+    },
+    "显示弹窗": (BuildContext context) async {
+      var result = await jCommon.popups.dialog.showCustomDialog<String>(
+        context,
+        config: CustomDialogConfig(
+          //当设置为false时，点击事件的返回值为null则不会关闭dialog,用于拦截点击事件
+          // nullToDismiss: false,
+          title: Text("测试用标题"),
+          titleIcon: Icon(Icons.home),
+          // content: Text("内容测试"),
+          // content: ListView.builder(
+          //   itemCount: 100,
+          //   shrinkWrap: true,
+          //   itemBuilder: (_, index) => ListTile(
+          //     title: Text("当前第 $index 条数据"),
+          //   ),
+          // ),
+          optionText: Text("操作"),
+          optionTap: () {
+            return "option";
+          },
+          cancelText: Text("取消"),
+          confirmText: Text("确认"),
+          confirmTapAsync: () async {
+            await Future.delayed(Duration(seconds: 2));
+            return "confirm";
+          },
+        ),
+      );
+      print("");
     },
   };
 

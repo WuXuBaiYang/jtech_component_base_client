@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:jtech_common_library/widgets/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/listview/BaseListView.dart';
 
 /*
@@ -45,7 +46,7 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
 
   //构建分割线
   Widget _buildDivider(BuildContext context, int index) {
-    if (!showDivider || null == dividerBuilder) return Container();
+    if (!showDivider || null == dividerBuilder) return EmptyBox();
     return dividerBuilder!(context, index);
   }
 }
