@@ -22,6 +22,9 @@ class JRefreshListView<V>
   //启用上拉加载
   final bool enablePullUp;
 
+  //启用初始化加载
+  final bool initialRefresh;
+
   //下拉刷新回调
   final Function? onPullDownRefreshing;
 
@@ -42,7 +45,7 @@ class JRefreshListView<V>
     required this.onRefreshListViewLoad,
     JRefreshListViewController<V>? controller,
     ListDividerBuilder? dividerBuilder,
-    bool initialRefresh = false,
+    this.initialRefresh = false,
     this.enablePullDown = false,
     this.enablePullUp = false,
     this.showDivider = false,
@@ -51,11 +54,21 @@ class JRefreshListView<V>
     this.header,
     this.footer,
   }) : super(
-          controller: controller ??
-              JRefreshListViewController(initialRefresh: initialRefresh),
+          controller: controller ?? JRefreshListViewController(),
           itemBuilder: itemBuilder,
           dividerBuilder: dividerBuilder,
         );
+
+  @override
+  void initState() {
+    super.initState();
+    //启动初始化下拉刷新
+    if (initialRefresh) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        controller.refreshController.requestRefresh();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +138,8 @@ class JRefreshListViewController<V> extends JListViewController<V> {
     this.initPageIndex = 1,
     this.pageSize = 15,
     this.pageAddStep = 1,
-    bool initialRefresh = false,
   })  : pageIndex = initPageIndex,
-        refreshController = RefreshController(initialRefresh: initialRefresh);
+        refreshController = RefreshController();
 
   //页码增加
   void addPageIndex({int? addStep}) => pageIndex += addStep ?? pageAddStep;
