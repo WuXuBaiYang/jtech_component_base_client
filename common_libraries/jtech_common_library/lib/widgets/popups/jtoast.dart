@@ -103,11 +103,8 @@ class JToast {
       return config.toastBuilder!(context, config.child);
     }
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(100)),
-        color: Colors.black38,
-      ),
+      padding: config.padding,
+      decoration: config.decoration,
       child: config.child ?? EmptyBox(),
     );
   }
@@ -134,41 +131,60 @@ class ToastConfig {
   //toast位置
   Alignment? align;
 
+  //默认toast内间距
+  EdgeInsets padding;
+
+  //默认toast容器样式
+  BoxDecoration decoration;
+
   ToastConfig({
     this.toastBuilder,
     this.duration,
     this.align,
     this.child,
-  });
+    this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
+    Color backgroundColor = Colors.black38,
+    BorderRadiusGeometry borderRadius =
+        const BorderRadius.all(Radius.circular(100)),
+  }) : decoration = BoxDecoration(
+          color: backgroundColor,
+          borderRadius: borderRadius,
+        );
 
   ToastConfig copyWith({
     ToastBuilder? toastBuilder,
     Duration? duration,
     Alignment? align,
     Widget? child,
+    EdgeInsets? padding,
+    Color? backgroundColor,
+    BorderRadiusGeometry? borderRadius,
   }) {
     return ToastConfig(
       toastBuilder: toastBuilder ?? this.toastBuilder,
       duration: duration ?? this.duration,
       align: align ?? this.align,
       child: child ?? this.child,
+      padding: padding ?? this.padding,
+      backgroundColor: backgroundColor ?? this.decoration.color!,
+      borderRadius: borderRadius ?? this.decoration.borderRadius!,
     );
   }
 
   //将align转换为toastGravity
-  ToastGravity get gravity {
-    //上
-    if (Alignment.topCenter == align) return ToastGravity.TOP;
-    if (Alignment.topLeft == align) return ToastGravity.TOP_LEFT;
-    if (Alignment.topRight == align) return ToastGravity.TOP_RIGHT;
-    //中
-    if (Alignment.center == align) return ToastGravity.CENTER;
-    if (Alignment.centerLeft == align) return ToastGravity.CENTER_LEFT;
-    if (Alignment.centerRight == align) return ToastGravity.CENTER_RIGHT;
-    //下
-    if (Alignment.bottomCenter == align) return ToastGravity.BOTTOM;
-    if (Alignment.bottomLeft == align) return ToastGravity.BOTTOM_LEFT;
-    if (Alignment.bottomRight == align) return ToastGravity.BOTTOM_RIGHT;
-    return ToastGravity.BOTTOM;
-  }
+  @protected
+  ToastGravity get gravity => _alignGravity[align] ?? ToastGravity.BOTTOM;
 }
+
+//位置与重力转换表
+final Map<Alignment, ToastGravity> _alignGravity = {
+  Alignment.topCenter: ToastGravity.TOP,
+  Alignment.topLeft: ToastGravity.TOP_LEFT,
+  Alignment.topRight: ToastGravity.TOP_RIGHT,
+  Alignment.center: ToastGravity.CENTER,
+  Alignment.centerLeft: ToastGravity.CENTER_LEFT,
+  Alignment.centerRight: ToastGravity.CENTER_RIGHT,
+  Alignment.bottomCenter: ToastGravity.BOTTOM,
+  Alignment.bottomLeft: ToastGravity.BOTTOM_LEFT,
+  Alignment.bottomRight: ToastGravity.BOTTOM_RIGHT,
+};

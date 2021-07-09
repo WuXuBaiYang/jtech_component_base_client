@@ -365,33 +365,32 @@ class CustomDialogConfig<T> {
     bool? tapDismiss,
     bool? nullToDismiss,
   }) {
-    this.padding = padding ?? this.padding;
-    this.margin = margin ?? this.margin;
-    this.dialogColor = dialogColor ?? this.dialogColor;
-    this.constraints = BoxConstraints(
+    return CustomDialogConfig<T>(
+      padding: padding ?? this.padding,
+      margin: margin ?? this.margin,
+      dialogColor: dialogColor ?? this.dialogColor,
       minWidth: minWidth ?? this.constraints.minWidth,
       minHeight: minHeight ?? this.constraints.minHeight,
       maxWidth: maxWidth ?? this.constraints.maxWidth,
       maxHeight: maxHeight ?? this.constraints.maxHeight,
+      centerTitle: centerTitle ?? this.centerTitle,
+      titleIcon: titleIcon ?? this.titleIcon,
+      title: title ?? this.title,
+      titlePadding: titlePadding ?? this.titlePadding,
+      contentPadding: contentPadding ?? this.contentPadding,
+      content: content ?? this.content,
+      optionsPadding: optionsPadding ?? this.optionsPadding,
+      confirmItem: confirmItem ?? this.confirmItem,
+      confirmTap: confirmTap ?? this.confirmTap,
+      confirmTapAsync: confirmTapAsync ?? this.confirmTapAsync,
+      cancelItem: cancelItem ?? this.cancelItem,
+      cancelTap: cancelTap ?? this.cancelTap,
+      cancelTapAsync: cancelTapAsync ?? this.cancelTapAsync,
+      optionItem: optionItem ?? this.optionItem,
+      optionTap: optionTap ?? this.optionTap,
+      optionTapAsync: optionTapAsync ?? this.optionTapAsync,
+      tapDismiss: tapDismiss ?? this.tapDismiss,
+      nullToDismiss: nullToDismiss ?? this.nullToDismiss,
     );
-    this.centerTitle = centerTitle ?? this.centerTitle;
-    this.titleIcon = titleIcon ?? this.titleIcon;
-    this.title = title ?? this.title;
-    this.titlePadding = titlePadding ?? this.titlePadding;
-    this.contentPadding = contentPadding ?? this.contentPadding;
-    this.content = content ?? this.content;
-    this.optionsPadding = optionsPadding ?? this.optionsPadding;
-    this.confirmItem = confirmItem ?? this.confirmItem;
-    this.confirmTap = confirmTap ?? this.confirmTap;
-    this.confirmTapAsync = confirmTapAsync ?? this.confirmTapAsync;
-    this.cancelItem = cancelItem ?? this.cancelItem;
-    this.cancelTap = cancelTap ?? this.cancelTap;
-    this.cancelTapAsync = cancelTapAsync ?? this.cancelTapAsync;
-    this.optionItem = optionItem ?? this.optionItem;
-    this.optionTap = optionTap ?? this.optionTap;
-    this.optionTapAsync = optionTapAsync ?? this.optionTapAsync;
-    this.tapDismiss = tapDismiss ?? this.tapDismiss;
-    this.nullToDismiss = nullToDismiss ?? this.nullToDismiss;
-    return this;
   }
 }

@@ -297,24 +297,25 @@ class CustomPopupSheetConfig<T> {
     bool? nullToDismiss,
     bool? inSafeArea,
   }) {
-    this.margin = margin ?? this.margin;
-    this.padding = padding ?? this.padding;
-    this.sheetColor = sheetColor ?? this.sheetColor;
-    this.barrierColor = barrierColor ?? this.barrierColor;
-    this.sheetHeight = sheetHeight ?? this.sheetHeight;
-    this.title = title ?? this.title;
-    this.titlePadding = titlePadding ?? this.titlePadding;
-    this.centerTitle = centerTitle ?? this.centerTitle;
-    this.cancelItem = cancelItem ?? this.cancelItem;
-    this.confirmItem = confirmItem ?? this.confirmItem;
-    this.content = content ?? this.content;
-    this.contentPadding = contentPadding ?? this.contentPadding;
-    this.cancelTap = cancelTap ?? this.cancelTap;
-    this.cancelTapAsync = cancelTapAsync ?? this.cancelTapAsync;
-    this.confirmTap = confirmTap ?? this.confirmTap;
-    this.confirmTapAsync = confirmTapAsync ?? this.confirmTapAsync;
-    this.nullToDismiss = nullToDismiss ?? this.nullToDismiss;
-    this.inSafeArea = inSafeArea ?? this.inSafeArea;
-    return this;
+    return CustomPopupSheetConfig<T>(
+      margin: margin ?? this.margin,
+      padding: padding ?? this.padding,
+      sheetColor: sheetColor ?? this.sheetColor,
+      barrierColor: barrierColor ?? this.barrierColor,
+      sheetHeight: sheetHeight ?? this.sheetHeight,
+      title: title ?? this.title,
+      titlePadding: titlePadding ?? this.titlePadding,
+      centerTitle: centerTitle ?? this.centerTitle,
+      cancelItem: cancelItem ?? this.cancelItem,
+      confirmItem: confirmItem ?? this.confirmItem,
+      content: content ?? this.content,
+      contentPadding: contentPadding ?? this.contentPadding,
+      cancelTap: cancelTap ?? this.cancelTap,
+      cancelTapAsync: cancelTapAsync ?? this.cancelTapAsync,
+      confirmTap: confirmTap ?? this.confirmTap,
+      confirmTapAsync: confirmTapAsync ?? this.confirmTapAsync,
+      nullToDismiss: nullToDismiss ?? this.nullToDismiss,
+      inSafeArea: inSafeArea ?? this.inSafeArea,
+    );
   }
 }

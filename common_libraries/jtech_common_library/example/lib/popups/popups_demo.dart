@@ -6,7 +6,7 @@ import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/popups/jdialog.dart';
 import 'package:jtech_common_library/widgets/popups/jsheet.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jtech_common_library/widgets/popups/jtoast.dart';
 
 /*
 * 弹窗系统事件
@@ -106,6 +106,18 @@ class PopupsDemo extends BasePage {
       );
       print(result);
     },
+    "显示toast": (BuildContext context) {
+      jCommon.popups.toast.showShortToastTxt(
+        context,
+        text: "测试短toast",
+        color: Colors.black38,
+        config: ToastConfig(
+          toastBuilder: (_, child) {
+            return Card(child: child);
+          },
+        ),
+      );
+    },
   };
 
   @override
@@ -116,14 +128,7 @@ class PopupsDemo extends BasePage {
         actions: [
           IconButton(
             icon: Text("test"),
-            onPressed: () {
-              jCommon.popups.toast.showShortToastTxt(
-                context,
-                text: "短toast测试",
-                // color: Colors.greenAccent,
-                // fontSize: 24,
-              );
-            },
+            onPressed: () {},
           ),
         ],
       ),
