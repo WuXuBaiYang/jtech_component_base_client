@@ -69,7 +69,7 @@ class PopupsDemo extends BasePage {
     "显示底部sheet": (BuildContext context) async {
       var result = await jCommon.popups.sheet.showCustomBottomSheet(
         context,
-        config: CustomBottomSheetConfig(
+        config: CustomPopupSheetConfig(
           title: Text("底部弹出sheet"),
           cancelItem: Icon(Icons.close),
           cancelTap: () => "close",
@@ -80,6 +80,27 @@ class PopupsDemo extends BasePage {
           content: Text(
             "底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet",
           ),
+        ),
+      );
+      print(result);
+    },
+    "显示全屏sheet": (BuildContext context) async {
+      var result = await jCommon.popups.sheet.showFullSheet(
+        context,
+        content: Text("全屏sheet"),
+        config: CustomPopupSheetConfig(
+          sheetColor: Colors.greenAccent,
+        ),
+      );
+      print(result);
+    },
+    "显示定高sheet": (BuildContext context) async {
+      var result = await jCommon.popups.sheet.showFixedBottomSheet(
+        context,
+        sheetHeight: 300,
+        content: Text("固定高度sheet"),
+        config: CustomPopupSheetConfig(
+          sheetColor: Colors.redAccent,
         ),
       );
       print(result);

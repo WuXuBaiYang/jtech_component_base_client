@@ -31,10 +31,11 @@ class JDialog {
     DialogOptionTap<T>? cancelTap,
     Widget? confirmItem,
     DialogOptionTap<T>? confirmTap,
+    CustomDialogConfig<T>? config,
   }) {
     return showCustomDialog(
       context,
-      config: CustomDialogConfig(
+      config: (config ?? CustomDialogConfig()).copyWith(
         titleIcon: titleIcon,
         title: title,
         content: content,
@@ -215,70 +216,70 @@ typedef DialogOptionTap<T> = T Function();
 */
 class CustomDialogConfig<T> {
   //内间距
-  final EdgeInsets padding;
+  EdgeInsets padding;
 
   //外间距
-  final EdgeInsets margin;
+  EdgeInsets margin;
 
   //设置弹窗背景色
-  final Color dialogColor;
+  Color dialogColor;
 
   //容器最大最小宽高限制
-  final BoxConstraints constraints;
+  BoxConstraints constraints;
 
   //标题居中显示
-  final bool centerTitle;
+  bool centerTitle;
 
   //标题左侧的图标
-  final Widget? titleIcon;
+  Widget? titleIcon;
 
   //标题
-  final Widget? title;
+  Widget? title;
 
   //标题部分内间距
-  final EdgeInsets titlePadding;
+  EdgeInsets titlePadding;
 
   //内容部分内间距
-  final EdgeInsets contentPadding;
+  EdgeInsets contentPadding;
 
   //内容部分视图
-  final Widget? content;
+  Widget? content;
 
   //操作部分内间距
-  final EdgeInsets optionsPadding;
+  EdgeInsets optionsPadding;
 
   //确认按钮对象
-  final Widget? confirmItem;
+  Widget? confirmItem;
 
   //确认按钮点击事件
-  final DialogOptionTap<T>? confirmTap;
+  DialogOptionTap<T>? confirmTap;
 
   //确认按钮异步点击事件
-  final DialogOptionTapAsync<T>? confirmTapAsync;
+  DialogOptionTapAsync<T>? confirmTapAsync;
 
   //取消按钮对象
-  final Widget? cancelItem;
+  Widget? cancelItem;
 
   //取消按钮点击事件
-  final DialogOptionTap<T>? cancelTap;
+  DialogOptionTap<T>? cancelTap;
 
   //取消按钮异步点击事件
-  final DialogOptionTapAsync<T>? cancelTapAsync;
+  DialogOptionTapAsync<T>? cancelTapAsync;
 
   //操作按钮文本对象
-  final Widget? optionItem;
+  Widget? optionItem;
 
   //操作按钮点击事件
-  final DialogOptionTap<T>? optionTap;
+  DialogOptionTap<T>? optionTap;
 
   //操作按钮异步点击事件
-  final DialogOptionTapAsync<T>? optionTapAsync;
+  DialogOptionTapAsync<T>? optionTapAsync;
 
   //点击按钮是否关闭dialog
-  final bool tapDismiss;
+  bool tapDismiss;
 
   //如果点击事件返回null，是否继续关闭dialog
-  final bool nullToDismiss;
+  bool nullToDismiss;
 
   CustomDialogConfig({
     this.padding = const EdgeInsets.all(15),
@@ -335,4 +336,62 @@ class CustomDialogConfig<T> {
   //执行确认按钮事件
   Future<T?> runConfirmTap() async =>
       confirmTap?.call() ?? await confirmTapAsync?.call();
+
+  //从已有参数中拷贝覆盖
+  CustomDialogConfig<T> copyWith({
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    Color? dialogColor,
+    double? minWidth,
+    double? minHeight,
+    double? maxWidth,
+    double? maxHeight,
+    bool? centerTitle,
+    Widget? titleIcon,
+    Widget? title,
+    EdgeInsets? titlePadding,
+    EdgeInsets? contentPadding,
+    Widget? content,
+    EdgeInsets? optionsPadding,
+    Widget? confirmItem,
+    DialogOptionTap<T>? confirmTap,
+    DialogOptionTapAsync<T>? confirmTapAsync,
+    Widget? cancelItem,
+    DialogOptionTap<T>? cancelTap,
+    DialogOptionTapAsync<T>? cancelTapAsync,
+    Widget? optionItem,
+    DialogOptionTap<T>? optionTap,
+    DialogOptionTapAsync<T>? optionTapAsync,
+    bool? tapDismiss,
+    bool? nullToDismiss,
+  }) {
+    this.padding = padding ?? this.padding;
+    this.margin = margin ?? this.margin;
+    this.dialogColor = dialogColor ?? this.dialogColor;
+    this.constraints = BoxConstraints(
+      minWidth: minWidth ?? this.constraints.minWidth,
+      minHeight: minHeight ?? this.constraints.minHeight,
+      maxWidth: maxWidth ?? this.constraints.maxWidth,
+      maxHeight: maxHeight ?? this.constraints.maxHeight,
+    );
+    this.centerTitle = centerTitle ?? this.centerTitle;
+    this.titleIcon = titleIcon ?? this.titleIcon;
+    this.title = title ?? this.title;
+    this.titlePadding = titlePadding ?? this.titlePadding;
+    this.contentPadding = contentPadding ?? this.contentPadding;
+    this.content = content ?? this.content;
+    this.optionsPadding = optionsPadding ?? this.optionsPadding;
+    this.confirmItem = confirmItem ?? this.confirmItem;
+    this.confirmTap = confirmTap ?? this.confirmTap;
+    this.confirmTapAsync = confirmTapAsync ?? this.confirmTapAsync;
+    this.cancelItem = cancelItem ?? this.cancelItem;
+    this.cancelTap = cancelTap ?? this.cancelTap;
+    this.cancelTapAsync = cancelTapAsync ?? this.cancelTapAsync;
+    this.optionItem = optionItem ?? this.optionItem;
+    this.optionTap = optionTap ?? this.optionTap;
+    this.optionTapAsync = optionTapAsync ?? this.optionTapAsync;
+    this.tapDismiss = tapDismiss ?? this.tapDismiss;
+    this.nullToDismiss = nullToDismiss ?? this.nullToDismiss;
+    return this;
+  }
 }

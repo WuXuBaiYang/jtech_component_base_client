@@ -31,8 +31,9 @@ class JSheet {
     Widget? confirmItem,
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
+    CustomPopupSheetConfig<T>? config,
   }) {
-    return showFixedBottomSheet(
+    return showFixedBottomSheet<T>(
       context,
       content: content,
       sheetHeight: MediaQuery.of(context).size.height,
@@ -41,6 +42,8 @@ class JSheet {
       cancelTap: cancelTap,
       confirmItem: confirmItem,
       confirmTap: confirmTap,
+      inSafeArea: true,
+      config: config,
     );
   }
 
@@ -54,10 +57,12 @@ class JSheet {
     Widget? confirmItem,
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
+    bool inSafeArea = false,
+    CustomPopupSheetConfig<T>? config,
   }) {
     return showCustomBottomSheet<T>(
       context,
-      config: CustomBottomSheetConfig(
+      config: (config ?? CustomPopupSheetConfig()).copyWith(
         sheetHeight: sheetHeight,
         title: title,
         content: content,
@@ -65,6 +70,7 @@ class JSheet {
         cancelTap: cancelTap,
         confirmItem: confirmItem,
         confirmTap: confirmTap,
+        inSafeArea: inSafeArea,
       ),
     );
   }
@@ -72,7 +78,7 @@ class JSheet {
   //展示聚合基础底部sheet
   Future<T?> showCustomBottomSheet<T>(
     BuildContext context, {
-    required CustomBottomSheetConfig<T> config,
+    required CustomPopupSheetConfig<T> config,
   }) {
     return showPopupSheet(
       context,
@@ -82,7 +88,15 @@ class JSheet {
   }
 
   //构建自定义底部sheet
-  Widget _buildCustomBottomSheet(CustomBottomSheetConfig config) {
+  Widget _buildCustomBottomSheet(CustomPopupSheetConfig config) {
+    var content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCustomBottomSheetTitle(config),
+        _buildCustomBottomSheetContent(config),
+      ],
+    );
     return Material(
       color: Colors.transparent,
       child: Align(
@@ -94,14 +108,7 @@ class JSheet {
             width: double.infinity,
             height: config.sheetHeight,
             padding: config.padding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildCustomBottomSheetTitle(config),
-                _buildCustomBottomSheetContent(config),
-              ],
-            ),
+            child: config.inSafeArea ? SafeArea(child: content) : content,
           ),
         ),
       ),
@@ -109,7 +116,7 @@ class JSheet {
   }
 
   //构建自定义底部sheet标题部分
-  _buildCustomBottomSheetTitle(CustomBottomSheetConfig config) {
+  _buildCustomBottomSheetTitle(CustomPopupSheetConfig config) {
     if (!config.showTitle) return EmptyBox();
     return Padding(
       padding: config.titlePadding,
@@ -158,7 +165,7 @@ class JSheet {
   }
 
   //构建自定义底部sheet内容部分
-  _buildCustomBottomSheetContent(CustomBottomSheetConfig config) {
+  _buildCustomBottomSheetContent(CustomPopupSheetConfig config) {
     if (!config.showContent) return EmptyBox();
     return Padding(
       padding: config.contentPadding,
@@ -177,59 +184,62 @@ typedef SheetOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/9 上午11:11
 */
-class CustomBottomSheetConfig<T> {
+class CustomPopupSheetConfig<T> {
   //外间距
-  final EdgeInsets margin;
+  EdgeInsets margin;
 
   //内间距
-  final EdgeInsets padding;
+  EdgeInsets padding;
 
   //sheet背景色
-  final Color sheetColor;
+  Color sheetColor;
 
   //整体背景色
-  final Color barrierColor;
+  Color barrierColor;
 
   //sheet高度
-  final double sheetHeight;
+  double sheetHeight;
 
   //标题对象
-  final Widget? title;
+  Widget? title;
 
   //标题部分内间距
-  final EdgeInsets titlePadding;
+  EdgeInsets titlePadding;
 
   //标题是否居中
-  final bool centerTitle;
+  bool centerTitle;
 
   //标题左侧取消对象
-  final Widget? cancelItem;
+  Widget? cancelItem;
 
   //标题左侧取消点击事件
-  final SheetOptionTap<T>? cancelTap;
+  SheetOptionTap<T>? cancelTap;
 
   //标题左侧取消点击事件-异步
-  final SheetOptionTapAsync<T>? cancelTapAsync;
+  SheetOptionTapAsync<T>? cancelTapAsync;
 
   //标题右侧确认对象
-  final Widget? confirmItem;
+  Widget? confirmItem;
 
   //标题右侧确认点击事件
-  final SheetOptionTap<T>? confirmTap;
+  SheetOptionTap<T>? confirmTap;
 
   //标题右侧确认点击事件-异步
-  final SheetOptionTapAsync<T>? confirmTapAsync;
+  SheetOptionTapAsync<T>? confirmTapAsync;
 
   //内容对象
-  final Widget? content;
+  Widget? content;
 
   //内容部分内间距
-  final EdgeInsets contentPadding;
+  EdgeInsets contentPadding;
 
   //如果点击事件返回null，是否继续关闭dialog
-  final bool nullToDismiss;
+  bool nullToDismiss;
 
-  CustomBottomSheetConfig({
+  //是否在安全范围内展示
+  bool inSafeArea;
+
+  CustomPopupSheetConfig({
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
     this.sheetColor = Colors.white,
@@ -248,6 +258,7 @@ class CustomBottomSheetConfig<T> {
     this.confirmTap,
     this.confirmTapAsync,
     this.nullToDismiss = true,
+    this.inSafeArea = false,
   });
 
   //判断标题部分组件是否展示
@@ -264,4 +275,46 @@ class CustomBottomSheetConfig<T> {
   //执行确认按钮事件
   Future<T?> runConfirmTap() async =>
       confirmTap?.call() ?? await confirmTapAsync?.call();
+
+  //从参数中拷贝替换已有字段
+  CustomPopupSheetConfig<T> copyWith({
+    EdgeInsets? margin,
+    EdgeInsets? padding,
+    Color? sheetColor,
+    Color? barrierColor,
+    double? sheetHeight,
+    Widget? title,
+    EdgeInsets? titlePadding,
+    bool? centerTitle,
+    Widget? cancelItem,
+    Widget? confirmItem,
+    Widget? content,
+    EdgeInsets? contentPadding,
+    SheetOptionTap<T>? cancelTap,
+    SheetOptionTapAsync<T>? cancelTapAsync,
+    SheetOptionTap<T>? confirmTap,
+    SheetOptionTapAsync<T>? confirmTapAsync,
+    bool? nullToDismiss,
+    bool? inSafeArea,
+  }) {
+    this.margin = margin ?? this.margin;
+    this.padding = padding ?? this.padding;
+    this.sheetColor = sheetColor ?? this.sheetColor;
+    this.barrierColor = barrierColor ?? this.barrierColor;
+    this.sheetHeight = sheetHeight ?? this.sheetHeight;
+    this.title = title ?? this.title;
+    this.titlePadding = titlePadding ?? this.titlePadding;
+    this.centerTitle = centerTitle ?? this.centerTitle;
+    this.cancelItem = cancelItem ?? this.cancelItem;
+    this.confirmItem = confirmItem ?? this.confirmItem;
+    this.content = content ?? this.content;
+    this.contentPadding = contentPadding ?? this.contentPadding;
+    this.cancelTap = cancelTap ?? this.cancelTap;
+    this.cancelTapAsync = cancelTapAsync ?? this.cancelTapAsync;
+    this.confirmTap = confirmTap ?? this.confirmTap;
+    this.confirmTapAsync = confirmTapAsync ?? this.confirmTapAsync;
+    this.nullToDismiss = nullToDismiss ?? this.nullToDismiss;
+    this.inSafeArea = inSafeArea ?? this.inSafeArea;
+    return this;
+  }
 }
