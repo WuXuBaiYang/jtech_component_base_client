@@ -120,8 +120,8 @@ class PopupsDemo extends BasePage {
               jCommon.popups.toast.showShortToastTxt(
                 context,
                 text: "短toast测试",
-                color: Colors.greenAccent,
-                fontSize: 24,
+                // color: Colors.greenAccent,
+                // fontSize: 24,
               );
             },
           ),

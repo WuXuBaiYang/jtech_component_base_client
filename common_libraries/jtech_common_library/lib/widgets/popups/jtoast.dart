@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jtech_common_library/widgets/base/empty_box.dart';
 
 /*
 * 消息提示
@@ -13,14 +15,13 @@ class JToast {
   //显示toast
   void showToast(
     BuildContext context, {
-    required Widget child,
-    ToastConfig? config,
+    required ToastConfig config,
   }) {
     toast.init(context);
     return toast.showToast(
-      child: child,
-      toastDuration: config?.duration,
-      gravity: config?.gravity,
+      child: _buildToastWidget(context, config),
+      toastDuration: config.duration,
+      gravity: config.gravity,
     );
   }
 
@@ -28,11 +29,32 @@ class JToast {
   void showLongToastTxt(
     BuildContext context, {
     String text = "",
-    Color? color,
-    double? fontSize,
+    Color color = Colors.white,
+    double fontSize = 16,
     ToastConfig? config,
   }) {
     return showLongToast(
+      context,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: fontSize,
+        ),
+      ),
+      config: config,
+    );
+  }
+
+  //显示短toast文本
+  void showShortToastTxt(
+    BuildContext context, {
+    required String text,
+    Color color = Colors.white,
+    double fontSize = 16,
+    ToastConfig? config,
+  }) {
+    return showShortToast(
       context,
       child: Text(
         text,
@@ -53,31 +75,10 @@ class JToast {
   }) {
     return showToast(
       context,
-      child: child,
       config: (config ?? ToastConfig()).copyWith(
         duration: Duration(seconds: 5),
+        child: child,
       ),
-    );
-  }
-
-  //显示短toast文本
-  void showShortToastTxt(
-    BuildContext context, {
-    required String text,
-    Color? color,
-    double? fontSize,
-    ToastConfig? config,
-  }) {
-    return showShortToast(
-      context,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontSize: fontSize,
-        ),
-      ),
-      config: config,
     );
   }
 
@@ -89,20 +90,31 @@ class JToast {
   }) {
     return showToast(
       context,
-      child: child,
       config: (config ?? ToastConfig()).copyWith(
         duration: Duration(seconds: 2),
+        child: child,
       ),
     );
   }
 
-  //构建默认toast背景
-  Widget _buildDefToastBackground(Widget child) {
+  //构建toast样式
+  Widget _buildToastWidget(BuildContext context, ToastConfig config) {
+    if (null != config.toastBuilder) {
+      return config.toastBuilder!(context, config.child);
+    }
     return Container(
-      child: child,
+      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        color: Colors.black38,
+      ),
+      child: config.child ?? EmptyBox(),
     );
   }
 }
+
+//toast构建器
+typedef ToastBuilder = Widget Function(BuildContext context, Widget? child);
 
 /*
 * toast配置信息
@@ -110,8 +122,11 @@ class JToast {
 * @Time 2021/7/9 下午5:20
 */
 class ToastConfig {
+  //toast内容子项
+  Widget? child;
+
   //构建toast背景视图
-  WidgetBuilder? backgroundBuilder;
+  ToastBuilder? toastBuilder;
 
   //toast时间
   Duration? duration;
@@ -120,20 +135,23 @@ class ToastConfig {
   Alignment? align;
 
   ToastConfig({
-    this.backgroundBuilder,
+    this.toastBuilder,
     this.duration,
     this.align,
+    this.child,
   });
 
   ToastConfig copyWith({
-    WidgetBuilder? backgroundBuilder,
+    ToastBuilder? toastBuilder,
     Duration? duration,
     Alignment? align,
+    Widget? child,
   }) {
     return ToastConfig(
-      backgroundBuilder: backgroundBuilder ?? this.backgroundBuilder,
+      toastBuilder: toastBuilder ?? this.toastBuilder,
       duration: duration ?? this.duration,
       align: align ?? this.align,
+      child: child ?? this.child,
     );
   }
 
