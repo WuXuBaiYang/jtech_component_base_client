@@ -21,6 +21,31 @@ class JDialog {
     );
   }
 
+  //提示弹窗
+  Future<T?> showAlertDialog<T>(
+    BuildContext context, {
+    required Widget content,
+    Widget? titleIcon,
+    Widget? title,
+    Widget? cancelText,
+    DialogOptionTap<T>? cancelTap,
+    Widget? confirmText,
+    DialogOptionTap<T>? confirmTap,
+  }) {
+    return showCustomDialog(
+      context,
+      config: CustomDialogConfig(
+        titleIcon: titleIcon,
+        title: title,
+        content: content,
+        cancelText: cancelText,
+        cancelTap: cancelTap,
+        confirmText: confirmText,
+        confirmTap: confirmTap,
+      ),
+    );
+  }
+
   //聚合弹窗对象
   Future<T?> showCustomDialog<T>(
     BuildContext context, {

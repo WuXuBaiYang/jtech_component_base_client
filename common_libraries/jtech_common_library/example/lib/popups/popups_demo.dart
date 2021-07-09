@@ -38,14 +38,7 @@ class PopupsDemo extends BasePage {
           // nullToDismiss: false,
           title: Text("测试用标题"),
           titleIcon: Icon(Icons.home),
-          // content: Text("内容测试"),
-          // content: ListView.builder(
-          //   itemCount: 100,
-          //   shrinkWrap: true,
-          //   itemBuilder: (_, index) => ListTile(
-          //     title: Text("当前第 $index 条数据"),
-          //   ),
-          // ),
+          content: Text("内容测试"),
           optionText: Text("操作"),
           optionTap: () {
             return "option";
@@ -58,7 +51,20 @@ class PopupsDemo extends BasePage {
           },
         ),
       );
-      print("");
+      print(result);
+    },
+    "显示警告弹窗": (BuildContext context) async {
+      var result = await jCommon.popups.dialog.showAlertDialog<String>(
+        context,
+        title: Text("测试用标题"),
+        titleIcon: Icon(Icons.home),
+        content: Text("内容测试"),
+        cancelText: Text("取消"),
+        cancelTap: () => "取消操作",
+        confirmText: Text("确认"),
+        confirmTap: () => "确认操作",
+      );
+      print(result);
     },
   };
 
