@@ -27,9 +27,9 @@ class JDialog {
     required Widget content,
     Widget? titleIcon,
     Widget? title,
-    Widget? cancelText,
+    Widget? cancelItem,
     DialogOptionTap<T>? cancelTap,
-    Widget? confirmText,
+    Widget? confirmItem,
     DialogOptionTap<T>? confirmTap,
   }) {
     return showCustomDialog(
@@ -38,9 +38,9 @@ class JDialog {
         titleIcon: titleIcon,
         title: title,
         content: content,
-        cancelText: cancelText,
+        cancelItem: cancelItem,
         cancelTap: cancelTap,
-        confirmText: confirmText,
+        confirmItem: confirmItem,
         confirmTap: confirmTap,
       ),
     );
@@ -59,27 +59,27 @@ class JDialog {
 
   //构建自定义弹窗
   Widget _buildCustomDialog(CustomDialogConfig config) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          constraints: config.constraints,
-          child: Card(
-            margin: config.margin,
-            child: Padding(
-              padding: config.padding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildCustomDialogTitle(config),
-                  _buildCustomDialogContent(config),
-                  _buildCustomDialogOptions(config),
-                ],
-              ),
+    return Material(
+      color: Colors.transparent,
+      child: Center(
+        child: Card(
+          margin: config.margin,
+          color: config.dialogColor,
+          child: Container(
+            constraints: config.constraints,
+            padding: config.padding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCustomDialogTitle(config),
+                _buildCustomDialogContent(config),
+                _buildCustomDialogOptions(config),
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -106,11 +106,7 @@ class JDialog {
     if (!config.showContent) return EmptyBox();
     return Padding(
       padding: config.contentPadding,
-      child: Row(
-        children: [
-          config.content ?? EmptyBox(),
-        ],
-      ),
+      child: config.content ?? EmptyBox(),
     );
   }
 
@@ -121,9 +117,9 @@ class JDialog {
       padding: config.optionsPadding,
       child: Row(
         children: [
-          TextButton(
-            child: config.optionText ?? EmptyBox(),
-            onPressed: () async {
+          _buildCustomDialogOptionItem(
+            child: config.optionItem ?? EmptyBox(),
+            onTap: () async {
               var result = await config.runOptionTap();
               if (config.nullToDismiss || null != result) {
                 await jBase.router.pop(result);
@@ -131,18 +127,18 @@ class JDialog {
             },
           ),
           Expanded(child: EmptyBox()),
-          TextButton(
-            child: config.cancelText ?? EmptyBox(),
-            onPressed: () async {
+          _buildCustomDialogOptionItem(
+            child: config.cancelItem ?? EmptyBox(),
+            onTap: () async {
               var result = await config.runCancelTap();
               if (config.nullToDismiss || null != result) {
                 await jBase.router.pop(result);
               }
             },
           ),
-          TextButton(
-            child: config.confirmText ?? EmptyBox(),
-            onPressed: () async {
+          _buildCustomDialogOptionItem(
+            child: config.confirmItem ?? EmptyBox(),
+            onTap: () async {
               var result = await config.runConfirmTap();
               if (config.nullToDismiss || null != result) {
                 await jBase.router.pop(result);
@@ -152,6 +148,16 @@ class JDialog {
         ],
       ),
     );
+  }
+
+  //构建自定义弹窗操作部分容器
+  _buildCustomDialogOptionItem({
+    required Widget child,
+    required VoidCallback onTap,
+  }) {
+    return child is Text
+        ? TextButton(onPressed: onTap, child: child)
+        : IconButton(onPressed: onTap, icon: child);
   }
 
   //记录加载弹窗对象
@@ -214,6 +220,9 @@ class CustomDialogConfig<T> {
   //外间距
   final EdgeInsets margin;
 
+  //设置弹窗背景色
+  final Color dialogColor;
+
   //容器最大最小宽高限制
   final BoxConstraints constraints;
 
@@ -238,8 +247,8 @@ class CustomDialogConfig<T> {
   //操作部分内间距
   final EdgeInsets optionsPadding;
 
-  //确认按钮文本对象
-  final Widget? confirmText;
+  //确认按钮对象
+  final Widget? confirmItem;
 
   //确认按钮点击事件
   final DialogOptionTap<T>? confirmTap;
@@ -247,8 +256,8 @@ class CustomDialogConfig<T> {
   //确认按钮异步点击事件
   final DialogOptionTapAsync<T>? confirmTapAsync;
 
-  //取消按钮文本对象
-  final Widget? cancelText;
+  //取消按钮对象
+  final Widget? cancelItem;
 
   //取消按钮点击事件
   final DialogOptionTap<T>? cancelTap;
@@ -257,7 +266,7 @@ class CustomDialogConfig<T> {
   final DialogOptionTapAsync<T>? cancelTapAsync;
 
   //操作按钮文本对象
-  final Widget? optionText;
+  final Widget? optionItem;
 
   //操作按钮点击事件
   final DialogOptionTap<T>? optionTap;
@@ -274,6 +283,7 @@ class CustomDialogConfig<T> {
   CustomDialogConfig({
     this.padding = const EdgeInsets.all(15),
     this.margin = const EdgeInsets.symmetric(vertical: 120, horizontal: 55),
+    this.dialogColor = Colors.white,
     double minWidth = 0,
     double minHeight = 0,
     double maxWidth = double.infinity,
@@ -286,13 +296,13 @@ class CustomDialogConfig<T> {
         const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.content,
     this.optionsPadding = EdgeInsets.zero,
-    this.confirmText,
+    this.confirmItem,
     this.confirmTap,
     this.confirmTapAsync,
-    this.cancelText,
+    this.cancelItem,
     this.cancelTap,
     this.cancelTapAsync,
-    this.optionText,
+    this.optionItem,
     this.optionTap,
     this.optionTapAsync,
     this.tapDismiss = true,
@@ -312,7 +322,7 @@ class CustomDialogConfig<T> {
 
   //判断操作部分组件是否展示
   bool get showOptions =>
-      null != confirmText || null != cancelText || null != optionText;
+      null != confirmItem || null != cancelItem || null != optionItem;
 
   //执行操作按钮事件
   Future<T?> runOptionTap() async =>

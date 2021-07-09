@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/popups/jdialog.dart';
+import 'package:jtech_common_library/widgets/popups/jsheet.dart';
 
 /*
 * 弹窗系统事件
@@ -39,16 +42,12 @@ class PopupsDemo extends BasePage {
           title: Text("测试用标题"),
           titleIcon: Icon(Icons.home),
           content: Text("内容测试"),
-          optionText: Text("操作"),
-          optionTap: () {
-            return "option";
-          },
-          cancelText: Text("取消"),
-          confirmText: Text("确认"),
-          confirmTapAsync: () async {
-            await Future.delayed(Duration(seconds: 2));
-            return "confirm";
-          },
+          optionItem: Text("操作"),
+          optionTap: () => "option",
+          cancelItem: Text("取消"),
+          confirmItem: Text("确认"),
+          confirmTapAsync: () => Future.delayed(Duration(seconds: 2))
+              .then((value) => "confirmAsync"),
         ),
       );
       print(result);
@@ -59,10 +58,28 @@ class PopupsDemo extends BasePage {
         title: Text("测试用标题"),
         titleIcon: Icon(Icons.home),
         content: Text("内容测试"),
-        cancelText: Text("取消"),
+        cancelItem: Text("取消"),
         cancelTap: () => "取消操作",
-        confirmText: Text("确认"),
+        confirmItem: Text("确认"),
         confirmTap: () => "确认操作",
+      );
+      print(result);
+    },
+    "显示底部sheet": (BuildContext context) async {
+      var result = await jCommon.popups.sheet.showCustomBottomSheet(
+        context,
+        config: CustomBottomSheetConfig(
+          title: Text("底部弹出sheet"),
+          cancelItem: Icon(Icons.close),
+          cancelTap: () => "close",
+          confirmItem: Text("确认"),
+          sheetHeight: 250,
+          confirmTapAsync: () =>
+              Future.delayed(Duration(seconds: 2)).then((value) => "confirm"),
+          content: Text(
+            "底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet底部弹出sheet",
+          ),
+        ),
       );
       print(result);
     },
