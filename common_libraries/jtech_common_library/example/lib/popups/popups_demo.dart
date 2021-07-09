@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
@@ -90,6 +91,12 @@ class PopupsDemo extends BasePage {
     return Scaffold(
       appBar: AppBar(
         title: Text("弹窗系统事件"),
+        actions: [
+          IconButton(
+            icon: Text("test"),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: ListView.separated(
         itemCount: testPopups.length,

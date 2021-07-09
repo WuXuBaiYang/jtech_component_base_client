@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/widgets/base/empty_box.dart';
@@ -9,17 +10,62 @@ import 'package:jtech_common_library/widgets/base/empty_box.dart';
 */
 class JSheet {
   //展示基本sheet
-  Future<T?> showBottomSheet<T>(
+  Future<T?> showPopupSheet<T>(
     BuildContext context, {
     required WidgetBuilder builder,
-    Color? backgroundColor,
-    Color? barrierColor,
+    Color barrierColor = kCupertinoModalBarrierColor,
   }) {
-    return showModalBottomSheet<T>(
+    return showCupertinoModalPopup<T>(
       context: context,
       builder: builder,
-      backgroundColor: backgroundColor,
       barrierColor: barrierColor,
+    );
+  }
+
+  //设置全屏固定高度的sheet
+  Future<T?> showFullSheet<T>(
+    BuildContext context, {
+    required Widget content,
+    Widget? title,
+    Widget cancelItem = const CloseButton(),
+    Widget? confirmItem,
+    SheetOptionTap<T>? cancelTap,
+    SheetOptionTap<T>? confirmTap,
+  }) {
+    return showFixedBottomSheet(
+      context,
+      content: content,
+      sheetHeight: MediaQuery.of(context).size.height,
+      title: title,
+      cancelItem: cancelItem,
+      cancelTap: cancelTap,
+      confirmItem: confirmItem,
+      confirmTap: confirmTap,
+    );
+  }
+
+  //展示固定高度的底部sheet
+  Future<T?> showFixedBottomSheet<T>(
+    BuildContext context, {
+    required Widget content,
+    required double sheetHeight,
+    Widget? title,
+    Widget? cancelItem,
+    Widget? confirmItem,
+    SheetOptionTap<T>? cancelTap,
+    SheetOptionTap<T>? confirmTap,
+  }) {
+    return showCustomBottomSheet<T>(
+      context,
+      config: CustomBottomSheetConfig(
+        sheetHeight: sheetHeight,
+        title: title,
+        content: content,
+        cancelItem: cancelItem,
+        cancelTap: cancelTap,
+        confirmItem: confirmItem,
+        confirmTap: confirmTap,
+      ),
     );
   }
 
@@ -28,10 +74,9 @@ class JSheet {
     BuildContext context, {
     required CustomBottomSheetConfig<T> config,
   }) {
-    return showBottomSheet(
+    return showPopupSheet(
       context,
       barrierColor: config.barrierColor,
-      backgroundColor: Colors.transparent,
       builder: (context) => _buildCustomBottomSheet(config),
     );
   }
@@ -188,7 +233,7 @@ class CustomBottomSheetConfig<T> {
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
     this.sheetColor = Colors.white,
-    this.barrierColor = Colors.black12,
+    this.barrierColor = kCupertinoModalBarrierColor,
     this.sheetHeight = 120,
     this.title,
     this.titlePadding = const EdgeInsets.symmetric(vertical: 8),
