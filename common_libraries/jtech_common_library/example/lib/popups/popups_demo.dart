@@ -6,6 +6,7 @@ import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/popups/jdialog.dart';
 import 'package:jtech_common_library/widgets/popups/jsheet.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /*
 * 弹窗系统事件
@@ -115,7 +116,14 @@ class PopupsDemo extends BasePage {
         actions: [
           IconButton(
             icon: Text("test"),
-            onPressed: () {},
+            onPressed: () {
+              jCommon.popups.toast.showShortToastTxt(
+                context,
+                text: "短toast测试",
+                color: Colors.greenAccent,
+                fontSize: 24,
+              );
+            },
           ),
         ],
       ),
