@@ -110,6 +110,12 @@ class PopupsDemo extends BasePage {
       jCommon.popups.toast.showShortToastTxt(
         context,
         text: "测试短toast",
+      );
+    },
+    "显示自定义toast": (BuildContext context) {
+      jCommon.popups.toast.showShortToastTxt(
+        context,
+        text: "测试短toast",
         color: Colors.black38,
         config: ToastConfig(
           toastBuilder: (_, child) {
