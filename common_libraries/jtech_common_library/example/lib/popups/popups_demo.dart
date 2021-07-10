@@ -124,6 +124,23 @@ class PopupsDemo extends BasePage {
         ),
       );
     },
+    "显示一定时间内的snack": (BuildContext context) {
+      jCommon.popups.snack.showSnackInTime(
+        context,
+        text: "显示一定时间内的snack",
+        duration: Duration(seconds: 2),
+        actionLabel: "关闭",
+        onActionTap: () {},
+      );
+    },
+    "显示常驻snack": (BuildContext context) {
+      jCommon.popups.snack.showConstSnack(
+        context,
+        text: "显示常驻snack",
+        actionLabel: "关闭",
+        onActionTap: () {},
+      );
+    },
   };
 
   @override

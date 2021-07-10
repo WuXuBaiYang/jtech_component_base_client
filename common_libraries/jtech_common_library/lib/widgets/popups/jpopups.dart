@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/widgets/popups/jdialog.dart';
 import 'package:jtech_common_library/widgets/popups/jsheet.dart';
+import 'package:jtech_common_library/widgets/popups/jsnack.dart';
 import 'package:jtech_common_library/widgets/popups/jtoast.dart';
 
 /*
@@ -25,6 +26,9 @@ class JPopups {
 
   //toast消息提示
   final toast = JToast();
+
+  //snack消息提示
+  final snack = JSnack();
 
   //初始化方法
   Future init() async {}
