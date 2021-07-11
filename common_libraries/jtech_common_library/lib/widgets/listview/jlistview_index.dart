@@ -1,7 +1,7 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/widgets/listview/BaseListView.dart';
+import 'package:jtech_common_library/widgets/listview/base_listView.dart';
 import 'package:lpinyin/lpinyin.dart';
 
 /*

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_common_library/widgets/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/listview/BaseListView.dart';
+import 'package:jtech_common_library/widgets/listview/base_listView.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 //数据加载异步回调
