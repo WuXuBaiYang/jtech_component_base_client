@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/bottom_navigation/bottom_navigation.dart';
+import 'package:jtech_common_library/widgets/navigation/bottom_navigation.dart';
 
 import 'navigation_page_2.dart';
 import 'navigation_page_3.dart';
