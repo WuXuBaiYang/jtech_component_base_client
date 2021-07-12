@@ -18,13 +18,19 @@ class JBadgeView extends BaseStatefulWidget {
   final TextStyle textStyle;
 
   //角标背景颜色
-  final Color backgroundColor;
+  final Color color;
 
   //角标背景圆角度数
-  final double backgroundRadius;
+  final double radius;
 
   //角标背景是否为原型
-  final bool backgroundCircle;
+  final bool circle;
+
+  //外间距
+  final EdgeInsets margin;
+
+  //内间距
+  final EdgeInsets padding;
 
   //角标悬浮高度
   final double elevation;
@@ -32,25 +38,30 @@ class JBadgeView extends BaseStatefulWidget {
   JBadgeView({
     this.child,
     this.text = "",
-    double fontSize = 12,
+    this.margin = const EdgeInsets.all(8),
+    this.padding = const EdgeInsets.all(6),
+    double fontSize = 8,
     Color textColor = Colors.white,
-    this.backgroundColor = Colors.red,
-    this.backgroundRadius = 8,
-    this.backgroundCircle = true,
+    this.color = Colors.red,
+    this.radius = -1,
     this.elevation = 8,
-  }) : textStyle = TextStyle(fontSize: fontSize, color: textColor);
+  })  : textStyle = TextStyle(fontSize: fontSize, color: textColor),
+        circle = radius < 0;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: child ?? Text(text, style: textStyle),
+      child: Padding(
+        padding: padding,
+        child: child ?? Text(text, style: textStyle),
+      ),
       elevation: elevation,
-      color: backgroundColor,
-      shape: backgroundCircle
+      color: color,
+      shape: circle
           ? CircleBorder()
           : RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(backgroundRadius),
+                Radius.circular(radius),
               ),
             ),
     );

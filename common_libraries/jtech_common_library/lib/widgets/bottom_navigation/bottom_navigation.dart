@@ -12,7 +12,7 @@ import 'package:jtech_common_library/widgets/bottom_navigation/navgiation_page.d
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:13
 */
-class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
+class JBottomNavigation extends BaseStatefulWidget {
   //底部导航控制器
   final JBottomNavigationController controller;
 
@@ -22,14 +22,11 @@ class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
   //判断是否可滑动切换页面
   final bool canSlide;
 
-  //导航子项集合
-  final List<T> items;
-
   //导航条颜色
   final Color navigationColor;
 
-  //导航条内间距
-  final EdgeInsets navigationPadding;
+  //导航条高度
+  final double navigationHeight;
 
   //导航条悬浮高度
   final double elevation;
@@ -39,23 +36,28 @@ class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
 
   JBottomNavigation({
     JBottomNavigationController? controller,
-    required this.items,
-    this.initIndex = 0,
+    required List<NavigationItem> items,
+    int initIndex = 0,
     this.canSlide = false,
     this.navigationColor = Colors.white,
-    this.navigationPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+    this.navigationHeight = 60,
     this.elevation = 8,
     this.badgeAlign = Alignment.topRight,
-  }) : this.controller = controller ?? JBottomNavigationController();
+  })  : this.controller = controller ?? JBottomNavigationController(),
+        this.initIndex =
+            (initIndex < 0 || initIndex > items.length) ? 0 : initIndex {
+    this.controller.setItems(items);
+  }
 
   @override
   void initState() {
     super.initState();
     //刷新初始下标
-    controller.updateIndex(initIndex);
-    //监听角标变化
-    controller.addBadgeListener(() => refreshUI());
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      controller.pageController.jumpToPage(initIndex);
+    });
+    //监听页码变化
+    controller.addChangeListener((index) => refreshUI());
   }
 
   @override
@@ -66,9 +68,9 @@ class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
           child: PageView(
             physics: canSlide ? null : NeverScrollableScrollPhysics(),
             controller: controller.pageController,
-            onPageChanged: (index) =>
-                refreshUI(() => controller.updateIndex(index)),
-            children: List.generate(items.length, (index) => items[index].page),
+            onPageChanged: (index) => controller.updateIndex(index),
+            children: List.generate(controller.items.length,
+                (index) => controller.items[index].page),
           ),
         ),
         _buildBottomNavigation(),
@@ -82,13 +84,14 @@ class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
+      margin: EdgeInsets.zero,
       color: navigationColor,
       elevation: elevation,
       child: Container(
-        padding: navigationPadding,
+        height: navigationHeight,
         child: Row(
-          children: List.generate(items.length, (index) {
-            var item = items[index];
+          children: List.generate(controller.items.length, (index) {
+            var item = controller.items[index];
             bool selected = index == controller.currentIndex;
             return Expanded(
               child: Stack(
@@ -96,18 +99,16 @@ class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
                   Positioned.fill(
                     child: InkWell(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          (selected ? item.activeTitle : item.title) ??
-                              EmptyBox(),
                           (selected ? item.activeImage : item.image) ??
+                              EmptyBox(),
+                          (selected ? item.activeTitle : item.title) ??
                               EmptyBox(),
                         ],
                       ),
-                      onTap: () {
-                        refreshUI(() => controller.updateIndex(index));
-                        controller.pageController.jumpToPage(index);
-                      },
+                      onTap: () => controller.pageController.jumpToPage(index),
                     ),
                   ),
                   Align(
@@ -132,7 +133,7 @@ typedef OnBottomNavigationChange = void Function(int index);
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:53
 */
-class JBottomNavigationController<T extends JBadgeView> {
+class JBottomNavigationController {
   //管理维护pageView控制器
   @protected
   final PageController pageController;
@@ -140,8 +141,11 @@ class JBottomNavigationController<T extends JBadgeView> {
   //记录当前选中下标
   ValueChangeNotifier<int> _currentIndex;
 
+  //导航子项集合
+  final List<NavigationItem> items = [];
+
   //维护角标对象
-  final MapValueChangeNotifier<int, T> _badges;
+  final MapValueChangeNotifier<int, Widget> _badges;
 
   JBottomNavigationController()
       : _currentIndex = ValueChangeNotifier(0),
@@ -151,23 +155,35 @@ class JBottomNavigationController<T extends JBadgeView> {
   //获取当前下标
   int get currentIndex => _currentIndex.value;
 
+  //设置底部导航子项集合
+  void setItems(List<NavigationItem> items) {
+    this.items
+      ..clear()
+      ..addAll(items);
+    updateIndex(currentIndex);
+  }
+
   //更新下标
   @protected
-  void updateIndex(int newIndex) => _currentIndex.setValue(newIndex);
+  void updateIndex(int index) => _currentIndex.setValue(index);
+
+  //选中某一个对象
+  void selectItem(int index) {
+    if (index < 0 || index > items.length) index = 0;
+    pageController.jumpToPage(index);
+  }
 
   //添加下标变化监听
-  void addChangeListener(OnBottomNavigationChange onChange) =>
-      _currentIndex.addListener(() => onChange(currentIndex));
-
-  //监听角标变化
-  @protected
-  void addBadgeListener(VoidCallback listener) => _badges.addListener(listener);
+  void addChangeListener(OnBottomNavigationChange onChange) {
+    _currentIndex.addListener(() => onChange(currentIndex));
+    _badges.addListener(() => onChange(currentIndex));
+  }
 
   //根据下标获取角标对象
-  T? getBadge(int index) => _badges.value[index];
+  Widget? getBadge(int index) => _badges.value[index];
 
   //添加角标
-  void addBadge(int index, T badge) => _badges.putValue(index, badge);
+  void addBadge(int index, JBadgeView badge) => _badges.putValue(index, badge);
 }
 
 /*
@@ -175,9 +191,9 @@ class JBottomNavigationController<T extends JBadgeView> {
 * @author wuxubaiyang
 * @Time 2021/7/12 上午10:11
 */
-class NavigationItem<T extends NavigationPage> {
+class NavigationItem {
   //内容视图，必须继承自navigationPage
-  T page;
+  NavigationPage page;
 
   //导航子项标题
   Widget? title;
@@ -194,8 +210,46 @@ class NavigationItem<T extends NavigationPage> {
   NavigationItem({
     required this.page,
     this.title,
-    this.activeTitle,
+    Widget? activeTitle,
     this.image,
-    this.activeImage,
-  });
+    Widget? activeImage,
+  })  : this.activeTitle = activeTitle ?? title,
+        this.activeImage = activeImage ?? image;
+}
+
+/*
+* 常用底部导航子项
+* @author wuxubaiyang
+* @Time 2021/7/12 下午2:29
+*/
+class NormalNavigationItem extends NavigationItem {
+  NormalNavigationItem({
+    required NavigationPage page,
+    String title = "",
+    double fontSize = 14,
+    Color titleColor = Colors.black,
+    String? activeTitle,
+    double? activeFontSize,
+    Color? activeTitleColor,
+    Widget? image,
+    Widget? activeImage,
+  }) : super(
+          page: page,
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: fontSize,
+              color: titleColor,
+            ),
+          ),
+          activeTitle: Text(
+            activeTitle ?? title,
+            style: TextStyle(
+              fontSize: activeFontSize ?? fontSize,
+              color: activeTitleColor ?? titleColor,
+            ),
+          ),
+          image: image,
+          activeImage: activeImage,
+        );
 }
