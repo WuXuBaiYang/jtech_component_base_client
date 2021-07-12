@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/widgets/popups/jdialog.dart';
-import 'package:jtech_common_library/widgets/popups/jsheet.dart';
-import 'package:jtech_common_library/widgets/popups/jsnack.dart';
-import 'package:jtech_common_library/widgets/popups/jtoast.dart';
+
+import 'jdialog.dart';
+import 'jsheet.dart';
+import 'jsnack.dart';
+import 'jtoast.dart';
 
 /*
 * 弹出层入口方法
@@ -11,13 +12,7 @@ import 'package:jtech_common_library/widgets/popups/jtoast.dart';
 * @Time 2021/7/8 下午1:50
 */
 @protected
-class JPopups {
-  static final JPopups _instance = JPopups._internal();
-
-  factory JPopups() => _instance;
-
-  JPopups._internal();
-
+class Popups {
   //创建dialog对象
   final dialog = JDialog();
 

@@ -31,11 +31,11 @@ class JDialog {
     DialogOptionTap<T>? cancelTap,
     Widget? confirmItem,
     DialogOptionTap<T>? confirmTap,
-    CustomDialogConfig<T>? config,
+    DialogConfig<T>? config,
   }) {
     return showCustomDialog(
       context,
-      config: (config ?? CustomDialogConfig()).copyWith(
+      config: (config ?? DialogConfig()).copyWith(
         titleIcon: titleIcon,
         title: title,
         content: content,
@@ -50,7 +50,7 @@ class JDialog {
   //聚合弹窗对象
   Future<T?> showCustomDialog<T>(
     BuildContext context, {
-    required CustomDialogConfig<T> config,
+    required DialogConfig<T> config,
   }) {
     return showDialog<T>(
       context,
@@ -59,7 +59,7 @@ class JDialog {
   }
 
   //构建自定义弹窗
-  Widget _buildCustomDialog(CustomDialogConfig config) {
+  Widget _buildCustomDialog(DialogConfig config) {
     return Material(
       color: Colors.transparent,
       child: Center(
@@ -85,7 +85,7 @@ class JDialog {
   }
 
   //构建自定义弹窗标题部分
-  _buildCustomDialogTitle(CustomDialogConfig config) {
+  _buildCustomDialogTitle(DialogConfig config) {
     if (!config.showTitle) return EmptyBox();
     return Padding(
       padding: config.titlePadding,
@@ -103,7 +103,7 @@ class JDialog {
   }
 
   //构建自定义弹窗内容部分
-  _buildCustomDialogContent(CustomDialogConfig config) {
+  _buildCustomDialogContent(DialogConfig config) {
     if (!config.showContent) return EmptyBox();
     return Padding(
       padding: config.contentPadding,
@@ -112,7 +112,7 @@ class JDialog {
   }
 
   //构建自定义弹窗操作部分
-  _buildCustomDialogOptions(CustomDialogConfig config) {
+  _buildCustomDialogOptions(DialogConfig config) {
     if (!config.showOptions) return EmptyBox();
     return Padding(
       padding: config.optionsPadding,
@@ -214,7 +214,7 @@ typedef DialogOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/8 下午4:15
 */
-class CustomDialogConfig<T> {
+class DialogConfig<T> {
   //内间距
   EdgeInsets padding;
 
@@ -281,7 +281,7 @@ class CustomDialogConfig<T> {
   //如果点击事件返回null，是否继续关闭dialog
   bool nullToDismiss;
 
-  CustomDialogConfig({
+  DialogConfig({
     this.padding = const EdgeInsets.all(15),
     this.margin = const EdgeInsets.symmetric(vertical: 120, horizontal: 55),
     this.dialogColor = Colors.white,
@@ -338,7 +338,7 @@ class CustomDialogConfig<T> {
       confirmTap?.call() ?? await confirmTapAsync?.call();
 
   //从已有参数中拷贝覆盖
-  CustomDialogConfig<T> copyWith({
+  DialogConfig<T> copyWith({
     EdgeInsets? padding,
     EdgeInsets? margin,
     Color? dialogColor,
@@ -365,7 +365,7 @@ class CustomDialogConfig<T> {
     bool? tapDismiss,
     bool? nullToDismiss,
   }) {
-    return CustomDialogConfig<T>(
+    return DialogConfig<T>(
       padding: padding ?? this.padding,
       margin: margin ?? this.margin,
       dialogColor: dialogColor ?? this.dialogColor,

@@ -10,7 +10,7 @@ import 'package:jtech_common_library/widgets/base/empty_box.dart';
 */
 class JSheet {
   //展示基本sheet
-  Future<T?> showPopupSheet<T>(
+  Future<T?> showBottomSheet<T>(
     BuildContext context, {
     required WidgetBuilder builder,
     Color barrierColor = kCupertinoModalBarrierColor,
@@ -23,7 +23,7 @@ class JSheet {
   }
 
   //设置全屏固定高度的sheet
-  Future<T?> showFullSheet<T>(
+  Future<T?> showFullBottomSheet<T>(
     BuildContext context, {
     required Widget content,
     Widget? title,
@@ -31,7 +31,7 @@ class JSheet {
     Widget? confirmItem,
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
-    CustomPopupSheetConfig<T>? config,
+    SheetConfig<T>? config,
   }) {
     return showFixedBottomSheet<T>(
       context,
@@ -58,11 +58,11 @@ class JSheet {
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
     bool inSafeArea = false,
-    CustomPopupSheetConfig<T>? config,
+    SheetConfig<T>? config,
   }) {
     return showCustomBottomSheet<T>(
       context,
-      config: (config ?? CustomPopupSheetConfig()).copyWith(
+      config: (config ?? SheetConfig()).copyWith(
         sheetHeight: sheetHeight,
         title: title,
         content: content,
@@ -78,9 +78,9 @@ class JSheet {
   //展示聚合基础底部sheet
   Future<T?> showCustomBottomSheet<T>(
     BuildContext context, {
-    required CustomPopupSheetConfig<T> config,
+    required SheetConfig<T> config,
   }) {
-    return showPopupSheet(
+    return showBottomSheet(
       context,
       barrierColor: config.barrierColor,
       builder: (context) => _buildCustomBottomSheet(config),
@@ -88,7 +88,7 @@ class JSheet {
   }
 
   //构建自定义底部sheet
-  Widget _buildCustomBottomSheet(CustomPopupSheetConfig config) {
+  Widget _buildCustomBottomSheet(SheetConfig config) {
     var content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -116,7 +116,7 @@ class JSheet {
   }
 
   //构建自定义底部sheet标题部分
-  _buildCustomBottomSheetTitle(CustomPopupSheetConfig config) {
+  _buildCustomBottomSheetTitle(SheetConfig config) {
     if (!config.showTitle) return EmptyBox();
     return Padding(
       padding: config.titlePadding,
@@ -165,7 +165,7 @@ class JSheet {
   }
 
   //构建自定义底部sheet内容部分
-  _buildCustomBottomSheetContent(CustomPopupSheetConfig config) {
+  _buildCustomBottomSheetContent(SheetConfig config) {
     if (!config.showContent) return EmptyBox();
     return Padding(
       padding: config.contentPadding,
@@ -184,7 +184,7 @@ typedef SheetOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/9 上午11:11
 */
-class CustomPopupSheetConfig<T> {
+class SheetConfig<T> {
   //外间距
   EdgeInsets margin;
 
@@ -239,7 +239,7 @@ class CustomPopupSheetConfig<T> {
   //是否在安全范围内展示
   bool inSafeArea;
 
-  CustomPopupSheetConfig({
+  SheetConfig({
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
     this.sheetColor = Colors.white,
@@ -277,7 +277,7 @@ class CustomPopupSheetConfig<T> {
       confirmTap?.call() ?? await confirmTapAsync?.call();
 
   //从参数中拷贝替换已有字段
-  CustomPopupSheetConfig<T> copyWith({
+  SheetConfig<T> copyWith({
     EdgeInsets? margin,
     EdgeInsets? padding,
     Color? sheetColor,
@@ -297,7 +297,7 @@ class CustomPopupSheetConfig<T> {
     bool? nullToDismiss,
     bool? inSafeArea,
   }) {
-    return CustomPopupSheetConfig<T>(
+    return SheetConfig<T>(
       margin: margin ?? this.margin,
       padding: padding ?? this.padding,
       sheetColor: sheetColor ?? this.sheetColor,

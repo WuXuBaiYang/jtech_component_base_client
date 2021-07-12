@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/popups/jdialog.dart';
-import 'package:jtech_common_library/widgets/popups/jsheet.dart';
-import 'package:jtech_common_library/widgets/popups/jtoast.dart';
+import 'package:jtech_common_library/popups/jdialog.dart';
+import 'package:jtech_common_library/popups/jsheet.dart';
+import 'package:jtech_common_library/popups/jtoast.dart';
 
 /*
 * 弹窗系统事件
@@ -38,7 +38,7 @@ class PopupsDemo extends BasePage {
     "显示弹窗": (BuildContext context) async {
       var result = await jCommon.popups.dialog.showCustomDialog<String>(
         context,
-        config: CustomDialogConfig(
+        config: DialogConfig(
           //当设置为false时，点击事件的返回值为null则不会关闭dialog,用于拦截点击事件
           // nullToDismiss: false,
           title: Text("测试用标题"),
@@ -70,7 +70,7 @@ class PopupsDemo extends BasePage {
     "显示底部sheet": (BuildContext context) async {
       var result = await jCommon.popups.sheet.showCustomBottomSheet(
         context,
-        config: CustomPopupSheetConfig(
+        config: SheetConfig(
           title: Text("底部弹出sheet"),
           cancelItem: Icon(Icons.close),
           cancelTap: () => "close",
@@ -86,10 +86,10 @@ class PopupsDemo extends BasePage {
       print(result);
     },
     "显示全屏sheet": (BuildContext context) async {
-      var result = await jCommon.popups.sheet.showFullSheet(
+      var result = await jCommon.popups.sheet.showFullBottomSheet(
         context,
         content: Text("全屏sheet"),
-        config: CustomPopupSheetConfig(
+        config: SheetConfig(
           sheetColor: Colors.greenAccent,
         ),
       );
@@ -100,7 +100,7 @@ class PopupsDemo extends BasePage {
         context,
         sheetHeight: 300,
         content: Text("固定高度sheet"),
-        config: CustomPopupSheetConfig(
+        config: SheetConfig(
           sheetColor: Colors.redAccent,
         ),
       );

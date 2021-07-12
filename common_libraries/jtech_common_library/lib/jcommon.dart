@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/popups/jpopups.dart';
+
+import 'popups/popups.dart';
 
 /*
 * 通用组件方法入口
@@ -15,7 +16,7 @@ class JCommon {
   JCommon._internal();
 
   //弹出层管理
-  final popups = JPopups();
+  final popups = Popups();
 
   //初始化方法
   Future init() async {
