@@ -101,7 +101,7 @@ class MapValueChangeNotifier<K, V> extends ValueChangeNotifier<Map<K, V>> {
   }
 
   //移除数据
-  V? removeValue(String key, {bool notify = true}) {
+  V? removeValue(K key, {bool notify = true}) {
     if (_isMapEmpty) return null;
     var result = _value?.remove(key);
     update(notify);

@@ -1,8 +1,9 @@
-import 'package:example/bottom_navigation_demo/index_listview_demo.dart';
+import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
 import 'package:example/listview_demo/listview_demo.dart';
 import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
+import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -33,6 +34,7 @@ class MyHomePage extends BasePage {
     "索引列表组件": IndexListViewDemo(),
     "弹窗系统事件": PopupsDemo(),
     "底部导航组件": BottomNavigationDemo(),
+    "顶部tab导航组件": TabLayoutDemo(),
   };
 
   @override

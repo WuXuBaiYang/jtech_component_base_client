@@ -11,6 +11,12 @@ class JBadgeView extends BaseStatefulWidget {
   //自定义角标视图
   final Widget? child;
 
+  //角标宽度
+  final double width;
+
+  //角标高度
+  final double height;
+
   //角标文本
   final String text;
 
@@ -40,30 +46,40 @@ class JBadgeView extends BaseStatefulWidget {
     this.text = "",
     this.margin = const EdgeInsets.all(8),
     this.padding = const EdgeInsets.all(6),
+    double? width,
+    double? height,
+    double size = 30,
     double fontSize = 8,
     Color textColor = Colors.white,
     this.color = Colors.red,
     this.radius = -1,
-    this.elevation = 8,
+    this.elevation = 2,
   })  : textStyle = TextStyle(fontSize: fontSize, color: textColor),
+        this.width = width ?? size,
+        this.height = height ?? size,
         circle = radius < 0;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: padding,
-        child: child ?? Text(text, style: textStyle),
-      ),
-      elevation: elevation,
-      color: color,
-      shape: circle
-          ? CircleBorder()
-          : RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(radius),
+    return SizedBox.fromSize(
+      size: Size(width, height),
+      child: Card(
+        child: Center(
+          child: Padding(
+            padding: padding,
+            child: child ?? Text(text, style: textStyle),
+          ),
+        ),
+        elevation: elevation,
+        color: color,
+        shape: circle
+            ? CircleBorder()
+            : RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(radius),
+                ),
               ),
-            ),
+      ),
     );
   }
 }

@@ -21,7 +21,7 @@ class JBottomNavigation extends BaseStatefulWidget {
   final int initIndex;
 
   //判断是否可滑动切换页面
-  final bool canSlide;
+  final bool canScroll;
 
   //导航条颜色
   final Color navigationColor;
@@ -39,7 +39,7 @@ class JBottomNavigation extends BaseStatefulWidget {
     JBottomNavigationController? controller,
     required List<NavigationItem> items,
     int initIndex = 0,
-    this.canSlide = false,
+    this.canScroll = false,
     this.navigationColor = Colors.white,
     this.navigationHeight = 60,
     this.elevation = 8,
@@ -67,7 +67,7 @@ class JBottomNavigation extends BaseStatefulWidget {
       children: [
         Expanded(
           child: PageView(
-            physics: canSlide ? null : NeverScrollableScrollPhysics(),
+            physics: canScroll ? null : NeverScrollableScrollPhysics(),
             controller: controller.pageController,
             onPageChanged: (index) => controller.updateIndex(index),
             children: List.generate(controller.items.length,
@@ -82,9 +82,7 @@ class JBottomNavigation extends BaseStatefulWidget {
   //构建底部导航
   _buildBottomNavigation() {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
+      shape: RoundedRectangleBorder(),
       margin: EdgeInsets.zero,
       color: navigationColor,
       elevation: elevation,
@@ -126,8 +124,8 @@ class JBottomNavigation extends BaseStatefulWidget {
   }
 }
 
-//底部导航变化监听
-typedef OnBottomNavigationChange = void Function(int index);
+//导航变化监听
+typedef OnNavigationChange = void Function(int index);
 
 /*
 * 底部导航控制器
@@ -175,7 +173,7 @@ class JBottomNavigationController {
   }
 
   //添加下标变化监听
-  void addChangeListener(OnBottomNavigationChange onChange) {
+  void addChangeListener(OnNavigationChange onChange) {
     _currentIndex.addListener(() => onChange(currentIndex));
     _badges.addListener(() => onChange(currentIndex));
   }
@@ -185,6 +183,9 @@ class JBottomNavigationController {
 
   //添加角标
   void addBadge(int index, JBadgeView badge) => _badges.putValue(index, badge);
+
+  //移除角标
+  void removeBadge(int index) => _badges.removeValue(index);
 }
 
 /*

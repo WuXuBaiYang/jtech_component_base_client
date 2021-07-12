@@ -6,25 +6,26 @@ import 'package:flutter/widgets.dart';
 * @author wuxubaiyang
 * @Time 2021/7/5 上午9:26
 */
-abstract class BaseStatefulWidget extends StatefulWidget {
-  //持有页面基类状态
-  final _BaseStatefulWidgetState _state;
+abstract class BaseStatefulWidget<T extends BaseStatefulWidgetState>
+    extends StatefulWidget {
+  //当前组件持有key
+  final GlobalKey<T> key;
 
-  BaseStatefulWidget({Key? key})
-      : _state = _BaseStatefulWidgetState(),
+  BaseStatefulWidget({GlobalKey<T>? key})
+      : key = key ?? GlobalKey(),
         super(key: key);
 
   //是否持有state
   get wantKeepAlive => false;
 
   @override
-  createState() => _state;
+  createState() => BaseStatefulWidgetState();
 
   //构建视图
   Widget build(BuildContext context);
 
   //刷新页面
-  void refreshUI([VoidCallback? fun]) => _state.refreshUI(fun);
+  void refreshUI([VoidCallback? fun]) => key.currentState?.refreshUI(fun);
 
   //初始化方法
   @mustCallSuper
@@ -40,7 +41,7 @@ abstract class BaseStatefulWidget extends StatefulWidget {
 * @author wuxubaiyang
 * @Time 2021/6/30 下午1:19
 */
-class _BaseStatefulWidgetState extends State<BaseStatefulWidget>
+class BaseStatefulWidgetState extends State<BaseStatefulWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => widget.wantKeepAlive;
