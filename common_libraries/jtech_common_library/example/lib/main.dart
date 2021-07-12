@@ -1,3 +1,4 @@
+import 'package:example/bottom_navigation_demo/index_listview_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
 import 'package:example/listview_demo/listview_demo.dart';
 import 'package:example/listview_demo/refresh_listview_demo.dart';
@@ -31,6 +32,7 @@ class MyHomePage extends BasePage {
     "刷新列表组件": RefreshListViewDemo(),
     "索引列表组件": IndexListViewDemo(),
     "弹窗系统事件": PopupsDemo(),
+    "底部导航组件": BottomNavigationDemo(),
   };
 
   @override

@@ -14,6 +14,9 @@ abstract class BaseStatefulWidget extends StatefulWidget {
       : _state = _BaseStatefulWidgetState(),
         super(key: key);
 
+  //是否持有state
+  get wantKeepAlive => false;
+
   @override
   createState() => _state;
 
@@ -21,9 +24,7 @@ abstract class BaseStatefulWidget extends StatefulWidget {
   Widget build(BuildContext context);
 
   //刷新页面
-  void refreshUI(VoidCallback fun) {
-    _state.refreshUI(fun);
-  }
+  void refreshUI([VoidCallback? fun]) => _state.refreshUI(fun);
 
   //初始化方法
   @mustCallSuper
@@ -39,7 +40,11 @@ abstract class BaseStatefulWidget extends StatefulWidget {
 * @author wuxubaiyang
 * @Time 2021/6/30 下午1:19
 */
-class _BaseStatefulWidgetState extends State<BaseStatefulWidget> {
+class _BaseStatefulWidgetState extends State<BaseStatefulWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => widget.wantKeepAlive;
+
   @override
   void initState() {
     super.initState();
@@ -48,13 +53,14 @@ class _BaseStatefulWidgetState extends State<BaseStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return widget.build(context);
   }
 
   //刷新UI
   @protected
-  void refreshUI(VoidCallback fun) {
-    if (mounted) setState(fun);
+  void refreshUI(VoidCallback? fun) {
+    if (mounted) setState(fun ?? () {});
   }
 
   @override
