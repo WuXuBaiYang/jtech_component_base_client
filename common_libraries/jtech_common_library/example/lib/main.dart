@@ -1,3 +1,4 @@
+import 'package:example/banner/banner_demo.dart';
 import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
 import 'package:example/image/image_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
@@ -37,6 +38,7 @@ class MyHomePage extends BasePage {
     "底部导航组件": BottomNavigationDemo(),
     "顶部tab导航组件": TabLayoutDemo(),
     "图片组件demo": ImageDemo(),
+    "banner demo": BannerDemo(),
   };
 
   @override
