@@ -1,4 +1,5 @@
 import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
+import 'package:example/image/image_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
 import 'package:example/listview_demo/listview_demo.dart';
 import 'package:example/listview_demo/refresh_listview_demo.dart';
@@ -35,6 +36,7 @@ class MyHomePage extends BasePage {
     "弹窗系统事件": PopupsDemo(),
     "底部导航组件": BottomNavigationDemo(),
     "顶部tab导航组件": TabLayoutDemo(),
+    "图片组件demo": ImageDemo(),
   };
 
   @override

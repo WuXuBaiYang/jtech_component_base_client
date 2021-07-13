@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/base/ValueChangeNotifier.dart';
+import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/tab_layout/tab_page.dart';
 

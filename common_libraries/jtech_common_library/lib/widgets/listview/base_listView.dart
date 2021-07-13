@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/widgets/base/ValueChangeNotifier.dart';
+import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
 
 //列表子项构造器
 typedef ListItemBuilder<V> = Widget Function(
