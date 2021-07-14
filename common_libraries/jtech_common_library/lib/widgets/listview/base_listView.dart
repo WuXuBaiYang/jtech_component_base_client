@@ -60,7 +60,7 @@ class JListViewController<V> {
   List<V>? _tempDateList;
 
   JListViewController({
-    List<V>? dataList = const [],
+    List<V> dataList = const [],
   }) : _dataList = ListValueChangeNotifier(dataList);
 
   //获取数据集合
@@ -75,9 +75,7 @@ class JListViewController<V> {
 
   //注册监听数据变化
   void registerOnDataChange(OnDateChangeListener<V> listener) {
-    _dataList.addListener(() {
-      listener(dataList);
-    });
+    _dataList.addListener(() => listener(dataList));
   }
 
   //覆盖数据

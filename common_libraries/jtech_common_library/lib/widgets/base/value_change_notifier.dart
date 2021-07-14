@@ -8,18 +8,19 @@ import 'package:flutter/widgets.dart';
 */
 class ValueChangeNotifier<V> extends ChangeNotifier
     implements ValueListenable<V> {
+  //参数数据
+  V _value;
+
   ValueChangeNotifier(this._value);
 
-  V? _value;
-
   @override
-  V get value => _value!;
+  V get value => _value;
 
   //赋值并刷新
   setValue(V newValue, {bool notify = true}) {
     if (newValue == _value) return;
     _value = newValue;
-    update(true);
+    update(notify);
   }
 
   //刷新
@@ -28,7 +29,7 @@ class ValueChangeNotifier<V> extends ChangeNotifier
   }
 
   @override
-  String toString() => '${describeIdentity(this)}($value)';
+  String toString() => '${describeIdentity(this)}($_value)';
 }
 
 /*
@@ -37,40 +38,35 @@ class ValueChangeNotifier<V> extends ChangeNotifier
 * @Time 2021/7/6 下午3:21
 */
 class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
-  ListValueChangeNotifier(List<V>? value) : super(value);
+  ListValueChangeNotifier(List<V> value) : super(value);
+
+  ListValueChangeNotifier.empty() : this([]);
 
   //清除数据
-  void clear() => _value?.clear();
-
-  //检查集合是否为空
-  bool get isListEmpty => null == _value || value.isEmpty;
+  void clear() => value.clear();
 
   //添加数据
   void addValue(List<V> newValue, {bool notify = true}) {
-    if (isListEmpty) _value = [];
-    _value?.addAll(newValue);
+    value.addAll(newValue);
     update(notify);
   }
 
   //插入数据
   void insertValue(List<V> newValue, {required int index, bool notify = true}) {
-    if (isListEmpty) _value = [];
-    _value?.insertAll(index, newValue);
+    value.insertAll(index, newValue);
     update(notify);
   }
 
   //移除数据
   bool removeValue(V item, {bool notify = true}) {
-    if (isListEmpty) return false;
-    var result = _value?.remove(item) ?? false;
+    var result = value.remove(item);
     update(notify);
     return result;
   }
 
   //移除下标数据
   V? removeValueAt(int index, {bool notify = true}) {
-    if (isListEmpty) return null;
-    var result = _value?.removeAt(index);
+    var result = value.removeAt(index);
     update(notify);
     return result;
   }
@@ -85,25 +81,22 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
 * @Time 2021/7/6 下午4:09
 */
 class MapValueChangeNotifier<K, V> extends ValueChangeNotifier<Map<K, V>> {
-  MapValueChangeNotifier(Map<K, V>? value) : super(value);
+  MapValueChangeNotifier(Map<K, V> value) : super(value);
+
+  MapValueChangeNotifier.empty() : this({});
 
   //清除数据
-  void clear() => _value?.clear();
-
-  //检查集合是否为空
-  bool get _isMapEmpty => null == _value || value.isEmpty;
+  void clear() => value.clear();
 
   //添加数据
-  void putValue(K key, V value, {bool notify = true}) {
-    if (_isMapEmpty) _value = {};
-    _value![key] = value;
+  void putValue(K k, V v, {bool notify = true}) {
+    value.addAll({k: v});
     update(notify);
   }
 
   //移除数据
   V? removeValue(K key, {bool notify = true}) {
-    if (_isMapEmpty) return null;
-    var result = _value?.remove(key);
+    var result = value.remove(key);
     update(notify);
     return result;
   }

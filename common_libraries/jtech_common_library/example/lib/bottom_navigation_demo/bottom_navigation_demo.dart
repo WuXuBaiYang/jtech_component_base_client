@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
 import 'package:jtech_common_library/widgets/navigation/bottom_navigation.dart';
+import 'package:jtech_common_library/widgets/navigation/controller.dart';
+import 'package:jtech_common_library/widgets/navigation/item.dart';
 
 import 'navigation_page_2.dart';
 import 'navigation_page_3.dart';
@@ -15,12 +17,46 @@ import 'navigation_page_3.dart';
 */
 class BottomNavigationDemo extends BasePage {
   //底部导航控制器
-  final JBottomNavigationController controller = JBottomNavigationController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final JBottomNavigationController controller = JBottomNavigationController(
+    initIndex: 1,
+    items: [
+      NormalNavigationItem(
+        page: NavigationPageDemo1(),
+        title: "页面1",
+        titleColor: Colors.black,
+        activeTitleColor: Colors.red,
+        activeFontSize: 18,
+        // title: Text("页面1"),
+        image: Icon(Icons.home),
+        activeImage: Icon(
+          Icons.home,
+          color: Colors.red,
+        ),
+      ),
+      NavigationItem(
+        page: NavigationPageDemo2(),
+        title: Text("页面2"),
+        image: Icon(Icons.badge),
+        activeImage: Icon(
+          Icons.badge,
+          color: Colors.blue,
+        ),
+      ),
+      NormalNavigationItem(
+        page: NavigationPageDemo3(),
+        title: "页面3",
+        titleColor: Colors.black,
+        activeTitleColor: Colors.green,
+        activeFontSize: 18,
+        // title: Text("页面3"),
+        image: Icon(Icons.build),
+        activeImage: Icon(
+          Icons.build,
+          color: Colors.green,
+        ),
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -42,52 +78,14 @@ class BottomNavigationDemo extends BasePage {
           IconButton(
             icon: Text("跳转最后一页"),
             onPressed: () {
-              controller.selectItem(2);
+              controller.select(2);
             },
           ),
         ],
       ),
       body: JBottomNavigation(
+        canScroll: true,
         controller: controller,
-        // initIndex: 1,
-        // canSlide: true,
-        items: [
-          NormalNavigationItem(
-            page: NavigationPageDemo1(),
-            title: "页面1",
-            titleColor: Colors.black,
-            activeTitleColor: Colors.red,
-            activeFontSize: 18,
-            // title: Text("页面1"),
-            image: Icon(Icons.home),
-            activeImage: Icon(
-              Icons.home,
-              color: Colors.red,
-            ),
-          ),
-          NavigationItem(
-            page: NavigationPageDemo2(),
-            title: Text("页面2"),
-            image: Icon(Icons.badge),
-            activeImage: Icon(
-              Icons.badge,
-              color: Colors.blue,
-            ),
-          ),
-          NormalNavigationItem(
-            page: NavigationPageDemo3(),
-            title: "页面3",
-            titleColor: Colors.black,
-            activeTitleColor: Colors.green,
-            activeFontSize: 18,
-            // title: Text("页面3"),
-            image: Icon(Icons.build),
-            activeImage: Icon(
-              Icons.build,
-              color: Colors.green,
-            ),
-          ),
-        ],
       ),
     );
   }
