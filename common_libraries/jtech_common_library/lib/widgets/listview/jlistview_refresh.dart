@@ -183,6 +183,13 @@ class JRefreshListViewController<V> extends JListViewController<V> {
 
   //加载失败
   void loadFail() => refreshController.loadFailed();
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    refreshController.dispose();
+  }
 }
 
 //下拉刷新头部样式构建回调

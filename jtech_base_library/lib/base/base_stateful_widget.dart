@@ -19,7 +19,7 @@ abstract class BaseStatefulWidget<T extends BaseStatefulWidgetState>
   get wantKeepAlive => false;
 
   @override
-  createState() => BaseStatefulWidgetState();
+  BaseStatefulWidgetState createState() => BaseStatefulWidgetState();
 
   //构建视图
   Widget build(BuildContext context);

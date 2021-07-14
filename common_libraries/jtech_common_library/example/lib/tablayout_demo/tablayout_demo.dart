@@ -2,6 +2,7 @@ import 'package:example/tablayout_demo/navigation_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
 import 'package:jtech_common_library/widgets/tab_layout/controller.dart';
 import 'package:jtech_common_library/widgets/tab_layout/item.dart';
@@ -17,7 +18,8 @@ import 'navigation_page_3.dart';
 */
 class TabLayoutDemo extends BasePage {
   //底部导航控制器
-  final JTabLayoutController controller = JTabLayoutController(items: [
+  final JTabLayoutController controller =
+      JTabLayoutController(initialIndex: 1, items: [
     NormalTabItem(
       page: TabPageDemo1(),
       title: "页面1",
@@ -54,11 +56,6 @@ class TabLayoutDemo extends BasePage {
       ),
     ),
   ]);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

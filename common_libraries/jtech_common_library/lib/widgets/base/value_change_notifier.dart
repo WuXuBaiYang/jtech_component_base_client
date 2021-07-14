@@ -73,6 +73,12 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
 
   @override
   String toString() => '${describeIdentity(this)}($value)';
+
+  @override
+  void dispose() {
+    super.dispose();
+    value.clear();
+  }
 }
 
 /*
@@ -103,4 +109,10 @@ class MapValueChangeNotifier<K, V> extends ValueChangeNotifier<Map<K, V>> {
 
   @override
   String toString() => '${describeIdentity(this)}($value)';
+
+  @override
+  void dispose() {
+    super.dispose();
+    value.clear();
+  }
 }

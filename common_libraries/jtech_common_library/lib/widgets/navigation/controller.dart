@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
+import 'package:jtech_common_library/widgets/base/controller.dart';
 import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
 
 import 'item.dart';
@@ -12,7 +13,7 @@ typedef OnNavigationChange = void Function(int index);
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:53
 */
-class JBottomNavigationController {
+class JBottomNavigationController extends BaseController {
   //记录当前选中下标
   final ValueChangeNotifier<int> _currentIndex;
 
@@ -24,8 +25,8 @@ class JBottomNavigationController {
 
   JBottomNavigationController({
     required this.items,
-    int initIndex = 0,
-  })  : _currentIndex = ValueChangeNotifier(initIndex),
+    int initialIndex = 0,
+  })  : _currentIndex = ValueChangeNotifier(initialIndex),
         _badges = MapValueChangeNotifier.empty();
 
   //获取当前下标
@@ -51,4 +52,13 @@ class JBottomNavigationController {
 
   //移除角标
   void removeBadge(int index) => _badges.removeValue(index);
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁数据
+    _currentIndex.dispose();
+    _badges.dispose();
+    items.clear();
+  }
 }

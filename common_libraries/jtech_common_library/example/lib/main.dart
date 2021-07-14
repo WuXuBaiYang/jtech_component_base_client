@@ -24,21 +24,31 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
+      routes: {
+        "/test/listview": (_) => ListViewDemo(),
+        "/test/refresh_listview": (_) => RefreshListViewDemo(),
+        "/test/index_listview": (_) => IndexListViewDemo(),
+        "/test/popups": (_) => PopupsDemo(),
+        "/test/bottom_navigation": (_) => BottomNavigationDemo(),
+        "/test/tab_layout": (_) => TabLayoutDemo(),
+        "/test/image": (_) => ImageDemo(),
+        "/test/banner": (_) => BannerDemo(),
+      },
     );
   }
 }
 
 class MyHomePage extends BasePage {
   //demo测试页面
-  final Map<String, BasePage> pages = {
-    "基本列表组件": ListViewDemo(),
-    "刷新列表组件": RefreshListViewDemo(),
-    "索引列表组件": IndexListViewDemo(),
-    "弹窗系统事件": PopupsDemo(),
-    "底部导航组件": BottomNavigationDemo(),
-    "顶部tab导航组件": TabLayoutDemo(),
-    "图片组件demo": ImageDemo(),
-    "banner demo": BannerDemo(),
+  final Map<String, String> pages = {
+    "基本列表组件": "/test/listview",
+    "刷新列表组件": "/test/refresh_listview",
+    "索引列表组件": "/test/index_listview",
+    "弹窗系统事件": "/test/popups",
+    "底部导航组件": "/test/bottom_navigation",
+    "顶部tab导航组件": "/test/tab_layout",
+    "图片组件demo": "/test/image",
+    "banner demo": "/test/banner",
   };
 
   @override
@@ -54,11 +64,7 @@ class MyHomePage extends BasePage {
           String title = pages.keys.elementAt(index);
           return ListTile(
             title: Text(title),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return pages.values.elementAt(index);
-              }));
-            },
+            onTap: () => jBase.router.push(pages[title]!),
           );
         },
       ),

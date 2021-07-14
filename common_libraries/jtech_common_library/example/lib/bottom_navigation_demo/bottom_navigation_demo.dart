@@ -18,7 +18,7 @@ import 'navigation_page_3.dart';
 class BottomNavigationDemo extends BasePage {
   //底部导航控制器
   final JBottomNavigationController controller = JBottomNavigationController(
-    initIndex: 1,
+    initialIndex: 1,
     items: [
       NormalNavigationItem(
         page: NavigationPageDemo1(),

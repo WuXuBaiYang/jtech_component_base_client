@@ -15,6 +15,9 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
   //控制器
   final JTabLayoutController controller;
 
+  //页面切换控制器
+  final PageController pageController;
+
   //状态管理
   final _JTabLayoutState _jTabLayoutState;
 
@@ -49,8 +52,12 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
     this.badgeAlign = Alignment.topRight,
     IndicatorConfig? indicatorConfig,
   })  : this.indicatorConfig = indicatorConfig ?? IndicatorConfig(),
-        this._jTabLayoutState =
-            _JTabLayoutState(length: controller.items.length);
+        this.pageController =
+            PageController(initialPage: controller.currentIndex),
+        this._jTabLayoutState = _JTabLayoutState(
+          length: controller.items.length,
+          initialIndex: controller.currentIndex,
+        );
 
   @override
   _JTabLayoutState createState() => _jTabLayoutState;
@@ -60,32 +67,30 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
     super.initState();
     //监听页码变化
     var tabController = _jTabLayoutState.tabController;
-    tabController.addListener(() {
-      if (!tabController.indexIsChanging) {
-        controller.select(tabController.index);
-      }
-    });
     controller.addChangeListener((index) => refreshUI(() {
           if (tabController.index != index) {
             tabController.animateTo(index);
+          }
+          if (pageController.page?.round() != index) {
+            pageController.jumpToPage(index);
           }
         }));
   }
 
   @override
   Widget build(BuildContext context) {
-    PageView();
     return Column(
       children: [
         _buildTabBar(),
         Expanded(
-          child: TabBarView(
-            controller: _jTabLayoutState._tabController,
+          child: PageView(
+            controller: pageController,
             physics: canScroll ? null : NeverScrollableScrollPhysics(),
             children: List.generate(controller.items.length,
                 (index) => controller.items[index].page),
+            onPageChanged: (index) => controller.select(index),
           ),
-        )
+        ),
       ],
     );
   }
@@ -142,6 +147,15 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁所有控制器
+    controller.dispose();
+    pageController.dispose();
+    _jTabLayoutState.tabController.dispose();
+  }
 }
 
 /*
@@ -154,10 +168,11 @@ class _JTabLayoutState extends BaseStatefulWidgetState
   //tab控制器
   TabController? _tabController;
 
-  _JTabLayoutState({required int length}) {
+  _JTabLayoutState({required int length, int initialIndex = 0}) {
     _tabController = TabController(
       length: length,
       vsync: this,
+      initialIndex: initialIndex,
     );
   }
 

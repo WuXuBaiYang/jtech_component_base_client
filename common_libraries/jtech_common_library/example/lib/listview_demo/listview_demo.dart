@@ -17,17 +17,15 @@ class ListViewDemo extends BasePage {
   void initState() {
     super.initState();
     //生成测试数据
-    Future.delayed(Duration(seconds: 3)).then((value) {
-      List<ListItemModel> testData = [];
-      testData.addAll(List.generate(100, (i) {
-        return ListItemModel(
-          title: "测试数据 $i",
-          des: "这里是第 $i 条数据",
-          leading: Icons.home,
-        );
-      }));
-      controller.setData(testData);
-    });
+    List<ListItemModel> testData = [];
+    testData.addAll(List.generate(100, (i) {
+      return ListItemModel(
+        title: "测试数据 $i",
+        des: "这里是第 $i 条数据",
+        leading: Icons.home,
+      );
+    }));
+    controller.setData(testData);
   }
 
   @override

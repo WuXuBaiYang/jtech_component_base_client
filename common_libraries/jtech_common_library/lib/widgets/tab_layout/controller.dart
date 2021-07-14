@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
+import 'package:jtech_common_library/widgets/base/controller.dart';
 import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
 
 import 'item.dart';
@@ -12,7 +13,7 @@ typedef OnTabChange = void Function(int index);
 * @author wuxubaiyang
 * @Time 2021/7/12 下午2:53
 */
-class JTabLayoutController {
+class JTabLayoutController extends BaseController {
   //tab导航子项集合
   final List<TabItem> items;
 
@@ -24,8 +25,8 @@ class JTabLayoutController {
 
   JTabLayoutController({
     required this.items,
-    int initIndex = 0,
-  })  : this._currentIndex = ValueChangeNotifier(initIndex),
+    int initialIndex = 0,
+  })  : this._currentIndex = ValueChangeNotifier(initialIndex),
         _badges = MapValueChangeNotifier.empty();
 
   //获取当前下标
@@ -51,4 +52,13 @@ class JTabLayoutController {
 
   //移除角标
   void removeBadge(int index) => _badges.removeValue(index);
+
+  @override
+  dispose() {
+    super.dispose();
+    //销毁数据
+    _currentIndex.dispose();
+    _badges.dispose();
+    items.clear();
+  }
 }

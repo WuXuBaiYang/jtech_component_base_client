@@ -118,4 +118,12 @@ class JBottomNavigation extends BaseStatefulWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    controller.dispose();
+    pageController.dispose();
+  }
 }

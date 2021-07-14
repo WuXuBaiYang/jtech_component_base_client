@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
+import 'package:jtech_common_library/widgets/base/controller.dart';
 import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
 
 //列表子项构造器
@@ -52,7 +53,7 @@ typedef OnSearchListener<V> = bool Function(V item);
 * @author wuxubaiyang
 * @Time 2021/7/5 上午10:26
 */
-class JListViewController<V> {
+class JListViewController<V> extends BaseController {
   //持有列表数据
   ListValueChangeNotifier<V> _dataList;
 
@@ -110,5 +111,13 @@ class JListViewController<V> {
   void clearFilter() {
     _tempDateList = null;
     _dataList.update(true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁数据集合
+    _tempDateList?.clear();
+    _dataList.dispose();
   }
 }
