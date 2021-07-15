@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'jdialog.dart';
-import 'jsheet.dart';
-import 'jsnack.dart';
-import 'jtoast.dart';
+import 'dialog/dialog.dart' as j;
+import 'sheet/sheet.dart';
+import 'snack/snack.dart';
+import 'toast/toast.dart';
 
 /*
 * 弹出层入口方法
@@ -14,16 +14,16 @@ import 'jtoast.dart';
 @protected
 class Popups {
   //创建dialog对象
-  final dialog = JDialog();
+  final dialog = j.Dialog();
 
   //创建sheet对象
-  final sheet = JSheet();
+  final sheet = Sheet();
 
   //toast消息提示
-  final toast = JToast();
+  final toast = Toast();
 
   //snack消息提示
-  final snack = JSnack();
+  final snack = Snack();
 
   //初始化方法
   Future init() async {}

@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/popups/jdialog.dart';
-import 'package:jtech_common_library/popups/jsheet.dart';
-import 'package:jtech_common_library/popups/jtoast.dart';
+import 'package:jtech_common_library/popups/dialog/config.dart';
+import 'package:jtech_common_library/popups/sheet/config.dart';
+import 'package:jtech_common_library/popups/toast/config.dart';
 
 /*
 * 弹窗系统事件
