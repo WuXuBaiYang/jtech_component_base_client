@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
 
@@ -114,7 +115,10 @@ class JBannerView extends BaseStatefulWidget {
             physics: canScroll ? null : NeverScrollableScrollPhysics(),
             controller: pageController,
             itemCount: currentItemLength,
-            itemBuilder: (context, index) => _buildBannerItem(index),
+            itemBuilder: (context, index) {
+              var item = getCurrentItem(index);
+              return item.builder(context);
+            },
             onPageChanged: (index) => controller.select(getCurrentIndex(index)),
           ),
         ),
@@ -123,10 +127,40 @@ class JBannerView extends BaseStatefulWidget {
   }
 
   //构建banner子项
-  Widget _buildBannerItem(int index) {
+  Widget _buildBannerItem(BuildContext context, int index) {
     var item = getCurrentItem(index);
-    return Container(
-      child: item.content,
+    return Stack(
+      children: [
+        //构建主体内容
+        Positioned.fill(
+          child: item.builder(context),
+        ),
+        //构建标题部分
+        _buildBannerItemTitle(item),
+      ],
+    );
+  }
+
+  //构建banner子项标题部分
+  Widget _buildBannerItemTitle(BannerItem item) {
+    var title = item.title;
+    if (null == title) return EmptyBox();
+    return Align(
+      alignment: title.align.align,
+      child: Container(
+        width: title.align.isVertical ? null : double.infinity,
+        height: !title.align.isVertical ? null : double.infinity,
+        color: title.backgroundColor,
+        padding: title.padding,
+        margin: title.margin,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+          ),
+          child: title.child,
+        ),
+      ),
     );
   }
 

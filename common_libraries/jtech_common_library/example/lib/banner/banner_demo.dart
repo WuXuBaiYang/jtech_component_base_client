@@ -16,21 +16,36 @@ class BannerDemo extends BasePage {
     initialIndex: 0,
     items: [
       BannerItem(
-        content: JImage.net(
-          "https://tse2-mm.cn.bing.net/th/id/OIP-C.xsA-3qUw6cqmd8nRfxk6TQHaEK?w=317&h=180&c=7&o=5&pid=1.7",
-          fit: BoxFit.cover,
+        builder: (context) {
+          return JImage.net(
+            "https://tse2-mm.cn.bing.net/th/id/OIP-C.xsA-3qUw6cqmd8nRfxk6TQHaEK?w=317&h=180&c=7&o=5&pid=1.7",
+            fit: BoxFit.cover,
+          );
+        },
+        title: BannerItemTitle(
+          child: Text("第一页title测试"),
         ),
       ),
       BannerItem(
-        content: JImage.net(
-          "https://tse4-mm.cn.bing.net/th/id/OIP-C.PTZJ51e7xutqxF_1nXpdawHaEK?w=317&h=180&c=7&o=5&pid=1.7",
-          fit: BoxFit.cover,
+        builder: (context) {
+          return JImage.net(
+            "https://tse4-mm.cn.bing.net/th/id/OIP-C.PTZJ51e7xutqxF_1nXpdawHaEK?w=317&h=180&c=7&o=5&pid=1.7",
+            fit: BoxFit.cover,
+          );
+        },
+        title: BannerItemTitle(
+          child: Text("第二页title测试"),
         ),
       ),
       BannerItem(
-        content: JImage.net(
-          "https://tse2-mm.cn.bing.net/th/id/OIP-C.3m1ogEZilvIW8HK-Ry0MbgHaFj?w=233&h=180&c=7&o=5&pid=1.7",
-          fit: BoxFit.cover,
+        builder: (BuildContext context) {
+          return JImage.net(
+            "https://tse2-mm.cn.bing.net/th/id/OIP-C.3m1ogEZilvIW8HK-Ry0MbgHaFj?w=233&h=180&c=7&o=5&pid=1.7",
+            fit: BoxFit.cover,
+          );
+        },
+        title: BannerItemTitle(
+          child: Text("第三页title测试"),
         ),
       ),
     ],

@@ -9,13 +9,17 @@ import 'package:jtech_common_library/base/empty_box.dart';
 */
 class BannerItem {
   //子项内容
-  Widget content;
+  WidgetBuilder builder;
+
+  //子项背景颜色
+  Color backgroundColor;
 
   //标题部分对象
   BannerItemTitle? title;
 
   BannerItem({
-    required this.content,
+    required this.builder,
+    this.backgroundColor = Colors.white,
     this.title,
   });
 }
@@ -43,7 +47,7 @@ class BannerItemTitle {
 
   BannerItemTitle({
     this.child = const EmptyBox(),
-    this.backgroundColor = Colors.black26,
+    this.backgroundColor = Colors.black38,
     this.padding = const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.margin = EdgeInsets.zero,
     this.align = TitleAlign.Bottom,
@@ -68,6 +72,7 @@ enum TitleAlign {
 * @Time 2021/7/15 下午1:17
 */
 extension TitleAlignExtension on TitleAlign {
+  //获取对齐方式
   Alignment get align {
     switch (this) {
       case TitleAlign.Top:
@@ -78,6 +83,22 @@ extension TitleAlignExtension on TitleAlign {
         return Alignment.centerRight;
       case TitleAlign.Bottom:
         return Alignment.bottomCenter;
+      default:
+        return Alignment.bottomCenter;
+    }
+  }
+
+  //判断是否为垂直方向
+  bool get isVertical {
+    switch (this) {
+      case TitleAlign.Top:
+      case TitleAlign.Bottom:
+        return false;
+      case TitleAlign.Left:
+      case TitleAlign.Right:
+        return true;
+      default:
+        return false;
     }
   }
 }
