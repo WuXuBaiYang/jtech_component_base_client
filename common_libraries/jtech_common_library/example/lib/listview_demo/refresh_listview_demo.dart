@@ -2,7 +2,8 @@ import 'package:example/listview_demo/list_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/listview/jlistview_refresh.dart';
+import 'package:jtech_common_library/widgets/listview/refresh/controller.dart';
+import 'package:jtech_common_library/widgets/listview/refresh/listview_refresh.dart';
 
 /*
 * 可刷新列表demo

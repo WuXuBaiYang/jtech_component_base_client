@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_common_library/widgets/listview/jlistview_index.dart';
+import 'package:jtech_common_library/widgets/listview/index/model.dart';
 
 /*
 * 列表数据对象测试

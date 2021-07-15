@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_common_library/widgets/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/listview/base_listView.dart';
+import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
+
+import 'base/controller.dart';
 
 /*
 * 通用列表组件

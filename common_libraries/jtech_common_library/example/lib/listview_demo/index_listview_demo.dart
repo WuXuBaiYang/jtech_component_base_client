@@ -4,8 +4,8 @@ import 'package:example/listview_demo/list_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/listview/jlistview_index.dart';
-import 'package:jtech_common_library/widgets/listview/jlistview_refresh.dart';
+import 'package:jtech_common_library/widgets/listview/index/controller.dart';
+import 'package:jtech_common_library/widgets/listview/index/listview_index.dart';
 
 /*
 * 索引列表demo
