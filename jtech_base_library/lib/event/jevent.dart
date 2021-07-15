@@ -12,12 +12,6 @@ typedef OnEventListen = void Function<T extends BaseEventModel>(T event);
 */
 @protected
 class JEvent {
-  static final JEvent _instance = JEvent._internal();
-
-  factory JEvent() => _instance;
-
-  JEvent._internal();
-
   //消息总线对象
   final eventBus = EventBus(sync: true);
 
@@ -25,19 +19,12 @@ class JEvent {
   Future init() async {}
 
   //注册事件
-  void on<T extends BaseEventModel>({required OnEventListen listen}) {
-    eventBus.on<T>().listen((event) {
-      listen(event);
-    });
-  }
+  void on<T extends BaseEventModel>({required OnEventListen listen}) =>
+      eventBus.on<T>().listen((event) => listen(event));
 
   //注册单次事件
-  Future<T> onOnce<T extends BaseEventModel>() async {
-    return eventBus.on<T>().first;
-  }
+  Future<T> onOnce<T extends BaseEventModel>() async => eventBus.on<T>().first;
 
   //发送事件
-  void send<T extends BaseEventModel>(T event) async {
-    eventBus.fire(event);
-  }
+  void send<T extends BaseEventModel>(T event) async => eventBus.fire(event);
 }

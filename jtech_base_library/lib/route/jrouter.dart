@@ -2,12 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 @protected
 class JRouter {
-  static final JRouter _instance = JRouter._internal();
-
-  factory JRouter() => _instance;
-
-  JRouter._internal();
-
   //全局路由key
   final GlobalKey<NavigatorState> navigateKey =
       GlobalKey(debugLabel: 'jrouter_navigate_key');
