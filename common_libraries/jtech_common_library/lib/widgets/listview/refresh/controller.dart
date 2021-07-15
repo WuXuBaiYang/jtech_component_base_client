@@ -1,4 +1,4 @@
-import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
+import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/listview/base/controller.dart';
 
 //刷新状态变化回调

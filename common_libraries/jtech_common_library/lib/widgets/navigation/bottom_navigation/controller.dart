@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/base/controller.dart';
-import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
-
-import 'item.dart';
+import 'package:jtech_common_library/base/value_change_notifier.dart';
+import 'package:jtech_common_library/widgets/navigation/base/controller.dart';
+import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 
 //导航变化监听
 typedef OnNavigationChange = void Function(int index);
@@ -13,34 +12,22 @@ typedef OnNavigationChange = void Function(int index);
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:53
 */
-class JBottomNavigationController extends BaseController {
-  //记录当前选中下标
-  final ValueChangeNotifier<int> _currentIndex;
-
+class JBottomNavigationController extends BaseNavigationController {
   //维护角标对象
   final MapValueChangeNotifier<int, Widget> _badges;
 
-  //导航子项集合
-  final List<NavigationItem> items;
-
   JBottomNavigationController({
-    required this.items,
+    required List<NavigationItem> items,
     int initialIndex = 0,
-  })  : _currentIndex = ValueChangeNotifier(initialIndex),
-        _badges = MapValueChangeNotifier.empty();
+  })  : _badges = MapValueChangeNotifier.empty(),
+        super(
+          items: items,
+          initialIndex: initialIndex,
+        );
 
-  //获取当前下标
-  int get currentIndex => _currentIndex.value;
-
-  //选中一个下标
-  void select(int index) {
-    if (index < 0 || index > items.length) index = 0;
-    _currentIndex.setValue(index);
-  }
-
-  //添加下标变化监听
+  @override
   void addChangeListener(OnNavigationChange onChange) {
-    _currentIndex.addListener(() => onChange(currentIndex));
+    super.addChangeListener(onChange);
     _badges.addListener(() => onChange(currentIndex));
   }
 
@@ -57,8 +44,6 @@ class JBottomNavigationController extends BaseController {
   void dispose() {
     super.dispose();
     //销毁数据
-    _currentIndex.dispose();
     _badges.dispose();
-    items.clear();
   }
 }

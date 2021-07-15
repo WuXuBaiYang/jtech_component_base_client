@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/navigation/bottom_navigation.dart';
-import 'package:jtech_common_library/widgets/navigation/controller.dart';
-import 'package:jtech_common_library/widgets/navigation/item.dart';
+import 'package:jtech_common_library/widgets/navigation/base/item.dart';
+import 'package:jtech_common_library/widgets/navigation/bottom_navigation/bottom_navigation.dart';
+import 'package:jtech_common_library/widgets/navigation/bottom_navigation/controller.dart';
 
 import 'navigation_page_2.dart';
 import 'navigation_page_3.dart';

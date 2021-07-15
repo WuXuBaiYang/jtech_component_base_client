@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/base/controller.dart';
-import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
+import 'package:jtech_common_library/base/controller.dart';
+import 'package:jtech_common_library/base/value_change_notifier.dart';
 
 import 'item.dart';
 

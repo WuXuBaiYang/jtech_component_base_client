@@ -1,5 +1,5 @@
-import 'package:jtech_common_library/widgets/base/controller.dart';
-import 'package:jtech_common_library/widgets/base/value_change_notifier.dart';
+import 'package:jtech_common_library/base/controller.dart';
+import 'package:jtech_common_library/base/value_change_notifier.dart';
 
 //数据变化监听回调
 typedef OnDateChangeListener<V> = void Function(List<V> dataList);
@@ -34,21 +34,18 @@ class JListViewController<V> extends BaseController {
   V getItem(int index) => dataList[index];
 
   //注册监听数据变化
-  void registerOnDataChange(OnDateChangeListener<V> listener) {
-    _dataList.addListener(() => listener(dataList));
-  }
+  void registerOnDataChange(OnDateChangeListener<V> listener) =>
+      _dataList.addListener(() => listener(dataList));
 
   //覆盖数据
-  void setData(List<V> newData) {
-    _dataList.setValue(newData);
-  }
+  void setData(List<V> newData) => _dataList.setValue(newData);
 
   //添加数据，insertIndex=-1时放置在队列末尾
   void addData(
-      List<V> newData, {
-        int insertIndex = -1,
-        bool clearData = false,
-      }) {
+    List<V> newData, {
+    int insertIndex = -1,
+    bool clearData = false,
+  }) {
     if (clearData) _dataList.clear();
     if (insertIndex > 0 && insertIndex < _dataList.value.length) {
       _dataList.insertValue(newData, index: insertIndex);

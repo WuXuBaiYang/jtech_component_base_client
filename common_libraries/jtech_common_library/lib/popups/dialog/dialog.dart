@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/widgets/base/empty_box.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
 
 import 'config.dart';
 

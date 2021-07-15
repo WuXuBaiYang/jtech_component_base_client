@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/widgets/base/empty_box.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
 
 import 'config.dart';
 

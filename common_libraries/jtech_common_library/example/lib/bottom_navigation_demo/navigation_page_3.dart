@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/navigation/navgiation_page.dart';
+import 'package:jtech_common_library/widgets/navigation/base/navgiation_page.dart';
 
 /*
 * demo页面3
