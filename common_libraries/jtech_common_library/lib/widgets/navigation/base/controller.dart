@@ -22,7 +22,8 @@ abstract class BaseNavigationController<T extends NavigationItem>
   BaseNavigationController({
     required List<T> items,
     int initialIndex = 0,
-  })  : this._items = items,
+  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
+        this._items = items,
         _currentIndex = ValueChangeNotifier(initialIndex);
 
   //获取当前下标
@@ -36,9 +37,12 @@ abstract class BaseNavigationController<T extends NavigationItem>
 
   //选中一个下标
   void select(int index) {
-    if (index < 0 || index > _items.length) index = 0;
+    if (isOverIndex(index)) index = 0;
     _currentIndex.setValue(index);
   }
+
+  //判断下标是否越界
+  bool isOverIndex(int index) => index < 0 || index >= _items.length;
 
   //添加下标变化监听
   void addChangeListener(OnNavigationChange onChange) =>

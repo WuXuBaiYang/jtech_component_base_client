@@ -17,7 +17,8 @@ class JTabLayoutController<T extends NavigationItem>
   JTabLayoutController({
     required List<T> items,
     int initialIndex = 0,
-  })  : _badges = MapValueChangeNotifier.empty(),
+  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
+        _badges = MapValueChangeNotifier.empty(),
         super(
           items: items,
           initialIndex: initialIndex,
@@ -33,7 +34,10 @@ class JTabLayoutController<T extends NavigationItem>
   Widget? getBadge(int index) => _badges.value[index];
 
   //添加角标
-  void addBadge(int index, JBadgeView badge) => _badges.putValue(index, badge);
+  void addBadge(int index, JBadgeView badge) {
+    if (isOverIndex(index)) return;
+    _badges.putValue(index, badge);
+  }
 
   //移除角标
   void removeBadge(int index) => _badges.removeValue(index);
