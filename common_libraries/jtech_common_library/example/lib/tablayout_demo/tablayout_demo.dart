@@ -2,11 +2,10 @@ import 'package:example/tablayout_demo/navigation_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/tab_layout/controller.dart';
-import 'package:jtech_common_library/widgets/tab_layout/item.dart';
-import 'package:jtech_common_library/widgets/tab_layout/tab_layout.dart';
+import 'package:jtech_common_library/widgets/navigation/base/item.dart';
+import 'package:jtech_common_library/widgets/navigation/tab_layout/controller.dart';
+import 'package:jtech_common_library/widgets/navigation/tab_layout/tab_layout.dart';
 
 import 'navigation_page_2.dart';
 import 'navigation_page_3.dart';
@@ -20,7 +19,7 @@ class TabLayoutDemo extends BasePage {
   //底部导航控制器
   final JTabLayoutController controller =
       JTabLayoutController(initialIndex: 1, items: [
-    NormalTabItem(
+    NormalNavigationItem(
       page: TabPageDemo1(),
       title: "页面1",
       titleColor: Colors.black,
@@ -33,7 +32,7 @@ class TabLayoutDemo extends BasePage {
         color: Colors.red,
       ),
     ),
-    TabItem(
+    NavigationItem(
       page: TabPageDemo2(),
       title: Text("页面2"),
       image: Icon(Icons.badge),
@@ -42,7 +41,7 @@ class TabLayoutDemo extends BasePage {
         color: Colors.blue,
       ),
     ),
-    NormalTabItem(
+        NormalNavigationItem(
       page: TabPageDemo3(),
       title: "页面3",
       titleColor: Colors.black,

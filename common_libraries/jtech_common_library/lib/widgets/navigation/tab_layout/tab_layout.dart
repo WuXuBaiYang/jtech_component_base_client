@@ -55,7 +55,7 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
         this.pageController =
             PageController(initialPage: controller.currentIndex),
         this._jTabLayoutState = _JTabLayoutState(
-          length: controller.items.length,
+          length: controller.itemLength,
           initialIndex: controller.currentIndex,
         );
 
@@ -86,8 +86,8 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
           child: PageView(
             controller: pageController,
             physics: canScroll ? null : NeverScrollableScrollPhysics(),
-            children: List.generate(controller.items.length,
-                (index) => controller.items[index].page),
+            children: List.generate(controller.itemLength,
+                (index) => controller.getItem(index).page),
             onPageChanged: (index) => controller.select(index),
           ),
         ),
@@ -116,14 +116,14 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
             : TabBarIndicatorSize.label,
         onTap: (index) => controller.select(index),
         tabs: List.generate(
-            controller.items.length, (index) => _buildTabBarItem(index)),
+            controller.itemLength, (index) => _buildTabBarItem(index)),
       ),
     );
   }
 
   //构建tabBar子项
   _buildTabBarItem(int index) {
-    var item = controller.items[index];
+    var item = controller.getItem(index);
     bool selected = index == controller.currentIndex;
     return Container(
       height: tabBarHeight,

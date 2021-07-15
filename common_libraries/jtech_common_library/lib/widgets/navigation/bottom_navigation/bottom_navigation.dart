@@ -63,8 +63,8 @@ class JBottomNavigation extends BaseStatefulWidget {
             physics: canScroll ? null : NeverScrollableScrollPhysics(),
             controller: pageController,
             onPageChanged: (index) => controller.select(index),
-            children: List.generate(controller.items.length,
-                (index) => controller.items[index].page),
+            children: List.generate(controller.itemLength,
+                (index) => controller.getItem(index).page),
           ),
         ),
         _buildBottomNavigation(),
@@ -82,7 +82,7 @@ class JBottomNavigation extends BaseStatefulWidget {
       child: Container(
         height: navigationHeight,
         child: Row(
-          children: List.generate(controller.items.length,
+          children: List.generate(controller.itemLength,
               (index) => _buildBottomNavigationItem(index)),
         ),
       ),
@@ -92,7 +92,7 @@ class JBottomNavigation extends BaseStatefulWidget {
   //构建底部导航子项
   _buildBottomNavigationItem(int index) {
     bool selected = index == controller.currentIndex;
-    var item = controller.items[index];
+    var item = controller.getItem(index);
     return Expanded(
       child: Stack(
         children: [

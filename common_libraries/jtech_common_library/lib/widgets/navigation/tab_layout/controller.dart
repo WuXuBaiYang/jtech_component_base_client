@@ -1,23 +1,20 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/navigation/base/controller.dart';
 import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 
-//导航变化监听
-typedef OnNavigationChange = void Function(int index);
-
 /*
-* 底部导航控制器
+* 顶部tab导航控制器
 * @author wuxubaiyang
-* @Time 2021/7/12 上午9:53
+* @Time 2021/7/12 下午2:53
 */
-class JBottomNavigationController<T extends NavigationItem>
+class JTabLayoutController<T extends NavigationItem>
     extends BaseNavigationController<T> {
   //维护角标对象
   final MapValueChangeNotifier<int, Widget> _badges;
 
-  JBottomNavigationController({
+  JTabLayoutController({
     required List<T> items,
     int initialIndex = 0,
   })  : _badges = MapValueChangeNotifier.empty(),
@@ -42,7 +39,7 @@ class JBottomNavigationController<T extends NavigationItem>
   void removeBadge(int index) => _badges.removeValue(index);
 
   @override
-  void dispose() {
+  dispose() {
     super.dispose();
     //销毁数据
     _badges.dispose();
