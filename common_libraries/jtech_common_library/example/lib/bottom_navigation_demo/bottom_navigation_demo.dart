@@ -2,7 +2,7 @@ import 'package:example/bottom_navigation_demo/navigation_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/badge/badge_view.dart';
+import 'package:jtech_common_library/widgets/badge/config.dart';
 import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 import 'package:jtech_common_library/widgets/navigation/bottom_navigation/bottom_navigation.dart';
 import 'package:jtech_common_library/widgets/navigation/bottom_navigation/controller.dart';
@@ -68,9 +68,11 @@ class BottomNavigationDemo extends BasePage {
             icon: Text("角标"),
             onPressed: () {
               controller.addBadge(
-                2,
-                JBadgeView(
+                1,
+                BadgeConfig(
                   text: "99+",
+                  // size: 15,
+                  // elevation: 0,
                 ),
               );
             },

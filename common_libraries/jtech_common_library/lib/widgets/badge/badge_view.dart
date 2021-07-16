@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/widgets/badge/config.dart';
 
 /*
 * 角标视图元素
@@ -8,75 +10,33 @@ import 'package:jtech_base_library/base/base_stateful_widget.dart';
 * @Time 2021/7/12 上午10:29
 */
 class JBadgeView extends BaseStatefulWidget {
-  //自定义角标视图
-  final Widget? child;
+  //角标配置
+  final BadgeConfig config;
 
-  //角标宽度
-  final double width;
-
-  //角标高度
-  final double height;
-
-  //角标文本
-  final String text;
-
-  //角标文本样式
-  final TextStyle textStyle;
-
-  //角标背景颜色
-  final Color color;
-
-  //角标背景圆角度数
-  final double radius;
-
-  //角标背景是否为原型
-  final bool circle;
-
-  //外间距
-  final EdgeInsets margin;
-
-  //内间距
-  final EdgeInsets padding;
-
-  //角标悬浮高度
-  final double elevation;
-
-  JBadgeView({
-    this.child,
-    this.text = "",
-    this.margin = const EdgeInsets.all(8),
-    this.padding = const EdgeInsets.all(6),
-    double? width,
-    double? height,
-    double size = 30,
-    double fontSize = 8,
-    Color textColor = Colors.white,
-    this.color = Colors.red,
-    this.radius = -1,
-    this.elevation = 2,
-  })  : textStyle = TextStyle(fontSize: fontSize, color: textColor),
-        this.width = width ?? size,
-        this.height = height ?? size,
-        circle = radius < 0;
+  //从配置中加载角标组件
+  JBadgeView.create({
+    required this.config,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (config == BadgeConfig.empty) return EmptyBox();
     return SizedBox.fromSize(
-      size: Size(width, height),
+      size: Size(config.width, config.height),
       child: Card(
         child: Center(
           child: Padding(
-            padding: padding,
-            child: child ?? Text(text, style: textStyle),
+            padding: config.padding,
+            child: config.child ?? Text(config.text, style: config.textStyle),
           ),
         ),
-        elevation: elevation,
-        color: color,
-        shape: circle
+        elevation: config.elevation,
+        color: config.color,
+        shape: config.circle
             ? CircleBorder()
             : RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(radius),
+                  Radius.circular(config.radius),
                 ),
               ),
       ),

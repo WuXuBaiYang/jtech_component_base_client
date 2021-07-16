@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/widgets/badge/badge_container.dart';
+import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 
 import 'config.dart';
 import 'controller.dart';
@@ -11,9 +13,10 @@ import 'controller.dart';
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:26
 */
-class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
+class JTabLayout<T extends NavigationItem>
+    extends BaseStatefulWidget<_JTabLayoutState> {
   //控制器
-  final JTabLayoutController controller;
+  final JTabLayoutController<T> controller;
 
   //页面切换控制器
   final PageController pageController;
@@ -65,16 +68,12 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
   @override
   void initState() {
     super.initState();
-    //监听页码变化
-    var tabController = _jTabLayoutState.tabController;
-    controller.addChangeListener((index) => refreshUI(() {
-          if (tabController.index != index) {
-            tabController.animateTo(index);
-          }
-          if (pageController.page?.round() != index) {
-            pageController.jumpToPage(index);
-          }
-        }));
+    //监听页码下标变化
+    controller.indexListenable.addListener(() {
+      if (controller.currentIndex != pageController.page?.round()) {
+        pageController.jumpToPage(controller.currentIndex);
+      }
+    });
   }
 
   @override
@@ -88,7 +87,10 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
             physics: canScroll ? null : NeverScrollableScrollPhysics(),
             children: List.generate(controller.itemLength,
                 (index) => controller.getItem(index).page),
-            onPageChanged: (index) => controller.select(index),
+            onPageChanged: (index) {
+              _jTabLayoutState.tabController.animateTo(index);
+              controller.select(index);
+            },
           ),
         ),
       ],
@@ -102,21 +104,29 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
       shape: RoundedRectangleBorder(),
       color: tabBarColor,
       elevation: elevation,
-      child: TabBar(
-        controller: _jTabLayoutState._tabController,
-        labelColor: Colors.blueAccent,
-        unselectedLabelColor: Colors.black,
-        isScrollable: !isFixed,
-        indicator: indicatorConfig.decoration,
-        indicatorColor: indicatorConfig.color,
-        indicatorPadding: indicatorConfig.padding,
-        indicatorWeight: indicatorConfig.weight,
-        indicatorSize: indicatorConfig.sizeByTab
-            ? TabBarIndicatorSize.tab
-            : TabBarIndicatorSize.label,
-        onTap: (index) => controller.select(index),
-        tabs: List.generate(
-            controller.itemLength, (index) => _buildTabBarItem(index)),
+      child: ValueListenableBuilder<int>(
+        valueListenable: controller.indexListenable,
+        builder: (context, currentIndex, child) {
+          return TabBar(
+            controller: _jTabLayoutState._tabController,
+            labelColor: Colors.blueAccent,
+            unselectedLabelColor: Colors.black,
+            isScrollable: !isFixed,
+            indicator: indicatorConfig.decoration,
+            indicatorColor: indicatorConfig.color,
+            indicatorPadding: indicatorConfig.padding,
+            indicatorWeight: indicatorConfig.weight,
+            indicatorSize: indicatorConfig.sizeByTab
+                ? TabBarIndicatorSize.tab
+                : TabBarIndicatorSize.label,
+            onTap: (index) {
+              pageController.jumpToPage(index);
+              controller.select(index);
+            },
+            tabs: List.generate(
+                controller.itemLength, (index) => _buildTabBarItem(index)),
+          );
+        },
       ),
     );
   }
@@ -127,23 +137,18 @@ class JTabLayout extends BaseStatefulWidget<_JTabLayoutState> {
     bool selected = index == controller.currentIndex;
     return Container(
       height: tabBarHeight,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                (selected ? item.activeImage : item.image) ?? EmptyBox(),
-                (selected ? item.activeTitle : item.title) ?? EmptyBox(),
-              ],
-            ),
-          ),
-          Align(
-            alignment: badgeAlign,
-            child: controller.getBadge(index),
-          ),
-        ],
+      alignment: Alignment.center,
+      child: JBadgeContainer(
+        listenable: controller.getBadgeListenable(index)!,
+        align: badgeAlign,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            (selected ? item.activeImage : item.image) ?? EmptyBox(),
+            (selected ? item.activeTitle : item.title) ?? EmptyBox(),
+          ],
+        ),
       ),
     );
   }

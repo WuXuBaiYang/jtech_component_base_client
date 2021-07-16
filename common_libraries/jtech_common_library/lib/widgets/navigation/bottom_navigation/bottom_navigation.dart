@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/widgets/badge/badge_container.dart';
+import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 import 'controller.dart';
 
 /*
@@ -10,9 +12,9 @@ import 'controller.dart';
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:13
 */
-class JBottomNavigation extends BaseStatefulWidget {
+class JBottomNavigation<T extends NavigationItem> extends BaseStatefulWidget {
   //底部导航控制器
-  final JBottomNavigationController controller;
+  final JBottomNavigationController<T> controller;
 
   //pageView控制器
   final PageController pageController;
@@ -47,11 +49,11 @@ class JBottomNavigation extends BaseStatefulWidget {
   void initState() {
     super.initState();
     //监听页码变化
-    controller.addChangeListener((index) => refreshUI(() {
-          if (pageController.page?.round() != index) {
-            pageController.jumpToPage(index);
-          }
-        }));
+    controller.indexListenable.addListener(() {
+      if (controller.currentIndex != pageController.page?.round()) {
+        pageController.jumpToPage(controller.currentIndex);
+      }
+    });
   }
 
   @override
@@ -81,39 +83,45 @@ class JBottomNavigation extends BaseStatefulWidget {
       elevation: elevation,
       child: Container(
         height: navigationHeight,
-        child: Row(
-          children: List.generate(controller.itemLength,
-              (index) => _buildBottomNavigationItem(index)),
+        child: ValueListenableBuilder<int>(
+          valueListenable: controller.indexListenable,
+          builder: (context, currentIndex, child) {
+            return Row(
+              children: List.generate(
+                controller.itemLength,
+                (index) => _buildBottomNavigationItem(
+                  controller.getItem(index),
+                  index == currentIndex,
+                  index,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
   //构建底部导航子项
-  _buildBottomNavigationItem(int index) {
-    bool selected = index == controller.currentIndex;
-    var item = controller.getItem(index);
+  _buildBottomNavigationItem(T item, bool selected, int index) {
     return Expanded(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: InkWell(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  (selected ? item.activeImage : item.image) ?? EmptyBox(),
-                  (selected ? item.activeTitle : item.title) ?? EmptyBox(),
-                ],
-              ),
-              onTap: () => controller.select(index),
-            ),
+      child: JBadgeContainer(
+        listenable: controller.getBadgeListenable(index)!,
+        align: badgeAlign,
+        child: InkWell(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              (selected ? item.activeImage : item.image) ?? EmptyBox(),
+              (selected ? item.activeTitle : item.title) ?? EmptyBox(),
+            ],
           ),
-          Align(
-            alignment: badgeAlign,
-            child: controller.getBadge(index),
-          ),
-        ],
+          onTap: () {
+            pageController.jumpToPage(index);
+            controller.select(index);
+          },
+        ),
       ),
     );
   }

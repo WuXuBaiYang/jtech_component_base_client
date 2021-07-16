@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/widgets/badge/badge_view.dart';
+import 'package:jtech_common_library/widgets/badge/config.dart';
 import 'package:jtech_common_library/widgets/navigation/base/item.dart';
 import 'package:jtech_common_library/widgets/navigation/tab_layout/controller.dart';
 import 'package:jtech_common_library/widgets/navigation/tab_layout/tab_layout.dart';
@@ -67,7 +68,7 @@ class TabLayoutDemo extends BasePage {
             onPressed: () {
               controller.addBadge(
                 1,
-                JBadgeView(
+                BadgeConfig(
                   text: "99+",
                   // size: 15,
                   // elevation: 0,

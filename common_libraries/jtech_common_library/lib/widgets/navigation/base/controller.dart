@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:jtech_common_library/base/controller.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 
@@ -29,6 +30,9 @@ abstract class BaseNavigationController<T extends NavigationItem>
   //获取当前下标
   int get currentIndex => _currentIndex.value;
 
+  //获取下标监听对象
+  ValueListenable<int> get indexListenable => _currentIndex;
+
   //获取数据长度
   int get itemLength => _items.length;
 
@@ -43,10 +47,6 @@ abstract class BaseNavigationController<T extends NavigationItem>
 
   //判断下标是否越界
   bool isOverIndex(int index) => index < 0 || index >= _items.length;
-
-  //添加下标变化监听
-  void addChangeListener(OnNavigationChange onChange) =>
-      _currentIndex.addListener(() => onChange(currentIndex));
 
   @override
   void dispose() {
