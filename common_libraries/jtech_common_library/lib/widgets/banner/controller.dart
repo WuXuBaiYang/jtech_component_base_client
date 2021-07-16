@@ -1,11 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:jtech_common_library/base/controller.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
-
-//banner变化监听
-typedef OnBannerChange = void Function(int index);
 
 /*
 * banner控制器
@@ -13,11 +11,11 @@ typedef OnBannerChange = void Function(int index);
 * @Time 2021/7/13 下午5:16
 */
 class JBannerController<T extends BannerItem> extends BaseController {
-  //子项对象集合
-  List<T> _items;
-
   //当前所在下标
   ValueChangeNotifier<int> _currentIndex;
+
+  //子项对象集合
+  List<T> _items;
 
   JBannerController({
     required List<T> items,
@@ -28,6 +26,9 @@ class JBannerController<T extends BannerItem> extends BaseController {
 
   //获取当前下标
   int get currentIndex => _currentIndex.value;
+
+  //获取下标监听
+  ValueListenable<int> get indexListenable => _currentIndex;
 
   //获取数据长度
   int get itemLength => _items.length;
@@ -41,10 +42,6 @@ class JBannerController<T extends BannerItem> extends BaseController {
     _currentIndex.setValue(index);
   }
 
-  //添加下标变化监听
-  void addChangeListener(OnBannerChange onChange) =>
-      _currentIndex.addListener(() => onChange(currentIndex));
-
   //判断下标是否越界
   bool isOverIndex(int index) => index < 0 || index >= _items.length;
 
@@ -52,13 +49,12 @@ class JBannerController<T extends BannerItem> extends BaseController {
   Timer? _timer;
 
   //启动自动切换
-  void startAutoChange({Duration duration = const Duration(seconds: 3)}) {
+  void startAutoChange({
+    required void callback(Timer timer),
+    Duration duration = const Duration(seconds: 3),
+  }) {
     if (null != _timer && _timer!.isActive) stopAutoChange();
-    _timer = Timer.periodic(duration, (timer) {
-      var index = currentIndex;
-      if (isOverIndex(++index)) index = 0;
-      select(index);
-    });
+    _timer = Timer.periodic(duration, callback);
   }
 
   //停止自动切换

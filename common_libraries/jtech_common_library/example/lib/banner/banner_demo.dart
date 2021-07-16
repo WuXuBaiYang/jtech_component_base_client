@@ -46,11 +46,6 @@ class BannerDemo extends BasePage {
   );
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,12 +61,14 @@ class BannerDemo extends BasePage {
       ),
       body: JBannerView(
         controller: controller,
+        showTitle: true,
+        infinity: false,
         height: 230,
         margin: EdgeInsets.all(15),
         elevation: 8,
         padding: EdgeInsets.all(2),
         borderRadius: BorderRadius.circular(8),
-        // auto: true,
+        auto: true,
       ),
     );
   }

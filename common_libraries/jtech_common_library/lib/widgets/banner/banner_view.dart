@@ -4,8 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
-import 'package:jtech_common_library/widgets/banner/indicator/dot_indicator.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
+
+//指示器构造器
+typedef BannerIndicatorBuilder = Widget Function(
+    BuildContext context, int index);
 
 /*
 * banner组件
@@ -65,13 +68,16 @@ class JBannerView extends BaseStatefulWidget {
   final EdgeInsets titleMargin;
 
   //子项标题位置
-  final TitleAlign titleAlign;
+  final BannerAlign titleAlign;
 
   //判断是否展示指示器
   final bool showIndicator;
 
-  //自定义指示器
-  final Decoration? indicator;
+  //指示器位置
+  final BannerAlign indicatorAlign;
+
+  //指示器构造器
+  final BannerIndicatorBuilder? indicatorBuilder;
 
   JBannerView({
     required this.controller,
@@ -89,9 +95,10 @@ class JBannerView extends BaseStatefulWidget {
     this.titleBackgroundColor = Colors.black38,
     this.titlePadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.titleMargin = EdgeInsets.zero,
-    this.titleAlign = TitleAlign.Bottom,
+    this.titleAlign = BannerAlign.Bottom,
     this.showIndicator = true,
-    this.indicator,
+    this.indicatorAlign = BannerAlign.Bottom,
+    this.indicatorBuilder,
   }) : pageController = PageController(
           initialPage: controller.currentIndex + (infinity ? 1 : 0),
         );
@@ -99,7 +106,7 @@ class JBannerView extends BaseStatefulWidget {
   @override
   void initState() {
     super.initState();
-    //监听页面变化
+    //监听页面变化，实现无限滚动
     pageController.addListener(() {
       if (canInfinity) {
         var page = pageController.page ?? 0;
@@ -112,8 +119,9 @@ class JBannerView extends BaseStatefulWidget {
         }
       }
     });
-    controller.addChangeListener((index) {
+    controller.indexListenable.addListener(() {
       if (isInteger(pageController.page ?? 0.5)) {
+        var index = controller.currentIndex;
         if (canInfinity) index += 1;
         pageController.animateToPage(
           index,
@@ -123,7 +131,7 @@ class JBannerView extends BaseStatefulWidget {
       }
     });
     //启动自动切换
-    if (auto) controller.startAutoChange(duration: autoDuration);
+    _startAutoChange();
   }
 
   @override
@@ -182,9 +190,11 @@ class JBannerView extends BaseStatefulWidget {
             fontSize: 18,
             color: Colors.white,
           ),
-
-          ///
-          child: EmptyBox(),
+          child: ValueListenableBuilder<int>(
+            valueListenable: controller.indexListenable,
+            builder: (context, currentIndex, child) =>
+                controller.getItem(currentIndex).title ?? EmptyBox(),
+          ),
         ),
       ),
     );
@@ -193,8 +203,61 @@ class JBannerView extends BaseStatefulWidget {
   //构建banner指示器
   Widget _buildBannerIndicator() {
     if (!showIndicator) return EmptyBox();
+    return Align(
+      alignment: indicatorAlign.align,
+      child: ValueListenableBuilder<int>(
+        valueListenable: controller.indexListenable,
+        builder: (context, currentIndex, child) =>
+            indicatorBuilder?.call(context, currentIndex) ??
+            _buildBannerDotIndicator(currentIndex),
+      ),
+    );
+  }
+
+  //构造默认指示器
+  Widget _buildBannerDotIndicator(int currentIndex) {
+    var isVertical = indicatorAlign.isVertical;
+    var axis = isVertical ? Axis.vertical : Axis.horizontal;
     return Container(
-      decoration: indicator ?? BannerDotIndicator(),
+      width: isVertical ? null : double.infinity,
+      height: !isVertical ? null : double.infinity,
+      padding: const EdgeInsets.all(8),
+      child: Flex(
+        mainAxisAlignment: MainAxisAlignment.center,
+        direction: axis,
+        children: List.generate(controller.itemLength, (index) {
+          var isSelected = currentIndex == index;
+          return Icon(
+            Icons.circle,
+            size: 15,
+            color: isSelected ? Colors.black87 : Colors.black38,
+          );
+        }),
+      ),
+    );
+  }
+
+  //启动自动切换功能
+  void _startAutoChange() {
+    if (!auto) return;
+    controller.startAutoChange(
+      duration: autoDuration,
+      callback: (timer) {
+        if (canInfinity) {
+          pageController.nextPage(
+            duration: pageChangeDuration,
+            curve: Curves.ease,
+          );
+        } else {
+          var index = pageController.page?.round() ?? 0;
+          if (++index >= controller.itemLength) index = 0;
+          pageController.animateToPage(
+            index,
+            duration: pageChangeDuration,
+            curve: Curves.ease,
+          );
+        }
+      },
     );
   }
 

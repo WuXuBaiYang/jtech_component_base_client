@@ -25,11 +25,11 @@ class BannerItem {
 }
 
 /*
-* 子项标题部分对齐方式
+* 子项对齐方式
 * @author wuxubaiyang
 * @Time 2021/7/15 下午1:11
 */
-enum TitleAlign {
+enum BannerAlign {
   Top,
   Left,
   Right,
@@ -41,17 +41,17 @@ enum TitleAlign {
 * @author wuxubaiyang
 * @Time 2021/7/15 下午1:17
 */
-extension TitleAlignExtension on TitleAlign {
+extension BannerAlignExtension on BannerAlign {
   //获取对齐方式
   Alignment get align {
     switch (this) {
-      case TitleAlign.Top:
+      case BannerAlign.Top:
         return Alignment.topCenter;
-      case TitleAlign.Left:
+      case BannerAlign.Left:
         return Alignment.centerLeft;
-      case TitleAlign.Right:
+      case BannerAlign.Right:
         return Alignment.centerRight;
-      case TitleAlign.Bottom:
+      case BannerAlign.Bottom:
         return Alignment.bottomCenter;
       default:
         return Alignment.bottomCenter;
@@ -61,11 +61,11 @@ extension TitleAlignExtension on TitleAlign {
   //判断是否为垂直方向
   bool get isVertical {
     switch (this) {
-      case TitleAlign.Top:
-      case TitleAlign.Bottom:
+      case BannerAlign.Top:
+      case BannerAlign.Bottom:
         return false;
-      case TitleAlign.Left:
-      case TitleAlign.Right:
+      case BannerAlign.Left:
+      case BannerAlign.Right:
         return true;
       default:
         return false;
