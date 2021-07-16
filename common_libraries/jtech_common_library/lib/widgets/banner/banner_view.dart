@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
+import 'package:jtech_common_library/widgets/banner/indicator/dot_indicator.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
 
 /*
@@ -51,6 +52,27 @@ class JBannerView extends BaseStatefulWidget {
   //自动滚动的时间间隔
   final Duration autoDuration;
 
+  //判断是否展示标题
+  final bool showTitle;
+
+  //子项标题背景颜色
+  final Color titleBackgroundColor;
+
+  //子项标题内间距
+  final EdgeInsets titlePadding;
+
+  //子项标题外间距
+  final EdgeInsets titleMargin;
+
+  //子项标题位置
+  final TitleAlign titleAlign;
+
+  //判断是否展示指示器
+  final bool showIndicator;
+
+  //自定义指示器
+  final Decoration? indicator;
+
   JBannerView({
     required this.controller,
     this.canScroll = true,
@@ -63,6 +85,13 @@ class JBannerView extends BaseStatefulWidget {
     this.infinity = true,
     this.auto = false,
     this.autoDuration = const Duration(seconds: 3),
+    this.showTitle = false,
+    this.titleBackgroundColor = Colors.black38,
+    this.titlePadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+    this.titleMargin = EdgeInsets.zero,
+    this.titleAlign = TitleAlign.Bottom,
+    this.showIndicator = true,
+    this.indicator,
   }) : pageController = PageController(
           initialPage: controller.currentIndex + (infinity ? 1 : 0),
         );
@@ -111,56 +140,63 @@ class JBannerView extends BaseStatefulWidget {
         padding: padding,
         child: ClipRRect(
           borderRadius: borderRadius,
-          child: PageView.builder(
-            physics: canScroll ? null : NeverScrollableScrollPhysics(),
-            controller: pageController,
-            itemCount: currentItemLength,
-            itemBuilder: (context, index) {
-              var item = getCurrentItem(index);
-              return item.builder(context);
-            },
-            onPageChanged: (index) => controller.select(getCurrentIndex(index)),
+          child: Stack(
+            children: [
+              _buildBannerContent(),
+              _buildBannerTitle(),
+              _buildBannerIndicator(),
+            ],
           ),
         ),
       ),
     );
   }
 
-  //构建banner子项
-  Widget _buildBannerItem(BuildContext context, int index) {
-    var item = getCurrentItem(index);
-    return Stack(
-      children: [
-        //构建主体内容
-        Positioned.fill(
-          child: item.builder(context),
-        ),
-        //构建标题部分
-        _buildBannerItemTitle(item),
-      ],
+  //构建banner内容
+  Widget _buildBannerContent() {
+    return Positioned.fill(
+      child: PageView.builder(
+        physics: canScroll ? null : NeverScrollableScrollPhysics(),
+        itemCount: currentItemLength,
+        controller: pageController,
+        itemBuilder: (context, index) {
+          var item = getCurrentItem(index);
+          return item.builder(context);
+        },
+        onPageChanged: (index) => controller.select(getCurrentIndex(index)),
+      ),
     );
   }
 
-  //构建banner子项标题部分
-  Widget _buildBannerItemTitle(BannerItem item) {
-    var title = item.title;
-    if (null == title) return EmptyBox();
+  //构建banner标题
+  Widget _buildBannerTitle() {
+    if (!showTitle) return EmptyBox();
     return Align(
-      alignment: title.align.align,
+      alignment: titleAlign.align,
       child: Container(
-        width: title.align.isVertical ? null : double.infinity,
-        height: !title.align.isVertical ? null : double.infinity,
-        color: title.backgroundColor,
-        padding: title.padding,
-        margin: title.margin,
+        width: titleAlign.isVertical ? null : double.infinity,
+        height: !titleAlign.isVertical ? null : double.infinity,
+        color: titleBackgroundColor,
+        padding: titlePadding,
+        margin: titleMargin,
         child: DefaultTextStyle(
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
           ),
-          child: title.child,
+
+          ///
+          child: EmptyBox(),
         ),
       ),
+    );
+  }
+
+  //构建banner指示器
+  Widget _buildBannerIndicator() {
+    if (!showIndicator) return EmptyBox();
+    return Container(
+      decoration: indicator ?? BannerDotIndicator(),
     );
   }
 

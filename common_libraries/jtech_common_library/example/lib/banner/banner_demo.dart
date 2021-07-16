@@ -22,9 +22,7 @@ class BannerDemo extends BasePage {
             fit: BoxFit.cover,
           );
         },
-        title: BannerItemTitle(
-          child: Text("第一页title测试"),
-        ),
+        title: Text("第一页title测试"),
       ),
       BannerItem(
         builder: (context) {
@@ -33,9 +31,7 @@ class BannerDemo extends BasePage {
             fit: BoxFit.cover,
           );
         },
-        title: BannerItemTitle(
-          child: Text("第二页title测试"),
-        ),
+        title: Text("第二页title测试"),
       ),
       BannerItem(
         builder: (BuildContext context) {
@@ -44,9 +40,7 @@ class BannerDemo extends BasePage {
             fit: BoxFit.cover,
           );
         },
-        title: BannerItemTitle(
-          child: Text("第三页title测试"),
-        ),
+        title: Text("第三页title测试"),
       ),
     ],
   );
