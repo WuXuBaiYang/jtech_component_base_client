@@ -31,13 +31,4 @@ abstract class BaseListView<T extends JListViewController<V>, V>
     required this.itemBuilder,
     this.dividerBuilder,
   });
-
-  @override
-  void initState() {
-    super.initState();
-    //注册数据变化监听
-    controller.registerOnDataChange((_) {
-      refreshUI(() {});
-    });
-  }
 }

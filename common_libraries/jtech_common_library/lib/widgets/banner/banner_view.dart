@@ -154,17 +154,15 @@ class JBannerView extends BaseStatefulWidget {
 
   //构建banner内容
   Widget _buildBannerContent() {
-    return Positioned.fill(
-      child: PageView.builder(
-        physics: canScroll ? null : NeverScrollableScrollPhysics(),
-        itemCount: currentItemLength,
-        controller: pageController,
-        itemBuilder: (context, index) {
-          var item = getCurrentItem(index);
-          return item.builder(context);
-        },
-        onPageChanged: (index) => controller.select(getCurrentIndex(index)),
-      ),
+    return PageView.builder(
+      physics: canScroll ? null : NeverScrollableScrollPhysics(),
+      itemCount: currentItemLength,
+      controller: pageController,
+      itemBuilder: (context, index) {
+        var item = getCurrentItem(index);
+        return item.builder(context);
+      },
+      onPageChanged: (index) => controller.select(getCurrentIndex(index)),
     );
   }
 

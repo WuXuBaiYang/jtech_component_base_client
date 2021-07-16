@@ -34,28 +34,43 @@ class JIndexListView<V extends BaseIndexModel>
 
   @override
   Widget build(BuildContext context) {
-    return AzListView(
-      data: controller.dataList,
-      physics: BouncingScrollPhysics(),
-      itemCount: controller.dataLength,
-      itemBuilder: _buildListItem,
-      //设置弹出提示参数
-      susItemHeight: susConfig.itemHeight,
-      susPosition: susConfig.position,
-      susItemBuilder: (context, index) {
-        return SizedBox.fromSize(
-          size: Size(getSusItemWidth(context), susConfig.itemHeight),
-          child: _buildSusItem(context, index),
-        );
-      },
-      //侧边索引条参数
-      indexBarData: indexBarConfig.dataList ?? controller.indexDataList,
-      indexBarWidth: indexBarConfig.width,
-      indexBarHeight: indexBarConfig.height,
-      indexBarItemHeight: indexBarConfig.itemHeight,
-      indexBarAlignment: indexBarConfig.alignment,
-      indexBarMargin: indexBarConfig.margin,
-      indexBarOptions: IndexBarOptions(
+    return ValueListenableBuilder<List<V>>(
+        valueListenable: controller.dataListenable,
+        builder: (context, dataList, child) {
+          return AzListView(
+            data: controller.dataList,
+            physics: BouncingScrollPhysics(),
+            itemCount: dataList.length,
+            itemBuilder: (context, index) {
+              var item = dataList[index];
+              return itemBuilder(context, item, index);
+            },
+            //设置弹出提示参数
+            susItemHeight: susConfig.itemHeight,
+            susPosition: susConfig.position,
+            susItemBuilder: (context, index) {
+              var item = dataList[index];
+              return SizedBox.fromSize(
+                size: Size(getSusItemWidth(context), susConfig.itemHeight),
+                child: susConfig.itemBuilder?.call(context, item, index) ??
+                    _buildDefSusItem(item),
+              );
+            },
+            //侧边索引条参数
+            indexBarData: indexBarConfig.dataList ?? controller.indexDataList,
+            indexBarWidth: indexBarConfig.width,
+            indexBarHeight: indexBarConfig.height,
+            indexBarItemHeight: indexBarConfig.itemHeight,
+            indexBarAlignment: indexBarConfig.alignment,
+            indexBarMargin: indexBarConfig.margin,
+            indexBarOptions: indexBarOptions,
+            indexHintBuilder: _buildIndexBarHint,
+          );
+        });
+  }
+
+  //获取索引条配置对象
+  IndexBarOptions get indexBarOptions => IndexBarOptions(
         needRebuild: indexBarConfig.needRebuild,
         ignoreDragCancel: indexBarConfig.ignoreDragCancel,
         color: indexBarConfig.color,
@@ -75,27 +90,11 @@ class JIndexListView<V extends BaseIndexModel>
         indexHintChildAlignment: indexBarConfig.indexHintChildAlignment,
         indexHintPosition: indexBarConfig.indexHintPosition,
         indexHintOffset: indexBarConfig.indexHintOffset,
-      ),
-      indexHintBuilder: _buildIndexBarHint,
-    );
-  }
+      );
 
   //获取索引提示宽度(暂时使用屏幕宽度，想到好的解决方案再说)
   double getSusItemWidth(BuildContext context) =>
       MediaQuery.of(context).size.width;
-
-  //构建列表子项
-  Widget _buildListItem(BuildContext context, int index) {
-    var item = controller.getItem(index);
-    return itemBuilder(context, item, index);
-  }
-
-  //构建索引提示
-  Widget _buildSusItem(BuildContext context, int index) {
-    var item = controller.getItem(index);
-    if (null == susConfig.itemBuilder) return _buildDefSusItem(item);
-    return susConfig.itemBuilder!(context, item, index);
-  }
 
   //构建索引条弹出提出项
   Widget _buildIndexBarHint(BuildContext context, String tag) {

@@ -30,15 +30,20 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: scrollPhysics,
-      itemCount: controller.dataLength,
-      itemBuilder: (context, index) {
-        var item = controller.getItem(index);
-        return itemBuilder(context, item, index);
+    return ValueListenableBuilder<List<V>>(
+      valueListenable: controller.dataListenable,
+      builder: (context, dataList, child) {
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: scrollPhysics,
+          itemCount: dataList.length,
+          itemBuilder: (context, index) {
+            var item = dataList[index];
+            return itemBuilder(context, item, index);
+          },
+          separatorBuilder: _buildDivider,
+        );
       },
-      separatorBuilder: _buildDivider,
     );
   }
 

@@ -88,23 +88,28 @@ class JRefreshListView<V>
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      controller: refreshController,
-      enablePullDown: enablePullDown,
-      enablePullUp: enablePullUp,
-      onRefresh: () => _loadDataList(false),
-      onLoading: () => _loadDataList(true),
-      header: header?.value ?? ClassicHeader(),
-      footer: footer?.value ?? ClassicFooter(),
-      child: ListView.separated(
-        shrinkWrap: true,
-        itemCount: controller.dataLength,
-        itemBuilder: (context, index) {
-          var item = controller.getItem(index);
-          return itemBuilder(context, item, index);
-        },
-        separatorBuilder: _buildDivider,
-      ),
+    return ValueListenableBuilder<List<V>>(
+      valueListenable: controller.dataListenable,
+      builder: (context, dataList, child) {
+        return SmartRefresher(
+          controller: refreshController,
+          enablePullDown: enablePullDown,
+          enablePullUp: enablePullUp,
+          onRefresh: () => _loadDataList(false),
+          onLoading: () => _loadDataList(true),
+          header: header?.value ?? ClassicHeader(),
+          footer: footer?.value ?? ClassicFooter(),
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: dataList.length,
+            itemBuilder: (context, index) {
+              var item = dataList[index];
+              return itemBuilder(context, item, index);
+            },
+            separatorBuilder: _buildDivider,
+          ),
+        );
+      },
     );
   }
 

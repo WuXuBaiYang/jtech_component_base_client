@@ -71,7 +71,7 @@ class BannerDemo extends BasePage {
         elevation: 8,
         padding: EdgeInsets.all(2),
         borderRadius: BorderRadius.circular(8),
-        auto: true,
+        // auto: true,
       ),
     );
   }
