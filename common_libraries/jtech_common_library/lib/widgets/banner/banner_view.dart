@@ -4,11 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
+import 'package:jtech_common_library/widgets/banner/indicator/base_indicator.dart';
+import 'package:jtech_common_library/widgets/banner/indicator/dot_indicator.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
-
-//指示器构造器
-typedef BannerIndicatorBuilder = Widget Function(
-    BuildContext context, int index);
 
 /*
 * banner组件
@@ -17,7 +15,7 @@ typedef BannerIndicatorBuilder = Widget Function(
 */
 class JBannerView extends BaseStatefulWidget {
   //页面切换时间间隔
-  static final Duration pageChangeDuration = const Duration(milliseconds: 500);
+  final Duration pageChangeDuration;
 
   //banner控制器
   final JBannerController controller;
@@ -77,7 +75,7 @@ class JBannerView extends BaseStatefulWidget {
   final BannerAlign indicatorAlign;
 
   //指示器构造器
-  final BannerIndicatorBuilder? indicatorBuilder;
+  final BaseBannerIndicator? indicator;
 
   JBannerView({
     required this.controller,
@@ -98,7 +96,8 @@ class JBannerView extends BaseStatefulWidget {
     this.titleAlign = BannerAlign.Bottom,
     this.showIndicator = true,
     this.indicatorAlign = BannerAlign.Bottom,
-    this.indicatorBuilder,
+    this.indicator,
+    this.pageChangeDuration = const Duration(milliseconds: 500),
   }) : pageController = PageController(
           initialPage: controller.currentIndex + (infinity ? 1 : 0),
         );
@@ -152,7 +151,7 @@ class JBannerView extends BaseStatefulWidget {
             children: [
               _buildBannerContent(),
               _buildBannerTitle(),
-              _buildBannerIndicator(),
+              _buildBannerIndicator(context),
             ],
           ),
         ),
@@ -201,38 +200,15 @@ class JBannerView extends BaseStatefulWidget {
   }
 
   //构建banner指示器
-  Widget _buildBannerIndicator() {
+  Widget _buildBannerIndicator(BuildContext context) {
     if (!showIndicator) return EmptyBox();
     return Align(
       alignment: indicatorAlign.align,
-      child: ValueListenableBuilder<int>(
-        valueListenable: controller.indexListenable,
-        builder: (context, currentIndex, child) =>
-            indicatorBuilder?.call(context, currentIndex) ??
-            _buildBannerDotIndicator(currentIndex),
-      ),
-    );
-  }
-
-  //构造默认指示器
-  Widget _buildBannerDotIndicator(int currentIndex) {
-    var isVertical = indicatorAlign.isVertical;
-    var axis = isVertical ? Axis.vertical : Axis.horizontal;
-    return Container(
-      width: isVertical ? null : double.infinity,
-      height: !isVertical ? null : double.infinity,
-      padding: const EdgeInsets.all(8),
-      child: Flex(
-        mainAxisAlignment: MainAxisAlignment.center,
-        direction: axis,
-        children: List.generate(controller.itemLength, (index) {
-          var isSelected = currentIndex == index;
-          return Icon(
-            Icons.circle,
-            size: 15,
-            color: isSelected ? Colors.black87 : Colors.black38,
-          );
-        }),
+      child: (indicator ?? BannerDotIndicator()).build(
+        context,
+        controller.indexListenable,
+        controller.itemLength,
+        indicatorAlign,
       ),
     );
   }

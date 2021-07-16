@@ -62,7 +62,8 @@ class BannerDemo extends BasePage {
       body: JBannerView(
         controller: controller,
         showTitle: true,
-        infinity: false,
+        indicatorAlign: BannerAlign.Right,
+        infinity: true,
         height: 230,
         margin: EdgeInsets.all(15),
         elevation: 8,
