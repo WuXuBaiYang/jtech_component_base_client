@@ -25,8 +25,8 @@ class JIndexListView<V extends BaseIndexModel>
     required ListItemBuilder<V> itemBuilder,
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
-    ListItemTap<V>? itemTap,
-    ListItemLongTap<V>? itemLongTap,
+    OnListItemTap<V>? itemTap,
+    OnListItemLongTap<V>? itemLongTap,
   })  : susConfig = susConfig ?? SusConfig(),
         indexBarConfig = indexBarConfig ?? IndexBarConfig(),
         super(

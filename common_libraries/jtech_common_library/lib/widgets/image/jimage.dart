@@ -24,6 +24,12 @@ class JImage extends BaseStatelessWidget {
   //配置文件信息
   final ImageConfig config;
 
+  //点击事件
+  final VoidCallback? imageTap;
+
+  //长点击事件
+  final VoidCallback? imageLongTap;
+
   //本地图片文件路径
   JImage.filePath(
     String path, {
@@ -34,6 +40,8 @@ class JImage extends BaseStatelessWidget {
     BoxFit? fit,
     ImageClip? clip,
     ImageConfig? config,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
   }) : this.file(
           File(path),
           errorBuilder: errorBuilder,
@@ -43,6 +51,8 @@ class JImage extends BaseStatelessWidget {
           fit: fit,
           clip: clip,
           config: config,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   //本地图片文件
@@ -53,8 +63,10 @@ class JImage extends BaseStatelessWidget {
     double? height,
     double? size,
     BoxFit? fit,
-    ImageConfig? config,
     ImageClip? clip,
+    ImageConfig? config,
+    this.imageTap,
+    this.imageLongTap,
   })  : image = FileImage(file),
         this.config = (config ?? ImageConfig()).copyWith(
           width: size ?? width,
@@ -74,8 +86,10 @@ class JImage extends BaseStatelessWidget {
     double? height,
     double? size,
     BoxFit? fit,
-    ImageConfig? config,
     ImageClip? clip,
+    ImageConfig? config,
+    this.imageTap,
+    this.imageLongTap,
   })  : image = AssetImage(name, bundle: bundle, package: package),
         this.config = (config ?? ImageConfig()).copyWith(
           width: size ?? width,
@@ -93,8 +107,10 @@ class JImage extends BaseStatelessWidget {
     double? height,
     double? size,
     BoxFit? fit,
-    ImageConfig? config,
     ImageClip? clip,
+    ImageConfig? config,
+    this.imageTap,
+    this.imageLongTap,
   })  : image = MemoryImage(bytes),
         this.config = (config ?? ImageConfig()).copyWith(
           width: size ?? width,
@@ -117,8 +133,10 @@ class JImage extends BaseStatelessWidget {
     double? height,
     double? size,
     BoxFit? fit,
-    ImageConfig? config,
     ImageClip? clip,
+    ImageConfig? config,
+    this.imageTap,
+    this.imageLongTap,
   })  : image = CachedNetworkImageProvider(
           imageUrl,
           maxHeight: maxHeight,
@@ -137,26 +155,40 @@ class JImage extends BaseStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OctoImage(
-      image: image,
-      width: config.width,
-      height: config.height,
-      memCacheWidth: config.cacheWidth,
-      memCacheHeight: config.cacheHeight,
-      fit: config.fit,
-      alignment: config.alignment,
-      repeat: config.repeat,
-      filterQuality: config.filterQuality,
-      color: config.color,
-      colorBlendMode: config.colorBlendMode,
-      imageBuilder: config.imageBuilder ?? _buildImage,
-      placeholderBuilder: config.placeholderBuilder ?? _buildPlaceholder,
-      placeholderFadeInDuration: config.placeholderFadeInDuration,
-      errorBuilder: config.errorBuilder ?? _buildErrorHolder,
-      fadeInCurve: config.fadeInCurve,
-      fadeInDuration: config.fadeInDuration,
-      fadeOutCurve: config.fadeOutCurve,
-      fadeOutDuration: config.fadeOutDuration,
+    return GestureDetector(
+      child: OctoImage(
+        image: image,
+        width: config.width,
+        height: config.height,
+        memCacheWidth: config.cacheWidth,
+        memCacheHeight: config.cacheHeight,
+        fit: config.fit,
+        alignment: config.alignment,
+        repeat: config.repeat,
+        filterQuality: config.filterQuality,
+        color: config.color,
+        colorBlendMode: config.colorBlendMode,
+        imageBuilder: config.imageBuilder ?? _buildImage,
+        placeholderBuilder: config.placeholderBuilder ?? _buildPlaceholder,
+        placeholderFadeInDuration: config.placeholderFadeInDuration,
+        errorBuilder: config.errorBuilder ?? _buildErrorHolder,
+        fadeInCurve: config.fadeInCurve,
+        fadeInDuration: config.fadeInDuration,
+        fadeOutCurve: config.fadeOutCurve,
+        fadeOutDuration: config.fadeOutDuration,
+      ),
+      onTap: null != imageTap
+          ? () {
+              Feedback.forTap(context);
+              imageTap!();
+            }
+          : null,
+      onLongPress: null != imageLongTap
+          ? () {
+              Feedback.forLongPress(context);
+              imageLongTap!();
+            }
+          : null,
     );
   }
 

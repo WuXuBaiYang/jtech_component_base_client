@@ -58,8 +58,8 @@ class JRefreshListView<V>
     this.onPullUpLoading,
     this.header,
     this.footer,
-    ListItemTap<V>? itemTap,
-    ListItemLongTap<V>? itemLongTap,
+    OnListItemTap<V>? itemTap,
+    OnListItemLongTap<V>? itemLongTap,
   })  : refreshController = RefreshController(initialRefresh: initialRefresh),
         super(
           controller: controller ?? JRefreshListViewController(),

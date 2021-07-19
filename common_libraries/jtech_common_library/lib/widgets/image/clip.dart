@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 */
 abstract class ImageClip {
   //裁剪方法
-  @protected
   Widget clip(BuildContext context, Widget child);
 }
 

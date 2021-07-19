@@ -4,8 +4,10 @@ import 'clip.dart';
 
 //图片加载构造器
 typedef ImageBuilder = Widget Function(BuildContext context, Widget child);
+
 //图片占位构造器
 typedef PlaceholderBuilder = Widget Function(BuildContext context);
+
 //图片异常占位构造器
 typedef ErrorBuilder = Widget Function(
     BuildContext context, Object error, StackTrace? stackTrace);

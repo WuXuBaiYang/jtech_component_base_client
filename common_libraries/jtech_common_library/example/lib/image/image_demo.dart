@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/image/jimage.dart';
 import 'package:jtech_common_library/widgets/image/clip.dart';
 import 'package:jtech_common_library/widgets/image/config.dart';
@@ -55,6 +56,12 @@ class ImageDemo extends BasePage {
                   fit: BoxFit.cover,
                   clip: ImageClipOval(),
                   config: ImageConfig(),
+                  imageTap: () {
+                    jCommon.popups.snack.showSnackInTime(context, text: "点击");
+                  },
+                  imageLongTap: () {
+                    jCommon.popups.snack.showSnackInTime(context, text: "长点击");
+                  },
                 );
               },
             ),

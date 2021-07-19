@@ -23,8 +23,8 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
     ListDividerBuilder? dividerBuilder,
     this.canScroll = true,
     this.showDivider = false,
-    ListItemTap<V>? itemTap,
-    ListItemLongTap<V>? itemLongTap,
+    OnListItemTap<V>? itemTap,
+    OnListItemLongTap<V>? itemLongTap,
   }) : super(
           controller: controller,
           itemBuilder: itemBuilder,

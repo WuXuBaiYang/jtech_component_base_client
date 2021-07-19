@@ -5,10 +5,10 @@ import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'controller.dart';
 
 //列表子项点击事件
-typedef ListItemTap<V> = void Function(V item, int index);
+typedef OnListItemTap<V> = void Function(V item, int index);
 
 //列表子项长点击事件
-typedef ListItemLongTap<V> = void Function(V item, int index);
+typedef OnListItemLongTap<V> = void Function(V item, int index);
 
 //列表子项构造器
 typedef ListItemBuilder<V> = Widget Function(
@@ -34,10 +34,10 @@ abstract class BaseListView<T extends JListViewController<V>, V>
   final ListDividerBuilder? dividerBuilder;
 
   //点击事件
-  final ListItemTap<V>? itemTap;
+  final OnListItemTap<V>? itemTap;
 
   //长点击事件
-  final ListItemLongTap<V>? itemLongTap;
+  final OnListItemLongTap<V>? itemLongTap;
 
   BaseListView({
     required this.controller,
@@ -51,14 +51,8 @@ abstract class BaseListView<T extends JListViewController<V>, V>
   Widget buildListItem(BuildContext context, V item, int index) {
     return InkWell(
       child: itemBuilder(context, item, index),
-      onTap: () {
-        if (null == itemTap) return null;
-        return itemTap!(item, index);
-      },
-      onLongPress: () {
-        if (null == itemLongTap) return null;
-        return itemLongTap!(item, index);
-      },
+      onTap: null != itemTap ? () => itemTap!(item, index) : null,
+      onLongPress: null != itemLongTap ? () => itemLongTap!(item, index) : null,
     );
   }
 }
