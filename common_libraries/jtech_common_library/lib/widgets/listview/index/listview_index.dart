@@ -25,11 +25,14 @@ class JIndexListView<V extends BaseIndexModel>
     required ListItemBuilder<V> itemBuilder,
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
+    ListItemTap<V>? itemTap,
+    ListItemLongTap<V>? itemLongTap,
   })  : susConfig = susConfig ?? SusConfig(),
         indexBarConfig = indexBarConfig ?? IndexBarConfig(),
         super(
           controller: controller,
-          itemBuilder: itemBuilder,
+          itemBuilder: itemBuilder,          itemTap: itemTap,
+        itemLongTap: itemLongTap,
         );
 
   @override
@@ -41,10 +44,8 @@ class JIndexListView<V extends BaseIndexModel>
             data: controller.dataList,
             physics: BouncingScrollPhysics(),
             itemCount: dataList.length,
-            itemBuilder: (context, index) {
-              var item = dataList[index];
-              return itemBuilder(context, item, index);
-            },
+            itemBuilder: (context, index) =>
+                buildListItem(context, dataList[index], index),
             //设置弹出提示参数
             susItemHeight: susConfig.itemHeight,
             susPosition: susConfig.position,

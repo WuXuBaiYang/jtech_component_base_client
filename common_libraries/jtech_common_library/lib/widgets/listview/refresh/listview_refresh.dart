@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -57,11 +58,15 @@ class JRefreshListView<V>
     this.onPullUpLoading,
     this.header,
     this.footer,
+    ListItemTap<V>? itemTap,
+    ListItemLongTap<V>? itemLongTap,
   })  : refreshController = RefreshController(initialRefresh: initialRefresh),
         super(
           controller: controller ?? JRefreshListViewController(),
           itemBuilder: itemBuilder,
           dividerBuilder: dividerBuilder,
+          itemTap: itemTap,
+          itemLongTap: itemLongTap,
         );
 
   @override
@@ -102,10 +107,8 @@ class JRefreshListView<V>
           child: ListView.separated(
             shrinkWrap: true,
             itemCount: dataList.length,
-            itemBuilder: (context, index) {
-              var item = dataList[index];
-              return itemBuilder(context, item, index);
-            },
+            itemBuilder: (context, index) =>
+                buildListItem(context, dataList[index], index),
             separatorBuilder: _buildDivider,
           ),
         );
