@@ -32,10 +32,10 @@ class BadgeConfig {
   final bool circle;
 
   //外间距
-  final EdgeInsets margin;
+  final EdgeInsetsGeometry margin;
 
   //内间距
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   //角标悬浮高度
   final double elevation;
