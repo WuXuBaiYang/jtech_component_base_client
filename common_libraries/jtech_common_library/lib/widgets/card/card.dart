@@ -9,7 +9,7 @@ import 'package:jtech_common_library/base/empty_box.dart';
 */
 class JCard extends StatelessWidget {
   //卡片子视图
-  final Widget? child;
+  final Widget child;
 
   //卡片子视图集合
   final List<Widget> children;
@@ -29,6 +29,12 @@ class JCard extends StatelessWidget {
   //悬浮高度
   final double elevation;
 
+  //卡片裁剪方式
+  final Clip? clipBehavior;
+
+  //阴影颜色
+  final Color? shadowColor;
+
   //卡片容器布局
   final CardLayout layout;
 
@@ -41,79 +47,71 @@ class JCard extends StatelessWidget {
   //次方向对齐方式
   final CrossAxisAlignment crossAxisAlignment;
 
-  JCard({
-    this.child,
-    this.children = const [],
-    this.margin = const EdgeInsets.all(8),
-    this.padding = const EdgeInsets.all(15),
-    this.shape = const RoundedRectangleBorder(),
-    this.color = Colors.white,
-    this.elevation = 8.0,
-    this.layout = CardLayout.Column,
-    this.mainAxisAlignment = MainAxisAlignment.start,
-    this.mainAxisSize = MainAxisSize.min,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-  }) : assert(layout == CardLayout.None && null == child,
-            "当布局类型为none时，child不能为空");
-
   //创建垂直结构的卡片式图
   JCard.column({
-    this.children = const [],
+    required this.children,
     this.margin = const EdgeInsets.all(8),
     this.padding = const EdgeInsets.all(15),
     ShapeBorder? shape,
     bool circle = false,
-    double radius = 4.0,
+    BorderRadiusGeometry borderRadius =
+        const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
     this.elevation = 8.0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.clipBehavior,
+    this.shadowColor,
   })  : this.layout = CardLayout.Column,
-        this.shape = shape ??
-            (circle
-                ? CircleBorder()
-                : RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(radius))),
-        this.child = null;
+        this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
+        this.child = EmptyBox();
 
   //创建水平结构的卡片式图
   JCard.row({
-    this.children = const [],
+    required this.children,
     this.margin = const EdgeInsets.all(8),
     this.padding = const EdgeInsets.all(15),
     ShapeBorder? shape,
     bool circle = false,
-    double radius = 4.0,
+    BorderRadiusGeometry borderRadius =
+        const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
     this.elevation = 8.0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.clipBehavior,
+    this.shadowColor,
   })  : this.layout = CardLayout.Row,
-        this.shape = shape ?? _buildCardShapeBorder(circle, radius),
-        this.child = null;
+        this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
+        this.child = EmptyBox();
 
   //单元素卡片视图
   JCard.single({
-    this.child,
+    required this.child,
     this.margin = const EdgeInsets.all(8),
     this.padding = const EdgeInsets.all(15),
     ShapeBorder? shape,
     bool circle = false,
-    double radius = 4.0,
+    BorderRadiusGeometry borderRadius =
+        const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
     this.elevation = 8.0,
-    this.mainAxisAlignment = MainAxisAlignment.start,
-    this.mainAxisSize = MainAxisSize.min,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.clipBehavior,
+    this.shadowColor,
   })  : this.layout = CardLayout.None,
-        this.shape = shape ?? _buildCardShapeBorder(circle, radius),
-        this.children = const [];
+        this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
+        this.children = const [],
+        this.mainAxisAlignment = MainAxisAlignment.start,
+        this.mainAxisSize = MainAxisSize.min,
+        this.crossAxisAlignment = CrossAxisAlignment.center;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: clipBehavior,
+      shadowColor: shadowColor,
       elevation: elevation,
       margin: margin,
       color: color,
@@ -133,7 +131,7 @@ class JCard extends StatelessWidget {
         var direction =
             layout == CardLayout.Column ? Axis.vertical : Axis.horizontal;
         return Flex(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: crossAxisAlignment,
           mainAxisAlignment: mainAxisAlignment,
           mainAxisSize: mainAxisSize,
           direction: direction,
@@ -141,16 +139,15 @@ class JCard extends StatelessWidget {
         );
       case CardLayout.None:
       default:
-        return child ?? EmptyBox();
+        return child;
     }
   }
 
   //创建卡片组件形状边框
-  static ShapeBorder _buildCardShapeBorder(bool circle, double radius) {
+  static ShapeBorder _buildCardShapeBorder(
+      bool circle, BorderRadiusGeometry borderRadius) {
     if (circle) return CircleBorder();
-    return RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(radius),
-    );
+    return RoundedRectangleBorder(borderRadius: borderRadius);
   }
 }
 

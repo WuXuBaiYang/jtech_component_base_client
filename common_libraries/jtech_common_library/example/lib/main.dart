@@ -1,5 +1,6 @@
 import 'package:example/banner/banner_demo.dart';
 import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
+import 'package:example/card/card_demo.dart';
 import 'package:example/image/image_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
 import 'package:example/listview_demo/listview_demo.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         "/test/tab_layout": (_) => TabLayoutDemo(),
         "/test/image": (_) => ImageDemo(),
         "/test/banner": (_) => BannerDemo(),
+        "/test/card": (_) => CardDemo(),
       },
     );
   }
@@ -49,6 +51,7 @@ class MyHomePage extends BasePage {
     "顶部tab导航组件": "/test/tab_layout",
     "图片组件demo": "/test/image",
     "banner demo": "/test/banner",
+    "卡片视图组件": "/test/card",
   };
 
   @override
