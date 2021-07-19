@@ -2,6 +2,7 @@ import 'package:example/listview_demo/list_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/listview/base/controller.dart';
 import 'package:jtech_common_library/widgets/listview/listview.dart';
 
@@ -41,6 +42,12 @@ class ListViewDemo extends BasePage {
             leading: Icon(Icons.home),
             title: Text("测试数据"),
           );
+        },
+        itemTap: (item, index) {
+          jCommon.popups.snack.showSnackInTime(context, text: "点击事件");
+        },
+        itemLongTap: (item, index) {
+          jCommon.popups.snack.showSnackInTime(context, text: "长点击事件");
         },
       ),
     );
