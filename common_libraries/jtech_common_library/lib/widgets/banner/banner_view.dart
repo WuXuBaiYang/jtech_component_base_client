@@ -8,6 +8,12 @@ import 'package:jtech_common_library/widgets/banner/indicator/base_indicator.dar
 import 'package:jtech_common_library/widgets/banner/indicator/dot_indicator.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
 
+//banner点击回调
+typedef OnBannerItemTap = void Function(BannerItem item, int index);
+
+//banner长点击回调
+typedef OnBannerItemLongTap = void Function(BannerItem item, int index);
+
 /*
 * banner组件
 * @author wuxubaiyang
@@ -77,6 +83,12 @@ class JBannerView extends BaseStatefulWidget {
   //指示器构造器
   final BaseBannerIndicator? indicator;
 
+  //点击事件
+  final OnBannerItemTap? itemTap;
+
+  //长点击事件
+  final OnBannerItemLongTap? itemLongTap;
+
   JBannerView({
     required this.controller,
     this.canScroll = true,
@@ -98,6 +110,8 @@ class JBannerView extends BaseStatefulWidget {
     this.indicatorAlign = BannerAlign.Bottom,
     this.indicator,
     this.pageChangeDuration = const Duration(milliseconds: 500),
+    this.itemTap,
+    this.itemLongTap,
   }) : pageController = PageController(
           initialPage: controller.currentIndex + (infinity ? 1 : 0),
         );
@@ -165,11 +179,28 @@ class JBannerView extends BaseStatefulWidget {
       physics: canScroll ? null : NeverScrollableScrollPhysics(),
       itemCount: currentItemLength,
       controller: pageController,
-      itemBuilder: (context, index) {
-        var item = getCurrentItem(index);
-        return item.builder(context);
-      },
+      itemBuilder: (context, index) =>
+          _buildBannerItem(context, getCurrentItem(index), getCurrentIndex(index)),
       onPageChanged: (index) => controller.select(getCurrentIndex(index)),
+    );
+  }
+
+  //构建banner子项
+  Widget _buildBannerItem(BuildContext context, BannerItem item, int index) {
+    return GestureDetector(
+      child: item.builder(context),
+      onTap: null != itemTap
+          ? () {
+              Feedback.forTap(context);
+              itemTap!(item, index);
+            }
+          : null,
+      onLongPress: null != itemLongTap
+          ? () {
+              Feedback.forLongPress(context);
+              itemLongTap!(item, index);
+            }
+          : null,
     );
   }
 

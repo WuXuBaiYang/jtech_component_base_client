@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/banner/banner_view.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
 import 'package:jtech_common_library/widgets/banner/item.dart';
@@ -70,6 +71,14 @@ class BannerDemo extends BasePage {
         padding: EdgeInsets.all(2),
         borderRadius: BorderRadius.circular(8),
         auto: true,
+        itemTap: (item, index) {
+          jCommon.popups.snack
+              .showSnackInTime(context, text: "第 $index 条数据点击事件");
+        },
+        itemLongTap: (item, index) {
+          jCommon.popups.snack
+              .showSnackInTime(context, text: "第 $index 条数据长点击事件");
+        },
       ),
     );
   }
