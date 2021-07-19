@@ -4,6 +4,6 @@ import 'package:flutter/cupertino.dart';
 * @author wuxubaiyang
 * @Time 2021/7/19 下午4:05
 */
-class GridViewController {
+class GridViewController<V> {
 
 }
