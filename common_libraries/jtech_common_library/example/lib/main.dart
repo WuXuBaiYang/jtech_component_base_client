@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
 
+import 'gridview/gridview_refresh_demo.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
         "/test/banner": (_) => BannerDemo(),
         "/test/card": (_) => CardDemo(),
         "/test/gridview": (_) => GridviewDemo(),
+        "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
       },
     );
   }
@@ -55,6 +58,7 @@ class MyHomePage extends BasePage {
     "banner demo": "/test/banner",
     "卡片视图组件": "/test/card",
     "基本表格组件": "/test/gridview",
+    "刷新表格组件": "/test/gridview_refresh",
   };
 
   @override

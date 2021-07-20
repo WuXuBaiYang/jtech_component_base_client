@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/base/refresh_controller.dart';
 import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -73,7 +74,8 @@ class JRefreshListView<V>
   void initState() {
     super.initState();
     //监听刷新状态变化
-    controller.addRefreshStateChange((state) {
+    controller.refreshListenable.addListener(() {
+      var state = controller.refreshState;
       switch (state) {
         case RefreshState.RefreshCompleted:
           return refreshController.refreshCompleted(resetFooterState: true);

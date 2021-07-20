@@ -1,14 +1,14 @@
 import 'package:jtech_common_library/base/refresh_controller.dart';
-import 'package:jtech_common_library/widgets/listview/base/controller.dart';
+import 'package:jtech_common_library/widgets/gridview/base/controller.dart';
 
 /*
-* 刷新列表组件控制器
+* 表格刷新组件控制器
 * @author wuxubaiyang
-* @Time 2021/7/7 上午11:25
+* @Time 2021/7/20 下午4:52
 */
-class JRefreshListViewController<V> extends JListViewController<V>
+class JRefreshGridViewController<V> extends JGridViewController<V>
     with JRefreshControllerMixin<V> {
-  JRefreshListViewController({
+  JRefreshGridViewController({
     int? initPageIndex,
     int? pageSize,
     int? pageAddStep,
