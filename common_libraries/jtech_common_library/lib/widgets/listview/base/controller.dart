@@ -2,11 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:jtech_common_library/base/controller.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 
-//数据变化监听回调
-typedef OnDateChangeListener<V> = void Function(List<V> dataList);
-
-//数据搜索回调
-typedef OnSearchListener<V> = bool Function(V item);
+//数据过滤回调
+typedef OnFilterListener<V> = bool Function(V item);
 
 /*
 * 列表控制器
@@ -55,7 +52,7 @@ class JListViewController<V> extends BaseController {
   bool get isFilterData => null != _originDateList;
 
   //数据过滤
-  void filter(OnSearchListener listener) {
+  void filter(OnFilterListener listener) {
     if (null == _originDateList) {
       _originDateList = _dataList.value;
     }

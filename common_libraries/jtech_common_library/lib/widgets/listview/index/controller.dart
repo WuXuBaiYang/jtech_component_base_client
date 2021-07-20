@@ -32,7 +32,7 @@ class JIndexListViewController<V extends BaseIndexModel>
 
   @override
   @protected
-  void filter(OnSearchListener listener) => throw Exception("索引组件禁止调用该方法");
+  void filter(OnFilterListener listener) => throw Exception("索引组件禁止调用该方法");
 
   @override
   @protected
