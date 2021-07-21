@@ -59,7 +59,7 @@ class GridviewRefreshDemo extends BasePage {
   Future<List<ListItemModel>> _loadData(int pageIndex, int pageSize) async {
     await Future.delayed(Duration(seconds: 1));
     // return [];
-    throw Exception("aaa");
+    // throw Exception("aaa");
     if (pageIndex > 3) return [];
     List<ListItemModel> testData = [];
     testData.addAll(List.generate(pageSize, (i) {

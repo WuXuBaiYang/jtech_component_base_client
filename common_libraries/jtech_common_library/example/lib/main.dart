@@ -9,61 +9,29 @@ import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/root_app/run.dart';
 import 'gridview/gridview_refresh_demo.dart';
 
 void main() {
   runMaterialRootAPP(
-    initial: () {
-      WidgetsFlutterBinding.ensureInitialized();
-      //强制竖屏
-      SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    title: "jtech common library",
+    routes: {
+      "/test/listview": (_) => ListViewDemo(),
+      "/test/refresh_listview": (_) => RefreshListViewDemo(),
+      "/test/index_listview": (_) => IndexListViewDemo(),
+      "/test/popups": (_) => PopupsDemo(),
+      "/test/bottom_navigation": (_) => BottomNavigationDemo(),
+      "/test/tab_layout": (_) => TabLayoutDemo(),
+      "/test/image": (_) => ImageDemo(),
+      "/test/banner": (_) => BannerDemo(),
+      "/test/card": (_) => CardDemo(),
+      "/test/gridview": (_) => GridviewDemo(),
+      "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
     },
-    child: MyApp(),
+    homePage: MyHomePage(),
   );
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      navigatorKey: jBase.router.navigateKey,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      locale: const Locale('zh', ''),
-      home: MyHomePage(),
-      localizationsDelegates: [
-        // RefreshLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('zh'),
-      ],
-      routes: {
-        "/test/listview": (_) => ListViewDemo(),
-        "/test/refresh_listview": (_) => RefreshListViewDemo(),
-        "/test/index_listview": (_) => IndexListViewDemo(),
-        "/test/popups": (_) => PopupsDemo(),
-        "/test/bottom_navigation": (_) => BottomNavigationDemo(),
-        "/test/tab_layout": (_) => TabLayoutDemo(),
-        "/test/image": (_) => ImageDemo(),
-        "/test/banner": (_) => BannerDemo(),
-        "/test/card": (_) => CardDemo(),
-        "/test/gridview": (_) => GridviewDemo(),
-        "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
-      },
-    );
-  }
 }
 
 class MyHomePage extends BasePage {
@@ -81,11 +49,6 @@ class MyHomePage extends BasePage {
     "基本表格组件": "/test/gridview",
     "刷新表格组件": "/test/gridview_refresh",
   };
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

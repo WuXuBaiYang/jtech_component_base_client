@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_common_library/widgets/root_app/material_app.dart';
 
+import 'config.dart';
+
 /*
 * 启动material样式的app根节点
 * @author wuxubaiyang
@@ -8,10 +10,18 @@ import 'package:jtech_common_library/widgets/root_app/material_app.dart';
 */
 void runMaterialRootAPP({
   Function? initial,
-  required Widget child,
+  required String title,
+  required Widget homePage,
+  required Map<String, WidgetBuilder> routes,
+  MaterialAppConfig? config,
 }) {
   //执行初始化方法
   initial?.call();
   //启动应用
-  runApp(child);
+  runApp(MaterialRootAPP(
+    title: title,
+    homePage: homePage,
+    routes: routes,
+    config: config,
+  ));
 }
