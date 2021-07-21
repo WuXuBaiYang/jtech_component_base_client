@@ -31,41 +31,31 @@ class NavigationItem {
     Widget? activeImage,
   })  : this.activeTitle = activeTitle ?? title,
         this.activeImage = activeImage ?? image;
-}
 
-/*
-* 常用底部导航子项
-* @author wuxubaiyang
-* @Time 2021/7/12 下午2:29
-*/
-class NormalNavigationItem extends NavigationItem {
-  NormalNavigationItem({
-    required NavigationPage page,
+  //文本子项
+  NavigationItem.text({
+    required this.page,
     String title = "",
     double fontSize = 14,
     Color titleColor = Colors.black,
     String? activeTitle,
     double? activeFontSize,
     Color? activeTitleColor,
-    Widget? image,
+    this.image,
     Widget? activeImage,
-  }) : super(
-    page: page,
-    title: Text(
-      title,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: titleColor,
-      ),
-    ),
-    activeTitle: Text(
-      activeTitle ?? title,
-      style: TextStyle(
-        fontSize: activeFontSize ?? fontSize,
-        color: activeTitleColor ?? titleColor,
-      ),
-    ),
-    image: image,
-    activeImage: activeImage,
-  );
+  })  : this.activeImage = activeImage ?? image,
+        this.title = Text(
+          title,
+          style: TextStyle(
+            fontSize: fontSize,
+            color: titleColor,
+          ),
+        ),
+        activeTitle = Text(
+          activeTitle ?? title,
+          style: TextStyle(
+            fontSize: activeFontSize ?? fontSize,
+            color: activeTitleColor ?? titleColor,
+          ),
+        );
 }

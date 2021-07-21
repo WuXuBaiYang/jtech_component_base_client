@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/badge/badge_view.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/badge/config.dart';
 import 'package:jtech_common_library/widgets/navigation/base/controller.dart';

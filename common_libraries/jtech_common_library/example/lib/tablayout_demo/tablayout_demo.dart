@@ -20,7 +20,7 @@ class TabLayoutDemo extends BasePage {
   //底部导航控制器
   final JTabLayoutController controller =
       JTabLayoutController(initialIndex: 1, items: [
-    NormalNavigationItem(
+    NavigationItem.text(
       page: TabPageDemo1(),
       title: "页面1",
       titleColor: Colors.black,
@@ -42,7 +42,7 @@ class TabLayoutDemo extends BasePage {
         color: Colors.blue,
       ),
     ),
-        NormalNavigationItem(
+    NavigationItem.text(
       page: TabPageDemo3(),
       title: "页面3",
       titleColor: Colors.black,

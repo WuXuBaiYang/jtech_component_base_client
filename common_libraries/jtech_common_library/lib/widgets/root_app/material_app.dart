@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jtech_base_library/base/base_stateless_widget.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/widgets/root_app/config.dart';
 
@@ -8,7 +9,7 @@ import 'package:jtech_common_library/widgets/root_app/config.dart';
 * @author wuxubaiyang
 * @Time 2021/7/21 上午10:58
 */
-class MaterialRootAPP extends StatelessWidget {
+class MaterialRootAPP extends BaseStatelessWidget {
   //启动首页
   final Widget homePage;
 
