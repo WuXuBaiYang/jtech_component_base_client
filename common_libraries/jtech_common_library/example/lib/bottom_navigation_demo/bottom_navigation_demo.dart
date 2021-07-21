@@ -2,9 +2,7 @@ import 'package:example/bottom_navigation_demo/navigation_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/app_page/navigation_page/controller.dart';
 import 'package:jtech_common_library/widgets/app_page/navigation_page/navigation_page.dart';
 import 'package:jtech_common_library/widgets/badge/config.dart';
@@ -102,7 +100,7 @@ class BottomNavigationDemo extends BasePage {
           },
         ),
       ],
-      notchLocation: NotchLocation.Center,
+      notchLocation: NotchLocation.center,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},

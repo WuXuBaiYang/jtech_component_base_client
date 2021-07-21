@@ -33,7 +33,7 @@ mixin JRefreshControllerMixin<V> {
     this._pageAddStep = pageAddStep ?? 1;
     this._pageSize = pageSize ?? 15;
     this._pageIndex = this._initPageIndex;
-    this._refreshState = ValueChangeNotifier(RefreshState.None);
+    this._refreshState = ValueChangeNotifier(RefreshState.none);
   }
 
   //获取当前页码
@@ -75,32 +75,32 @@ mixin JRefreshControllerMixin<V> {
 
   //刷新完成
   void refreshCompleted(List<V> newData) {
-    _refreshState.setValue(RefreshState.RefreshCompleted);
+    _refreshState.setValue(RefreshState.refreshCompleted);
     setRefreshData(newData);
     resetPageIndex();
   }
 
   //加载完成
   void loadCompleted(List<V> newData) {
-    _refreshState.setValue(RefreshState.LoadComplete);
+    _refreshState.setValue(RefreshState.loadComplete);
     addRefreshData(newData);
     addPageIndex();
   }
 
   //加载无更多数据状态
-  void loadNoMoreData() => _refreshState.setValue(RefreshState.LoadNoData);
+  void loadNoMoreData() => _refreshState.setValue(RefreshState.loadNoData);
 
   //失败
   void requestFail(bool loadMore) => loadMore ? loadFail() : refreshFail();
 
   //刷新失败
-  void refreshFail() => _refreshState.setValue(RefreshState.RefreshFailed);
+  void refreshFail() => _refreshState.setValue(RefreshState.refreshFailed);
 
   //加载失败
-  void loadFail() => _refreshState.setValue(RefreshState.LoadFailed);
+  void loadFail() => _refreshState.setValue(RefreshState.loadFailed);
 
   //重置刷新状态
-  void resetRefreshState() => _refreshState.setValue(RefreshState.None);
+  void resetRefreshState() => _refreshState.setValue(RefreshState.none);
 }
 
 /*
@@ -109,10 +109,10 @@ mixin JRefreshControllerMixin<V> {
 * @Time 2021/7/15 上午9:58
 */
 enum RefreshState {
-  RefreshCompleted,
-  RefreshFailed,
-  LoadComplete,
-  LoadFailed,
-  LoadNoData,
-  None,
+  refreshCompleted,
+  refreshFailed,
+  loadComplete,
+  loadFailed,
+  loadNoData,
+  none,
 }

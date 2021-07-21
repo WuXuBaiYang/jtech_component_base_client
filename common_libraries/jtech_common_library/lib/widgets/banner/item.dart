@@ -29,10 +29,10 @@ class BannerItem {
 * @Time 2021/7/15 下午1:11
 */
 enum BannerAlign {
-  Top,
-  Left,
-  Right,
-  Bottom,
+  top,
+  left,
+  right,
+  bottom,
 }
 
 /*
@@ -44,13 +44,13 @@ extension BannerAlignExtension on BannerAlign {
   //获取对齐方式
   Alignment get align {
     switch (this) {
-      case BannerAlign.Top:
+      case BannerAlign.top:
         return Alignment.topCenter;
-      case BannerAlign.Left:
+      case BannerAlign.left:
         return Alignment.centerLeft;
-      case BannerAlign.Right:
+      case BannerAlign.right:
         return Alignment.centerRight;
-      case BannerAlign.Bottom:
+      case BannerAlign.bottom:
         return Alignment.bottomCenter;
       default:
         return Alignment.bottomCenter;
@@ -60,11 +60,11 @@ extension BannerAlignExtension on BannerAlign {
   //判断是否为垂直方向
   bool get isVertical {
     switch (this) {
-      case BannerAlign.Top:
-      case BannerAlign.Bottom:
+      case BannerAlign.top:
+      case BannerAlign.bottom:
         return false;
-      case BannerAlign.Left:
-      case BannerAlign.Right:
+      case BannerAlign.left:
+      case BannerAlign.right:
         return true;
       default:
         return false;

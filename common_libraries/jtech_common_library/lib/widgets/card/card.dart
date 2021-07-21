@@ -63,7 +63,7 @@ class JCard extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.clipBehavior,
     this.shadowColor,
-  })  : this.layout = CardLayout.Column,
+  })  : this.layout = CardLayout.column,
         this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
         this.child = EmptyBox();
 
@@ -83,7 +83,7 @@ class JCard extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.clipBehavior,
     this.shadowColor,
-  })  : this.layout = CardLayout.Row,
+  })  : this.layout = CardLayout.row,
         this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
         this.child = EmptyBox();
 
@@ -100,7 +100,7 @@ class JCard extends StatelessWidget {
     this.elevation = 8.0,
     this.clipBehavior,
     this.shadowColor,
-  })  : this.layout = CardLayout.None,
+  })  : this.layout = CardLayout.none,
         this.shape = shape ?? _buildCardShapeBorder(circle, borderRadius),
         this.children = const [],
         this.mainAxisAlignment = MainAxisAlignment.start,
@@ -126,10 +126,10 @@ class JCard extends StatelessWidget {
   //构建卡片布局
   Widget _buildCardLayout() {
     switch (layout) {
-      case CardLayout.Column:
-      case CardLayout.Row:
+      case CardLayout.column:
+      case CardLayout.row:
         var direction =
-            layout == CardLayout.Column ? Axis.vertical : Axis.horizontal;
+            layout == CardLayout.column ? Axis.vertical : Axis.horizontal;
         return Flex(
           crossAxisAlignment: crossAxisAlignment,
           mainAxisAlignment: mainAxisAlignment,
@@ -137,7 +137,7 @@ class JCard extends StatelessWidget {
           direction: direction,
           children: children,
         );
-      case CardLayout.None:
+      case CardLayout.none:
       default:
         return child;
     }
@@ -157,7 +157,7 @@ class JCard extends StatelessWidget {
 * @Time 2021/7/19 下午2:01
 */
 enum CardLayout {
-  Column,
-  Row,
-  None,
+  column,
+  row,
+  none,
 }

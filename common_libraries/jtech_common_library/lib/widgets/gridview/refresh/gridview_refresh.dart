@@ -87,17 +87,17 @@ class JRefreshGridView<V>
     controller.refreshListenable.addListener(() {
       var state = controller.refreshState;
       switch (state) {
-        case RefreshState.RefreshCompleted:
+        case RefreshState.refreshCompleted:
           return refreshController.refreshCompleted(resetFooterState: true);
-        case RefreshState.RefreshFailed:
+        case RefreshState.refreshFailed:
           return refreshController.refreshFailed();
-        case RefreshState.LoadComplete:
+        case RefreshState.loadComplete:
           return refreshController.loadComplete();
-        case RefreshState.LoadFailed:
+        case RefreshState.loadFailed:
           return refreshController.loadFailed();
-        case RefreshState.LoadNoData:
+        case RefreshState.loadNoData:
           return refreshController.loadNoData();
-        case RefreshState.None:
+        case RefreshState.none:
           return;
       }
     });

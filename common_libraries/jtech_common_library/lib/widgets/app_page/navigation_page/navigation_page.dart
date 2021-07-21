@@ -69,7 +69,7 @@ class BottomNavigationPage<T extends NavigationItem>
     this.navigationHeight = 60,
     this.elevation = 8,
     this.badgeAlign = Alignment.topRight,
-    this.notchLocation = NotchLocation.None,
+    this.notchLocation = NotchLocation.none,
     this.notchMargin = 4.0,
     this.notchedShape = const CircularNotchedRectangle(),
   })  : pageController = PageController(initialPage: controller.currentIndex),
@@ -129,11 +129,11 @@ class BottomNavigationPage<T extends NavigationItem>
               (index) => _buildBottomBarItem(
                   controller.getItem(index), index == currentIndex, index),
             );
-            if (notchLocation != NotchLocation.None) {
+            if (notchLocation != NotchLocation.none) {
               int notchIndex = 0;
-              if (notchLocation == NotchLocation.End) {
+              if (notchLocation == NotchLocation.end) {
                 notchIndex = controller.itemLength;
-              } else if (notchLocation == NotchLocation.Center) {
+              } else if (notchLocation == NotchLocation.center) {
                 notchIndex = controller.itemLength ~/ 2;
               }
               bottomBars.insert(notchIndex, Expanded(child: EmptyBox()));
@@ -184,8 +184,8 @@ class BottomNavigationPage<T extends NavigationItem>
 * @Time 2021/7/21 下午5:26
 */
 enum NotchLocation {
-  Start,
-  End,
-  Center,
-  None,
+  start,
+  end,
+  center,
+  none,
 }
