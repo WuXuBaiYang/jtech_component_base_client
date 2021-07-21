@@ -13,22 +13,8 @@ import 'package:jtech_common_library/widgets/gridview/refresh/gridview_refresh.d
 */
 class GridviewRefreshDemo extends BasePage {
   //控制器
-  final JRefreshGridViewController<ListItemModel> controller = JRefreshGridViewController();
-
-  @override
-  void initState() {
-    super.initState();
-    //加载表格数据
-    List<ListItemModel> testData = [];
-    testData.addAll(List.generate(100, (i) {
-      return ListItemModel(
-        title: "测试数据 $i",
-        des: "这里是第 $i 条数据",
-        leading: Icons.home,
-      );
-    }));
-    controller.setData(testData);
-  }
+  final JRefreshGridViewController<ListItemModel> controller =
+      JRefreshGridViewController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +24,9 @@ class GridviewRefreshDemo extends BasePage {
       ),
       body: JRefreshGridView<ListItemModel>(
         crossAxisCount: 5,
+        initialRefresh: true,
+        enablePullDown: true,
+        enablePullUp: true,
         staggeredTile: JStaggeredTile.fit(1),
         staggeredTileBuilder: (item, index) {
           if (index == 2) return null;
@@ -45,6 +34,7 @@ class GridviewRefreshDemo extends BasePage {
           return JStaggeredTile.fit(2);
         },
         controller: controller,
+        onRefreshGridViewLoad: _loadData,
         itemBuilder: (BuildContext context, item, int index) {
           return Container(
             padding: EdgeInsets.all(15),
@@ -63,5 +53,22 @@ class GridviewRefreshDemo extends BasePage {
         },
       ),
     );
+  }
+
+  //加载数据
+  Future<List<ListItemModel>> _loadData(int pageIndex, int pageSize) async {
+    await Future.delayed(Duration(seconds: 1));
+    // return [];
+    throw Exception("aaa");
+    if (pageIndex > 3) return [];
+    List<ListItemModel> testData = [];
+    testData.addAll(List.generate(pageSize, (i) {
+      return ListItemModel(
+        title: "测试数据 $i",
+        des: "这里是第 $pageIndex 页的第 $i 条数据",
+        leading: Icons.home,
+      );
+    }));
+    return testData;
   }
 }

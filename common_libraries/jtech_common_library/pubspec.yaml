@@ -25,6 +25,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
   # 基础依赖库
   jtech_base_library:
     path: ../../jtech_base_library

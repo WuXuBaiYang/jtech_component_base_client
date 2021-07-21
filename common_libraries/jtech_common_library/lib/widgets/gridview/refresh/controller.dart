@@ -1,4 +1,4 @@
-import 'package:jtech_common_library/base/refresh_controller.dart';
+import 'package:jtech_common_library/base/refresh/controller.dart';
 import 'package:jtech_common_library/widgets/gridview/base/controller.dart';
 
 /*

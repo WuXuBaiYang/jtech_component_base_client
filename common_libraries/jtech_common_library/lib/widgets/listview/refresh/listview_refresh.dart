@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/base/refresh_controller.dart';
+import 'package:jtech_common_library/base/refresh/controller.dart';
 import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'config.dart';
+import '../../../base/refresh/config.dart';
 import 'controller.dart';
 
 //数据加载异步回调

@@ -9,9 +9,9 @@ import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
-
 import 'gridview/gridview_refresh_demo.dart';
 
 void main() {
@@ -27,7 +27,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      locale: const Locale('zh', ''),
       home: MyHomePage(),
+      localizationsDelegates: [
+        // RefreshLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('zh'),
+      ],
       routes: {
         "/test/listview": (_) => ListViewDemo(),
         "/test/refresh_listview": (_) => RefreshListViewDemo(),

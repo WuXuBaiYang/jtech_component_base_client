@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -17,10 +18,7 @@ class RefreshHeader {
   final Widget value;
 
   //经典样式
-  RefreshHeader.classic({String? releaseText})
-      : value = ClassicHeader(
-    releaseText: releaseText,
-  );
+  RefreshHeader.classic() : value = ClassicHeader();
 
   //水滴样式
   RefreshHeader.waterDrop() : value = WaterDropHeader();
@@ -38,11 +36,10 @@ class RefreshHeader {
   RefreshHeader.bezierCircle() : value = BezierCircleHeader();
 
   //自定义样式
-  RefreshHeader.custom({
-    required HeaderBuilder builder,
-  }) : value = CustomHeader(
-    builder: (context, model) => builder(context, _convertStatus(model)),
-  );
+  RefreshHeader.custom({required HeaderBuilder builder})
+      : value = CustomHeader(
+          builder: (context, model) => builder(context, _convertStatus(model)),
+        );
 
   //将refresh库的状态转变为本地状态
   static jRefreshStatus? _convertStatus(RefreshStatus? status) {
@@ -91,19 +88,16 @@ class LoadFooter {
   Widget? value;
 
   //经典样式
-  LoadFooter.classic() {
-    value = ClassicFooter();
-  }
+  LoadFooter.classic() : value = ClassicFooter();
 
   //自定义样式
-  LoadFooter.custom({required FooterBuilder builder}) {
-    value = CustomFooter(builder: (context, model) {
-      return builder(context, convertStatus(model));
-    });
-  }
+  LoadFooter.custom({required FooterBuilder builder})
+      : value = CustomFooter(builder: (context, model) {
+          return builder(context, _convertStatus(model));
+        });
 
   //将refresh库的状态转变为本地状态
-  jLoadStatus? convertStatus(LoadStatus? status) {
+  static jLoadStatus? _convertStatus(LoadStatus? status) {
     switch (status) {
       case LoadStatus.idle:
         return jLoadStatus.idle;

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import 'value_change_notifier.dart';
+import '../value_change_notifier.dart';
 
 /*
 * 刷新控制器通用方法
