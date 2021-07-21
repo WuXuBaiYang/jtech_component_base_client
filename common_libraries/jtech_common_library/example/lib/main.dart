@@ -9,13 +9,24 @@ import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/widgets/root_app/run.dart';
 import 'gridview/gridview_refresh_demo.dart';
 
 void main() {
-  runApp(MyApp());
+  runMaterialRootAPP(
+    initial: () {
+      WidgetsFlutterBinding.ensureInitialized();
+      //强制竖屏
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    },
+    child: MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -70,6 +81,11 @@ class MyHomePage extends BasePage {
     "基本表格组件": "/test/gridview",
     "刷新表格组件": "/test/gridview_refresh",
   };
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
