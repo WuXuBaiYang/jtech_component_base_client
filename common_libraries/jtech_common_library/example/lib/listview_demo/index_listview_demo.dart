@@ -57,18 +57,8 @@ class IndexListViewDemo extends BasePage {
   @override
   void initState() {
     super.initState();
-    //创建测试数据
-    List<IndexListItemModel> testData = [];
-    testData.addAll(List.generate(50, (i) {
-      String title = "${testTag[Random().nextInt(testTag.length)]}测试数据 $i";
-      return IndexListItemModel.create(
-        title: title,
-        des: "第 $i 条数据",
-        leading: Icons.home,
-        tag: title,
-      );
-    }));
-    controller.setIndexData(testData);
+    //加载数据
+    _loadDataList();
   }
 
   @override
@@ -88,5 +78,18 @@ class IndexListViewDemo extends BasePage {
         },
       ),
     );
+  }
+
+  //加载数据对象
+  void _loadDataList() async {
+    controller.setData(List.generate(10, (i) {
+      String title = "${testTag[Random().nextInt(testTag.length)]}测试数据 $i";
+      return IndexListItemModel.create(
+        title: title,
+        des: "第 $i 条数据",
+        leading: Icons.home,
+        tag: title,
+      );
+    }));
   }
 }
