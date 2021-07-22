@@ -1,6 +1,7 @@
 import 'package:example/banner/banner_demo.dart';
 import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
 import 'package:example/card/card_demo.dart';
+import 'package:example/form/form_demo.dart';
 import 'package:example/gridview/gridview_demo.dart';
 import 'package:example/image/image_demo.dart';
 import 'package:example/listview_demo/index_listview_demo.dart';
@@ -11,6 +12,7 @@ import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/root_app/run.dart';
 import 'gridview/gridview_refresh_demo.dart';
 
@@ -29,6 +31,7 @@ void main() {
       "/test/card": (_) => CardDemo(),
       "/test/gridview": (_) => GridviewDemo(),
       "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
+      "/test/form_demo": (_) => FormDemo(),
     },
     homePage: MyHomePage(),
   );
@@ -48,14 +51,13 @@ class MyHomePage extends BasePage {
     "卡片视图组件": "/test/card",
     "基本表格组件": "/test/gridview",
     "刷新表格组件": "/test/gridview_refresh",
+    "form表单组件": "/test/form_demo",
   };
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("example_common"),
-      ),
+    return MaterialRootPage(
+      appBarTitle: "example_common",
       body: ListView.separated(
         separatorBuilder: (_, __) => Divider(),
         itemCount: pages.length,
