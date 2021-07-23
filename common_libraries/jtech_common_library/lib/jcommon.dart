@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/tools/tools.dart';
 
 import 'popups/popups.dart';
 
@@ -17,6 +18,9 @@ class JCommon {
 
   //弹出层管理
   final popups = Popups();
+
+  //工具箱管理
+  final tools=Tools();
 
   //初始化方法
   Future init() async {
