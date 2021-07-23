@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/widgets/form/items/base/default_form_item.dart';
 import 'package:jtech_common_library/widgets/form/items/base/default_form_item_config.dart';
 import 'package:jtech_common_library/widgets/form/items/base/form_item.dart';
+
+//输入框操作回调
+typedef OnInputAction<V> = void Function(V? value);
 
 /*
 * 表单输入框子项
@@ -43,6 +48,30 @@ class JFormInputItem extends JFormItem<String> {
   //是否只读
   final bool readOnly;
 
+  //文本对齐方式
+  final TextAlign textAlign;
+
+  //输入框文本展示状态
+  final ValueChangeNotifier<bool> obscureText;
+
+  //是否展示文本显示状态切换按钮（true则替换trailing组件）
+  final bool showObscureButton;
+
+  //是否展示清除按钮
+  final bool showClearButton;
+
+  //输入框软键盘动作
+  final TextInputAction? inputAction;
+
+  //编辑完成事件
+  final OnInputAction<String>? onEditingComplete;
+
+  //提交事件
+  final OnInputAction<String>? onSubmitted;
+
+  //输入框内容格式化
+  final List<TextInputFormatter> inputFormatters;
+
   JFormInputItem({
     String? initialValue,
     bool enabled = true,
@@ -56,6 +85,14 @@ class JFormInputItem extends JFormItem<String> {
     this.maxLength,
     this.showCounter = true,
     this.readOnly = false,
+    this.textAlign = TextAlign.start,
+    bool obscureText = false,
+    bool? showObscureButton,
+    this.showClearButton = false,
+    this.inputAction,
+    this.onEditingComplete,
+    this.onSubmitted,
+    this.inputFormatters = const [],
     //默认结构部分
     required title,
     bool? required,
@@ -77,6 +114,8 @@ class JFormInputItem extends JFormItem<String> {
             TextStyle(
               color: Colors.black,
             ),
+        this.obscureText = ValueChangeNotifier(obscureText),
+        this.showObscureButton = showObscureButton ?? obscureText,
         this.controller = TextEditingController(text: initialValue),
         this.maxLines = (maxLines < minLines) ? minLines : maxLines,
         this.focusNode = FocusNode(),
@@ -97,27 +136,63 @@ class JFormInputItem extends JFormItem<String> {
 
   @override
   Widget buildFormItem(BuildContext context, FormFieldState<String> field) {
-    return buildDefaultItem(
-      field: field,
-      inputDecoration: inputDecoration.copyWith(
-        counter: _buildCounter(field.value?.length),
+    var isValueEmpty = field.value?.isEmpty ?? true;
+    return ValueListenableBuilder(
+      valueListenable: obscureText,
+      builder: (context, obscure, child) {
+        return buildDefaultItem(
+          field: field,
+          inputDecoration: inputDecoration.copyWith(
+            counter: _buildCounter(field.value?.length),
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: obscureText.value,
+            focusNode: focusNode,
+            style: textStyle,
+            inputFormatters: inputFormatters,
+            textInputAction: inputAction,
+            onEditingComplete: () => onEditingComplete?.call(field.value),
+            onSubmitted: (value) => onSubmitted?.call(value),
+            decoration: null,
+            minLines: minLines,
+            maxLines: maxLines,
+            maxLength: maxLength,
+            enabled: enabled,
+            readOnly: readOnly,
+            onChanged: (value) => field.didChange(value),
+          ),
+          config: defaultConfig.copyWith(
+            isEmpty: isValueEmpty,
+            isFocused: focusNode.hasFocus,
+            desc: defaultConfig.desc ?? _buildClearButton(field),
+            trailing: defaultConfig.trailing ?? _buildObscureTextButton(),
+          ),
+        );
+      },
+    );
+  }
+
+  //构建输入框清除按钮
+  Widget? _buildClearButton(FormFieldState<String> field) {
+    if (!showClearButton || controller.text.isEmpty) return null;
+    return IconButton(
+      icon: Icon(Icons.clear),
+      onPressed: () {
+        controller.clear();
+        field.didChange(controller.text);
+      },
+    );
+  }
+
+  //构建输入框可视化按钮
+  Widget? _buildObscureTextButton() {
+    if (!showObscureButton) return null;
+    return IconButton(
+      icon: Icon(
+        !obscureText.value ? Icons.visibility : Icons.visibility_off,
       ),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        style: textStyle,
-        decoration: null,
-        minLines: minLines,
-        maxLines: maxLines,
-        maxLength: maxLength,
-        enabled: enabled,
-        readOnly: readOnly,
-        onChanged: (value) => field.didChange(value),
-      ),
-      config: defaultConfig.copyWith(
-        isEmpty: field.value?.isEmpty ?? true,
-        isFocused: focusNode.hasFocus,
-      ),
+      onPressed: () => obscureText.setValue(!obscureText.value),
     );
   }
 

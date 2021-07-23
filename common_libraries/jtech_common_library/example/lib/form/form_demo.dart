@@ -5,9 +5,9 @@ import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/form/controller.dart';
 import 'package:jtech_common_library/widgets/form/form.dart';
-import 'package:jtech_common_library/widgets/form/items/base/default_form_item_config.dart';
 import 'package:jtech_common_library/widgets/form/items/form_custom_item.dart';
-import 'package:jtech_common_library/widgets/form/items/form_input_item.dart';
+import 'package:jtech_common_library/widgets/form/items/form_input_item/form_input_item.dart';
+import 'package:jtech_common_library/widgets/form/items/form_input_item/formatters.dart';
 import 'package:jtech_common_library/widgets/form/items/form_text_item.dart';
 
 /*
@@ -80,11 +80,17 @@ class FormDemo extends BasePage {
             title: Text("输入框-标题"),
             isArrow: true,
             maxLength: 10,
-            readOnly: true,
-            validator: (v){
-              return "aaa";
+            // readOnly: true,
+            textAlign: TextAlign.end,
+            inputFormatters: [
+              JInputFormatters.decimalsOnly,
+            ],
+            obscureText: true,
+            showClearButton: true,
+            onSaved: (v){
+              print("");
             },
-            onTap: (v){},
+            // onTap: (v){},
           ),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),

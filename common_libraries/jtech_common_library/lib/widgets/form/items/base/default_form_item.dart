@@ -128,12 +128,6 @@ class DefaultFormItem<V> extends BaseStatelessWidget {
 
   //尾部基本构造
   Widget buildEnd() {
-    if (config.isArrow)
-      config.trailing = Icon(
-        Icons.arrow_forward_ios,
-        color: Colors.grey[400],
-        size: 20,
-      );
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
@@ -141,6 +135,14 @@ class DefaultFormItem<V> extends BaseStatelessWidget {
         config.desc ?? EmptyBox(),
         buildSpace([config.desc, config.trailing], space: config.space),
         config.trailing ?? EmptyBox(),
+        Visibility(
+          visible: config.isArrow,
+          child: Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.grey[400],
+            size: 20,
+          ),
+        ),
       ],
     );
   }

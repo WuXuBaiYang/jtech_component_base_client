@@ -13,6 +13,9 @@ class JFormTextItem extends JFormItem<String> {
   //文本内容文字样式
   final TextStyle textStyle;
 
+  //文本对齐方式
+  final TextAlign textAlign;
+
   //默认结构配置
   final DefaultFormItemConfig<String> defaultConfig;
 
@@ -20,6 +23,7 @@ class JFormTextItem extends JFormItem<String> {
     required String text,
     bool enabled = true,
     TextStyle? textStyle,
+    this.textAlign = TextAlign.start,
     //默认结构部分
     required title,
     Widget? leading,
@@ -52,6 +56,7 @@ class JFormTextItem extends JFormItem<String> {
       child: Text(
         field.value ?? "",
         style: textStyle,
+        textAlign: textAlign,
       ),
       config: defaultConfig,
     );
