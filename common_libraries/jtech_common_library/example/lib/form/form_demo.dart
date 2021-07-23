@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/form/controller.dart';
 import 'package:jtech_common_library/widgets/form/form.dart';
+import 'package:jtech_common_library/widgets/form/items/form_custom_item.dart';
 import 'package:jtech_common_library/widgets/form/items/form_text_item.dart';
 
 /*
@@ -23,12 +25,49 @@ class FormDemo extends BasePage {
         controller: controller,
         children: [
           JFormTextItem(
-            enabled: false,
-            title: Text("文本标题"),
+            enabled: true,
+            title: Text("文本-标题"),
             text: '测试表单子项',
             isArrow: true,
-            onTap: (value){},
-            onLongTap: (value){},
+            onTap: (value) {
+              jCommon.popups.snack
+                  .showSnackInTime(context, text: "文本form项，点击事件");
+            },
+            onLongTap: (value) {
+              jCommon.popups.snack
+                  .showSnackInTime(context, text: "文本form项，长点击事件");
+            },
+          ),
+          JFormCustomItem<Map<String, String>>(
+            enabled: true,
+            title: Text("自定义-标题"),
+            isArrow: true,
+            initialValue: {
+              "title": "这里是自定义标题",
+            },
+            onTap: (value) {
+              jCommon.popups.snack
+                  .showSnackInTime(context, text: "自定义form项，点击事件");
+            },
+            onLongTap: (value) {
+              jCommon.popups.snack
+                  .showSnackInTime(context, text: "自定义form项，长点击事件");
+            },
+            builder: (field) {
+              return Text.rich(
+                TextSpan(
+                  text: field.value!["title"],
+                  children: [
+                    TextSpan(
+                      text: "红色",
+                      style: TextStyle(
+                        color: Colors.blueAccent,
+                      )
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),
