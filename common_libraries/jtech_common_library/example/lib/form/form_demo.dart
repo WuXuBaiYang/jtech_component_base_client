@@ -8,6 +8,7 @@ import 'package:jtech_common_library/widgets/form/form.dart';
 import 'package:jtech_common_library/widgets/form/items/form_custom_item.dart';
 import 'package:jtech_common_library/widgets/form/items/form_input_item/form_input_item.dart';
 import 'package:jtech_common_library/widgets/form/items/form_input_item/formatters.dart';
+import 'package:jtech_common_library/widgets/form/items/form_switch_item.dart';
 import 'package:jtech_common_library/widgets/form/items/form_text_item.dart';
 
 /*
@@ -87,10 +88,19 @@ class FormDemo extends BasePage {
             ],
             obscureText: true,
             showClearButton: true,
-            onSaved: (v){
+            onSaved: (v) {
               print("");
             },
             // onTap: (v){},
+          ),
+          JFormSwitchItem(
+            title: Text("开关-标题"),
+            initialValue: true,
+            isArrow: true,
+            clickFullArea: true,
+            onTap: (value){
+              print("");
+            },
           ),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),
