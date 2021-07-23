@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/base/refresh/controller.dart';
 import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -21,9 +20,6 @@ class JRefreshListView<V>
     extends BaseListView<JRefreshListViewController<V>, V> {
   //刷新控制器
   final RefreshController refreshController;
-
-  //是否展示分割线
-  final bool showDivider;
 
   //启用下拉刷新
   final bool enablePullDown;
@@ -54,7 +50,6 @@ class JRefreshListView<V>
     bool initialRefresh = false,
     this.enablePullDown = false,
     this.enablePullUp = false,
-    this.showDivider = false,
     this.onPullDownRefreshing,
     this.onPullUpLoading,
     this.header,
@@ -111,7 +106,7 @@ class JRefreshListView<V>
             itemCount: dataList.length,
             itemBuilder: (context, index) =>
                 buildListItem(context, dataList[index], index),
-            separatorBuilder: _buildDivider,
+            separatorBuilder: buildDivider,
           ),
         );
       },
@@ -130,11 +125,5 @@ class JRefreshListView<V>
     } catch (e) {
       controller.requestFail(loadMore);
     }
-  }
-
-  //构建分割线
-  Widget _buildDivider(BuildContext context, int index) {
-    if (!showDivider || null == dividerBuilder) return EmptyBox();
-    return dividerBuilder!(context, index);
   }
 }

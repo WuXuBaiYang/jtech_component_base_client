@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
 
 import 'base/controller.dart';
@@ -14,15 +13,11 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
   //判断是否可滚动
   final bool canScroll;
 
-  //是否展示分割线
-  final bool showDivider;
-
   JListView({
     required JListViewController<V> controller,
     required ListItemBuilder<V> itemBuilder,
     ListDividerBuilder? dividerBuilder,
     this.canScroll = true,
-    this.showDivider = false,
     OnListItemTap<V>? itemTap,
     OnListItemLongTap<V>? itemLongTap,
   }) : super(
@@ -44,7 +39,7 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
           itemCount: dataList.length,
           itemBuilder: (context, index) =>
               buildListItem(context, dataList[index], index),
-          separatorBuilder: _buildDivider,
+          separatorBuilder: buildDivider,
         );
       },
     );
@@ -53,10 +48,4 @@ class JListView<V> extends BaseListView<JListViewController<V>, V> {
   //滚动控制
   ScrollPhysics? get scrollPhysics =>
       canScroll ? null : NeverScrollableScrollPhysics();
-
-  //构建分割线
-  Widget _buildDivider(BuildContext context, int index) {
-    if (!showDivider || null == dividerBuilder) return EmptyBox();
-    return dividerBuilder!(context, index);
-  }
 }

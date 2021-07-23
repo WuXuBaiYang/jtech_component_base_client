@@ -21,8 +21,41 @@ class ToolsDemo extends BasePage {
   final List<Map<String, Function>> toolList = [
     //日期格式化工具表
     {
-      "全中文日期格式化": () {
+      "全中文日期时间格式化": () {
         return jCommon.tools.dataFormat.formatFullDateTimeZH(DateTime.now());
+      },
+      "中文日期时间格式化": () {
+        return jCommon.tools.dataFormat.formatDateTimeZH(DateTime.now());
+      },
+      "全中文日期格式化": () {
+        return jCommon.tools.dataFormat.formatFullDateZH(DateTime.now());
+      },
+      "中文日期格式化": () {
+        return jCommon.tools.dataFormat.formatDateZH(DateTime.now());
+      },
+      "全中文时间格式化": () {
+        return jCommon.tools.dataFormat.formatFullTimeZH(DateTime.now());
+      },
+      "中文时间格式化": () {
+        return jCommon.tools.dataFormat.formatTimeZH(DateTime.now());
+      },
+      "全日期时间格式化": () {
+        return jCommon.tools.dataFormat.formatFullDateTime(DateTime.now());
+      },
+      "日期时间格式化": () {
+        return jCommon.tools.dataFormat.formatDateTime(DateTime.now());
+      },
+      "全日期格式化": () {
+        return jCommon.tools.dataFormat.formatFullDate(DateTime.now());
+      },
+      "日期格式化": () {
+        return jCommon.tools.dataFormat.formatDate(DateTime.now());
+      },
+      "全时间格式化": () {
+        return jCommon.tools.dataFormat.formatFullTime(DateTime.now());
+      },
+      "时间格式化": () {
+        return jCommon.tools.dataFormat.formatTime(DateTime.now());
       },
     },
   ];
@@ -56,16 +89,16 @@ class ToolsDemo extends BasePage {
                     controller: JListViewController(
                       dataList: tools.keys.toList(),
                     ),
-                    itemBuilder: (BuildContext context, item, int index) {
-                      return ListTile(
-                        title: Text(item),
-                        onTap: () {
-                          var result = tools[item]!();
-                          jCommon.popups.snack
-                              .showSnackInTime(context, text: result);
-                        },
-                      );
-                    },
+                    dividerBuilder: (context, index) => Divider(),
+                    itemBuilder: (context, item, index) => ListTile(
+                      title: Text(item),
+                      onTap: () {
+                        var result = tools[item]!();
+                        jCommon.popups.snack.showSnackInTime(context,
+                            text: result,
+                            duration: Duration(milliseconds: 600));
+                      },
+                    ),
                   ),
                 );
               }),

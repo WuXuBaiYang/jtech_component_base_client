@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
 
 import 'controller.dart';
 
@@ -54,5 +55,11 @@ abstract class BaseListView<T extends JListViewController<V>, V>
       onTap: null != itemTap ? () => itemTap!(item, index) : null,
       onLongPress: null != itemLongTap ? () => itemLongTap!(item, index) : null,
     );
+  }
+
+  //构建分割线
+  Widget buildDivider(BuildContext context, int index) {
+    if (null == dividerBuilder) return EmptyBox();
+    return dividerBuilder!(context, index);
   }
 }
