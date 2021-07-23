@@ -17,6 +17,13 @@ class ToolsDemo extends BasePage {
   final ListValueChangeNotifier<bool> expandStatus =
       ListValueChangeNotifier.empty();
 
+  //工具标题
+  final List<String> toolsTitleList = [
+    "日期格式化工具",
+    "正则匹配工具",
+    "其他",
+  ];
+
   //工具折叠列表
   final List<Map<String, Function>> toolList = [
     //日期格式化工具表
@@ -58,6 +65,18 @@ class ToolsDemo extends BasePage {
         return jCommon.tools.dataFormat.formatTime(DateTime.now());
       },
     },
+    //正则匹配工具表
+    {
+      "匹配手机号(+86) 18600574971": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("18600574971");
+      },
+      "匹配手机号(+86) +8618600574971": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("+8618600574971");
+      },
+      "匹配手机号(+86) +86-18600574971": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("+86-18600574971");
+      },
+    },
   ];
 
   @override
@@ -82,7 +101,7 @@ class ToolsDemo extends BasePage {
                   isExpanded: statusList[index],
                   canTapOnHeader: true,
                   headerBuilder: (context, isExpand) {
-                    return ListTile(title: Text("日期格式化集合"));
+                    return ListTile(title: Text(toolsTitleList[index]));
                   },
                   body: JListView<String>(
                     canScroll: false,
@@ -95,7 +114,7 @@ class ToolsDemo extends BasePage {
                       onTap: () {
                         var result = tools[item]!();
                         jCommon.popups.snack.showSnackInTime(context,
-                            text: result,
+                            text: "$result",
                             duration: Duration(milliseconds: 600));
                       },
                     ),
