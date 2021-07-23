@@ -9,6 +9,7 @@ import 'package:example/listview_demo/listview_demo.dart';
 import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tablayout_demo/tablayout_demo.dart';
+import 'package:example/tools/tools_page.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -32,6 +33,7 @@ void main() {
       "/test/gridview": (_) => GridviewDemo(),
       "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
       "/test/form_demo": (_) => FormDemo(),
+      "/test/tools_demo": (_) => ToolsDemo(),
     },
     homePage: MyHomePage(),
   );
@@ -52,6 +54,7 @@ class MyHomePage extends BasePage {
     "基本表格组件": "/test/gridview",
     "刷新表格组件": "/test/gridview_refresh",
     "form表单组件": "/test/form_demo",
+    "工具方法demo": "/test/tools_demo",
   };
 
   @override

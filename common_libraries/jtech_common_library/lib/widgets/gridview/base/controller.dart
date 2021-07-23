@@ -4,12 +4,13 @@ import 'package:jtech_common_library/base/value_change_notifier.dart';
 
 //数据过滤回调
 typedef OnFilterListener<V> = bool Function(V item);
+
 /*
 * 表格列表控制器
 * @author wuxubaiyang
 * @Time 2021/7/19 下午4:05
 */
-class JGridViewController<V> extends BaseController{
+class JGridViewController<V> extends BaseController {
   //持有列表数据
   ListValueChangeNotifier<V> _dataList;
 
@@ -31,14 +32,14 @@ class JGridViewController<V> extends BaseController{
 
   //添加数据，insertIndex=-1时放置在队列末尾
   void addData(
-      List<V> newData, {
-        int insertIndex = -1,
-        bool clearData = false,
-      }) {
+    List<V> newData, {
+    int insertIndex = -1,
+    bool clearData = false,
+  }) {
     if (isFilterData) return;
     if (clearData) _dataList.clear();
     if (insertIndex > 0 && insertIndex < _dataList.value.length) {
-      _dataList.insertValue(newData, index: insertIndex);
+      _dataList.insertValue(insertIndex, newData);
     } else {
       _dataList.addValue(newData);
     }

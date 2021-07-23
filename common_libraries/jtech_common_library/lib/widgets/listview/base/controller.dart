@@ -39,7 +39,7 @@ class JListViewController<V> extends BaseController {
     if (isFilterData) return;
     if (clearData) _dataList.clear();
     if (insertIndex > 0 && insertIndex < _dataList.value.length) {
-      _dataList.insertValue(newData, index: insertIndex);
+      _dataList.insertValue(insertIndex, newData);
     } else {
       _dataList.addValue(newData);
     }

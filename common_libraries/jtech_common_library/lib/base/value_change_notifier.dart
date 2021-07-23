@@ -52,8 +52,14 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
   }
 
   //插入数据
-  void insertValue(List<V> newValue, {required int index, bool notify = true}) {
+  void insertValue(int index, List<V> newValue, {bool notify = true}) {
     value.insertAll(index, newValue);
+    update(notify);
+  }
+
+  //更新/添加数据
+  void putValue(int index, V item, {bool notify = true}) {
+    value[index] = item;
     update(notify);
   }
 
