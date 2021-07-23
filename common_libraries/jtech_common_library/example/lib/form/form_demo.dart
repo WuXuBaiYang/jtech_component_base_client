@@ -79,6 +79,8 @@ class FormDemo extends BasePage {
           JFormInputItem(
             title: Text("输入框-标题"),
             isArrow: true,
+            maxLength: 10,
+            readOnly: true,
             validator: (v){
               return "aaa";
             },

@@ -25,6 +25,24 @@ class JFormInputItem extends JFormItem<String> {
   //持有输入框焦点控制
   final FocusNode focusNode;
 
+  //输入框样式控制
+  final InputDecoration inputDecoration;
+
+  //最小行数
+  final int minLines;
+
+  //最大行数
+  final int maxLines;
+
+  //最大字符数
+  final int? maxLength;
+
+  //是否显示计数器
+  final bool showCounter;
+
+  //是否只读
+  final bool readOnly;
+
   JFormInputItem({
     String? initialValue,
     bool enabled = true,
@@ -32,6 +50,12 @@ class JFormInputItem extends JFormItem<String> {
     FormFieldSetter<String>? onSaved,
     FormFieldValidator<String>? validator,
     this.validRegs = const {},
+    this.inputDecoration = const InputDecoration(),
+    this.minLines = 1,
+    int maxLines = 1,
+    this.maxLength,
+    this.showCounter = true,
+    this.readOnly = false,
     //默认结构部分
     required title,
     bool? required,
@@ -54,6 +78,7 @@ class JFormInputItem extends JFormItem<String> {
               color: Colors.black,
             ),
         this.controller = TextEditingController(text: initialValue),
+        this.maxLines = (maxLines < minLines) ? minLines : maxLines,
         this.focusNode = FocusNode(),
         super(
           enabled: enabled,
@@ -74,14 +99,19 @@ class JFormInputItem extends JFormItem<String> {
   Widget buildFormItem(BuildContext context, FormFieldState<String> field) {
     return buildDefaultItem(
       field: field,
-      inputDecoration: InputDecoration(
-        border: OutlineInputBorder(),
+      inputDecoration: inputDecoration.copyWith(
+        counter: _buildCounter(field.value?.length),
       ),
       child: TextField(
         controller: controller,
         focusNode: focusNode,
         style: textStyle,
         decoration: null,
+        minLines: minLines,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        enabled: enabled,
+        readOnly: readOnly,
         onChanged: (value) => field.didChange(value),
       ),
       config: defaultConfig.copyWith(
@@ -89,6 +119,14 @@ class JFormInputItem extends JFormItem<String> {
         isFocused: focusNode.hasFocus,
       ),
     );
+  }
+
+  //构建计数器
+  Widget? _buildCounter(int? count) {
+    if (showCounter && null != maxLength) {
+      return Text("${count ?? 0}/$maxLength");
+    }
+    return null;
   }
 
   @override
