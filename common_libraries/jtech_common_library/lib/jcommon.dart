@@ -20,7 +20,7 @@ class JCommon {
   final popups = Popups();
 
   //工具箱管理
-  final tools=Tools();
+  final tools = Tools();
 
   //初始化方法
   Future init() async {
