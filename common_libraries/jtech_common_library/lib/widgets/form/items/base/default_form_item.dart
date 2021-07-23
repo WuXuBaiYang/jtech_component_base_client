@@ -30,32 +30,50 @@ class DefaultFormItem<V> extends BaseStatelessWidget {
   //配置文件
   final DefaultFormItemConfig<V> config;
 
+  //输入框样式配置
+  final InputDecoration inputDecoration;
+
   DefaultFormItem({
     required this.child,
     required this.field,
     this.enable = true,
+    InputDecoration? inputDecoration,
     DefaultFormItemConfig<V>? config,
-  }) : this.config = config ?? DefaultFormItemConfig();
+  })  : this.config = config ?? DefaultFormItemConfig(),
+        this.inputDecoration = inputDecoration ??= const InputDecoration(
+          border: InputBorder.none,
+        );
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        padding: config.padding,
-        child: config.vertical ? buildVerticalItem() : buildHorizontalItem(),
+    return Container(
+      margin: config.margin,
+      child: InkWell(
+        child: Container(
+          padding: config.padding,
+          child: InputDecorator(
+            isEmpty: config.isEmpty,
+            isFocused: config.isFocused,
+            decoration: inputDecoration.copyWith(
+              errorText: field.errorText,
+            ),
+            child:
+                config.vertical ? buildVerticalItem() : buildHorizontalItem(),
+          ),
+        ),
+        onTap: null != config.onTap && enable
+            ? () {
+                Feedback.forTap(context);
+                config.onTap!(field.value);
+              }
+            : null,
+        onLongPress: null != config.onLongTap && enable
+            ? () {
+                Feedback.forLongPress(context);
+                config.onLongTap!(field.value);
+              }
+            : null,
       ),
-      onTap: null != config.onTap && enable
-          ? () {
-              Feedback.forTap(context);
-              config.onTap!(field.value);
-            }
-          : null,
-      onLongPress: null != config.onLongTap && enable
-          ? () {
-              Feedback.forLongPress(context);
-              config.onLongTap!(field.value);
-            }
-          : null,
     );
   }
 

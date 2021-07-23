@@ -5,7 +5,9 @@ import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/form/controller.dart';
 import 'package:jtech_common_library/widgets/form/form.dart';
+import 'package:jtech_common_library/widgets/form/items/base/default_form_item_config.dart';
 import 'package:jtech_common_library/widgets/form/items/form_custom_item.dart';
+import 'package:jtech_common_library/widgets/form/items/form_input_item.dart';
 import 'package:jtech_common_library/widgets/form/items/form_text_item.dart';
 
 /*
@@ -21,6 +23,12 @@ class FormDemo extends BasePage {
   Widget build(BuildContext context) {
     return MaterialRootPage(
       appBarTitle: "form表单demo",
+      appBarActions: [
+        IconButton(
+          icon: Icon(Icons.done_all),
+          onPressed: () => controller.submit(),
+        ),
+      ],
       body: JFormView(
         controller: controller,
         children: [
@@ -59,15 +67,22 @@ class FormDemo extends BasePage {
                   text: field.value!["title"],
                   children: [
                     TextSpan(
-                      text: "红色",
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                      )
-                    ),
+                        text: "红色",
+                        style: TextStyle(
+                          color: Colors.blueAccent,
+                        )),
                   ],
                 ),
               );
             },
+          ),
+          JFormInputItem(
+            title: Text("输入框-标题"),
+            isArrow: true,
+            validator: (v){
+              return "aaa";
+            },
+            onTap: (v){},
           ),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),

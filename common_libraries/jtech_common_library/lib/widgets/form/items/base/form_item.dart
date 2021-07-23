@@ -54,7 +54,7 @@ abstract class JFormItem<V> extends BaseStatefulWidget {
   //数据校验事件
   @mustCallSuper
   String? onValidValue(V? value) {
-    validator?.call(value);
+    return validator?.call(value);
   }
 
   //构造主要内容
@@ -65,11 +65,13 @@ abstract class JFormItem<V> extends BaseStatefulWidget {
     required FormFieldState<V> field,
     required Widget child,
     required DefaultFormItemConfig<V> config,
+    InputDecoration? inputDecoration,
   }) =>
       DefaultFormItem<V>(
         child: child,
         field: field,
         config: config,
         enable: enabled,
+        inputDecoration: inputDecoration,
       );
 }
