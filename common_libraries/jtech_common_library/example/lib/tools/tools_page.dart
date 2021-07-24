@@ -67,14 +67,20 @@ class ToolsDemo extends BasePage {
     },
     //正则匹配工具表
     {
-      "匹配手机号(+86) 18600574971": () {
-        return jCommon.tools.matches.hasPhoneNumber_86("18600574971");
+      "匹配手机号(+86) 18600000000": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("18600000000");
       },
-      "匹配手机号(+86) +8618600574971": () {
-        return jCommon.tools.matches.hasPhoneNumber_86("+8618600574971");
+      "匹配手机号(+86) +8618600000000": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("+8618600000000");
       },
-      "匹配手机号(+86) +86-18600574971": () {
-        return jCommon.tools.matches.hasPhoneNumber_86("+86-18600574971");
+      "匹配手机号(+86) +86-18600000000": () {
+        return jCommon.tools.matches.hasPhoneNumber_86("+86-18600000000");
+      },
+      "匹配邮箱地址 啊啊啊aaa@bbb.ccc": () {
+        return jCommon.tools.matches.hasEmailAddress("啊啊啊aaa@bbb.ccc");
+      },
+      "匹配身份证号 21021019990101050X": () {
+        return jCommon.tools.matches.hasIDCard("21021019990101050X");
       },
     },
   ];
