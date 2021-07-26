@@ -29,7 +29,7 @@ class JFormSwitchItem extends JFormItem<bool> {
     Widget? leading,
     bool? isArrow,
     OnFormItemTap<bool>? onTap,
-    OnFormItemLongTap<bool>? onLongTap,
+    OnFormItemTap<bool>? onLongTap,
     DefaultFormItemConfig<bool>? defaultConfig,
   })  : this.defaultConfig =
             (defaultConfig ?? DefaultFormItemConfig()).copyWith(

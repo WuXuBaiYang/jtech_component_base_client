@@ -11,15 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:example/main.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 void main() {
   testWidgets("common test", (WidgetTester tester) async {
-    String a = r'!@#$%^&*QWERTYUIOPASDFGHJKLZXCVBNM';
-    List<String> json = [];
-    a.characters.forEach((it) {
-      json.add(it);
-    });
-    var result = jsonEncode(json);
+    // String a = r'!@#$%^&*QWERTYUIOPASDFGHJKLZXCVBNM';
+    // List<String> json = [];
+    // a.characters.forEach((it) {
+    //   json.add(it);
+    // });
+    // var result = jsonEncode(json);
+    // print("");
+    var result = jCommon.tools.file.getFileSize(1024 * 1024+102411);
     print("");
   });
 }

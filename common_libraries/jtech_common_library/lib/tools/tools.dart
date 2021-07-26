@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:jtech_common_library/tools/data_format.dart';
+import 'package:jtech_common_library/tools/file.dart';
 import 'package:jtech_common_library/tools/matches.dart';
+
+import 'media.dart';
 
 /*
 * 通用工具箱
@@ -14,4 +19,16 @@ class Tools {
 
   //匹配工具
   final matches = Matches();
+
+  //文件管理
+  final file = FileTool();
+
+  //媒体文件管理
+  final media = MediaTool();
+
+  //生成id
+  String generateID({int? seed}) {
+    var time = DateTime.now().millisecondsSinceEpoch;
+    return "${time}_${Random(seed ?? time).nextDouble()}";
+  }
 }

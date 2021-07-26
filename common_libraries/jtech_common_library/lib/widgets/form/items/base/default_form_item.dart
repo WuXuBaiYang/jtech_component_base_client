@@ -9,9 +9,6 @@ import 'required_view.dart';
 //表单子项点击事件
 typedef OnFormItemTap<V> = void Function(V? value);
 
-//表单子项长点击事件
-typedef OnFormItemLongTap<V> = void Function(V? value);
-
 /*
 * 表单默认子项组件
 * @author wuxubaiyang

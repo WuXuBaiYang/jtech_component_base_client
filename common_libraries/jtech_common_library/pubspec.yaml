@@ -52,6 +52,18 @@ dependencies:
 
   # 表格组件
   flutter_staggered_grid_view: ^0.4.0
+
+  # 文件选择库
+  file_picker: ^3.0.3
+
+  # 图片压缩框架
+  flutter_image_compress: ^1.0.0
+
+  # 视频压缩框架
+  video_compress: ^3.1.0
+
+  # 路径管理
+  path_provider: ^2.0.2
   
 
   # The following adds the Cupertino Icons font to your application.

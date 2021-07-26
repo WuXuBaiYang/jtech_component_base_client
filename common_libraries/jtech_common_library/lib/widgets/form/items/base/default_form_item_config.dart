@@ -24,7 +24,7 @@ class DefaultFormItemConfig<V> {
   OnFormItemTap<V>? onTap;
 
   //长点击事件
-  OnFormItemLongTap<V>? onLongTap;
+  OnFormItemTap<V>? onLongTap;
 
   //头部-图标
   Widget? leading;
@@ -81,7 +81,7 @@ class DefaultFormItemConfig<V> {
     EdgeInsets? contentPadding,
     bool? vertical,
     OnFormItemTap<V>? onTap,
-    OnFormItemLongTap<V>? onLongTap,
+    OnFormItemTap<V>? onLongTap,
     Widget? leading,
     Widget? title,
     bool? required,

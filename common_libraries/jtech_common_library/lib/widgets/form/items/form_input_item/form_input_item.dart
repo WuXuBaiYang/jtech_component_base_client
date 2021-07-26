@@ -99,7 +99,7 @@ class JFormInputItem extends JFormItem<String> {
     Widget? leading,
     bool? isArrow,
     OnFormItemTap<String>? onTap,
-    OnFormItemLongTap<String>? onLongTap,
+    OnFormItemTap<String>? onLongTap,
     DefaultFormItemConfig<String>? defaultConfig,
   })  : this.defaultConfig =
             (defaultConfig ?? DefaultFormItemConfig()).copyWith(

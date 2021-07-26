@@ -27,7 +27,7 @@ class JFormCustomItem<V> extends JFormItem<V> {
     Widget? leading,
     bool? isArrow,
     OnFormItemTap<V>? onTap,
-    OnFormItemLongTap<V>? onLongTap,
+    OnFormItemTap<V>? onLongTap,
     DefaultFormItemConfig<V>? defaultConfig,
   })  : this.defaultConfig =
             (defaultConfig ?? DefaultFormItemConfig()).copyWith(
