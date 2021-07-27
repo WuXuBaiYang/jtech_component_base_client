@@ -23,6 +23,14 @@ class Matches {
       hasMatch(RegExp(r'(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)'),
           string: string);
 
+  //判断是否为图片类型
+  bool isImageFile(String string) =>
+      hasMatch(RegExp(r'.jpg|.jpeg|.png'), string: string);
+
+  //判断是否为视频类型
+  bool isVideoFile(String string) =>
+      hasMatch(RegExp(r'.mp4|.avi|.rvmb'), string: string);
+
   //判断是否存在匹配内容
   bool hasMatch(Pattern pattern, {required String string}) =>
       match(pattern, string: string).isNotEmpty;

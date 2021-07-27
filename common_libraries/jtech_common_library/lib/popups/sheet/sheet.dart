@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 import 'config.dart';
 import 'file_picker.dart';
@@ -203,7 +206,7 @@ class Sheet {
                 );
                 if (null == result) return;
               } else {
-                result = await _pickFiles(
+                result = await _getChooseFiles(
                     item.type!, item.extensions, multiple, compress);
               }
               await jBase.router.pop(result);
@@ -215,7 +218,7 @@ class Sheet {
   }
 
   //文件选择方法
-  Future<List<FileItem>> _pickFiles(
+  Future<List<FileItem>> _getChooseFiles(
     FilePickerType type,
     List<String> extensions,
     bool multiple,
@@ -225,17 +228,14 @@ class Sheet {
     List<FileItem> files = [];
     if (type == FilePickerType.imageTake) {
       //图片拍摄
-
     } else if (type == FilePickerType.videoRecord) {
       //视频录制
-
     } else if (type == FilePickerType.audioRecord) {
       //音频录制
-
     } else {
       //文件选择
       var result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
+        type: type.getFileType()!,
         allowMultiple: multiple,
         allowedExtensions: extensions,
       );
@@ -245,6 +245,17 @@ class Sheet {
           name: item.name,
           size: item.size,
         ));
+      }
+    }
+    if (compress) {
+      for (var item in files) {
+        File? file = File(item.path);
+        if (jCommon.tools.matches.isImageFile(file.absolute.path)) {
+          file = await jCommon.tools.media.compressImage(file);
+        } else if (jCommon.tools.matches.isVideoFile(file.absolute.path)) {
+          file = await jCommon.tools.media.compressVideo(file);
+        }
+        if (null != file) item.path = file.absolute.path;
       }
     }
     return files;

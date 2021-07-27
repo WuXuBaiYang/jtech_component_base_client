@@ -3,6 +3,8 @@
 * @author wuxubaiyang
 * @Time 2021/7/26 下午1:42
 */
+import 'package:file_picker/file_picker.dart';
+
 class FileItem {
   //文件名称
   String name;
@@ -138,4 +140,30 @@ enum FilePickerType {
   audioPick,
   audioRecord,
   custom,
+}
+
+/*
+* 扩展文件选择类型
+* @author wuxubaiyang
+* @Time 2021/7/27 上午10:23
+*/
+extension FilePickerTypeExtension on FilePickerType {
+  //获取文件选择类型
+  FileType? getFileType() {
+    switch (this) {
+      case FilePickerType.imagePick:
+        return FileType.image;
+      case FilePickerType.videoPick:
+        return FileType.video;
+      case FilePickerType.audioPick:
+        return FileType.audio;
+      case FilePickerType.custom:
+        return FileType.custom;
+      case FilePickerType.imageTake:
+      case FilePickerType.videoRecord:
+      case FilePickerType.audioRecord:
+        break;
+    }
+    return null;
+  }
 }
