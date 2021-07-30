@@ -35,7 +35,7 @@ class Sheet {
     BuildContext context, {
     required Widget content,
     Widget? title,
-    Widget cancelItem = const CloseButton(),
+    Widget? cancelItem = const CloseButton(),
     Widget? confirmItem,
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
@@ -247,17 +247,17 @@ class Sheet {
         ));
       }
     }
-    if (compress) {
-      for (var item in files) {
-        File? file = File(item.path);
-        if (jCommon.tools.matches.isImageFile(file.absolute.path)) {
-          file = await jCommon.tools.media.compressImage(file);
-        } else if (jCommon.tools.matches.isVideoFile(file.absolute.path)) {
-          file = await jCommon.tools.media.compressVideo(file);
-        }
-        if (null != file) item.path = file.absolute.path;
-      }
-    }
+    // if (compress) {
+    //   for (var item in files) {
+    //     File? file = File(item.path);
+    //     if (jCommon.tools.matches.isImageFile(file.absolute.path)) {
+    //       file = await jCommon.tools.media.compressImage(file);
+    //     } else if (jCommon.tools.matches.isVideoFile(file.absolute.path)) {
+    //       file = await jCommon.tools.media.compressVideo(file);
+    //     }
+    //     if (null != file) item.path = file.absolute.path;
+    //   }
+    // }
     return files;
   }
 }

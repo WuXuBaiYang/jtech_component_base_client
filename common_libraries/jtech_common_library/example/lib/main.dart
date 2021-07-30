@@ -13,6 +13,7 @@ import 'package:example/tools/tools_page.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/tools/file_picker/pages/take_photo_page.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/root_app/run.dart';
 import 'gridview/gridview_refresh_demo.dart';
@@ -34,6 +35,7 @@ void main() {
       "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
+      "/test/take_photo_page": (_) => TakePhotoPage(),
     },
     homePage: MyHomePage(),
   );
@@ -42,6 +44,7 @@ void main() {
 class MyHomePage extends BasePage {
   //demo测试页面
   final Map<String, String> pages = {
+    "拍照页面": "/test/take_photo_page",
     "基本列表组件": "/test/listview",
     "刷新列表组件": "/test/refresh_listview",
     "索引列表组件": "/test/index_listview",
@@ -68,7 +71,10 @@ class MyHomePage extends BasePage {
           String title = pages.keys.elementAt(index);
           return ListTile(
             title: Text(title),
-            onTap: () => jBase.router.push(pages[title]!),
+            onTap: () async {
+              var result = await jBase.router.push(pages[title]!);
+              print("");
+            },
           );
         },
       ),

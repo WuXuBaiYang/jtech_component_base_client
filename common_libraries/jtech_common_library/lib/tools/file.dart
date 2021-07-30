@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:video_compress/video_compress.dart';
 
 /*
 * 文件操作工具
@@ -16,8 +15,6 @@ class FileTool {
 
   //清除视频缓存目录文件
   Future<bool> clearVideoCache() async {
-    //清除视频压缩缓存目录
-    await VideoCompress.deleteAllCache();
     return clearCache(path: videoCachePath);
   }
 
