@@ -13,6 +13,7 @@ import 'package:example/tools/tools_page.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/tools/file_picker/pages/record_video_page.dart';
 import 'package:jtech_common_library/tools/file_picker/pages/take_photo_page.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/root_app/run.dart';
@@ -36,6 +37,7 @@ void main() {
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
       "/test/take_photo_page": (_) => TakePhotoPage(),
+      "/test/record_video_page": (_) => RecordVideoPage(),
     },
     homePage: MyHomePage(),
   );
@@ -45,6 +47,7 @@ class MyHomePage extends BasePage {
   //demo测试页面
   final Map<String, String> pages = {
     "拍照页面": "/test/take_photo_page",
+    "视频录制页面": "/test/record_video_page",
     "基本列表组件": "/test/listview",
     "刷新列表组件": "/test/refresh_listview",
     "索引列表组件": "/test/index_listview",

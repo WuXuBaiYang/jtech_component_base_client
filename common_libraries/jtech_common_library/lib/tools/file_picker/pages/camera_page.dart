@@ -138,7 +138,7 @@ abstract class BaseCameraPage extends BasePage {
     var controller = CameraController(
       target ?? cameras[0],
       resolution.resolutionPreset,
-    );
+    )..setFocusMode(FocusMode.auto);
     await controller.initialize();
     return _controllerMap[currDirect] = controller;
   }

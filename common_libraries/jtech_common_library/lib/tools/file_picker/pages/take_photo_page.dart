@@ -66,19 +66,19 @@ class TakePhotoPage extends BaseCameraPage {
           JImage.file(File(result.path)),
           SizedBox(height: 25),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Expanded(
-                  child: IconButton(
+              IconButton(
                 color: Colors.white,
                 icon: Icon(Icons.close),
                 onPressed: () => jBase.router.pop(),
-              )),
-              Expanded(
-                  child: IconButton(
+              ),
+              SizedBox(width: 25),
+              IconButton(
                 color: Colors.white,
                 icon: Icon(Icons.done),
                 onPressed: () => jBase.router.pop(result),
-              )),
+              ),
             ],
           ),
         ],
