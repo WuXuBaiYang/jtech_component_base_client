@@ -39,6 +39,7 @@ void main() {
       "/test/tools_demo": (_) => ToolsDemo(),
       "/test/take_photo_page": (_) => TakePhotoPage(
         resolution: CameraResolution.medium,
+        maxCount: 5,
       ),
       "/test/record_video_page": (_) => RecordVideoPage(),
     },

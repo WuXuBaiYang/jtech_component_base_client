@@ -17,10 +17,11 @@ class ValueChangeNotifier<V> extends ChangeNotifier
   V get value => _value;
 
   //赋值并刷新
-  setValue(V newValue, {bool notify = true}) {
-    if (newValue == _value) return;
+  bool setValue(V newValue, {bool notify = true}) {
+    if (newValue == _value) return false;
     _value = newValue;
     update(notify);
+    return true;
   }
 
   //刷新
@@ -53,6 +54,14 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
 
   //判断是否非空
   bool get isNotEmpty => value.isNotEmpty;
+
+  //获取子项
+  V? getItem(int index) {
+    if (index >= 0 && value.length > index) {
+      return value[index];
+    }
+    return null;
+  }
 
   //添加数据
   void addValue(List<V> newValue, {bool notify = true}) {
