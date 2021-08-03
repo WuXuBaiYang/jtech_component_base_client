@@ -60,6 +60,7 @@ abstract class BaseCameraPage extends BasePage {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: CloseButton(),
+        elevation: 0.0,
         actions: [
           _buildTorchLightAction(),
           _buildCameraDirectionAction(),

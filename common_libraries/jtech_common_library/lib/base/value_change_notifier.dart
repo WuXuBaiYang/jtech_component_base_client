@@ -48,6 +48,12 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
   //获取数据长度
   int get length => value.length;
 
+  //判断是否为空
+  bool get isEmpty => value.isEmpty;
+
+  //判断是否非空
+  bool get isNotEmpty => value.isNotEmpty;
+
   //添加数据
   void addValue(List<V> newValue, {bool notify = true}) {
     value.addAll(newValue);
