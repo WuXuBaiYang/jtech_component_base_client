@@ -13,6 +13,7 @@ import 'package:example/tools/tools_page.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
 import 'package:jtech_common_library/tools/file_picker/pages/record_video_page.dart';
 import 'package:jtech_common_library/tools/file_picker/pages/take_photo_page.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
@@ -36,7 +37,9 @@ void main() {
       "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
-      "/test/take_photo_page": (_) => TakePhotoPage(),
+      "/test/take_photo_page": (_) => TakePhotoPage(
+        resolution: CameraResolution.medium,
+      ),
       "/test/record_video_page": (_) => RecordVideoPage(),
     },
     homePage: MyHomePage(),

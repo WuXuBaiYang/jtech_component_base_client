@@ -40,6 +40,7 @@ class Sheet {
     SheetOptionTap<T>? cancelTap,
     SheetOptionTap<T>? confirmTap,
     SheetConfig<T>? config,
+    bool inSafeArea = true,
   }) {
     return showFixedBottomSheet<T>(
       context,
@@ -50,7 +51,7 @@ class Sheet {
       cancelTap: cancelTap,
       confirmItem: confirmItem,
       confirmTap: confirmTap,
-      inSafeArea: true,
+      inSafeArea: inSafeArea,
       config: config,
     );
   }

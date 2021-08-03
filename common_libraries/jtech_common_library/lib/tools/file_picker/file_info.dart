@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
+
 /*
 * 选择器返回值
 * @author jtechjh
@@ -31,4 +34,15 @@ class JFileInfo {
     this.length,
     this.mimeType,
   });
+
+  //获取为file类型
+  File get file => File(path);
+
+  //从xFile中加载数据
+  static Future<JFileInfo> loadFromXFile(XFile xFile) async => JFileInfo(
+        path: xFile.path,
+        name: xFile.name,
+        length: await xFile.length(),
+        mimeType: xFile.mimeType,
+      );
 }

@@ -61,65 +61,34 @@ abstract class BaseCameraPage extends BasePage {
         backgroundColor: Colors.transparent,
         leading: CloseButton(),
         actions: [
-          ValueListenableBuilder<FlashMode>(
-            valueListenable: _flashMode,
-            builder: (context, value, child) {
-              if (isCameraFront) return EmptyBox();
-              var isOn = value == FlashMode.torch;
-              return IconButton(
-                icon: Icon(isOn ? Icons.lightbulb : Icons.lightbulb_outline),
-                onPressed: () {
-                  var newMode = isOn ? FlashMode.off : FlashMode.torch;
-                  controller?.setFlashMode(newMode);
-                  _flashMode.setValue(newMode);
-                },
-              );
-            },
-          ),
-          ValueListenableBuilder<bool>(
-            valueListenable: _cameraBusy,
-            builder: (context, value, child) {
-              if (value) return EmptyBox();
-              return IconButton(
-                icon: Icon(Icons.flip_camera_android),
-                onPressed: () {
-                  var currDirect = _cameraDirection.value;
-                  _cameraDirection.setValue(
-                    currDirect == CameraLensDirection.front
-                        ? CameraLensDirection.back
-                        : CameraLensDirection.front,
-                  );
-                  _flashMode.update(true);
-                },
-              );
-            },
-          ),
+          _buildTorchLightAction(),
+          _buildCameraDirectionAction(),
         ],
       ),
-      body: ValueListenableBuilder<CameraLensDirection>(
-        valueListenable: _cameraDirection,
-        builder: (context, value, child) {
-          return FutureBuilder<CameraController?>(
-            future: _initCamera(),
-            builder: (context, snap) {
-              if (!snap.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return Stack(
-                children: [
-                  CameraPreview(snap.data!),
-                  buildCameraContent(context),
-                ],
-              );
-            },
-          );
-        },
-      ),
+      body: buildContent(context),
     );
   }
 
-  //构建摄像机内容视图
-  Widget buildCameraContent(BuildContext context);
+  //构建主体内容
+  Widget buildContent(BuildContext context);
+
+  //构建摄像机基础结构部分
+  Widget buildCameraPreview(BuildContext context) {
+    return ValueListenableBuilder<CameraLensDirection>(
+      valueListenable: _cameraDirection,
+      builder: (context, value, child) {
+        return FutureBuilder<CameraController?>(
+          future: _initCamera(),
+          builder: (context, snap) {
+            if (!snap.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return CameraPreview(snap.data!);
+          },
+        );
+      },
+    );
+  }
 
   //初始化摄像头方法
   Future<CameraController?> _initCamera() async {
@@ -141,6 +110,47 @@ abstract class BaseCameraPage extends BasePage {
     )..setFocusMode(FocusMode.auto);
     await controller.initialize();
     return _controllerMap[currDirect] = controller;
+  }
+
+  //构建手电筒开关
+  Widget _buildTorchLightAction() {
+    return ValueListenableBuilder<FlashMode>(
+      valueListenable: _flashMode,
+      builder: (context, value, child) {
+        if (isCameraFront) return EmptyBox();
+        var isOn = value == FlashMode.torch;
+        return IconButton(
+          icon: Icon(isOn ? Icons.lightbulb : Icons.lightbulb_outline),
+          onPressed: () {
+            var newMode = isOn ? FlashMode.off : FlashMode.torch;
+            controller?.setFlashMode(newMode);
+            _flashMode.setValue(newMode);
+          },
+        );
+      },
+    );
+  }
+
+  //构建摄像头方向切换开关
+  _buildCameraDirectionAction() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: _cameraBusy,
+      builder: (context, value, child) {
+        if (value) return EmptyBox();
+        return IconButton(
+          icon: Icon(Icons.flip_camera_android),
+          onPressed: () {
+            var currDirect = _cameraDirection.value;
+            _cameraDirection.setValue(
+              currDirect == CameraLensDirection.front
+                  ? CameraLensDirection.back
+                  : CameraLensDirection.front,
+            );
+            _flashMode.update(true);
+          },
+        );
+      },
+    );
   }
 
   @override

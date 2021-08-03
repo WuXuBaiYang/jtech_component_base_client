@@ -45,6 +45,9 @@ class ListValueChangeNotifier<V> extends ValueChangeNotifier<List<V>> {
   //清除数据
   void clear() => value.clear();
 
+  //获取数据长度
+  int get length => value.length;
+
   //添加数据
   void addValue(List<V> newValue, {bool notify = true}) {
     value.addAll(newValue);
