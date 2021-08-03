@@ -39,7 +39,8 @@ class TakePhotoPage extends BaseCameraPage {
           front: front,
           resolution: resolution,
         );
-@override
+
+  @override
   void initState() {
     super.initState();
     //监听页面变化回调
@@ -47,6 +48,7 @@ class TakePhotoPage extends BaseCameraPage {
       print("");
     });
   }
+
   @override
   Widget buildContent(BuildContext context) {
     return Stack(
@@ -157,7 +159,7 @@ class TakePhotoPage extends BaseCameraPage {
                   width: 35,
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: selected ? Colors.blue: null,
+                    color: selected ? Colors.blue : null,
                     borderRadius: borderRadius,
                   ),
                   child: child,
