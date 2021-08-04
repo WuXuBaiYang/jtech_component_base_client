@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:jtech_common_library/tools/data_format.dart';
 import 'package:jtech_common_library/tools/file.dart';
 import 'package:jtech_common_library/tools/matches.dart';
+import 'package:jtech_common_library/tools/timer/timer.dart';
 
 import 'media.dart';
 
@@ -25,6 +26,9 @@ class Tools {
 
   //媒体文件管理
   final media = MediaTool();
+
+  //计时器工具
+  final timer = JTimer();
 
   //生成id
   String generateID({int? seed}) {

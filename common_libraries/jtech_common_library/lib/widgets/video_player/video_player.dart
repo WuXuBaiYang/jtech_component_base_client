@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
+import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/video_player/config.dart';
 import 'package:jtech_common_library/widgets/video_player/controller.dart';
 import 'package:video_player/video_player.dart';
@@ -25,7 +27,6 @@ class JVideoPlayer extends BaseStatefulWidget {
   //创建本地文件资源的播放器
   JVideoPlayer.file({
     required File file,
-    PlayerMode? mode,
     VideoPlayerConfig? config,
     JVideoPlayerController? controller,
   })  : this.playerController = VideoPlayerController.file(file),
@@ -33,7 +34,6 @@ class JVideoPlayer extends BaseStatefulWidget {
         this.config = (config ?? VideoPlayerConfig()).copyWith(
           dataSource: file.absolute.path,
           sourceType: SourceType.file,
-          mode: mode,
         );
 
   @override
@@ -68,61 +68,86 @@ class JVideoPlayer extends BaseStatefulWidget {
     if (!playerController.value.isInitialized) {
       return Center(child: CircularProgressIndicator());
     }
-    return _buildPlayer();
+    return SizedBox.fromSize(
+      size: config.size,
+      child: Container(
+        alignment: config.align,
+        color: config.color,
+        child: _buildPlayer(context),
+      ),
+    );
   }
 
   //构建播放器组件
-  Widget _buildPlayer() {
-    var playerValue = playerController.value;
+  Widget _buildPlayer(BuildContext context) {
+    var videoSize = _getVideoSize(
+      context,
+      playerController.value.size,
+    );
     return SizedBox.fromSize(
-      size: config.size ?? playerValue.size,
-      child: Container(
-        color: config.color,
-        child: Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: playerValue.aspectRatio,
-              child: VideoPlayer(playerController),
-            ),
-            Positioned.fill(child: _buildOptions()),
-          ],
-        ),
+      size: videoSize,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          AspectRatio(
+            aspectRatio: playerController.value.aspectRatio,
+            child: VideoPlayer(playerController),
+          ),
+          _buildOptions(videoSize),
+        ],
       ),
     );
   }
 
   //构建操作面板
-  Widget _buildOptions() {
+  Widget _buildOptions(Size videoSize) {
+    var playIconSize = min(videoSize.width, videoSize.height) * 0.3;
     return ValueListenableBuilder<PlayerState>(
       valueListenable: controller.playerListenable,
       builder: (context, value, child) {
-        return InkWell(
-          child: Stack(
-            children: [
-              Visibility(
-                visible: value.isPause,
-                child: Center(
-                  child: config.playButton ??
-                      Icon(
-                        Icons.play_circle_outline_rounded,
-                        color: Colors.white,
-                        size: 80,
-                      ),
+        return Stack(
+          children: [
+            _buildOptionGesture(),
+            Visibility(
+              visible: value.isPause,
+              child: Center(
+                child: Icon(
+                  Icons.play_circle_outline_rounded,
+                  color: Colors.white.withOpacity(0.2),
+                  size: playIconSize,
                 ),
               ),
-            ],
-          ),
-          onTap: () async {
-            if (playerController.value.isPlaying) {
-              await playerController.pause();
-              controller.updateState(PlayerState.pause);
-            } else {
-              await playerController.play();
-              controller.updateState(PlayerState.playing);
-            }
-          },
+            ),
+          ],
         );
       },
+    );
+  }
+
+  //构建手势操作层
+  _buildOptionGesture() {
+    return Positioned.fill(child: GestureDetector(
+      onTap: () async {
+        if (playerController.value.isPlaying) {
+          await playerController.pause();
+          controller.updateState(PlayerState.pause);
+        } else {
+          await playerController.play();
+          controller.updateState(PlayerState.playing);
+        }
+      },
+    ));
+  }
+
+  //计算视频实际展示尺寸
+  Size _getVideoSize(BuildContext context, Size videoSize) {
+    var limitSize = config.size ?? MediaQuery.of(context).size;
+    var wRatio = limitSize.width / videoSize.width;
+    var hRatio = limitSize.height / videoSize.height;
+    var ratio = min(wRatio, hRatio);
+    return Size(
+      ratio == wRatio ? limitSize.width : videoSize.width * ratio,
+      ratio == hRatio ? limitSize.height : videoSize.height * ratio,
     );
   }
 
@@ -130,6 +155,7 @@ class JVideoPlayer extends BaseStatefulWidget {
   void dispose() {
     super.dispose();
     //销毁播放器
+    playerController.dispose();
     controller.dispose();
   }
 }

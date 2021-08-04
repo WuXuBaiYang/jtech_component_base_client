@@ -41,7 +41,10 @@ void main() {
         resolution: CameraResolution.medium,
         maxCount: 5,
       ),
-      "/test/record_video_page": (_) => RecordVideoPage(),
+      "/test/record_video_page": (_) => RecordVideoPage(
+        resolution: CameraResolution.medium,
+        maxRecordDuration: Duration(seconds: 5),
+      ),
     },
     homePage: MyHomePage(),
   );

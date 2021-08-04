@@ -3,11 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/tools/file_picker/file_info.dart';
 import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
 import 'package:jtech_common_library/widgets/image/clip.dart';
 import 'package:jtech_common_library/widgets/image/config.dart';
 import 'package:jtech_common_library/widgets/image/jimage.dart';
+import 'package:jtech_common_library/widgets/video_player/config.dart';
 import 'package:jtech_common_library/widgets/video_player/video_player.dart';
 
 /*
@@ -25,6 +27,12 @@ class RecordVideoPage extends BaseCameraPage {
 
   //当前视频录制状态
   final ValueChangeNotifier<RecordState> recordState;
+
+  //录制限时计数器
+  final ValueChangeNotifier<Duration> recordTick;
+
+  //录制定时器跳动频率
+  final Duration timerPeriodic = Duration(seconds: 1);
 
   //视频预览组件控制器
   final PageController pageController;
@@ -44,7 +52,12 @@ class RecordVideoPage extends BaseCameraPage {
         this.currentIndex = ValueChangeNotifier(0),
         this.pageController = PageController(),
         this.recordState = ValueChangeNotifier(RecordState.none),
+        this.recordTick = ValueChangeNotifier(maxRecordDuration),
         assert(maxCount > 0, "最大数量不可小于等于0"),
+        assert(
+          maxRecordDuration.inSeconds >= 1 && maxRecordDuration.inMinutes <= 30,
+          "录制时间范围 1秒-30分钟",
+        ),
         super(
           front: front,
           resolution: resolution,
@@ -117,6 +130,9 @@ class RecordVideoPage extends BaseCameraPage {
               color: Colors.black,
               child: JVideoPlayer.file(
                 file: item.file,
+                config: VideoPlayerConfig(
+                  align: Alignment.topCenter,
+                ),
               ),
             );
           }),
@@ -180,7 +196,13 @@ class RecordVideoPage extends BaseCameraPage {
 
   //构建录制进度组件
   Widget _buildRecordProgress(RecordState state) {
-    return EmptyBox();
+    return ValueListenableBuilder<Duration>(
+      valueListenable: recordTick,
+      builder: (context, value, child) {
+        ///
+        return Text("${value.inSeconds}");
+      },
+    );
   }
 
   //构建摄像头操作部分
@@ -265,12 +287,16 @@ class RecordVideoPage extends BaseCameraPage {
         await controller?.prepareForVideoRecording();
         recordState.setValue(RecordState.recording);
         await controller?.startVideoRecording();
+        recordTick.setValue(maxRecordDuration);
+        startRecordTimer();
       } else if (state.isPause) {
         recordState.setValue(RecordState.recording);
         await controller?.resumeVideoRecording();
+        startRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
+      cancelRecordTimer();
       cameraBusy = false;
     }
   }
@@ -281,16 +307,18 @@ class RecordVideoPage extends BaseCameraPage {
       if (state.isRecording) {
         recordState.setValue(RecordState.pause);
         await controller?.pauseVideoRecording();
+        cancelRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
+      cancelRecordTimer();
     }
   }
 
   //停止录制视频
   void _stopRecordVideo(RecordState state) async {
     try {
-      if (state.isRecording) {
+      if (state.isRecording || state.isPause) {
         recordState.setValue(RecordState.none);
         var result = await controller?.stopVideoRecording();
         if (null == result) return null;
@@ -299,10 +327,37 @@ class RecordVideoPage extends BaseCameraPage {
           await JFileInfo.loadFromXFile(result),
         ]);
         currentIndex.update(true);
+        cancelRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
+      cancelRecordTimer();
     }
+  }
+
+  //启动计时器
+  void startRecordTimer() {
+    print("11111111");
+    jCommon.tools.timer.countdown(
+      key: "${controller?.cameraId}",
+      maxDuration: recordTick.value,
+      tickDuration: timerPeriodic,
+      callback: (remaining) => recordTick.setValue(remaining),
+      onFinish: () => _stopRecordVideo(recordState.value),
+    );
+  }
+
+  //销毁当前计时器
+  void cancelRecordTimer() =>
+      jCommon.tools.timer.cancel("${controller?.cameraId}");
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    controller?.dispose();
+    //销毁定时器
+    cancelRecordTimer();
   }
 }
 

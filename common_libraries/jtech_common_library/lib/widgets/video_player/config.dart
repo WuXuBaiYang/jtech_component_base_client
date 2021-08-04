@@ -7,9 +7,6 @@ import 'package:flutter/material.dart';
 * @Time 2021/8/4 10:15 上午
 */
 class VideoPlayerConfig {
-  //播放器模式
-  PlayerMode mode;
-
   //加载完成后自动播放
   bool autoPlay;
 
@@ -25,53 +22,37 @@ class VideoPlayerConfig {
   //背景色
   Color color;
 
-  //播放按钮组件
-  Widget? playButton;
+  //当用户设置大小大于视频尺寸时，视频的居中方式
+  Alignment align;
 
   VideoPlayerConfig({
     this.dataSource = "",
     this.sourceType = SourceType.net,
     this.autoPlay = false,
-    this.mode = PlayerMode.video,
     this.size,
     this.color = Colors.black,
-    this.playButton,
+    this.align = Alignment.center,
   });
 
   VideoPlayerConfig copyWith({
     String? dataSource,
     SourceType? sourceType,
-    PlayerMode? mode,
     bool? autoPlay,
     Size? size,
     Color? color,
-    Widget? playButton,
+    Alignment? align,
   }) {
     return VideoPlayerConfig(
       dataSource: dataSource ?? this.dataSource,
       sourceType: sourceType ?? this.sourceType,
-      mode: mode ?? this.mode,
       autoPlay: autoPlay ?? this.autoPlay,
       size: size ?? this.size,
       color: color ?? this.color,
-      playButton: playButton ?? this.playButton,
+      align: align ?? this.align,
     );
   }
 }
 
-/*
-* 播放器模式枚举
-* @author jtechjh
-* @Time 2021/8/4 10:15 上午
-*/
-enum PlayerMode {
-  //播放器模式
-  video,
-  //缩略图模式
-  thumbnail,
-  //直播拉流模式
-  live,
-}
 /*
 * 资源类型枚举
 * @author jtechjh
