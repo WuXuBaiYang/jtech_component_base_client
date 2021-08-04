@@ -22,8 +22,8 @@ class RecordVideoPage extends BaseCameraPage {
   //当前所选下标
   final ValueChangeNotifier<int> currentIndex;
 
-  //是否正在录制中
-  final ValueChangeNotifier<bool> recording;
+  //当前视频录制状态
+  final ValueChangeNotifier<RecordState> recordState;
 
   //视频预览组件控制器
   final PageController pageController;
@@ -42,7 +42,7 @@ class RecordVideoPage extends BaseCameraPage {
   })  : this.fileList = ListValueChangeNotifier.empty(),
         this.currentIndex = ValueChangeNotifier(0),
         this.pageController = PageController(),
-        this.recording = ValueChangeNotifier(false),
+        this.recordState = ValueChangeNotifier(RecordState.none),
         assert(maxCount > 0, "最大数量不可小于等于0"),
         super(
           front: front,
@@ -54,10 +54,12 @@ class RecordVideoPage extends BaseCameraPage {
     return Stack(
       children: [
         buildCameraPreview(context),
-        ValueListenableBuilder<bool>(
-          valueListenable: recording,
-          builder: (context, value, child) =>
-              value ? EmptyBox() : _buildPreview(),
+        ValueListenableBuilder<RecordState>(
+          valueListenable: recordState,
+          builder: (context, value, child) {
+            if (!value.isNone) return EmptyBox();
+            return _buildPreview();
+          },
         ),
         Column(
           children: [
@@ -67,14 +69,14 @@ class RecordVideoPage extends BaseCameraPage {
                 child: Container(
                   color: Colors.black12,
                   alignment: Alignment.center,
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: recording,
+                  child: ValueListenableBuilder<RecordState>(
+                    valueListenable: recordState,
                     builder: (context, value, child) => Column(
                       children: [
                         Expanded(
                           flex: 1,
-                          child: value
-                              ? _buildRecordProgress()
+                          child: !value.isNone
+                              ? _buildRecordProgress(value)
                               : _buildPreviewIndicator(),
                         ),
                         Expanded(flex: 3, child: _buildCameraActions(value)),
@@ -179,36 +181,39 @@ class RecordVideoPage extends BaseCameraPage {
   }
 
   //构建录制进度组件
-  Widget _buildRecordProgress() {
+  Widget _buildRecordProgress(RecordState state) {
     return EmptyBox();
   }
 
   //构建摄像头操作部分
-  Widget _buildCameraActions(bool isRecording) {
+  Widget _buildCameraActions(RecordState state) {
     return ValueListenableBuilder<int>(
       valueListenable: currentIndex,
       builder: (context, value, child) {
         var canOperate = (hasMaxCount ? 0 : 1) > 0 && value == 0;
-        var iconData = isRecording
-            ? Icons.crop_square_rounded
-            : (canOperate ? Icons.camera : Icons.done);
+        var isWorking = state.isRecording || state.isPause;
         return Row(
           children: [
             Expanded(child: EmptyBox()),
             FloatingActionButton(
-              backgroundColor: isRecording ? Colors.white : null,
+              backgroundColor: isWorking ? Colors.white : null,
               child: Icon(
-                iconData,
-                color: isRecording ? Colors.redAccent : null,
+                state.isPrepare
+                    ? Icons.all_inclusive_rounded
+                    : (isWorking
+                        ? Icons.crop_square_rounded
+                        : (canOperate ? Icons.camera : Icons.done)),
+                color: isWorking ? Colors.redAccent : null,
               ),
               onPressed: () {
+                if (state.isPrepare) return;
+                if (isWorking) {
+                  Feedback.forTap(context);
+                  return _stopRecordVideo(state);
+                }
                 if (canOperate) {
                   Feedback.forTap(context);
-                  return _startRecordVideo();
-                }
-                if (isRecording) {
-                  Feedback.forTap(context);
-                  return _stopRecordVideo();
+                  return _startRecordVideo(state);
                 }
                 jBase.router.pop(fileList.value);
               },
@@ -217,15 +222,18 @@ class RecordVideoPage extends BaseCameraPage {
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 25),
-                child: isRecording
+                child: !state.isNone && !state.isPrepare
                     ? IconButton(
                         splashRadius: 25,
-                        icon: Icon(Icons.pause_circle_outline_rounded),
+                        icon: Icon(
+                          state.isRecording
+                              ? Icons.pause_circle_outline_rounded
+                              : Icons.play_circle_outline_rounded,
+                        ),
                         color: Colors.white,
-                        onPressed: () async {
-                          ///
-                          await controller?.pauseVideoRecording();
-                        },
+                        onPressed: () => state.isRecording
+                            ? _pauseRecordVideo(state)
+                            : _startRecordVideo(state),
                       )
                     : (canOperate
                         ? EmptyBox()
@@ -251,15 +259,52 @@ class RecordVideoPage extends BaseCameraPage {
   }
 
   //开始录制视频
-  void _startRecordVideo() async {
-    await controller?.prepareForVideoRecording();
-    await controller?.startVideoRecording();
-    recording.setValue(true);
+  void _startRecordVideo(RecordState state) async {
+    try {
+      cameraBusy = true;
+      if (state.isNone) {
+        recordState.setValue(RecordState.prepare);
+        await controller?.prepareForVideoRecording();
+        recordState.setValue(RecordState.recording);
+        await controller?.startVideoRecording();
+      } else if (state.isPause) {
+        recordState.setValue(RecordState.recording);
+        await controller?.resumeVideoRecording();
+      }
+    } catch (e) {
+      recordState.setValue(RecordState.none);
+      cameraBusy = false;
+    }
+  }
+
+  //暂停视频录制
+  void _pauseRecordVideo(RecordState state) async {
+    try {
+      if (state.isRecording) {
+        recordState.setValue(RecordState.pause);
+        await controller?.pauseVideoRecording();
+      }
+    } catch (e) {
+      recordState.setValue(RecordState.none);
+    }
   }
 
   //停止录制视频
-  void _stopRecordVideo() async {
-    recording.setValue(false);
+  void _stopRecordVideo(RecordState state) async {
+    try {
+      if (state.isRecording) {
+        recordState.setValue(RecordState.none);
+        var result = await controller?.stopVideoRecording();
+        if (null == result) return null;
+        cameraBusy = false;
+        fileList.insertValue(0, [
+          await JFileInfo.loadFromXFile(result),
+        ]);
+        currentIndex.update(true);
+      }
+    } catch (e) {
+      recordState.setValue(RecordState.none);
+    }
   }
 }
 
@@ -281,6 +326,9 @@ enum RecordState {
 * @Time 2021/8/3 5:37 下午
 */
 extension RecordStateExtension on RecordState {
+  //判断是否无动作
+  bool get isNone => this == RecordState.none;
+
   //判断是否暂停中
   bool get isPause => this == RecordState.pause;
 

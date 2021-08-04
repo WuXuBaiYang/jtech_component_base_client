@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 
 /*
 * 选择器返回值
@@ -37,6 +36,10 @@ class JFileInfo {
 
   //获取为file类型
   File get file => File(path);
+
+  //判断文件类型是否为图片
+  //判断文件类型是否为视频
+  //判断文件类型是否为音频
 
   //从xFile中加载数据
   static Future<JFileInfo> loadFromXFile(XFile xFile) async => JFileInfo(
