@@ -200,8 +200,9 @@ class RecordVideoPage extends BaseCameraPage {
     return ValueListenableBuilder<Duration>(
       valueListenable: recordTick,
       builder: (context, value, child) {
-        var progress = 1 -
-            value.inMicroseconds / maxRecordDuration.inMicroseconds.toDouble();
+        var progress = !value.equal(maxRecordDuration)
+            ? value.divide(maxRecordDuration)
+            : 1.0;
         return Column(
           children: [
             RotatedBox(
@@ -209,15 +210,34 @@ class RecordVideoPage extends BaseCameraPage {
               child: LinearProgressIndicator(
                 backgroundColor: Colors.transparent,
                 value: progress,
-                minHeight: 5,
               ),
             ),
-            Text.rich(TextSpan(
-              text: _handleRecordTime(
-                value,
-                maxRecordDuration,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ClipOval(
+                    child: Container(
+                      color: Colors.redAccent,
+                      width: 13,
+                      height: 13,
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    _handleRecordTime(
+                      value,
+                      maxRecordDuration,
+                    ),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-            )),
+            ),
           ],
         );
       },
@@ -359,7 +379,7 @@ class RecordVideoPage extends BaseCameraPage {
         key: "${controller?.cameraId}",
         maxDuration: recordTick.value,
         tickDuration: timerPeriodic,
-        callback: (remaining, passTime) => recordTick.setValue(passTime),
+        callback: (remaining, passTime) => recordTick.setValue(remaining),
         onFinish: () => _stopRecordVideo(recordState.value),
       );
 
@@ -369,8 +389,13 @@ class RecordVideoPage extends BaseCameraPage {
 
   //计算获取时间戳
   String _handleRecordTime(Duration value, Duration maxDuration) {
-    return "";
+    var curr = DateTime(0).add(value);
+    var max = DateTime(0).add(maxDuration);
+    return "${_padT(value.inHours)}:${_padT(curr.minute)}:${_padT(curr.second)}/${_padT(maxDuration.inHours)}:${_padT(max.minute)}:${_padT(max.second)}";
   }
+
+  //填充时间戳方法
+  String _padT(int t) => "$t".padLeft(2, '0');
 
   @override
   void dispose() {

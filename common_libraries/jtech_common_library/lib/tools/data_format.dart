@@ -75,6 +75,12 @@ extension DurationExtension on Duration {
   //duration乘法
   Duration multiply(int n) => Duration(microseconds: this.inMicroseconds * n);
 
+  //duration除法
+  double divide(Duration duration) {
+    if (this.isEmpty || duration.isEmpty) return 0.0;
+    return this.inMicroseconds / duration.inMicroseconds.toDouble();
+  }
+
   //比较差值
   Duration difference(Duration duration) => Duration(
       microseconds: (this.inMicroseconds - duration.inMicroseconds).abs());
