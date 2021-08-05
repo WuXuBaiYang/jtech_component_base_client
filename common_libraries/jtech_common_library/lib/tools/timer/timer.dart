@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/tools/data_format.dart';
 
 /*
 * 计时器工具
@@ -31,7 +32,7 @@ class JTimer {
     String? key,
     required Duration maxDuration,
     Duration tickDuration = const Duration(seconds: 1),
-    required void callback(Duration remaining),
+    required void callback(Duration remaining, Duration passTime),
     required void Function() onFinish,
   }) {
     if (maxDuration.compareTo(Duration()) <= 0 ||
@@ -39,13 +40,13 @@ class JTimer {
     key ??= jCommon.tools.generateID();
     getTimer(key)?.cancel();
     cacheTimers[key] = Timer.periodic(tickDuration, (timer) {
-      var tick = timer.tick * tickDuration.inMicroseconds;
-      var remaining = Duration(microseconds: maxDuration.inMicroseconds - tick);
-      if (remaining.compareTo(Duration()) <= 0) {
+      var passTime = tickDuration.multiply(timer.tick);
+      var remaining = maxDuration.subtract(passTime);
+      if (remaining.lessEqualThan(Duration())) {
         remaining = Duration();
         timer.cancel();
       }
-      callback(remaining);
+      callback(remaining, passTime);
       if (!timer.isActive) onFinish();
     });
     return key;

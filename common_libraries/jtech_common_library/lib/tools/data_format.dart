@@ -54,3 +54,49 @@ class DataFormat {
   //日期解析
   DateTime? parse(String date) => DateTime.tryParse(date);
 }
+
+/*
+* 扩展duration方法
+* @author jtechjh
+* @Time 2021/8/5 11:27 上午
+*/
+extension DurationExtension on Duration {
+  //duration相减
+  Duration subtract(Duration duration) {
+    if (duration.compareTo(this) >= 1) return Duration();
+    return Duration(
+        microseconds: this.inMicroseconds - duration.inMicroseconds);
+  }
+
+  //duration相加
+  Duration add(Duration duration) =>
+      Duration(microseconds: this.inMicroseconds + duration.inMicroseconds);
+
+  //duration乘法
+  Duration multiply(int n) => Duration(microseconds: this.inMicroseconds * n);
+
+  //比较差值
+  Duration difference(Duration duration) => Duration(
+      microseconds: (this.inMicroseconds - duration.inMicroseconds).abs());
+
+  //小于
+  bool lessThan(Duration duration) => compareTo(duration) < 0;
+
+  //小于等于
+  bool lessEqualThan(Duration duration) => compareTo(duration) <= 0;
+
+  //大于
+  bool greaterThan(Duration duration) => compareTo(duration) > 0;
+
+  //大于等于
+  bool greaterEqualThan(Duration duration) => compareTo(duration) >= 0;
+
+  //等于
+  bool equal(Duration duration) => compareTo(duration) == 0;
+
+  //判断是否等于0
+  bool get isEmpty => inMicroseconds == 0;
+
+  //判断是否非0
+  bool get isNotEmpty => inMicroseconds != 0;
+}

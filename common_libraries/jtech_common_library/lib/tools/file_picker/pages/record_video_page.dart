@@ -11,6 +11,7 @@ import 'package:jtech_common_library/widgets/image/config.dart';
 import 'package:jtech_common_library/widgets/image/jimage.dart';
 import 'package:jtech_common_library/widgets/video_player/config.dart';
 import 'package:jtech_common_library/widgets/video_player/video_player.dart';
+import 'package:jtech_common_library/tools/data_format.dart';
 
 /*
 * 视频录制页面
@@ -199,8 +200,26 @@ class RecordVideoPage extends BaseCameraPage {
     return ValueListenableBuilder<Duration>(
       valueListenable: recordTick,
       builder: (context, value, child) {
-        ///
-        return Text("${value.inSeconds}");
+        var progress = 1 -
+            value.inMicroseconds / maxRecordDuration.inMicroseconds.toDouble();
+        return Column(
+          children: [
+            RotatedBox(
+              quarterTurns: 90,
+              child: LinearProgressIndicator(
+                backgroundColor: Colors.transparent,
+                value: progress,
+                minHeight: 5,
+              ),
+            ),
+            Text.rich(TextSpan(
+              text: _handleRecordTime(
+                value,
+                maxRecordDuration,
+              ),
+            )),
+          ],
+        );
       },
     );
   }
@@ -288,15 +307,15 @@ class RecordVideoPage extends BaseCameraPage {
         recordState.setValue(RecordState.recording);
         await controller?.startVideoRecording();
         recordTick.setValue(maxRecordDuration);
-        startRecordTimer();
+        _startRecordTimer();
       } else if (state.isPause) {
         recordState.setValue(RecordState.recording);
         await controller?.resumeVideoRecording();
-        startRecordTimer();
+        _startRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
-      cancelRecordTimer();
+      _cancelRecordTimer();
       cameraBusy = false;
     }
   }
@@ -307,11 +326,11 @@ class RecordVideoPage extends BaseCameraPage {
       if (state.isRecording) {
         recordState.setValue(RecordState.pause);
         await controller?.pauseVideoRecording();
-        cancelRecordTimer();
+        _cancelRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
-      cancelRecordTimer();
+      _cancelRecordTimer();
     }
   }
 
@@ -327,29 +346,31 @@ class RecordVideoPage extends BaseCameraPage {
           await JFileInfo.loadFromXFile(result),
         ]);
         currentIndex.update(true);
-        cancelRecordTimer();
+        _cancelRecordTimer();
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
-      cancelRecordTimer();
+      _cancelRecordTimer();
     }
   }
 
   //启动计时器
-  void startRecordTimer() {
-    print("11111111");
-    jCommon.tools.timer.countdown(
-      key: "${controller?.cameraId}",
-      maxDuration: recordTick.value,
-      tickDuration: timerPeriodic,
-      callback: (remaining) => recordTick.setValue(remaining),
-      onFinish: () => _stopRecordVideo(recordState.value),
-    );
-  }
+  void _startRecordTimer() => jCommon.tools.timer.countdown(
+        key: "${controller?.cameraId}",
+        maxDuration: recordTick.value,
+        tickDuration: timerPeriodic,
+        callback: (remaining, passTime) => recordTick.setValue(passTime),
+        onFinish: () => _stopRecordVideo(recordState.value),
+      );
 
   //销毁当前计时器
-  void cancelRecordTimer() =>
+  void _cancelRecordTimer() =>
       jCommon.tools.timer.cancel("${controller?.cameraId}");
+
+  //计算获取时间戳
+  String _handleRecordTime(Duration value, Duration maxDuration) {
+    return "";
+  }
 
   @override
   void dispose() {
@@ -357,7 +378,7 @@ class RecordVideoPage extends BaseCameraPage {
     //销毁控制器
     controller?.dispose();
     //销毁定时器
-    cancelRecordTimer();
+    _cancelRecordTimer();
   }
 }
 
