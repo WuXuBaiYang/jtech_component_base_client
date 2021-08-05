@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 选择器返回值
@@ -38,8 +39,22 @@ class JFileInfo {
   File get file => File(path);
 
   //判断文件类型是否为图片
+  bool get isImageType => jCommon.tools.matches.isImageFile(path);
+
+  //获取图片缩略图
+  Future<File> getImageThumbnail()async{
+    ///待完成
+    return File(path);
+  }
+
   //判断文件类型是否为视频
-  //判断文件类型是否为音频
+  bool get isVideoType => jCommon.tools.matches.isVideoFile(path);
+
+  //获取视频缩略图
+  Future<File> getVideoThumbnail()async{
+    ///待完成
+    return File(path);
+  }
 
   //从xFile中加载数据
   static Future<JFileInfo> loadFromXFile(XFile xFile) async => JFileInfo(

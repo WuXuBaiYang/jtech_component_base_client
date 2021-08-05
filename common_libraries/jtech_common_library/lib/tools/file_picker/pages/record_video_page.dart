@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -144,9 +146,11 @@ class RecordVideoPage extends BaseCameraPage {
     );
   }
 
+  //指示器子项圆角
+  final indicatorBorderRadius = BorderRadius.circular(4);
+
   //构建预览组件的指示器
   Widget _buildPreviewIndicator() {
-    var borderRadius = BorderRadius.circular(4);
     return ValueListenableBuilder<int>(
       valueListenable: currentIndex,
       builder: (_, value, child) {
@@ -156,44 +160,62 @@ class RecordVideoPage extends BaseCameraPage {
           child: Row(
             children: List.generate(fileList.length + offset, (index) {
               var selected = value == index;
-              var operateIcon = offset > 0 && index == 0;
-              var child;
-              if (operateIcon) {
-                child = Icon(
-                  Icons.camera,
-                  color: Colors.white,
-                );
-              } else {
-                var item = fileList.getItem(index - offset);
-                child = JImage.file(
-                  item!.file,
-                  config: ImageConfig(
-                    clip: ImageClipRRect(
-                      borderRadius: borderRadius,
-                    ),
-                  ),
-                  fit: BoxFit.cover,
+              if (offset > 0 && index == 0) {
+                return _buildPreviewIndicatorItem(
+                  selected: selected,
+                  child: Icon(Icons.camera, color: Colors.white),
+                  shape: CircleBorder(),
+                  index: index,
                 );
               }
-              return IconButton(
-                icon: Container(
-                  height: 35,
-                  width: 35,
-                  padding: EdgeInsets.all(4),
-                  decoration: ShapeDecoration(
-                    shape: operateIcon
-                        ? CircleBorder()
-                        : RoundedRectangleBorder(borderRadius: borderRadius),
-                    color: selected ? Colors.blue : null,
-                  ),
-                  child: child,
-                ),
-                onPressed: () => animToPage(index),
+              var item = fileList.getItem(index - offset);
+              return FutureBuilder<File>(
+                future: item!.getVideoThumbnail(),
+                builder: (_, snap) {
+                  if (!snap.hasData) return EmptyBox();
+                  return _buildPreviewIndicatorItem(
+                    selected: selected,
+                    child: JImage.file(
+                      snap.data!,
+                      config: ImageConfig(
+                        clip: ImageClipRRect(
+                          borderRadius: indicatorBorderRadius,
+                        ),
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: indicatorBorderRadius),
+                    index: index,
+                  );
+                },
               );
             }),
           ),
         );
       },
+    );
+  }
+
+  //构建预览指示器子项结构
+  Widget _buildPreviewIndicatorItem({
+    required Widget child,
+    required int index,
+    ShapeBorder shape = const RoundedRectangleBorder(),
+    bool selected = false,
+  }) {
+    return IconButton(
+      icon: Container(
+        height: 35,
+        width: 35,
+        padding: EdgeInsets.all(4),
+        decoration: ShapeDecoration(
+          shape: shape,
+          color: selected ? Colors.blue : null,
+        ),
+        child: child,
+      ),
+      onPressed: () => animToPage(index),
     );
   }
 

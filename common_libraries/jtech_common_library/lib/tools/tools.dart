@@ -6,8 +6,6 @@ import 'package:jtech_common_library/tools/file.dart';
 import 'package:jtech_common_library/tools/matches.dart';
 import 'package:jtech_common_library/tools/timer/timer.dart';
 
-import 'media.dart';
-
 /*
 * 通用工具箱
 * @author wuxubaiyang
@@ -23,9 +21,6 @@ class Tools {
 
   //文件管理
   final file = FileTool();
-
-  //媒体文件管理
-  final media = MediaTool();
 
   //计时器工具
   final timer = JTimer();
