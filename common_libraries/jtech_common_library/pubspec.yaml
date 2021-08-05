@@ -59,6 +59,12 @@ dependencies:
   # 视频播放器组件
   video_player: ^2.1.12
 
+  # 视频播放器组件
+  chewie: ^1.2.2
+
+  # 音频录制/播放器
+  flutter_sound: ^8.3.9
+
   # 摄像头管理
   camera: ^0.8.1+7
 
