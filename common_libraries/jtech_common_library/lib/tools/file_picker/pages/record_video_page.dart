@@ -71,7 +71,7 @@ class RecordVideoPage extends BaseCameraPage {
         buildCameraPreview(context),
         ValueListenableBuilder<RecordState>(
           valueListenable: recordState,
-          builder: (context, value, child) {
+          builder: (_, value, child) {
             if (!value.isNone) return EmptyBox();
             return _buildPreview();
           },
@@ -86,7 +86,7 @@ class RecordVideoPage extends BaseCameraPage {
                   alignment: Alignment.center,
                   child: ValueListenableBuilder<RecordState>(
                     valueListenable: recordState,
-                    builder: (context, value, child) => Column(
+                    builder: (_, value, child) => Column(
                       children: [
                         Expanded(
                           flex: 1,
@@ -94,7 +94,9 @@ class RecordVideoPage extends BaseCameraPage {
                               ? _buildRecordProgress(value)
                               : _buildPreviewIndicator(),
                         ),
-                        Expanded(flex: 3, child: _buildCameraActions(value)),
+                        Expanded(
+                            flex: 3,
+                            child: _buildCameraActions(context, value)),
                       ],
                     ),
                   ),
@@ -119,7 +121,7 @@ class RecordVideoPage extends BaseCameraPage {
   Widget _buildPreview() {
     return ValueListenableBuilder<List<JFileInfo>>(
       valueListenable: fileList,
-      builder: (context, value, child) {
+      builder: (_, value, child) {
         var offset = (hasMaxCount || value.isEmpty) ? 0 : 1;
         return PageView(
           controller: pageController,
@@ -147,7 +149,7 @@ class RecordVideoPage extends BaseCameraPage {
     var borderRadius = BorderRadius.circular(4);
     return ValueListenableBuilder<int>(
       valueListenable: currentIndex,
-      builder: (context, value, child) {
+      builder: (_, value, child) {
         var offset = (hasMaxCount || fileList.isEmpty) ? 0 : 1;
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -199,7 +201,7 @@ class RecordVideoPage extends BaseCameraPage {
   Widget _buildRecordProgress(RecordState state) {
     return ValueListenableBuilder<Duration>(
       valueListenable: recordTick,
-      builder: (context, value, child) {
+      builder: (_, value, child) {
         var progress = !value.equal(maxRecordDuration)
             ? value.divide(maxRecordDuration)
             : 1.0;
@@ -245,10 +247,10 @@ class RecordVideoPage extends BaseCameraPage {
   }
 
   //构建摄像头操作部分
-  Widget _buildCameraActions(RecordState state) {
+  Widget _buildCameraActions(BuildContext context, RecordState state) {
     return ValueListenableBuilder<int>(
       valueListenable: currentIndex,
-      builder: (context, value, child) {
+      builder: (_, value, child) {
         var canOperate = (hasMaxCount ? 0 : 1) > 0 && value == 0;
         var isWorking = state.isRecording || state.isPause;
         return Row(
@@ -268,11 +270,11 @@ class RecordVideoPage extends BaseCameraPage {
                 if (state.isPrepare) return;
                 if (isWorking) {
                   Feedback.forTap(context);
-                  return _stopRecordVideo(state);
+                  return _stopRecordVideo(context, state);
                 }
                 if (canOperate) {
                   Feedback.forTap(context);
-                  return _startRecordVideo(state);
+                  return _startRecordVideo(context, state);
                 }
                 jBase.router.pop(fileList.value);
               },
@@ -292,7 +294,7 @@ class RecordVideoPage extends BaseCameraPage {
                         color: Colors.white,
                         onPressed: () => state.isRecording
                             ? _pauseRecordVideo(state)
-                            : _startRecordVideo(state),
+                            : _startRecordVideo(context, state),
                       )
                     : (canOperate
                         ? EmptyBox()
@@ -318,7 +320,7 @@ class RecordVideoPage extends BaseCameraPage {
   }
 
   //开始录制视频
-  void _startRecordVideo(RecordState state) async {
+  void _startRecordVideo(BuildContext context, RecordState state) async {
     try {
       cameraBusy = true;
       if (state.isNone) {
@@ -327,11 +329,11 @@ class RecordVideoPage extends BaseCameraPage {
         recordState.setValue(RecordState.recording);
         await controller?.startVideoRecording();
         recordTick.setValue(maxRecordDuration);
-        _startRecordTimer();
+        _startRecordTimer(context);
       } else if (state.isPause) {
         recordState.setValue(RecordState.recording);
         await controller?.resumeVideoRecording();
-        _startRecordTimer();
+        _startRecordTimer(context);
       }
     } catch (e) {
       recordState.setValue(RecordState.none);
@@ -355,9 +357,10 @@ class RecordVideoPage extends BaseCameraPage {
   }
 
   //停止录制视频
-  void _stopRecordVideo(RecordState state) async {
+  void _stopRecordVideo(BuildContext context, RecordState state) async {
     try {
       if (state.isRecording || state.isPause) {
+        jCommon.popups.dialog.showLoading(context);
         recordState.setValue(RecordState.none);
         var result = await controller?.stopVideoRecording();
         if (null == result) return null;
@@ -371,16 +374,18 @@ class RecordVideoPage extends BaseCameraPage {
     } catch (e) {
       recordState.setValue(RecordState.none);
       _cancelRecordTimer();
+    } finally {
+      await jCommon.popups.dialog.hideLoadingDialog();
     }
   }
 
   //启动计时器
-  void _startRecordTimer() => jCommon.tools.timer.countdown(
+  void _startRecordTimer(BuildContext context) => jCommon.tools.timer.countdown(
         key: "${controller?.cameraId}",
         maxDuration: recordTick.value,
         tickDuration: timerPeriodic,
         callback: (remaining, passTime) => recordTick.setValue(remaining),
-        onFinish: () => _stopRecordVideo(recordState.value),
+        onFinish: () => _stopRecordVideo(context, recordState.value),
       );
 
   //销毁当前计时器
@@ -390,8 +395,12 @@ class RecordVideoPage extends BaseCameraPage {
   //计算获取时间戳
   String _handleRecordTime(Duration value, Duration maxDuration) {
     var curr = DateTime(0).add(value);
+    var currTime =
+        "${_padT(value.inHours)}:${_padT(curr.minute)}:${_padT(curr.second)}";
     var max = DateTime(0).add(maxDuration);
-    return "${_padT(value.inHours)}:${_padT(curr.minute)}:${_padT(curr.second)}/${_padT(maxDuration.inHours)}:${_padT(max.minute)}:${_padT(max.second)}";
+    var maxTime =
+        "${_padT(maxDuration.inHours)}:${_padT(max.minute)}:${_padT(max.second)}";
+    return "$currTime/$maxTime";
   }
 
   //填充时间戳方法

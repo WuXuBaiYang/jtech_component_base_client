@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/jcommon.dart';
-
 import 'config.dart';
 import 'file_picker.dart';
 
@@ -136,7 +132,7 @@ class Sheet {
             onTap: () async {
               var result = await config.runCancelTap();
               if (config.nullToDismiss || null != result) {
-                await jBase.router.pop(result);
+                jBase.router.pop(result);
               }
             },
           ),
@@ -154,7 +150,7 @@ class Sheet {
             onTap: () async {
               var result = await config.runConfirmTap();
               if (config.nullToDismiss || null != result) {
-                await jBase.router.pop(result);
+                jBase.router.pop(result);
               }
             },
           ),
@@ -210,7 +206,7 @@ class Sheet {
                 result = await _getChooseFiles(
                     item.type!, item.extensions, multiple, compress);
               }
-              await jBase.router.pop(result);
+              jBase.router.pop(result);
             },
           );
         },

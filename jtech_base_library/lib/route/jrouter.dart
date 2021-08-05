@@ -52,7 +52,10 @@ class JRouter {
   }
 
   //页面退出
-  Future<bool>? pop<T>([T? result]) => navigator?.maybePop<T>(result);
+  Future<bool>? maybePop<T>([T? result]) => navigator?.maybePop<T>(result);
+
+  //页面退出
+  void pop<T>([T? result]) => navigator?.pop<T>(result);
 
   //判断页面是否可退出
   bool? canPop() => navigator?.canPop();

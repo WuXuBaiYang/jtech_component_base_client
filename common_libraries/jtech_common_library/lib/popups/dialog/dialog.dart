@@ -14,11 +14,11 @@ import 'config.dart';
 @protected
 class Dialog {
   //弹窗基础方法
-  Future<T?> showDialog<T>(
+  Future<T?> show<T>(
     BuildContext context, {
     required WidgetBuilder builder,
   }) {
-    return showCupertinoDialog<T>(
+    return showDialog<T>(
       context: context,
       builder: builder,
     );
@@ -55,7 +55,7 @@ class Dialog {
     BuildContext context, {
     required DialogConfig<T> config,
   }) {
-    return showDialog<T>(
+    return show<T>(
       context,
       builder: (context) => _buildCustomDialog(config),
     );
@@ -126,7 +126,7 @@ class Dialog {
             onTap: () async {
               var result = await config.runOptionTap();
               if (config.nullToDismiss || null != result) {
-                await jBase.router.pop(result);
+                jBase.router.pop(result);
               }
             },
           ),
@@ -136,7 +136,7 @@ class Dialog {
             onTap: () async {
               var result = await config.runCancelTap();
               if (config.nullToDismiss || null != result) {
-                await jBase.router.pop(result);
+                jBase.router.pop(result);
               }
             },
           ),
@@ -145,7 +145,7 @@ class Dialog {
             onTap: () async {
               var result = await config.runConfirmTap();
               if (config.nullToDismiss || null != result) {
-                await jBase.router.pop(result);
+                jBase.router.pop(result);
               }
             },
           ),
@@ -174,7 +174,7 @@ class Dialog {
     Size loadingSize = const Size(85, 85),
   }) async {
     await hideLoadingDialog();
-    loadingDialog = showDialog(
+    loadingDialog = show(
       context,
       builder: (context) {
         return Stack(
@@ -203,6 +203,6 @@ class Dialog {
   //隐藏加载弹窗
   Future<void> hideLoadingDialog() async {
     if (null == loadingDialog) return;
-    await jBase.router.pop();
+    return jBase.router.pop();
   }
 }
