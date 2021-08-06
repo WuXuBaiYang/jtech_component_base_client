@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
 import 'package:jtech_common_library/widgets/video_player/config.dart';
 import 'package:jtech_common_library/widgets/video_player/controller.dart';
 import 'package:video_player/video_player.dart';
@@ -15,129 +15,161 @@ import 'package:video_player/video_player.dart';
 * @Time 2021/8/4 10:12 上午
 */
 class JVideoPlayer extends BaseStatefulWidget {
-  //播放器配置
-  final VideoPlayerConfig config;
-
-  //播放器控制器
-  final VideoPlayerController playerController;
-
   //控制器
   final JVideoPlayerController controller;
 
-  //创建本地文件资源的播放器
+  //配置文件
+  final VideoPlayerConfig config;
+
+  JVideoPlayer({
+    required this.controller,
+    Color? backgroundColor,
+    bool? autoSize,
+    Size? size,
+    VideoPlayerConfig? config,
+  }) : this.config = (config ?? VideoPlayerConfig()).copyWith(
+          backgroundColor: backgroundColor,
+          autoSize: autoSize,
+          size: size,
+        );
+
+  //加载本地视频
   JVideoPlayer.file({
     required File file,
+    bool? autoPlay,
+    Duration? startAt,
+    bool? looping,
+    bool? showControls,
+    bool? allowedScreenSleep,
+    bool? allowFullScreen,
+    bool? allowMuting,
+    bool? allowPlaybackSpeedChanging,
+    Color? backgroundColor,
+    bool? autoSize,
+    Size? size,
     VideoPlayerConfig? config,
-    JVideoPlayerController? controller,
-  })  : this.playerController = VideoPlayerController.file(file),
-        this.controller = controller ?? JVideoPlayerController(),
+  })  : this.controller = JVideoPlayerController.file(
+          file: file,
+          autoPlay: autoPlay,
+          startAt: startAt,
+          looping: looping,
+          showControls: showControls,
+          allowedScreenSleep: allowedScreenSleep,
+          allowFullScreen: allowFullScreen,
+          allowMuting: allowMuting,
+          allowPlaybackSpeedChanging: allowPlaybackSpeedChanging,
+        ),
         this.config = (config ?? VideoPlayerConfig()).copyWith(
-          dataSource: file.absolute.path,
-          sourceType: SourceType.file,
+          backgroundColor: backgroundColor,
+          autoSize: autoSize,
+          size: size,
+        );
+
+  //加载网络视频
+  JVideoPlayer.net({
+    required String dataSource,
+    Map<String, String> httpHeaders = const {},
+    bool? autoPlay,
+    Duration? startAt,
+    bool? looping,
+    bool? showControls,
+    bool? allowedScreenSleep,
+    bool? allowFullScreen,
+    bool? allowMuting,
+    bool? allowPlaybackSpeedChanging,
+    Color? backgroundColor,
+    bool? autoSize,
+    Size? size,
+    VideoPlayerConfig? config,
+  })  : this.controller = JVideoPlayerController.net(
+          dataSource: dataSource,
+          httpHeaders: httpHeaders,
+          autoPlay: autoPlay,
+          startAt: startAt,
+          looping: looping,
+          showControls: showControls,
+          allowedScreenSleep: allowedScreenSleep,
+          allowFullScreen: allowFullScreen,
+          allowMuting: allowMuting,
+          allowPlaybackSpeedChanging: allowPlaybackSpeedChanging,
+        ),
+        this.config = (config ?? VideoPlayerConfig()).copyWith(
+          backgroundColor: backgroundColor,
+          autoSize: autoSize,
+          size: size,
+        );
+
+  //加载asset视频
+  JVideoPlayer.asset({
+    required String dataSource,
+    String? package,
+    bool? autoPlay,
+    Duration? startAt,
+    bool? looping,
+    bool? showControls,
+    bool? allowedScreenSleep,
+    bool? allowFullScreen,
+    bool? allowMuting,
+    bool? allowPlaybackSpeedChanging,
+    Color? backgroundColor,
+    bool? autoSize,
+    Size? size,
+    VideoPlayerConfig? config,
+  })  : this.controller = JVideoPlayerController.asset(
+          dataSource: dataSource,
+          package: package,
+          autoPlay: autoPlay,
+          startAt: startAt,
+          looping: looping,
+          showControls: showControls,
+          allowedScreenSleep: allowedScreenSleep,
+          allowFullScreen: allowFullScreen,
+          allowMuting: allowMuting,
+          allowPlaybackSpeedChanging: allowPlaybackSpeedChanging,
+        ),
+        this.config = (config ?? VideoPlayerConfig()).copyWith(
+          backgroundColor: backgroundColor,
+          autoSize: autoSize,
+          size: size,
         );
 
   @override
   void initState() {
     super.initState();
-    //初始化控制器
-    playerController.initialize().then((value) async {
-      refreshUI();
-      if (config.autoPlay) {
-        await playerController.play();
-        controller.updateState(PlayerState.playing);
-      } else {
-        controller.updateState(PlayerState.pause);
-      }
-    }).catchError((e) {
-      controller.updateState(PlayerState.error);
-    });
-    //监听播放器状态
-    playerController.addListener(() {
-      var value = playerController.value;
-      var state = PlayerState.none;
-      if (value.isPlaying) state = PlayerState.playing;
-      if (!value.isPlaying) state = PlayerState.pause;
-      if (value.isBuffering) state = PlayerState.buffering;
-      if (value.hasError) state = PlayerState.error;
-      controller.updateState(state);
-    });
+    //初始化视频资源
+    controller.videoController.videoPlayerController
+        .initialize()
+        .whenComplete(() => refreshUI());
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!playerController.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
-    }
     return SizedBox.fromSize(
       size: config.size,
       child: Container(
+        color: config.backgroundColor,
         alignment: config.align,
-        color: config.color,
-        child: _buildPlayer(context),
-      ),
-    );
-  }
-
-  //构建播放器组件
-  Widget _buildPlayer(BuildContext context) {
-    var videoSize = _getVideoSize(
-      context,
-      playerController.value.size,
-    );
-    return SizedBox.fromSize(
-      size: videoSize,
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          AspectRatio(
-            aspectRatio: playerController.value.aspectRatio,
-            child: VideoPlayer(playerController),
-          ),
-          _buildOptions(videoSize),
-        ],
-      ),
-    );
-  }
-
-  //构建操作面板
-  Widget _buildOptions(Size videoSize) {
-    var playIconSize = min(videoSize.width, videoSize.height) * 0.3;
-    return ValueListenableBuilder<PlayerState>(
-      valueListenable: controller.playerListenable,
-      builder: (context, value, child) {
-        return Stack(
-          children: [
-            _buildOptionGesture(),
-            Visibility(
-              visible: value.isPause,
-              child: Center(
-                child: Icon(
-                  Icons.play_circle_outline_rounded,
-                  color: Colors.white.withOpacity(0.2),
-                  size: playIconSize,
-                ),
+        child: Builder(
+          builder: (context) {
+            if (!videoValue.isInitialized) {
+              return config.initialBuilder?.call(context) ??
+                  _buildDefaultInitial();
+            }
+            return SizedBox.fromSize(
+              size: _getVideoSize(context, videoValue.size),
+              child: Chewie(
+                controller: controller.videoController,
               ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
-  //构建手势操作层
-  _buildOptionGesture() {
-    return Positioned.fill(child: GestureDetector(
-      onTap: () async {
-        if (playerController.value.isPlaying) {
-          await playerController.pause();
-          controller.updateState(PlayerState.pause);
-        } else {
-          await playerController.play();
-          controller.updateState(PlayerState.playing);
-        }
-      },
-    ));
-  }
+  //获取当前视频播放器参数
+  VideoPlayerValue get videoValue =>
+      controller.videoController.videoPlayerController.value;
 
   //计算视频实际展示尺寸
   Size _getVideoSize(BuildContext context, Size videoSize) {
@@ -151,11 +183,15 @@ class JVideoPlayer extends BaseStatefulWidget {
     );
   }
 
+  //默认加载构造器
+  Widget _buildDefaultInitial() {
+    return Center(child: CircularProgressIndicator());
+  }
+
   @override
   void dispose() {
     super.dispose();
-    //销毁播放器
-    playerController.dispose();
+    //销毁控制器
     controller.dispose();
   }
 }

@@ -10,6 +10,7 @@ import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:example/tools/tools_page.dart';
+import 'package:example/video/video_player_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -38,13 +39,14 @@ void main() {
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
       "/test/take_photo_page": (_) => TakePhotoPage(
-        resolution: CameraResolution.medium,
-        maxCount: 5,
-      ),
+            resolution: CameraResolution.medium,
+            maxCount: 5,
+          ),
       "/test/record_video_page": (_) => RecordVideoPage(
-        resolution: CameraResolution.medium,
-        maxRecordDuration: Duration(seconds: 5),
-      ),
+            resolution: CameraResolution.medium,
+            maxRecordDuration: Duration(seconds: 5),
+          ),
+      "/test/video_player_demo": (_) => VideoPlayerDemo(),
     },
     homePage: MyHomePage(),
   );
@@ -53,6 +55,7 @@ void main() {
 class MyHomePage extends BasePage {
   //demo测试页面
   final Map<String, String> pages = {
+    "视频播放器组件": "/test/video_player_demo",
     "拍照页面": "/test/take_photo_page",
     "视频录制页面": "/test/record_video_page",
     "基本列表组件": "/test/listview",

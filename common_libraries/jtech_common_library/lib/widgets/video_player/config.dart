@@ -1,98 +1,49 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /*
-* 播放器配置
+* 视频播放器配置文件
 * @author jtechjh
-* @Time 2021/8/4 10:15 上午
+* @Time 2021/8/6 5:12 下午
 */
 class VideoPlayerConfig {
-  //加载完成后自动播放
-  bool autoPlay;
+  //视频组件容器尺寸
+  final Size? size;
 
-  //资源
-  String dataSource;
-
-  //资源类型
-  SourceType sourceType;
-
-  //视频组件尺寸,为空则使用视频大小
-  Size? size;
+  //是否自适应组件尺寸
+  final bool autoSize;
 
   //背景色
-  Color color;
+  final Color backgroundColor;
 
-  //当用户设置大小大于视频尺寸时，视频的居中方式
-  Alignment align;
+  //初始化构造器
+  final WidgetBuilder? initialBuilder;
+
+  //对齐方式
+  final Alignment align;
 
   VideoPlayerConfig({
-    this.dataSource = "",
-    this.sourceType = SourceType.net,
-    this.autoPlay = false,
     this.size,
-    this.color = Colors.black,
+    this.autoSize = true,
+    this.backgroundColor = Colors.grey,
+    this.initialBuilder,
     this.align = Alignment.center,
   });
 
   VideoPlayerConfig copyWith({
-    String? dataSource,
-    SourceType? sourceType,
-    bool? autoPlay,
     Size? size,
-    Color? color,
+    bool? autoSize,
+    Color? backgroundColor,
+    WidgetBuilder? initialBuilder,
     Alignment? align,
   }) {
     return VideoPlayerConfig(
-      dataSource: dataSource ?? this.dataSource,
-      sourceType: sourceType ?? this.sourceType,
-      autoPlay: autoPlay ?? this.autoPlay,
       size: size ?? this.size,
-      color: color ?? this.color,
+      autoSize: autoSize ?? this.autoSize,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      initialBuilder: initialBuilder ?? this.initialBuilder,
       align: align ?? this.align,
     );
   }
-}
-
-/*
-* 资源类型枚举
-* @author jtechjh
-* @Time 2021/8/4 10:17 上午
-*/
-enum SourceType {
-  //本地
-  file,
-  //网络
-  net,
-  //assets
-  assets,
-}
-/*
-* 播放器状态
-* @author jtechjh
-* @Time 2021/8/4 10:51 上午
-*/
-enum PlayerState {
-  //无状态
-  none,
-  //暂停
-  pause,
-  //播放中
-  playing,
-  //缓存中
-  buffering,
-  //错误
-  error,
-}
-
-/*
-* 扩展播放器状态方法
-* @author jtechjh
-* @Time 2021/8/4 11:21 上午
-*/
-extension PlayerStateExtension on PlayerState {
-  //判断是否正在播放中
-  bool get isPlaying => this == PlayerState.playing;
-
-  //判断是否正在暂停
-  bool get isPause => this == PlayerState.pause;
 }

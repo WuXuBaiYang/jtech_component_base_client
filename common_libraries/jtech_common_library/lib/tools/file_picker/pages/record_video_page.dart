@@ -11,9 +11,9 @@ import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
 import 'package:jtech_common_library/widgets/image/clip.dart';
 import 'package:jtech_common_library/widgets/image/config.dart';
 import 'package:jtech_common_library/widgets/image/jimage.dart';
+import 'package:jtech_common_library/tools/data_format.dart';
 import 'package:jtech_common_library/widgets/video_player/config.dart';
 import 'package:jtech_common_library/widgets/video_player/video_player.dart';
-import 'package:jtech_common_library/tools/data_format.dart';
 
 /*
 * 视频录制页面
@@ -135,8 +135,11 @@ class RecordVideoPage extends BaseCameraPage {
               color: Colors.black,
               child: JVideoPlayer.file(
                 file: item.file,
+                autoPlay: true,
                 config: VideoPlayerConfig(
                   align: Alignment.topCenter,
+                  initialBuilder: (_) => EmptyBox(),
+                  backgroundColor: Colors.transparent,
                 ),
               ),
             );
