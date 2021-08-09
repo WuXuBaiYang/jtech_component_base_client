@@ -17,13 +17,6 @@ class JBannerController<T extends BannerItem> extends BaseController {
   //子项对象集合
   List<T> _items;
 
-  JBannerController({
-    required List<T> items,
-    int initialIndex = 0,
-  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
-        this._items = items,
-        _currentIndex = ValueChangeNotifier(initialIndex);
-
   //获取当前下标
   int get currentIndex => _currentIndex.value;
 
@@ -33,6 +26,13 @@ class JBannerController<T extends BannerItem> extends BaseController {
   //获取数据长度
   int get itemLength => _items.length;
 
+  JBannerController({
+    required List<T> items,
+    int initialIndex = 0,
+  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
+        this._currentIndex = ValueChangeNotifier(initialIndex),
+        this._items = items;
+
   //获取数据子项
   T getItem(int index) => _items[index];
 
@@ -41,9 +41,6 @@ class JBannerController<T extends BannerItem> extends BaseController {
     if (index < 0 || index >= _items.length) index = 0;
     _currentIndex.setValue(index);
   }
-
-  //判断下标是否越界
-  bool isOverIndex(int index) => index < 0 || index >= _items.length;
 
   //计时器
   Timer? _timer;
@@ -63,6 +60,11 @@ class JBannerController<T extends BannerItem> extends BaseController {
     _timer = null;
   }
 
+
+  @override
+  void addListener(VoidCallback listener) {
+    _currentIndex.addListener(listener);
+  }
   @override
   void dispose() {
     super.dispose();

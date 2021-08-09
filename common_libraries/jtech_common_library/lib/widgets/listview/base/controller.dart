@@ -71,6 +71,11 @@ class JListViewController<V> extends BaseController {
   }
 
   @override
+  void addListener(VoidCallback listener) {
+    _dataList.addListener(listener);
+  }
+
+  @override
   void dispose() {
     super.dispose();
     //销毁数据集合

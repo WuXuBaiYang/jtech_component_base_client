@@ -18,7 +18,7 @@ typedef OnRefreshLoad<V> = Future<List<V>> Function(
 * @author jtechjh
 * @Time 2021/8/9 3:18 下午
 */
-abstract class RefreshConfig<V> extends BaseConfig{
+class RefreshConfig<V> extends BaseConfig {
   //启用下拉刷新
   bool enablePullDown;
 
@@ -41,14 +41,35 @@ abstract class RefreshConfig<V> extends BaseConfig{
   LoadFooter? footer;
 
   RefreshConfig({
-    required this.enablePullDown,
-    required this.enablePullUp,
-    required this.onPullDownRefreshing,
-    required this.onPullUpLoading,
-    required this.onRefreshLoad,
-    required this.header,
-    required this.footer,
+    this.enablePullDown = false,
+    this.enablePullUp = false,
+    this.onPullDownRefreshing,
+    this.onPullUpLoading,
+    this.onRefreshLoad,
+    this.header,
+    this.footer,
   });
+
+  @override
+  RefreshConfig<V> copyWith({
+    bool? enablePullDown,
+    bool? enablePullUp,
+    Function? onPullDownRefreshing,
+    Function? onPullUpLoading,
+    OnRefreshLoad<V>? onRefreshLoad,
+    RefreshHeader? header,
+    LoadFooter? footer,
+  }) {
+    return RefreshConfig<V>(
+      enablePullDown: enablePullDown ?? this.enablePullDown,
+      enablePullUp: enablePullUp ?? this.enablePullUp,
+      onPullDownRefreshing: onPullDownRefreshing ?? this.onPullDownRefreshing,
+      onPullUpLoading: onPullUpLoading ?? this.onPullUpLoading,
+      onRefreshLoad: onRefreshLoad ?? this.onRefreshLoad,
+      header: header ?? this.header,
+      footer: footer ?? this.footer,
+    );
+  }
 }
 
 /*

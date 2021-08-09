@@ -4,7 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:jtech_common_library/base/refresh/config.dart';
 import 'package:jtech_common_library/widgets/gridview/base/base_gridview.dart';
 import 'package:jtech_common_library/widgets/gridview/base/staggered.dart';
-import 'package:jtech_common_library/widgets/gridview/refresh/config.dart';
 import 'package:jtech_common_library/widgets/gridview/refresh/controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -15,30 +14,36 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 */
 class JRefreshGridView<V>
     extends BaseGridView<JRefreshGridViewController<V>, V> {
+  //副方向上的最大元素数量
+  final int crossAxisCount;
+
+  //主方向元素间距
+  final double mainAxisSpacing;
+
+  //副方向元素间距
+  final double crossAxisSpacing;
+
   //刷新组件配置文件
-  final RefreshGridConfig<V> config;
+  final RefreshConfig<V> refreshConfig;
 
   JRefreshGridView({
     required GridItemBuilder<V> itemBuilder,
     required OnRefreshLoad<V> onRefreshLoad,
-    required int crossAxisCount,
+    required this.crossAxisCount,
     JRefreshGridViewController<V>? controller,
-    RefreshGridConfig<V>? config,
+    RefreshConfig<V>? refreshConfig,
     bool? enablePullDown,
     bool? enablePullUp,
-    double? mainAxisSpacing,
-    double? crossAxisSpacing,
+    this.mainAxisSpacing = 4.0,
+    this.crossAxisSpacing = 4.0,
     OnGridItemTap<V>? itemTap,
     OnGridItemLongTap<V>? itemLongTap,
     StaggeredTileBuilder? staggeredTileBuilder,
     JStaggeredTile? staggeredTile,
-  })  : this.config = (config ?? RefreshGridConfig()).copyWith(
+  })  : this.refreshConfig = (refreshConfig ?? RefreshConfig()).copyWith(
           onRefreshLoad: onRefreshLoad,
-          crossAxisCount: crossAxisCount,
           enablePullDown: enablePullDown,
           enablePullUp: enablePullUp,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
         ),
         super(
           controller: controller ?? JRefreshGridViewController(),
@@ -56,20 +61,20 @@ class JRefreshGridView<V>
       builder: (context, dataList, child) {
         return SmartRefresher(
           controller: controller.refreshController,
-          enablePullDown: config.enablePullDown,
-          enablePullUp: config.enablePullUp,
+          enablePullDown: refreshConfig.enablePullDown,
+          enablePullUp: refreshConfig.enablePullUp,
           onRefresh: () => _loadDataList(false),
           onLoading: () => _loadDataList(true),
-          header: config.header?.value ?? ClassicHeader(),
-          footer: config.footer?.value ?? ClassicFooter(),
+          header: refreshConfig.header?.value ?? ClassicHeader(),
+          footer: refreshConfig.footer?.value ?? ClassicFooter(),
           child: StaggeredGridView.countBuilder(
             itemBuilder: (context, index) =>
                 buildGridItem(context, dataList[index], index),
             staggeredTileBuilder: (int index) =>
                 buildGridStaggered(dataList[index], index),
-            mainAxisSpacing: config.mainAxisSpacing,
-            crossAxisSpacing: config.crossAxisSpacing,
-            crossAxisCount: config.crossAxisCount,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            crossAxisCount: crossAxisCount,
             itemCount: dataList.length,
             shrinkWrap: true,
           ),
@@ -82,10 +87,10 @@ class JRefreshGridView<V>
   void _loadDataList(bool loadMore) async {
     controller.resetRefreshState();
     loadMore
-        ? config.onPullUpLoading?.call()
-        : config.onPullDownRefreshing?.call();
+        ? refreshConfig.onPullUpLoading?.call()
+        : refreshConfig.onPullDownRefreshing?.call();
     try {
-      List<V>? result = await config.onRefreshLoad
+      List<V>? result = await refreshConfig.onRefreshLoad
           ?.call(controller.getRequestPageIndex(loadMore), controller.pageSize);
       //执行加载完成操作
       controller.requestCompleted(result ?? [], loadMore: loadMore);

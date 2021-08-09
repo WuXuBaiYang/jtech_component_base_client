@@ -20,13 +20,6 @@ abstract class BaseNavigationController<T extends NavigationItem>
   //导航子项集合
   final List<T> _items;
 
-  BaseNavigationController({
-    required List<T> items,
-    int initialIndex = 0,
-  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
-        this._items = items,
-        _currentIndex = ValueChangeNotifier(initialIndex);
-
   //获取当前下标
   int get currentIndex => _currentIndex.value;
 
@@ -35,6 +28,13 @@ abstract class BaseNavigationController<T extends NavigationItem>
 
   //获取数据长度
   int get itemLength => _items.length;
+
+  BaseNavigationController({
+    required List<T> items,
+    int initialIndex = 0,
+  })  : assert(initialIndex >= 0 && initialIndex < items.length, "初始下标超出数据范围"),
+        this._items = items,
+        _currentIndex = ValueChangeNotifier(initialIndex);
 
   //获取数据子项
   T getItem(int index) => _items[index];
@@ -47,6 +47,11 @@ abstract class BaseNavigationController<T extends NavigationItem>
 
   //判断下标是否越界
   bool isOverIndex(int index) => index < 0 || index >= _items.length;
+
+  @override
+  void addListener(VoidCallback listener) {
+    _currentIndex.addListener(listener);
+  }
 
   @override
   void dispose() {

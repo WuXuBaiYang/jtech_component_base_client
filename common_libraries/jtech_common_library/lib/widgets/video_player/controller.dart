@@ -10,7 +10,10 @@ import 'package:video_player/video_player.dart';
 */
 class JVideoPlayerController extends BaseController {
   //播放器控制器
-  final ChewieController videoController;
+  final ChewieController _videoController;
+
+  //获取视频控制器
+  ChewieController get videoController => _videoController;
 
   //asset资源
   JVideoPlayerController.asset({
@@ -24,7 +27,7 @@ class JVideoPlayerController extends BaseController {
     bool? allowFullScreen,
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
-  }) : this.videoController = _createController(
+  }) : this._videoController = _createController(
           controller: VideoPlayerController.asset(
             dataSource,
             package: package,
@@ -51,7 +54,7 @@ class JVideoPlayerController extends BaseController {
     bool? allowFullScreen,
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
-  }) : this.videoController = _createController(
+  }) : this._videoController = _createController(
           controller: VideoPlayerController.network(
             dataSource,
             httpHeaders: httpHeaders,
@@ -77,7 +80,7 @@ class JVideoPlayerController extends BaseController {
     bool? allowFullScreen,
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
-  }) : this.videoController = _createController(
+  }) : this._videoController = _createController(
           controller: VideoPlayerController.file(file),
           autoPlay: autoPlay,
           startAt: startAt,
@@ -125,7 +128,7 @@ class JVideoPlayerController extends BaseController {
   void dispose() {
     super.dispose();
     //销毁控制器
-    videoController
+    _videoController
       ..dispose()
       ..videoPlayerController
       ..dispose();

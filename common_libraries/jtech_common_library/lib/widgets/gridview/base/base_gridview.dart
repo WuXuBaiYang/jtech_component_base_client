@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/widgets/gridview/base/controller.dart';
+import 'package:jtech_common_library/widgets/listview/base/controller.dart';
 
 import 'staggered.dart';
 
@@ -24,7 +24,7 @@ typedef StaggeredTileBuilder<V> = JStaggeredTile? Function(V item, int index);
 * @author wuxubaiyang
 * @Time 2021/7/19 下午4:06
 */
-abstract class BaseGridView<T extends JGridViewController<V>, V>
+abstract class BaseGridView<T extends JListViewController<V>, V>
     extends BaseStatefulWidget {
   //表格控制器
   final T controller;
