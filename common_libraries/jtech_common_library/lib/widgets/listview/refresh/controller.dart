@@ -128,6 +128,13 @@ class JRefreshListViewController<V> extends JListViewController<V> {
     _refreshState.addListener(listener);
     super.addListener(listener);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    _refreshController.dispose();
+  }
 }
 
 /*
