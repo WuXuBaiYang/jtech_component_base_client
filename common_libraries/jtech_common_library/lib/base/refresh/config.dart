@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/base/config.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 //下拉刷新头部样式构建回调
@@ -7,6 +8,48 @@ typedef Widget HeaderBuilder(BuildContext context, jRefreshStatus? mode);
 
 //上拉加载足部样式构建回调
 typedef Widget FooterBuilder(BuildContext context, jLoadStatus? mode);
+
+//数据加载异步回调
+typedef OnRefreshLoad<V> = Future<List<V>> Function(
+    int pageIndex, int pageSize);
+
+/*
+* 刷新组件配置通用部分
+* @author jtechjh
+* @Time 2021/8/9 3:18 下午
+*/
+abstract class RefreshConfig<V> extends BaseConfig{
+  //启用下拉刷新
+  bool enablePullDown;
+
+  //启用上拉加载
+  bool enablePullUp;
+
+  //下拉刷新回调
+  Function? onPullDownRefreshing;
+
+  //上拉加载回调
+  Function? onPullUpLoading;
+
+  //数据加载回调
+  OnRefreshLoad<V>? onRefreshLoad;
+
+  //头部样式类型
+  RefreshHeader? header;
+
+  //足部样式类型
+  LoadFooter? footer;
+
+  RefreshConfig({
+    required this.enablePullDown,
+    required this.enablePullUp,
+    required this.onPullDownRefreshing,
+    required this.onPullUpLoading,
+    required this.onRefreshLoad,
+    required this.header,
+    required this.footer,
+  });
+}
 
 /*
 * 下拉刷新头部样式

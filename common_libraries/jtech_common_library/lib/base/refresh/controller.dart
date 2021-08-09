@@ -24,7 +24,7 @@ mixin JRefreshControllerMixin<V> {
   late ValueChangeNotifier<RefreshState> _refreshState;
 
   //创建方法，用于初始化刷新控制器参数
-  void create({
+  void initRefresh({
     int? initPageIndex,
     int? pageAddStep,
     int? pageSize,

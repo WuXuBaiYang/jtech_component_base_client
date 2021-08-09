@@ -21,7 +21,6 @@ class RefreshListViewDemo extends BasePage {
         title: Text("加载列表测试"),
       ),
       body: JRefreshListView<ListItemModel>(
-        initialRefresh: true,
         enablePullDown: true,
         enablePullUp: true,
         controller: controller,
@@ -32,7 +31,7 @@ class RefreshListViewDemo extends BasePage {
             subtitle: Text(item.des),
           );
         },
-        onRefreshListViewLoad: _loadData,
+        onRefreshLoad: _loadData,
       ),
     );
   }

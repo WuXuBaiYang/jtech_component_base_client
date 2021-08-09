@@ -24,7 +24,6 @@ class GridviewRefreshDemo extends BasePage {
       ),
       body: JRefreshGridView<ListItemModel>(
         crossAxisCount: 5,
-        initialRefresh: true,
         enablePullDown: true,
         enablePullUp: true,
         staggeredTile: JStaggeredTile.fit(1),
@@ -34,7 +33,7 @@ class GridviewRefreshDemo extends BasePage {
           return JStaggeredTile.fit(2);
         },
         controller: controller,
-        onRefreshGridViewLoad: _loadData,
+        onRefreshLoad: _loadData,
         itemBuilder: (BuildContext context, item, int index) {
           return Container(
             padding: EdgeInsets.all(15),
