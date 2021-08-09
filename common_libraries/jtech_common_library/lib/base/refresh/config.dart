@@ -77,7 +77,7 @@ class RefreshConfig<V> extends BaseConfig {
 * @author wuxubaiyang
 * @Time 2021/7/7 下午4:03
 */
-class RefreshHeader {
+class RefreshHeader{
   //最终选择的刷新头部
   final Widget value;
 
