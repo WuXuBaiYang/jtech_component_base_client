@@ -19,6 +19,7 @@ import 'package:jtech_common_library/tools/file_picker/pages/record_video_page.d
 import 'package:jtech_common_library/tools/file_picker/pages/take_photo_page.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/root_app/run.dart';
+import 'audio/audio_demo.dart';
 import 'gridview/gridview_refresh_demo.dart';
 
 void main() {
@@ -47,6 +48,7 @@ void main() {
             maxRecordDuration: Duration(seconds: 5),
           ),
       "/test/video_player_demo": (_) => VideoPlayerDemo(),
+      "/test/audio_demo": (_) => AudioDemo(),
     },
     homePage: MyHomePage(),
   );
@@ -55,6 +57,7 @@ void main() {
 class MyHomePage extends BasePage {
   //demo测试页面
   final Map<String, String> pages = {
+    "音频组件工具": "/test/audio_demo",
     "视频播放器组件": "/test/video_player_demo",
     "拍照页面": "/test/take_photo_page",
     "视频录制页面": "/test/record_video_page",

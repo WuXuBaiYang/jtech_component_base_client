@@ -19,24 +19,45 @@ class JAudioPlayerController extends BaseController {
   Future<Stream<PlayProgress>?> startPlay({
     String? fromURI,
     Uint8List? fromDataBuffer,
-    int sampleRate = 16000,
-    int numChannels = 1,
-    VoidCallback? whenFinished,
+    VoidCallback? onFinished,
   }) async {
     await _player.openAudioSession();
     await _player.startPlayer(
       fromURI: fromURI,
       fromDataBuffer: fromDataBuffer,
-      sampleRate: sampleRate,
-      numChannels: numChannels,
-      whenFinished: () => whenFinished?.call(),
+      whenFinished: () => onFinished?.call(),
     );
-    // _player.pausePlayer();
-    // _player.resumePlayer();
-    // _player.stopPlayer();
-    // _player.seekToPlayer(duration);
-    // _player.setVolume(volume);
     return onProgress;
+  }
+
+  //暂停播放
+  Future<void> pausePlay() {
+    return _player.pausePlayer();
+  }
+
+  //恢复播放
+  Future<void> resumePlay() {
+    return _player.resumePlayer();
+  }
+
+  //停止播放
+  Future<void> stopPlay() {
+    return _player.stopPlayer();
+  }
+
+  //拖动播放进度
+  Future<void> seekToPlay(Duration duration) {
+    return _player.seekToPlayer(duration);
+  }
+
+  //设置音量
+  Future<void> setVolume(double volume) {
+    return _player.setVolume(volume);
+  }
+
+  //设置播放速度
+  Future<void> setSpeed(double speed) {
+    return _player.setSpeed(speed);
   }
 
   //获取播放进度
