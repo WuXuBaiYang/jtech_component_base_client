@@ -103,21 +103,28 @@ class Sheet {
       ],
     );
     return Material(
-      color: Colors.transparent,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Card(
-          color: config.sheetColor,
-          margin: config.margin,
-          child: Container(
-            width: double.infinity,
-            height: config.sheetHeight,
-            padding: config.padding,
-            child: config.inSafeArea ? SafeArea(child: content) : content,
+        color: Colors.transparent,
+        child: InkWell(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Card(
+              color: config.sheetColor,
+              margin: config.margin,
+              child: Container(
+                width: double.infinity,
+                height: config.sheetHeight,
+                padding: config.padding,
+                child: config.inSafeArea ? SafeArea(child: content) : content,
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+          onTap: () async {
+            var result = await config.runCancelTap();
+            if (config.nullToDismiss || null != result) {
+              jBase.router.pop(result);
+            }
+          },
+        ));
   }
 
   //构建自定义底部sheet标题部分

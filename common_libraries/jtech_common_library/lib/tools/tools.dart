@@ -16,6 +16,9 @@ class Tools {
   //日期格式化
   final dataFormat = DataFormat();
 
+  //时间区间格式化
+  final durationFormat = DurationFormat();
+
   //匹配工具
   final matches = Matches();
 

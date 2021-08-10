@@ -19,7 +19,7 @@ class AudioDemo extends BasePage {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           JAudioPlayer.net(
-            "http://downsc.chinaz.net/files/download/sound1/201206/1638.mp3",
+            "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
           ),
           SizedBox(height: 35),
           JAudioRecord(

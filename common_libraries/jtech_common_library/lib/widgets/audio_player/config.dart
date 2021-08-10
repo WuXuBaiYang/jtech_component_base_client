@@ -39,6 +39,18 @@ class AudioPlayerConfig extends BaseConfig {
   //默认播放速度
   double? speed;
 
+  //是否支持音量控制功能
+  bool allowVolume;
+
+  //是否支持倍速播放功能
+  bool allowSpeed;
+
+  //标题部分组件
+  Widget? title;
+
+  //标题是否剧中
+  bool centerTitle;
+
   AudioPlayerConfig({
     this.dataSource,
     this.autoPlay = false,
@@ -49,6 +61,10 @@ class AudioPlayerConfig extends BaseConfig {
     this.padding = const EdgeInsets.all(15),
     this.elevation,
     this.backgroundColor = Colors.white,
+    this.allowVolume = true,
+    this.allowSpeed = true,
+    this.title,
+    this.centerTitle = true,
   });
 
   @override
@@ -62,6 +78,10 @@ class AudioPlayerConfig extends BaseConfig {
     EdgeInsetsGeometry? padding,
     double? elevation,
     Color? backgroundColor,
+    bool? allowVolume,
+    bool? allowSpeed,
+    Widget? title,
+    bool? centerTitle,
   }) {
     return AudioPlayerConfig(
       dataSource: dataSource ?? this.dataSource,
@@ -73,6 +93,10 @@ class AudioPlayerConfig extends BaseConfig {
       padding: padding ?? this.padding,
       elevation: elevation ?? this.elevation,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      allowVolume: allowVolume ?? this.allowVolume,
+      allowSpeed: allowSpeed ?? this.allowSpeed,
+      title: title ?? this.title,
+      centerTitle: centerTitle ?? this.centerTitle,
     );
   }
 }
@@ -84,7 +108,7 @@ class AudioPlayerConfig extends BaseConfig {
 */
 class DataSource {
   //asset资源标头
-  static final String assetHead = "assets:";
+  static final String _assetHead = "assets:";
 
   //网络地址或本地文件地址
   String? _sourceUri;
@@ -101,31 +125,31 @@ class DataSource {
   //加载assets资源
   DataSource.asset(String assetName, {String? package})
       : this._sourceUri =
-            "$assetHead${null == package ? assetName : "packages/$package/$assetName"}";
+            "$_assetHead${null == package ? assetName : "packages/$package/$assetName"}";
 
   //加载内存资源
   DataSource.memory(this._sourceData);
 
   //获取路径资源地址
   String? get audioURI {
-    if (null == _sourceUri || isAssetSource) return null;
+    if (null == _sourceUri || _isAssetSource) return null;
     return _sourceUri;
   }
 
   //获取内存资源对象
   Future<Uint8List?> get audioData async {
     if (null != _sourceData) return _sourceData;
-    if (isAssetSource) {
-      var result = (await rootBundle.load(assetPath!));
+    if (_isAssetSource) {
+      var result = (await rootBundle.load(_assetPath!));
       _sourceData = result.buffer.asUint8List();
     }
     return _sourceData;
   }
 
   //判断资源类型是否为asset
-  bool get isAssetSource => _sourceUri?.startsWith(assetHead) ?? false;
+  bool get _isAssetSource => _sourceUri?.startsWith(_assetHead) ?? false;
 
   //获取完整的asset路径
-  String? get assetPath =>
-      isAssetSource ? _sourceUri!.replaceFirst(assetHead, "") : null;
+  String? get _assetPath =>
+      _isAssetSource ? _sourceUri!.replaceFirst(_assetHead, "") : null;
 }

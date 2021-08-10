@@ -55,6 +55,40 @@ class DataFormat {
   DateTime? parse(String date) => DateTime.tryParse(date);
 }
 
+//时间区间格式化
+class DurationFormat {
+  //维护一张替换表
+  final Map<String, Function> _regMap = {
+    "hh": (_, dur) => "${dur.inHours}".padLeft(2, '0'),
+    "mm": (date, _) => "${date.minute}".padLeft(2, '0'),
+    "ss": (date, _) => "${date.second}".padLeft(2, '0'),
+    "h": (_, dur) => "${dur.inHours}",
+    "m": (date, _) => "${date.minute}",
+    "s": (date, _) => "${date.second}",
+  };
+
+  //全时间格式化
+  String formatFull(Duration duration) => format("hh:mm:ss", duration);
+
+  //时分格式化
+  String formatHHMM(Duration duration) => format("hh:mm", duration);
+
+  //分秒格式化
+  String formatMMSS(Duration duration) => format("mm:ss", duration);
+
+  //格式化时间区间
+  String format(String pattern, Duration duration) {
+    DateTime date = DateTime(0).add(duration);
+    _regMap.forEach((key, fun) {
+      if (pattern.contains(key)) {
+        var value = fun(date, duration);
+        pattern = pattern.replaceAll(key, value);
+      }
+    });
+    return pattern;
+  }
+}
+
 /*
 * 扩展duration方法
 * @author jtechjh
@@ -73,7 +107,8 @@ extension DurationExtension on Duration {
       Duration(microseconds: this.inMicroseconds + duration.inMicroseconds);
 
   //duration乘法
-  Duration multiply(int n) => Duration(microseconds: this.inMicroseconds * n);
+  Duration multiply(num n) =>
+      Duration(microseconds: (this.inMicroseconds * n).toInt());
 
   //duration除法
   double divide(Duration duration) {

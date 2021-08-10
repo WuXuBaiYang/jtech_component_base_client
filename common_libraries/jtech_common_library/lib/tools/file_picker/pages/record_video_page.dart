@@ -253,10 +253,7 @@ class RecordVideoPage extends BaseCameraPage {
                   ),
                   SizedBox(width: 6),
                   Text(
-                    _handleRecordTime(
-                      value,
-                      maxRecordDuration,
-                    ),
+                    "${jCommon.tools.durationFormat.formatFull(value)}/${jCommon.tools.durationFormat.formatFull(maxRecordDuration)}",
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -416,20 +413,6 @@ class RecordVideoPage extends BaseCameraPage {
   //销毁当前计时器
   void _cancelRecordTimer() =>
       jCommon.tools.timer.cancel("${controller?.cameraId}");
-
-  //计算获取时间戳
-  String _handleRecordTime(Duration value, Duration maxDuration) {
-    var curr = DateTime(0).add(value);
-    var currTime =
-        "${_padT(value.inHours)}:${_padT(curr.minute)}:${_padT(curr.second)}";
-    var max = DateTime(0).add(maxDuration);
-    var maxTime =
-        "${_padT(maxDuration.inHours)}:${_padT(max.minute)}:${_padT(max.second)}";
-    return "$currTime/$maxTime";
-  }
-
-  //填充时间戳方法
-  String _padT(int t) => "$t".padLeft(2, '0');
 
   @override
   void dispose() {
