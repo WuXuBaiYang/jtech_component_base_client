@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:jtech_common_library/base/controller.dart';
 import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/tools/data_format.dart';
@@ -13,15 +12,11 @@ import 'package:jtech_common_library/tools/data_format.dart';
 * @Time 2021/8/9 5:35 下午
 */
 class JAudioPlayerController extends BaseController {
-  //音频播放控制器
-  final FlutterSoundPlayer _player;
-
   //播放器状态管理
   final ValueChangeNotifier<AudioState> _audioState;
 
   JAudioPlayerController()
-      : this._player = FlutterSoundPlayer(),
-        this._audioState = ValueChangeNotifier(AudioState.none);
+      : this._audioState = ValueChangeNotifier(AudioState.none);
 
   //获取播放器状态
   AudioState get audioState => _audioState.value;
@@ -35,65 +30,32 @@ class JAudioPlayerController extends BaseController {
     Uint8List? fromDataBuffer,
     VoidCallback? onFinished,
   }) async {
-    await _player.openAudioSession();
-    await _player.startPlayer(
-      fromURI: fromURI,
-      fromDataBuffer: fromDataBuffer,
-      whenFinished: () {
-        _audioState.setValue(AudioState.none);
-        onFinished?.call();
-      },
-    );
-    _audioState.setValue(AudioState.running);
     return onProgress;
   }
 
   //暂停播放
-  Future<void> pausePlay() async {
-    if (!_player.isPlaying) return;
-    await _player.pausePlayer();
-    _audioState.setValue(AudioState.pause);
-  }
+  Future<void> pausePlay() async {}
 
   //恢复播放
-  Future<void> resumePlay() async {
-    if (!_player.isPaused) return;
-    await _player.resumePlayer();
-    _audioState.setValue(AudioState.running);
-  }
+  Future<void> resumePlay() async {}
 
   //停止播放
-  Future<void> stopPlay() async {
-    if (_player.isStopped) return;
-    await _player.stopPlayer();
-    _audioState.setValue(AudioState.none);
-  }
+  Future<void> stopPlay() async {}
 
   //拖动播放进度
-  Future<void> seekToPlay(Duration duration) async {
-    if (!isWorked) return;
-    return _player.seekToPlayer(duration);
-  }
+  Future<void> seekToPlay(Duration duration) async {}
 
   //设置音量
-  Future<void> setVolume(double volume) async {
-    if (!isWorked) return;
-    return _player.setVolume(volume);
-  }
+  Future<void> setVolume(double volume) async {}
 
   //设置播放速度
-  Future<void> setSpeed(double speed) async {
-    if (!isWorked) return;
-    return _player.setSpeed(speed);
-  }
-
-  //判断是否正在工作
-  bool get isWorked => _player.isPaused || _player.isPlaying;
+  Future<void> setSpeed(double speed) async {}
 
   //获取播放进度
-  Stream<PlayProgress>? get onProgress =>
-      _player.onProgress?.map<PlayProgress>((event) => PlayProgress.from(
-          duration: event.duration, position: event.position));
+  Stream<PlayProgress>? get onProgress => null;
+
+  // _player.onProgress?.map<PlayProgress>((event) => PlayProgress.from(
+  //     duration: event.duration, position: event.position));
 
   @override
   void addListener(VoidCallback listener) {
@@ -104,8 +66,6 @@ class JAudioPlayerController extends BaseController {
   @override
   void dispose() {
     super.dispose();
-    //销毁播放器
-    _player.closeAudioSession();
   }
 }
 

@@ -80,6 +80,7 @@ class MyHomePage extends BasePage {
   Widget build(BuildContext context) {
     return MaterialRootPage(
       appBarTitle: "example_common",
+      appBarLeading: CloseButton(),
       body: ListView.separated(
         separatorBuilder: (_, __) => Divider(),
         itemCount: pages.length,
