@@ -272,12 +272,6 @@ class JAudioPlayer extends BaseStatefulWidget {
     );
   }
 
-  //弹出速度显示元素弹层
-  Future<double?> _showSpeedSliderPop(
-      BuildContext context, GlobalKey anchor) async {
-    return null;
-  }
-
   @override
   void dispose() {
     super.dispose();
