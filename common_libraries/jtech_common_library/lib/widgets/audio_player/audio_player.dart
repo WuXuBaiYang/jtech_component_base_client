@@ -22,23 +22,6 @@ class JAudioPlayer extends BaseStatefulWidget {
   //播放器配置对象
   final AudioPlayerConfig config;
 
-  //音量预设集合
-  final Map<String, double> volumeMap = {
-    "0%": 0,
-    "25%": 0.25,
-    "50%": 0.5,
-    "75%": 0.75,
-    "100%": 1.0,
-  };
-
-  //倍速预设集合
-  final Map<String, double> speedMap = {
-    "0.5": 0.5,
-    "1.0": 1.0,
-    "2.0": 2.0,
-    "3.0": 3.0,
-  };
-
   //加载网络资源
   JAudioPlayer.net(
     String url, {
@@ -258,21 +241,16 @@ class JAudioPlayer extends BaseStatefulWidget {
     return ValueListenableBuilder<double>(
       valueListenable: controller.audioSpeedListenable,
       builder: (context, value, child) {
-        return PopupMenuButton<double>(
-          initialValue: value,
-          child: Text(
-            "x${value.toStringAsFixed(1)}",
-            style: TextStyle(color: Colors.blueAccent),
-          ),
-          onSelected: (value) => controller.setSpeed(value),
-          itemBuilder: (BuildContext context) =>
-              List.generate(speedMap.length, (index) {
-            var key = speedMap.keys.elementAt(index);
-            return PopupMenuItem(
-              child: Text(key),
-              value: speedMap[key],
-            );
-          }),
+        ///待完成
+        return Row(
+          children: [
+            Icon(Icons.speed, size: 20),
+            SizedBox(width: 2),
+            Text(
+              "x${value.toStringAsFixed(1)}",
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
         );
       },
     );
@@ -288,21 +266,16 @@ class JAudioPlayer extends BaseStatefulWidget {
         if (value > 0.5) icon = Icons.volume_up_rounded;
         if (value > 0 && value <= 0.5) icon = Icons.volume_down_rounded;
         if (value <= 0) icon = Icons.volume_mute_rounded;
-        return PopupMenuButton<double>(
-          child: Icon(icon),
-          initialValue: value,
-          onSelected: (value) => controller.setVolume(value),
-          itemBuilder: (BuildContext context) =>
-              List.generate(volumeMap.length, (index) {
-            var key = volumeMap.keys.elementAt(index);
-            return PopupMenuItem(
-              child: Text(key),
-              value: volumeMap[key],
-            );
-          }),
-        );
+        ///待完成
+        return Icon(icon);
       },
     );
+  }
+
+  //弹出速度显示元素弹层
+  Future<double?> _showSpeedSliderPop(
+      BuildContext context, GlobalKey anchor) async {
+    return null;
   }
 
   @override
