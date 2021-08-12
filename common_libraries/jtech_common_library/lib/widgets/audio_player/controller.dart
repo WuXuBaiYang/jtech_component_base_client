@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -19,17 +20,46 @@ class JAudioPlayerController extends BaseController {
   //播放器状态管理
   final ValueChangeNotifier<AudioState> _audioState;
 
-  JAudioPlayerController()
-      : this._player = AudioPlayer(),
+  //音量控制
+  final ValueChangeNotifier<double> _audioVolume;
+
+  //速度控制
+  final ValueChangeNotifier<double> _audioSpeed;
+
+  //播放进度管理
+  final StreamController<PlayProgress> _positionController =
+      StreamController<PlayProgress>.broadcast();
+
+  JAudioPlayerController({
+    double volume = 1.0,
+    double speed = 1.0,
+  })  : this._player = AudioPlayer(),
+        this._audioVolume = ValueChangeNotifier(volume),
+        this._audioSpeed = ValueChangeNotifier(speed),
         this._audioState = ValueChangeNotifier(AudioState.stopped) {
     //监听播放器状态变化
     _player.onNotificationPlayerStateChanged
         .listen((event) => _onStateChange(event));
     _player.onPlayerStateChanged.listen((event) => _onStateChange(event));
+    _player.onDurationChanged.listen((event) => this._audioDuration = event);
+    _player.onAudioPositionChanged.listen((event) => _positionController
+        .add(PlayProgress.from(duration: _audioDuration, position: event)));
   }
 
   //获取播放器状态监听器
   ValueListenable<AudioState> get audioStateListenable => _audioState;
+
+  //获取播放器音量监听器
+  ValueListenable<double> get audioVolumeListenable => _audioVolume;
+
+  //获取播放器速度监听器
+  ValueListenable<double> get audioSpeedListenable => _audioSpeed;
+
+  //获取当前音量
+  double get audioVolume => _audioVolume.value;
+
+  //获取当前播放速度
+  double get audioSpeed => _audioSpeed.value;
 
   //判断当前是否正在播放
   bool get isPlaying => _audioState.value == AudioState.playing;
@@ -39,6 +69,12 @@ class JAudioPlayerController extends BaseController {
 
   //判断当前是否停止
   bool get isStopped => _audioState.value == AudioState.stopped;
+
+  //获取播放进度
+  Stream<PlayProgress> get onProgress => _positionController.stream;
+
+  //记录音频总时长
+  Duration _audioDuration = Duration.zero;
 
   //开始播放
   Future<bool> startPlay({
@@ -52,20 +88,19 @@ class JAudioPlayerController extends BaseController {
         result = await _player.play(
           fromURI,
           isLocal: _player.isLocalUrl(fromURI),
+          volume: audioVolume,
           position: startAt,
           stayAwake: true,
         );
       } else if (null != fromDataBuffer) {
         result = await _player.playBytes(
           fromDataBuffer,
+          volume: audioVolume,
           position: startAt,
           stayAwake: true,
         );
       }
       if (_setupSuccess(result)) {
-        _audioDuration = Duration(
-          milliseconds: await _player.getDuration(),
-        );
         return _audioState.setValue(AudioState.playing);
       }
     }
@@ -88,44 +123,46 @@ class JAudioPlayerController extends BaseController {
 
   //停止播放
   Future<void> stopPlay() async {
-    if (!isStopped) return;
+    if (isStopped) return;
     var result = await _player.stop();
     if (_setupSuccess(result)) _audioState.setValue(AudioState.stopped);
   }
 
   //拖动播放进度
   Future<bool> seekToPlay(Duration duration) async {
-    if (isStopped) return false;
+    if (isStopped || duration.greaterThan(_audioDuration)) return false;
     var result = await _player.seek(duration);
     return _setupSuccess(result);
   }
 
   //设置音量
   Future<bool> setVolume(double volume) async {
+    if (volume < 0 || volume > 1) return false;
     var result = await _player.setVolume(volume);
-    return _setupSuccess(result);
+    if (_setupSuccess(result)) {
+      return _audioVolume.setValue(volume);
+    }
+    return false;
   }
 
   //设置播放速度
   Future<bool> setSpeed(double speed) async {
+    if (speed < 0 || speed > 3) return false;
     var result = await _player.setPlaybackRate(playbackRate: speed);
-    return _setupSuccess(result);
+    if (_setupSuccess(result)) {
+      return _audioSpeed.setValue(speed);
+    }
+    return false;
   }
 
   //判断播放器设置是否成功
   bool _setupSuccess(int result) => 1 == result;
 
-  //记录音频总时长
-  Duration? _audioDuration;
-
-  //获取播放进度
-  Stream<PlayProgress> get onProgress => _player.onAudioPositionChanged
-      .map<PlayProgress>((event) => PlayProgress.from(
-          duration: _audioDuration ?? Duration.zero, position: event));
-
   @override
   void addListener(VoidCallback listener) {
     _audioState.addListener(listener);
+    _audioVolume.addListener(listener);
+    _audioSpeed.addListener(listener);
     super.addListener(listener);
   }
 
@@ -133,6 +170,7 @@ class JAudioPlayerController extends BaseController {
   _onStateChange(PlayerState event) async {
     switch (event) {
       case PlayerState.STOPPED:
+        _positionController.add(PlayProgress.zero());
         _audioState.setValue(AudioState.stopped);
         break;
       case PlayerState.PLAYING:

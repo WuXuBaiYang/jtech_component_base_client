@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_stateful_widget.dart';
 import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/audio_player/config.dart';
 import 'package:jtech_common_library/widgets/audio_player/controller.dart';
@@ -23,12 +22,6 @@ class JAudioPlayer extends BaseStatefulWidget {
   //播放器配置对象
   final AudioPlayerConfig config;
 
-  //管理手动拖拽时的进度
-  final ValueChangeNotifier<double> seekProgress = ValueChangeNotifier(-1);
-
-  //音量控制
-  final ValueChangeNotifier<double> volume = ValueChangeNotifier(0.5);
-
   //音量预设集合
   final Map<String, double> volumeMap = {
     "0%": 0,
@@ -37,9 +30,6 @@ class JAudioPlayer extends BaseStatefulWidget {
     "75%": 0.75,
     "100%": 1.0,
   };
-
-  //速度控制
-  final ValueChangeNotifier<double> speed = ValueChangeNotifier(1.0);
 
   //倍速预设集合
   final Map<String, double> speedMap = {
@@ -160,38 +150,29 @@ class JAudioPlayer extends BaseStatefulWidget {
       stream: controller.onProgress,
       builder: (context, snap) {
         if (!snap.hasData) return EmptyBox();
-        return ValueListenableBuilder<double>(
-          valueListenable: seekProgress,
-          builder: (context, value, child) {
-            var isSlide = -1 != value;
-            var max = snap.data!.duration;
-            var curr = isSlide ? max.multiply(value) : snap.data!.position;
-            var ratio = isSlide ? value : snap.data!.ratio;
-            var fCurr = jCommon.tools.durationFormat.formatMMSS(curr);
-            var fMax = jCommon.tools.durationFormat.formatMMSS(max);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Slider(
-                  value: ratio,
-                  max: max == Duration.zero ? 0.0 : 1.0,
-                  onChanged: (value) => seekProgress.setValue(value),
-                  onChangeEnd: (value) async {
-                    if (await controller.seekToPlay(max.multiply(value))) {
-                      seekProgress.setValue(-1.0);
-                    }
-                  },
-                ),
-                Text(
-                  "$fCurr/$fMax",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            );
-          },
+        var max = snap.data!.duration;
+        var curr = snap.data!.position;
+        var ratio = snap.data!.ratio;
+        var fCurr = jCommon.tools.durationFormat.formatMMSS(curr);
+        var fMax = jCommon.tools.durationFormat.formatMMSS(max);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Slider(
+              value: ratio,
+              onChanged: (value) {
+                var duration = max.multiply(value);
+                controller.seekToPlay(duration);
+              },
+            ),
+            Text(
+              "$fCurr/$fMax",
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         );
       },
     );
@@ -249,19 +230,15 @@ class JAudioPlayer extends BaseStatefulWidget {
   Widget _buildSpeedAction() {
     if (!config.allowSpeed) return EmptyBox();
     return ValueListenableBuilder<double>(
-      valueListenable: speed,
+      valueListenable: controller.audioSpeedListenable,
       builder: (context, value, child) {
         return PopupMenuButton<double>(
           initialValue: value,
           child: Text(
-            "x$value",
+            "x${value.toStringAsFixed(1)}",
             style: TextStyle(color: Colors.blueAccent),
           ),
-          onSelected: (value) async {
-            if (await controller.setSpeed(value)) {
-              speed.setValue(value);
-            }
-          },
+          onSelected: (value) => controller.setSpeed(value),
           itemBuilder: (BuildContext context) =>
               List.generate(speedMap.length, (index) {
             var key = speedMap.keys.elementAt(index);
@@ -279,7 +256,7 @@ class JAudioPlayer extends BaseStatefulWidget {
   Widget _buildVolumeAction() {
     if (!config.allowVolume) return EmptyBox();
     return ValueListenableBuilder<double>(
-      valueListenable: volume,
+      valueListenable: controller.audioVolumeListenable,
       builder: (context, value, child) {
         var icon;
         if (value > 0.5) icon = Icons.volume_up_rounded;
@@ -288,11 +265,7 @@ class JAudioPlayer extends BaseStatefulWidget {
         return PopupMenuButton<double>(
           child: Icon(icon),
           initialValue: value,
-          onSelected: (value) async {
-            if (await controller.setVolume(value)) {
-              volume.setValue(value);
-            }
-          },
+          onSelected: (value) => controller.setVolume(value),
           itemBuilder: (BuildContext context) =>
               List.generate(volumeMap.length, (index) {
             var key = volumeMap.keys.elementAt(index);

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/audio_player/audio_player.dart';
+import 'package:jtech_common_library/widgets/audio_player/controller.dart';
 import 'package:jtech_common_library/widgets/audio_record/audio_record.dart';
 
 /*
@@ -15,15 +17,55 @@ class AudioDemo extends BasePage {
   final String audioSourceUrl =
       "https://luan.xyz/files/audio/nasa_on_a_mission.mp3";
 
+  //播放器控制器
+  final JAudioPlayerController playerController = JAudioPlayerController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialRootPage(
       appBarTitle: "音频播放器/录音器",
+      appBarActions: [
+        PopupMenuButton(
+          child: Center(child: Text("播放器")),
+          itemBuilder: (_) {
+            return [
+              PopupMenuItem(
+                child: ListTile(
+                  title: Text("进度定位到50秒"),
+                  onTap: () {
+                    playerController.seekToPlay(Duration(seconds: 50));
+                    jBase.router.pop();
+                  },
+                ),
+              ),
+              PopupMenuItem(
+                child: ListTile(
+                  title: Text("2倍速播放"),
+                  onTap: () {
+                    playerController.setSpeed(2);
+                    jBase.router.pop();
+                  },
+                ),
+              ),
+              PopupMenuItem(
+                child: ListTile(
+                  title: Text("静音"),
+                  onTap: () {
+                    playerController.setVolume(0);
+                    jBase.router.pop();
+                  },
+                ),
+              ),
+            ];
+          },
+        ),
+      ],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           JAudioPlayer.net(
             audioSourceUrl,
+            controller: playerController,
           ),
           SizedBox(height: 35),
           JAudioRecord(
