@@ -11,6 +11,10 @@ import 'package:jtech_common_library/widgets/audio_record/audio_record.dart';
 * @Time 2021/8/10 10:55 上午
 */
 class AudioDemo extends BasePage {
+  //音频播放器demo地址
+  final String audioSourceUrl =
+      "https://luan.xyz/files/audio/nasa_on_a_mission.mp3";
+
   @override
   Widget build(BuildContext context) {
     return MaterialRootPage(
@@ -19,7 +23,7 @@ class AudioDemo extends BasePage {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           JAudioPlayer.net(
-            "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
+            audioSourceUrl,
           ),
           SizedBox(height: 35),
           JAudioRecord(

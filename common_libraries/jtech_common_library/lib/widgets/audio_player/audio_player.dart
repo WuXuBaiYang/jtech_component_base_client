@@ -176,9 +176,10 @@ class JAudioPlayer extends BaseStatefulWidget {
                   value: ratio,
                   max: max == Duration.zero ? 0.0 : 1.0,
                   onChanged: (value) => seekProgress.setValue(value),
-                  onChangeEnd: (value) {
-                    controller.seekToPlay(max.multiply(value));
-                    seekProgress.setValue(-1.0);
+                  onChangeEnd: (value) async {
+                    if (await controller.seekToPlay(max.multiply(value))) {
+                      seekProgress.setValue(-1.0);
+                    }
                   },
                 ),
                 Text(
@@ -205,20 +206,20 @@ class JAudioPlayer extends BaseStatefulWidget {
           children: [
             Expanded(child: Row(children: [_buildSpeedAction()])),
             IconButton(
-              icon: Icon(value.isRunning
+              icon: Icon(value == AudioState.playing
                   ? Icons.pause_circle_outline_rounded
                   : Icons.play_circle_outline_rounded),
               iconSize: 60,
               onPressed: () async {
-                if (!value.isWorked) {
+                if (value == AudioState.stopped) {
                   await controller.startPlay(
                     fromURI: config.dataSource?.audioURI,
                     fromDataBuffer: await config.dataSource?.audioData,
+                    startAt: config.startAt,
                   );
-                  refreshUI();
-                } else if (value.isRunning) {
+                } else if (value == AudioState.playing) {
                   await controller.pausePlay();
-                } else if (value.isPause) {
+                } else if (value == AudioState.pause) {
                   await controller.resumePlay();
                 }
               },
@@ -227,7 +228,7 @@ class JAudioPlayer extends BaseStatefulWidget {
               child: Row(
                 children: [
                   Visibility(
-                    visible: value.isWorked,
+                    visible: value != AudioState.stopped,
                     child: IconButton(
                       icon: Icon(Icons.stop),
                       onPressed: () => controller.stopPlay(),
@@ -257,8 +258,9 @@ class JAudioPlayer extends BaseStatefulWidget {
             style: TextStyle(color: Colors.blueAccent),
           ),
           onSelected: (value) async {
-            await controller.setSpeed(value);
-            speed.setValue(value);
+            if (await controller.setSpeed(value)) {
+              speed.setValue(value);
+            }
           },
           itemBuilder: (BuildContext context) =>
               List.generate(speedMap.length, (index) {
@@ -287,8 +289,9 @@ class JAudioPlayer extends BaseStatefulWidget {
           child: Icon(icon),
           initialValue: value,
           onSelected: (value) async {
-            await controller.setVolume(value);
-            volume.setValue(value);
+            if (await controller.setVolume(value)) {
+              volume.setValue(value);
+            }
           },
           itemBuilder: (BuildContext context) =>
               List.generate(volumeMap.length, (index) {
