@@ -45,11 +45,14 @@ class AudioPlayerConfig extends BaseConfig {
   //是否支持倍速播放功能
   bool allowSpeed;
 
+  //是否支持扬声器，听筒切换功能
+  bool allowSpeakerToggle;
+
   //标题部分组件
   Widget? title;
 
-  //标题是否剧中
-  bool centerTitle;
+  //标题部分内间距
+  EdgeInsetsGeometry titlePadding;
 
   AudioPlayerConfig({
     this.dataSource,
@@ -63,8 +66,9 @@ class AudioPlayerConfig extends BaseConfig {
     this.backgroundColor = Colors.white,
     this.allowVolume = true,
     this.allowSpeed = true,
+    this.allowSpeakerToggle = false,
     this.title,
-    this.centerTitle = true,
+    this.titlePadding = const EdgeInsets.symmetric(vertical: 8),
   });
 
   @override
@@ -80,8 +84,10 @@ class AudioPlayerConfig extends BaseConfig {
     Color? backgroundColor,
     bool? allowVolume,
     bool? allowSpeed,
+    bool? allowSpeakerToggle,
     Widget? title,
     bool? centerTitle,
+    EdgeInsetsGeometry? titlePadding,
   }) {
     return AudioPlayerConfig(
       dataSource: dataSource ?? this.dataSource,
@@ -95,8 +101,9 @@ class AudioPlayerConfig extends BaseConfig {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       allowVolume: allowVolume ?? this.allowVolume,
       allowSpeed: allowSpeed ?? this.allowSpeed,
+      allowSpeakerToggle: allowSpeakerToggle ?? this.allowSpeakerToggle,
       title: title ?? this.title,
-      centerTitle: centerTitle ?? this.centerTitle,
+      titlePadding: titlePadding ?? this.titlePadding,
     );
   }
 }

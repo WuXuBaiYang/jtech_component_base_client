@@ -26,8 +26,8 @@ class JAudioPlayerController extends BaseController {
   //速度控制
   final ValueChangeNotifier<double> _audioSpeed;
 
-  //扬声器播放状态
-  final ValueChangeNotifier<bool> _speakerPlay;
+  //扬声器听筒切换状态
+  final ValueChangeNotifier<bool> _speakerToggle;
 
   //播放进度管理
   final StreamController<PlayProgress> _positionController =
@@ -38,7 +38,7 @@ class JAudioPlayerController extends BaseController {
     double speed = 1.0,
     bool isSpeaker = true,
   })  : this._player = AudioPlayer(),
-        this._speakerPlay = ValueChangeNotifier(isSpeaker),
+        this._speakerToggle = ValueChangeNotifier(isSpeaker),
         this._audioVolume = ValueChangeNotifier(volume),
         this._audioSpeed = ValueChangeNotifier(speed),
         this._audioState = ValueChangeNotifier(AudioState.stopped) {
@@ -64,7 +64,7 @@ class JAudioPlayerController extends BaseController {
   ValueListenable<double> get audioSpeedListenable => _audioSpeed;
 
   //获取扬声器播放状态监听器
-  ValueListenable<bool> get speakerPlayListenable => _speakerPlay;
+  ValueListenable<bool> get speakerToggleListenable => _speakerToggle;
 
   //获取当前音量
   double get audioVolume => _audioVolume.value;
@@ -73,7 +73,7 @@ class JAudioPlayerController extends BaseController {
   double get audioSpeed => _audioSpeed.value;
 
   //获取当前扬声器播放状态
-  bool get isSpeakerPlay => _speakerPlay.value;
+  bool get isSpeakerPlay => _speakerToggle.value;
 
   //判断当前是否正在播放
   bool get isPlaying => _audioState.value == AudioState.playing;
@@ -173,7 +173,7 @@ class JAudioPlayerController extends BaseController {
   Future<bool> speakerToggle() async {
     var result = await _player.earpieceOrSpeakersToggle();
     if (_setupSuccess(result)) {
-      return _speakerPlay.setValue(!isSpeakerPlay);
+      return _speakerToggle.setValue(!isSpeakerPlay);
     }
     return false;
   }

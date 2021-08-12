@@ -4,6 +4,7 @@ import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/audio_player/audio_player.dart';
+import 'package:jtech_common_library/widgets/audio_player/config.dart';
 import 'package:jtech_common_library/widgets/audio_player/controller.dart';
 import 'package:jtech_common_library/widgets/audio_record/audio_record.dart';
 
@@ -56,6 +57,15 @@ class AudioDemo extends BasePage {
                   },
                 ),
               ),
+              PopupMenuItem(
+                child: ListTile(
+                  title: Text("切换播放器"),
+                  onTap: () {
+                    playerController.speakerToggle();
+                    jBase.router.pop();
+                  },
+                ),
+              ),
             ];
           },
         ),
@@ -66,6 +76,9 @@ class AudioDemo extends BasePage {
           JAudioPlayer.net(
             audioSourceUrl,
             controller: playerController,
+            config: AudioPlayerConfig(
+              title: Text("这里是播放器标题"),
+            ),
           ),
           SizedBox(height: 35),
           JAudioRecord(

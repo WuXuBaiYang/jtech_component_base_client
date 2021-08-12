@@ -130,15 +130,25 @@ class JAudioPlayer extends BaseStatefulWidget {
         padding: config.padding,
         child: Column(
           children: [
-            Container(
-              alignment:
-                  config.centerTitle ? Alignment.center : Alignment.centerLeft,
-              child: config.title ?? EmptyBox(),
-            ),
+            _buildTitleContent(),
             _buildProgressSlider(),
             _buildPlayerOptions(),
           ],
         ),
+      ),
+    );
+  }
+
+  //构建标题部分容器
+  Widget _buildTitleContent() {
+    return Container(
+      padding: config.titlePadding,
+      child: Row(
+        children: [
+          config.title ?? EmptyBox(),
+          Expanded(child: EmptyBox()),
+          _buildSpeakerToggleAction(),
+        ],
       ),
     );
   }
@@ -221,6 +231,22 @@ class JAudioPlayer extends BaseStatefulWidget {
               ),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  //构建听筒/扬声器切换控制按钮
+  Widget _buildSpeakerToggleAction() {
+    if (!config.allowSpeakerToggle) return EmptyBox();
+    return ValueListenableBuilder<bool>(
+      valueListenable: controller.speakerToggleListenable,
+      builder: (context, value, child) {
+        var iconData =
+            value ? Icons.hearing_rounded : Icons.hearing_disabled_rounded;
+        return IconButton(
+          icon: Icon(iconData),
+          onPressed: () => controller.speakerToggle(),
         );
       },
     );
