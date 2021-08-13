@@ -1,3 +1,4 @@
+import 'package:jtech_base_library/jbase.dart';
 import 'dart:async';
 import 'model.dart';
 
@@ -6,7 +7,7 @@ import 'model.dart';
 * @author wuxubaiyang
 * @Time 2021/6/30 下午5:28
 */
-class JEvent {
+class JEvent extends BaseManage {
   static final JEvent _instance = JEvent._internal();
 
   factory JEvent() => _instance;
@@ -18,6 +19,7 @@ class JEvent {
   StreamController _streamController;
 
   //初始化方法
+  @override
   Future init() async {}
 
   //注册事件

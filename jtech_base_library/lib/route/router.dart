@@ -1,3 +1,4 @@
+import 'package:jtech_base_library/jbase.dart';
 import 'package:flutter/cupertino.dart';
 
 /*
@@ -5,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 * @author jtechjh
 * @Time 2021/8/13 9:02 上午
 */
-class JRouter {
+class JRouter extends BaseManage{
   static final JRouter _instance = JRouter._internal();
 
   factory JRouter() => _instance;
@@ -20,6 +21,7 @@ class JRouter {
   NavigatorState? get navigator => navigateKey.currentState;
 
   //初始化方法
+  @override
   Future init() async {}
 
   //页面跳转

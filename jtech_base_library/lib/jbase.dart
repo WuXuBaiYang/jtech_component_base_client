@@ -1,9 +1,11 @@
 library base_library;
 
-import 'package:jtech_base_library/event/event.dart';
-import 'package:jtech_base_library/route/router.dart';
+import 'base/base_manage.dart';
+import 'event/event.dart';
+import 'route/router.dart';
 
 //方法基类
+export 'base/base_manage.dart';
 export 'base/base_model.dart';
 export 'base/base_widget.dart';
 export 'base/base_page.dart';
@@ -20,7 +22,7 @@ export 'route/router.dart';
 * @author wuxubaiyang
 * @Time 2021/7/2 下午4:06
 */
-class JBase {
+class JBase extends BaseManage {
   static final JBase _instance = JBase._internal();
 
   factory JBase() => _instance;
@@ -34,6 +36,7 @@ class JBase {
   final router = JRouter();
 
   //初始化方法
+  @override
   Future init() async {
     //初始化消息总线
     await event.init();

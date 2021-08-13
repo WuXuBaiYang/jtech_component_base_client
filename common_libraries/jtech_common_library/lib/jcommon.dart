@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/tools/tools.dart';
 
 import 'popups/popups.dart';
@@ -8,7 +7,6 @@ import 'popups/popups.dart';
 * @author wuxubaiyang
 * @Time 2021/7/2 下午4:06
 */
-@protected
 class JCommon {
   static final JCommon _instance = JCommon._internal();
 
@@ -24,8 +22,8 @@ class JCommon {
 
   //初始化方法
   Future init() async {
-    //初始化弹出层管理方法
     await popups.init();
+    await tools.init();
   }
 }
 
