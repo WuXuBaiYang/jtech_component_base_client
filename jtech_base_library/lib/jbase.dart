@@ -1,13 +1,25 @@
-import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/event/jevent.dart';
-import 'package:jtech_base_library/route/jrouter.dart';
+library base_library;
+
+import 'package:jtech_base_library/event/event.dart';
+import 'package:jtech_base_library/route/router.dart';
+
+//方法基类
+export 'base/base_model.dart';
+export 'base/base_widget.dart';
+export 'base/base_page.dart';
+
+//消息总线
+export 'event/event.dart';
+export 'event/model.dart';
+
+//页面路由
+export 'route/router.dart';
 
 /*
 * 基本库方法入口
 * @author wuxubaiyang
 * @Time 2021/7/2 下午4:06
 */
-@protected
 class JBase {
   static final JBase _instance = JBase._internal();
 

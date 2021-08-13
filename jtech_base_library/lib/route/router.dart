@@ -1,7 +1,17 @@
 import 'package:flutter/cupertino.dart';
 
-@protected
+/*
+* 路由管理类
+* @author jtechjh
+* @Time 2021/8/13 9:02 上午
+*/
 class JRouter {
+  static final JRouter _instance = JRouter._internal();
+
+  factory JRouter() => _instance;
+
+  JRouter._internal();
+
   //全局路由key
   final GlobalKey<NavigatorState> navigateKey =
       GlobalKey(debugLabel: 'jrouter_navigate_key');
@@ -65,3 +75,6 @@ class JRouter {
         ModalRoute.withName(untilPath),
       );
 }
+
+//单例调用
+final jRouter = JRouter();

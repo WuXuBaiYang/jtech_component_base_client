@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_base_library/base/base_widget.dart';
+import 'package:jtech_base_library/jbase.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +29,11 @@ class MyHomePage extends BaseStatefulPage {
 }
 
 class _MyHomePageState extends BaseState<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
