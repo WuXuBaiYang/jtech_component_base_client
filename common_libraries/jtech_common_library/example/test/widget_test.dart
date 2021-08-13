@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:example/main.dart';
-import 'package:jtech_common_library/jcommon.dart';
+import 'package:package:jtech_common_library/jcommon.dart';
 
 void main() {
   testWidgets("common test", (WidgetTester tester) async {

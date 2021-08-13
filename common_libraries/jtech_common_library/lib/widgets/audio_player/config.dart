@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jtech_common_library/base/config.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 音频播放器配置文件

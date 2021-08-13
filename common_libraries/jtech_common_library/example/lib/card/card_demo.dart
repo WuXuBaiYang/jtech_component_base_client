@@ -3,7 +3,7 @@ import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_common_library/widgets/card/card.dart';
 import 'package:jtech_common_library/widgets/image/clip.dart';
 import 'package:jtech_common_library/widgets/image/config.dart';
-import 'package:jtech_common_library/widgets/image/jimage.dart';
+import 'package:jtech_common_library/widgets/image/image.dart';
 
 /*
 * 卡片组件demo

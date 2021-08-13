@@ -1,14 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/audio_player/config.dart';
-import 'package:jtech_common_library/widgets/audio_player/controller.dart';
-import 'package:jtech_common_library/tools/data_format.dart';
 
 /*
 * 音频播放器
@@ -104,13 +99,23 @@ class JAudioPlayer extends BaseStatefulWidget {
         );
 
   @override
+  BaseState<BaseStatefulWidget> getState() => _JAudioPlayerState();
+}
+
+/*
+* 音频播放器组件状态
+* @author jtechjh
+* @Time 2021/8/13 10:49 上午
+*/
+class _JAudioPlayerState extends BaseState<JAudioPlayer> {
+  @override
   Widget build(BuildContext context) {
     return Card(
-      margin: config.margin,
-      elevation: config.elevation,
-      color: config.backgroundColor,
+      margin: widget.config.margin,
+      elevation: widget.config.elevation,
+      color: widget.config.backgroundColor,
       child: Container(
-        padding: config.padding,
+        padding: widget.config.padding,
         child: Column(
           children: [
             _buildTitleContent(),
@@ -125,10 +130,10 @@ class JAudioPlayer extends BaseStatefulWidget {
   //构建标题部分容器
   Widget _buildTitleContent() {
     return Container(
-      padding: config.titlePadding,
+      padding: widget.config.titlePadding,
       child: Row(
         children: [
-          config.title ?? EmptyBox(),
+          widget.config.title ?? EmptyBox(),
           Expanded(child: EmptyBox()),
           _buildSpeakerToggleAction(),
         ],
@@ -140,7 +145,7 @@ class JAudioPlayer extends BaseStatefulWidget {
   Widget _buildProgressSlider() {
     return StreamBuilder<PlayProgress>(
       initialData: PlayProgress.zero(),
-      stream: controller.onProgress,
+      stream: widget.controller.onProgress,
       builder: (context, snap) {
         if (!snap.hasData) return EmptyBox();
         var max = snap.data!.duration;
@@ -155,7 +160,7 @@ class JAudioPlayer extends BaseStatefulWidget {
               value: ratio,
               onChanged: (value) {
                 var duration = max.multiply(value);
-                controller.seekToPlay(duration);
+                widget.controller.seekToPlay(duration);
               },
             ),
             Text(
@@ -174,7 +179,7 @@ class JAudioPlayer extends BaseStatefulWidget {
   //构建播放器操作部分
   Widget _buildPlayerOptions() {
     return ValueListenableBuilder<AudioState>(
-      valueListenable: controller.audioStateListenable,
+      valueListenable: widget.controller.audioStateListenable,
       builder: (context, value, child) {
         return Row(
           children: [
@@ -186,15 +191,15 @@ class JAudioPlayer extends BaseStatefulWidget {
               iconSize: 60,
               onPressed: () async {
                 if (value == AudioState.stopped) {
-                  await controller.startPlay(
-                    fromURI: config.dataSource?.audioURI,
-                    fromDataBuffer: await config.dataSource?.audioData,
-                    startAt: config.startAt,
+                  await widget.controller.startPlay(
+                    fromURI: widget.config.dataSource?.audioURI,
+                    fromDataBuffer: await widget.config.dataSource?.audioData,
+                    startAt: widget.config.startAt,
                   );
                 } else if (value == AudioState.playing) {
-                  await controller.pausePlay();
+                  await widget.controller.pausePlay();
                 } else if (value == AudioState.pause) {
-                  await controller.resumePlay();
+                  await widget.controller.resumePlay();
                 }
               },
             ),
@@ -205,7 +210,7 @@ class JAudioPlayer extends BaseStatefulWidget {
                     visible: value != AudioState.stopped,
                     child: IconButton(
                       icon: Icon(Icons.stop),
-                      onPressed: () => controller.stopPlay(),
+                      onPressed: () => widget.controller.stopPlay(),
                     ),
                   ),
                   Expanded(child: EmptyBox()),
@@ -221,15 +226,15 @@ class JAudioPlayer extends BaseStatefulWidget {
 
   //构建听筒/扬声器切换控制按钮
   Widget _buildSpeakerToggleAction() {
-    if (!config.allowSpeakerToggle) return EmptyBox();
+    if (!widget.config.allowSpeakerToggle) return EmptyBox();
     return ValueListenableBuilder<bool>(
-      valueListenable: controller.speakerToggleListenable,
+      valueListenable: widget.controller.speakerToggleListenable,
       builder: (context, value, child) {
         var iconData =
             value ? Icons.hearing_rounded : Icons.hearing_disabled_rounded;
         return IconButton(
           icon: Icon(iconData),
-          onPressed: () => controller.speakerToggle(),
+          onPressed: () => widget.controller.speakerToggle(),
         );
       },
     );
@@ -237,9 +242,9 @@ class JAudioPlayer extends BaseStatefulWidget {
 
   //构建倍速控制按钮
   Widget _buildSpeedAction() {
-    if (!config.allowSpeed) return EmptyBox();
+    if (!widget.config.allowSpeed) return EmptyBox();
     return ValueListenableBuilder<double>(
-      valueListenable: controller.audioSpeedListenable,
+      valueListenable: widget.controller.audioSpeedListenable,
       builder: (context, value, child) {
         ///待完成
         return Row(
@@ -258,14 +263,15 @@ class JAudioPlayer extends BaseStatefulWidget {
 
   //构建音量控制按钮
   Widget _buildVolumeAction() {
-    if (!config.allowVolume) return EmptyBox();
+    if (!widget.config.allowVolume) return EmptyBox();
     return ValueListenableBuilder<double>(
-      valueListenable: controller.audioVolumeListenable,
+      valueListenable: widget.controller.audioVolumeListenable,
       builder: (context, value, child) {
         var icon;
         if (value > 0.5) icon = Icons.volume_up_rounded;
         if (value > 0 && value <= 0.5) icon = Icons.volume_down_rounded;
         if (value <= 0) icon = Icons.volume_mute_rounded;
+
         ///待完成
         return Icon(icon);
       },
@@ -276,6 +282,6 @@ class JAudioPlayer extends BaseStatefulWidget {
   void dispose() {
     super.dispose();
     //销毁控制器
-    controller.dispose();
+    widget.controller.dispose();
   }
 }

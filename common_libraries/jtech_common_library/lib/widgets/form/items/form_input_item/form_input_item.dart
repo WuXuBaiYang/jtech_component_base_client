@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-import 'package:jtech_common_library/widgets/form/items/base/default_form_item.dart';
-import 'package:jtech_common_library/widgets/form/items/base/default_form_item_config.dart';
-import 'package:jtech_common_library/widgets/form/items/base/form_item.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //输入框操作回调
-typedef OnInputAction<V> = void Function(V? value);
+typedef OnInputAction = void Function(String? value);
 
 /*
 * 表单输入框子项
 * @author wuxubaiyang
 * @Time 2021/7/22 下午3:23
 */
-class JFormInputItem extends JFormItem<String> {
+class JFormInputItemState extends BaseJFormItemState<String> {
   //输入框控制器
   final TextEditingController controller;
 
@@ -23,9 +20,6 @@ class JFormInputItem extends JFormItem<String> {
 
   //结果校验正则集合,key：正则 value：校验失败提示
   final Map<RegExp, String> validRegs;
-
-  //默认结构配置
-  final DefaultFormItemConfig<String> defaultConfig;
 
   //持有输入框焦点控制
   final FocusNode focusNode;
@@ -64,20 +58,21 @@ class JFormInputItem extends JFormItem<String> {
   final TextInputAction? inputAction;
 
   //编辑完成事件
-  final OnInputAction<String>? onEditingComplete;
+  final OnInputAction? onEditingComplete;
 
   //提交事件
-  final OnInputAction<String>? onSubmitted;
+  final OnInputAction? onSubmitted;
 
   //输入框内容格式化
   final List<TextInputFormatter> inputFormatters;
 
-  JFormInputItem({
+  JFormInputItemState({
+    //基本参数结构
+    required FormItemConfig<String> config,
+    DefaultItemConfig<String>? defaultConfig,
+    //输入框部分参数
     String? initialValue,
-    bool enabled = true,
     TextStyle? textStyle,
-    FormFieldSetter<String>? onSaved,
-    FormFieldValidator<String>? validator,
     this.validRegs = const {},
     this.inputDecoration = const InputDecoration(),
     this.minLines = 1,
@@ -93,45 +88,19 @@ class JFormInputItem extends JFormItem<String> {
     this.onEditingComplete,
     this.onSubmitted,
     this.inputFormatters = const [],
-    //默认结构部分
-    required title,
-    bool? required,
-    Widget? leading,
-    bool? isArrow,
-    OnFormItemTap<String>? onTap,
-    OnFormItemTap<String>? onLongTap,
-    DefaultFormItemConfig<String>? defaultConfig,
-  })  : this.defaultConfig =
-            (defaultConfig ?? DefaultFormItemConfig()).copyWith(
-          leading: leading,
-          title: title,
-          isArrow: isArrow,
-          onTap: onTap,
-          onLongTap: onLongTap,
-          required: required,
-        ),
-        this.textStyle = textStyle ??
-            TextStyle(
-              color: Colors.black,
-            ),
+  })  : this.textStyle = textStyle ?? TextStyle(color: Colors.black),
         this.obscureText = ValueChangeNotifier(obscureText),
         this.showObscureButton = showObscureButton ?? obscureText,
         this.controller = TextEditingController(text: initialValue),
         this.maxLines = (maxLines < minLines) ? minLines : maxLines,
         this.focusNode = FocusNode(),
-        super(
-          enabled: enabled,
-          initialValue: initialValue,
-          autoValidateMode: AutovalidateMode.disabled,
-          onSaved: onSaved,
-          validator: validator,
-        );
+        super(config: config, defaultConfig: defaultConfig);
 
   @override
   void initState() {
     super.initState();
     //监听焦点变化
-    focusNode.addListener(() => refreshUI());
+    focusNode.addListener(() => obscureText.update(true));
   }
 
   @override
@@ -158,15 +127,15 @@ class JFormInputItem extends JFormItem<String> {
             minLines: minLines,
             maxLines: maxLines,
             maxLength: maxLength,
-            enabled: enabled,
+            enabled: config.enabled,
             readOnly: readOnly,
             onChanged: (value) => field.didChange(value),
           ),
-          config: defaultConfig.copyWith(
+          defaultConfig: defaultConfig?.copyWith(
             isEmpty: isValueEmpty,
             isFocused: focusNode.hasFocus,
-            desc: defaultConfig.desc ?? _buildClearButton(field),
-            trailing: defaultConfig.trailing ?? _buildObscureTextButton(),
+            desc: defaultConfig?.desc ?? _buildClearButton(field),
+            trailing: defaultConfig?.trailing ?? _buildObscureTextButton(),
           ),
         );
       },
@@ -207,8 +176,8 @@ class JFormInputItem extends JFormItem<String> {
   @override
   String? onValidValue(String? value) {
     var isEmptyValue = value?.isEmpty ?? true;
-    if (defaultConfig.required && isEmptyValue) {
-      return defaultConfig.requiredError;
+    if (defaultConfig!.required && isEmptyValue) {
+      return defaultConfig!.requiredError;
     }
     if (!isEmptyValue && validRegs.isNotEmpty) {
       for (var reg in validRegs.keys) {

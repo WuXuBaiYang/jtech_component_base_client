@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:jtech_common_library/base/controller.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-import 'package:jtech_common_library/widgets/banner/item.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * banner控制器

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 角标配置
 * @author wuxubaiyang
 * @Time 2021/7/16 下午2:40
 */
-class BadgeConfig {
+class BadgeConfig extends BaseConfig {
   //自定义角标视图
   final Widget? child;
 
@@ -60,4 +61,31 @@ class BadgeConfig {
         this.width = width ?? size,
         this.height = height ?? size,
         circle = radius < 0;
+
+  @override
+  BadgeConfig copyWith({
+    Widget? child,
+    double? width,
+    double? height,
+    String? text,
+    Color? color,
+    double? radius,
+    bool? circle,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    double? elevation,
+    BadgeConfig? empty,
+  }) {
+    return BadgeConfig(
+      child: child ?? this.child,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      text: text ?? this.text,
+      color: color ?? this.color,
+      radius: radius ?? this.radius,
+      margin: margin ?? this.margin,
+      padding: padding ?? this.padding,
+      elevation: elevation ?? this.elevation,
+    );
+  }
 }

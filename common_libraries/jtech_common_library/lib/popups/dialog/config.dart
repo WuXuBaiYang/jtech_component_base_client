@@ -1,7 +1,8 @@
-//弹窗点击事件回调-异步
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
+//弹窗点击事件回调-异步
 typedef DialogOptionTapAsync<T> = Future<T> Function();
 //弹窗点击事件回调
 typedef DialogOptionTap<T> = T Function();
@@ -11,7 +12,7 @@ typedef DialogOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/8 下午4:15
 */
-class DialogConfig<T> {
+class DialogConfig<T> extends BaseConfig{
   //内间距
   EdgeInsets padding;
 
@@ -134,7 +135,7 @@ class DialogConfig<T> {
   Future<T?> runConfirmTap() async =>
       confirmTap?.call() ?? await confirmTapAsync?.call();
 
-  //从已有参数中拷贝覆盖
+  @override
   DialogConfig<T> copyWith({
     EdgeInsets? padding,
     EdgeInsets? margin,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //toast构建器
 typedef ToastBuilder = Widget Function(BuildContext context, Widget? child);
@@ -10,7 +10,7 @@ typedef ToastBuilder = Widget Function(BuildContext context, Widget? child);
 * @author wuxubaiyang
 * @Time 2021/7/9 下午5:20
 */
-class ToastConfig {
+class ToastConfig extends BaseConfig{
   //toast内容子项
   Widget? child;
 
@@ -37,12 +37,13 @@ class ToastConfig {
     this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 18),
     Color backgroundColor = Colors.black38,
     BorderRadiusGeometry borderRadius =
-    const BorderRadius.all(Radius.circular(100)),
+        const BorderRadius.all(Radius.circular(100)),
   }) : decoration = BoxDecoration(
-    color: backgroundColor,
-    borderRadius: borderRadius,
-  );
+          color: backgroundColor,
+          borderRadius: borderRadius,
+        );
 
+  @override
   ToastConfig copyWith({
     ToastBuilder? toastBuilder,
     Duration? duration,
@@ -62,21 +63,4 @@ class ToastConfig {
       borderRadius: borderRadius ?? this.decoration.borderRadius!,
     );
   }
-
-  //将align转换为toastGravity
-  @protected
-  ToastGravity get gravity => _alignGravity[align] ?? ToastGravity.BOTTOM;
 }
-
-//位置与重力转换表
-final Map<Alignment, ToastGravity> _alignGravity = {
-  Alignment.topCenter: ToastGravity.TOP,
-  Alignment.topLeft: ToastGravity.TOP_LEFT,
-  Alignment.topRight: ToastGravity.TOP_RIGHT,
-  Alignment.center: ToastGravity.CENTER,
-  Alignment.centerLeft: ToastGravity.CENTER_LEFT,
-  Alignment.centerRight: ToastGravity.CENTER_RIGHT,
-  Alignment.bottomCenter: ToastGravity.BOTTOM,
-  Alignment.bottomLeft: ToastGravity.BOTTOM_LEFT,
-  Alignment.bottomRight: ToastGravity.BOTTOM_RIGHT,
-};

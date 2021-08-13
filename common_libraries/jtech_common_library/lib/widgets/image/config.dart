@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-
+import 'package:jtech_common_library/jcommon.dart';
 import 'clip.dart';
 
 //图片加载构造器
@@ -17,7 +17,7 @@ typedef ErrorBuilder = Widget Function(
 * @author wuxubaiyang
 * @Time 2021/7/13 下午1:49
 */
-class ImageConfig {
+class ImageConfig extends BaseConfig{
   //图片构造器
   ImageBuilder? imageBuilder;
 
@@ -97,6 +97,7 @@ class ImageConfig {
     this.clip,
   });
 
+  @override
   ImageConfig copyWith({
     ImageBuilder? imageBuilder,
     PlaceholderBuilder? placeholderBuilder,

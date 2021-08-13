@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 自定义snack消息配置
 * @author wuxubaiyang
 * @Time 2021/7/8 下午2:57
 */
-class SnackConfig {
+class SnackConfig extends BaseConfig {
   //snack内容
   Widget? content;
 
@@ -54,6 +55,7 @@ class SnackConfig {
     this.floatingConfig,
   });
 
+  @override
   SnackConfig copyWith({
     Widget? content,
     EdgeInsets? margin,
@@ -89,7 +91,7 @@ class SnackConfig {
 * @author wuxubaiyang
 * @Time 2021/7/8 下午2:57
 */
-class FloatingConfig {
+class FloatingConfig extends BaseConfig {
   //悬浮高度
   double? elevation;
 
@@ -100,4 +102,15 @@ class FloatingConfig {
     this.elevation,
     this.width,
   });
+
+  @override
+  FloatingConfig copyWith({
+    double? elevation,
+    double? width,
+  }) {
+    return FloatingConfig(
+      elevation: elevation ?? this.elevation,
+      width: width ?? this.width,
+    );
+  }
 }

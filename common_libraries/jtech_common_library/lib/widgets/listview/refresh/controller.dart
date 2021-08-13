@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
+import 'package:jtech_common_library/base/change_notifier.dart';
 import 'package:jtech_common_library/widgets/listview/base/controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

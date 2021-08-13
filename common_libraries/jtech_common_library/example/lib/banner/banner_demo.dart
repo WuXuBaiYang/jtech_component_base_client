@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/banner/banner_view.dart';
+import 'package:package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/widgets/banner/banner.dart';
 import 'package:jtech_common_library/widgets/banner/controller.dart';
-import 'package:jtech_common_library/widgets/banner/item.dart';
-import 'package:jtech_common_library/widgets/image/jimage.dart';
+import 'package:jtech_common_library/widgets/banner/config.dart';
+import 'package:jtech_common_library/widgets/image/image.dart';
 
 /*
 * banner demo

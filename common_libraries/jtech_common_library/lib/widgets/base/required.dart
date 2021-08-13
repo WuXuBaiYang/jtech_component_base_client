@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jtech_base_library/jbase.dart';
 
 /*
 * 必填元素组件
 * @author wuxubaiyang
 * @Time 2021/7/22 下午3:11
 */
-class RequiredView extends StatelessWidget {
+class Required extends BaseStatelessWidget {
   //尺寸
   final double size;
 
@@ -16,7 +17,7 @@ class RequiredView extends StatelessWidget {
   //符号
   final String symbol;
 
-  RequiredView({
+  Required({
     this.size = 15,
     this.color = Colors.red,
     this.symbol = '*',

@@ -4,9 +4,7 @@ import 'dart:typed_data';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jtech_common_library/base/controller.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-import 'package:jtech_common_library/tools/data_format.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 音频播放器组件控制器

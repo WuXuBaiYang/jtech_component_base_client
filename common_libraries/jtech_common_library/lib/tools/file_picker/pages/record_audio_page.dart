@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/jcommon.dart';
 /*
 * 音频录制页面
 * @author jtechjh

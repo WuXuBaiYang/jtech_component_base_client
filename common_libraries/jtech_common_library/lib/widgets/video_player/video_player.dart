@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/widgets/video_player/config.dart';
-import 'package:jtech_common_library/widgets/video_player/controller.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:video_player/video_player.dart';
 
 /*
@@ -134,31 +132,41 @@ class JVideoPlayer extends BaseStatefulWidget {
         );
 
   @override
+  BaseState<BaseStatefulWidget> getState() => _JVideoPlayerState();
+}
+
+/*
+* 视频播放器组件状态
+* @author jtechjh
+* @Time 2021/8/13 4:03 下午
+*/
+class _JVideoPlayerState extends BaseState<JVideoPlayer> {
+  @override
   void initState() {
     super.initState();
     //初始化视频资源
-    controller.videoController.videoPlayerController
+    widget.controller.videoController.videoPlayerController
         .initialize()
-        .whenComplete(() => refreshUI());
+        .whenComplete(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.fromSize(
-      size: config.size,
+      size: widget.config.size,
       child: Container(
-        color: config.backgroundColor,
-        alignment: config.align,
+        color: widget.config.backgroundColor,
+        alignment: widget.config.align,
         child: Builder(
           builder: (context) {
             if (!videoValue.isInitialized) {
-              return config.initialBuilder?.call(context) ??
+              return widget.config.initialBuilder?.call(context) ??
                   _buildDefaultInitial();
             }
             return SizedBox.fromSize(
               size: _getVideoSize(context, videoValue.size),
               child: Chewie(
-                controller: controller.videoController,
+                controller: widget.controller.videoController,
               ),
             );
           },
@@ -169,11 +177,11 @@ class JVideoPlayer extends BaseStatefulWidget {
 
   //获取当前视频播放器参数
   VideoPlayerValue get videoValue =>
-      controller.videoController.videoPlayerController.value;
+      widget.controller.videoController.videoPlayerController.value;
 
   //计算视频实际展示尺寸
   Size _getVideoSize(BuildContext context, Size videoSize) {
-    var limitSize = config.size ?? MediaQuery.of(context).size;
+    var limitSize = widget.config.size ?? MediaQuery.of(context).size;
     var wRatio = limitSize.width / videoSize.width;
     var hRatio = limitSize.height / videoSize.height;
     var ratio = min(wRatio, hRatio);
@@ -192,6 +200,6 @@ class JVideoPlayer extends BaseStatefulWidget {
   void dispose() {
     super.dispose();
     //销毁控制器
-    controller.dispose();
+    widget.controller.dispose();
   }
 }

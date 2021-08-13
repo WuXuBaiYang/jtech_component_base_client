@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'config.dart';
 
 /*
@@ -9,8 +9,16 @@ import 'config.dart';
 * @author wuxubaiyang
 * @Time 2021/7/8 下午2:57
 */
-@protected
-class Snack {
+class JSnack extends BaseManage {
+  static final JSnack _instance = JSnack._internal();
+
+  factory JSnack() => _instance;
+
+  JSnack._internal();
+
+  @override
+  Future<void> init() async {}
+
   //显示基础snack提示
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnack(
       BuildContext context,
@@ -96,3 +104,6 @@ class Snack {
     );
   }
 }
+
+//单例调用
+final jSnack = JSnack();

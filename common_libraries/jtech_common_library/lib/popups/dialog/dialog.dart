@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 import 'config.dart';
 
@@ -11,8 +11,16 @@ import 'config.dart';
 * @author wuxubaiyang
 * @Time 2021/7/8 下午2:11
 */
-@protected
-class Dialog {
+class JDialog extends BaseManage {
+  static final JDialog _instance = JDialog._internal();
+
+  factory JDialog() => _instance;
+
+  JDialog._internal();
+
+  @override
+  Future<void> init() async {}
+
   //弹窗基础方法
   Future<T?> show<T>(
     BuildContext context, {
@@ -206,3 +214,6 @@ class Dialog {
     return jBase.router.pop();
   }
 }
+
+//单例调用
+final jDialog = Dialog();

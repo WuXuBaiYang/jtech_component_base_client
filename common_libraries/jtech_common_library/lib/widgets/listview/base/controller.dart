@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:jtech_common_library/base/controller.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //数据过滤回调
 typedef OnFilterListener<V> = bool Function(V item);
@@ -73,6 +72,7 @@ class JListViewController<V> extends BaseController {
   @override
   void addListener(VoidCallback listener) {
     _dataList.addListener(listener);
+    super.addListener(listener);
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jtech_common_library/widgets/banner/item.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * banner指示器

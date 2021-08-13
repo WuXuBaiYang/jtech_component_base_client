@@ -1,31 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
-
-import 'base/controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 通用列表组件
 * @author wuxubaiyang
 * @Time 2021/7/2 下午5:20
 */
-class JListView<V> extends BaseListView<JListViewController<V>, V> {
+class JListViewDefaultState<V>
+    extends BaseJListViewState<JListViewController<V>, V> {
   //判断是否可滚动
   final bool canScroll;
 
-  JListView({
+  JListViewDefaultState({
+    //列表基本参数结构
     required JListViewController<V> controller,
     required ListItemBuilder<V> itemBuilder,
-    ListDividerBuilder? dividerBuilder,
+    required ListViewConfig<V> config,
+    //列表默认组件参数结构
     this.canScroll = true,
-    OnListItemTap<V>? itemTap,
-    OnListItemLongTap<V>? itemLongTap,
   }) : super(
           controller: controller,
           itemBuilder: itemBuilder,
-          dividerBuilder: dividerBuilder,
-          itemTap: itemTap,
-          itemLongTap: itemLongTap,
+          config: config,
         );
 
   @override

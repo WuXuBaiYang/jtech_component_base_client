@@ -1,41 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/base/refresh/config.dart';
-import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'controller.dart';
 
 /*
 * 带有下拉刷新的列表组件
 * @author wuxubaiyang
 * @Time 2021/7/7 上午11:24
 */
-class JRefreshListView<V>
-    extends BaseListView<JRefreshListViewController<V>, V> {
+class JListViewRefreshState<V>
+    extends BaseJListViewState<JRefreshListViewController<V>, V> {
   //刷新列表组件配置
   final RefreshConfig<V> refreshConfig;
 
-  JRefreshListView({
+  JListViewRefreshState({
+    //列表基本参数结构
     required ListItemBuilder<V> itemBuilder,
-    required OnRefreshLoad<V> onRefreshLoad,
+    required ListViewConfig<V> config,
     JRefreshListViewController<V>? controller,
-    ListDividerBuilder? dividerBuilder,
-    bool? enablePullDown,
-    bool? enablePullUp,
-    OnListItemTap<V>? itemTap,
-    OnListItemLongTap<V>? itemLongTap,
-    RefreshConfig<V>? refreshConfig,
-  })  : this.refreshConfig = (refreshConfig ?? RefreshConfig()).copyWith(
-          enablePullDown: enablePullDown,
-          enablePullUp: enablePullUp,
-          onRefreshLoad: onRefreshLoad,
-        ),
-        super(
-          controller: controller ?? JRefreshListViewController(),
+    //刷新列表组件参数结构
+    required this.refreshConfig,
+  }) : super(
+          controller: controller ?? JRefreshGridViewController(),
           itemBuilder: itemBuilder,
-          dividerBuilder: dividerBuilder,
-          itemTap: itemTap,
-          itemLongTap: itemLongTap,
+          config: config,
         );
 
   @override

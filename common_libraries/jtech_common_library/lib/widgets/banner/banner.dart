@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/banner/controller.dart';
-import 'package:jtech_common_library/widgets/banner/indicator/base_indicator.dart';
-import 'package:jtech_common_library/widgets/banner/indicator/dot_indicator.dart';
-import 'package:jtech_common_library/widgets/banner/item.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //banner点击回调
 typedef OnBannerItemTap = void Function(BannerItem item, int index);
@@ -15,11 +11,11 @@ typedef OnBannerItemTap = void Function(BannerItem item, int index);
 typedef OnBannerItemLongTap = void Function(BannerItem item, int index);
 
 /*
-* banner组件
+* 轮播图组件
 * @author wuxubaiyang
 * @Time 2021/7/13 下午4:45
 */
-class JBannerView extends BaseStatefulWidget {
+class JBanner extends BaseStatefulWidget {
   //页面切换时间间隔
   final Duration pageChangeDuration;
 
@@ -89,7 +85,7 @@ class JBannerView extends BaseStatefulWidget {
   //长点击事件
   final OnBannerItemLongTap? itemLongTap;
 
-  JBannerView({
+  JBanner({
     required this.controller,
     this.canScroll = true,
     this.height = 280,
@@ -117,29 +113,39 @@ class JBannerView extends BaseStatefulWidget {
         );
 
   @override
+  BaseState<BaseStatefulWidget> getState() => _JBannerState();
+}
+
+/*
+* 轮播图组件状态
+* @author jtechjh
+* @Time 2021/8/13 11:11 上午
+*/
+class _JBannerState extends BaseState<JBanner> {
+  @override
   void initState() {
     super.initState();
     //监听页面变化，实现无限滚动
-    pageController.addListener(() {
+    widget.pageController.addListener(() {
       if (canInfinity) {
-        var page = pageController.page ?? 0;
+        var page = widget.pageController.page ?? 0;
         if (page <= 0.01) {
-          Future.delayed(Duration.zero).then(
-              (value) => pageController.jumpToPage(currentItemLength - 2));
+          Future.delayed(Duration.zero).then((value) =>
+              widget.pageController.jumpToPage(currentItemLength - 2));
         } else if (page >= currentItemLength - 1.01) {
           Future.delayed(Duration.zero)
-              .then((value) => pageController.jumpToPage(1));
+              .then((value) => widget.pageController.jumpToPage(1));
         }
       }
     });
-    controller.indexListenable.addListener(() {
-      if (isInteger(pageController.page ?? 0.5)) {
-        var index = controller.currentIndex;
+    widget.controller.indexListenable.addListener(() {
+      if (isInteger(widget.pageController.page ?? 0.5)) {
+        var index = widget.controller.currentIndex;
         if (canInfinity) index += 1;
-        pageController.animateToPage(
+        widget.pageController.animateToPage(
           index,
           curve: Curves.ease,
-          duration: pageChangeDuration,
+          duration: widget.pageChangeDuration,
         );
       }
     });
@@ -150,17 +156,17 @@ class JBannerView extends BaseStatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: backgroundColor,
-      elevation: elevation,
-      margin: margin,
+      color: widget.backgroundColor,
+      elevation: widget.elevation,
+      margin: widget.margin,
       shape: RoundedRectangleBorder(
-        borderRadius: borderRadius,
+        borderRadius: widget.borderRadius,
       ),
       child: Container(
-        height: height,
-        padding: padding,
+        height: widget.height,
+        padding: widget.padding,
         child: ClipRRect(
-          borderRadius: borderRadius,
+          borderRadius: widget.borderRadius,
           child: Stack(
             children: [
               _buildBannerContent(),
@@ -176,12 +182,13 @@ class JBannerView extends BaseStatefulWidget {
   //构建banner内容
   Widget _buildBannerContent() {
     return PageView.builder(
-      physics: canScroll ? null : NeverScrollableScrollPhysics(),
+      physics: widget.canScroll ? null : NeverScrollableScrollPhysics(),
       itemCount: currentItemLength,
-      controller: pageController,
-      itemBuilder: (context, index) =>
-          _buildBannerItem(context, getCurrentItem(index), getCurrentIndex(index)),
-      onPageChanged: (index) => controller.select(getCurrentIndex(index)),
+      controller: widget.pageController,
+      itemBuilder: (context, index) => _buildBannerItem(
+          context, getCurrentItem(index), getCurrentIndex(index)),
+      onPageChanged: (index) =>
+          widget.controller.select(getCurrentIndex(index)),
     );
   }
 
@@ -189,16 +196,16 @@ class JBannerView extends BaseStatefulWidget {
   Widget _buildBannerItem(BuildContext context, BannerItem item, int index) {
     return GestureDetector(
       child: item.builder(context),
-      onTap: null != itemTap
+      onTap: null != widget.itemTap
           ? () {
               Feedback.forTap(context);
-              itemTap!(item, index);
+              widget.itemTap!(item, index);
             }
           : null,
-      onLongPress: null != itemLongTap
+      onLongPress: null != widget.itemLongTap
           ? () {
               Feedback.forLongPress(context);
-              itemLongTap!(item, index);
+              widget.itemLongTap!(item, index);
             }
           : null,
     );
@@ -206,24 +213,24 @@ class JBannerView extends BaseStatefulWidget {
 
   //构建banner标题
   Widget _buildBannerTitle() {
-    if (!showTitle) return EmptyBox();
+    if (!widget.showTitle) return EmptyBox();
     return Align(
-      alignment: titleAlign.align,
+      alignment: widget.titleAlign.align,
       child: Container(
-        width: titleAlign.isVertical ? null : double.infinity,
-        height: !titleAlign.isVertical ? null : double.infinity,
-        color: titleBackgroundColor,
-        padding: titlePadding,
-        margin: titleMargin,
+        width: widget.titleAlign.isVertical ? null : double.infinity,
+        height: !widget.titleAlign.isVertical ? null : double.infinity,
+        color: widget.titleBackgroundColor,
+        padding: widget.titlePadding,
+        margin: widget.titleMargin,
         child: DefaultTextStyle(
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
           ),
           child: ValueListenableBuilder<int>(
-            valueListenable: controller.indexListenable,
+            valueListenable: widget.controller.indexListenable,
             builder: (context, currentIndex, child) =>
-                controller.getItem(currentIndex).title ?? EmptyBox(),
+                widget.controller.getItem(currentIndex).title ?? EmptyBox(),
           ),
         ),
       ),
@@ -232,35 +239,35 @@ class JBannerView extends BaseStatefulWidget {
 
   //构建banner指示器
   Widget _buildBannerIndicator(BuildContext context) {
-    if (!showIndicator) return EmptyBox();
+    if (!widget.showIndicator) return EmptyBox();
     return Align(
-      alignment: indicatorAlign.align,
-      child: (indicator ?? BannerDotIndicator()).build(
+      alignment: widget.indicatorAlign.align,
+      child: (widget.indicator ?? BannerDotIndicator()).build(
         context,
-        controller.indexListenable,
-        controller.itemLength,
-        indicatorAlign,
+        widget.controller.indexListenable,
+        widget.controller.itemLength,
+        widget.indicatorAlign,
       ),
     );
   }
 
   //启动自动切换功能
   void _startAutoChange() {
-    if (!auto) return;
-    controller.startAutoChange(
-      duration: autoDuration,
+    if (!widget.auto) return;
+    widget.controller.startAutoChange(
+      duration: widget.autoDuration,
       callback: (timer) {
         if (canInfinity) {
-          pageController.nextPage(
-            duration: pageChangeDuration,
+          widget.pageController.nextPage(
+            duration: widget.pageChangeDuration,
             curve: Curves.ease,
           );
         } else {
-          var index = pageController.page?.round() ?? 0;
-          if (++index >= controller.itemLength) index = 0;
-          pageController.animateToPage(
+          var index = widget.pageController.page?.round() ?? 0;
+          if (++index >= widget.controller.itemLength) index = 0;
+          widget.pageController.animateToPage(
             index,
-            duration: pageChangeDuration,
+            duration: widget.pageChangeDuration,
             curve: Curves.ease,
           );
         }
@@ -269,11 +276,11 @@ class JBannerView extends BaseStatefulWidget {
   }
 
   //判断当前是否可以无限滚动
-  bool get canInfinity => infinity && controller.itemLength > 1;
+  bool get canInfinity => widget.infinity && widget.controller.itemLength > 1;
 
   //根据当前滚动状态获取实际数据数量
   int get currentItemLength {
-    var length = controller.itemLength;
+    var length = widget.controller.itemLength;
     if (canInfinity) length += 2;
     return length;
   }
@@ -282,8 +289,8 @@ class JBannerView extends BaseStatefulWidget {
   int getCurrentIndex(int index) {
     if (canInfinity) {
       index -= 1;
-      if (index < 0) return controller.itemLength - 1;
-      if (index >= controller.itemLength) return 0;
+      if (index < 0) return widget.controller.itemLength - 1;
+      if (index >= widget.controller.itemLength) return 0;
     }
     return index;
   }
@@ -291,7 +298,7 @@ class JBannerView extends BaseStatefulWidget {
   //根据当前滚动状态获取真实下标的数据对象
   BannerItem getCurrentItem(int index) {
     index = getCurrentIndex(index);
-    return controller.getItem(index);
+    return widget.controller.getItem(index);
   }
 
   //eps
@@ -304,7 +311,7 @@ class JBannerView extends BaseStatefulWidget {
   void dispose() {
     super.dispose();
     //销毁控制器
-    pageController.dispose();
-    controller.dispose();
+    widget.pageController.dispose();
+    widget.controller.dispose();
   }
 }

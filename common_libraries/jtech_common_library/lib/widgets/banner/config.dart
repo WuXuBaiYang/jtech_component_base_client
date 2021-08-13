@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * banner数据对象
 * @author wuxubaiyang
 * @Time 2021/7/13 下午5:14
 */
-class BannerItem {
+class BannerItem extends BaseConfig {
   //子项内容
   WidgetBuilder builder;
 
@@ -21,6 +22,19 @@ class BannerItem {
     this.backgroundColor = Colors.white,
     this.title,
   });
+
+  @override
+  BannerItem copyWith({
+    WidgetBuilder? builder,
+    Color? backgroundColor,
+    Widget? title,
+  }) {
+    return BannerItem(
+      builder: builder ?? this.builder,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      title: title ?? this.title,
+    );
+  }
 }
 
 /*

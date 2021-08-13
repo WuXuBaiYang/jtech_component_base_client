@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 import 'config.dart';
 
@@ -10,21 +11,29 @@ import 'config.dart';
 * @author wuxubaiyang
 * @Time 2021/7/9 下午4:31
 */
-@protected
-class Toast {
+class JToast extends BaseManage {
+  static final JToast _instance = JToast._internal();
+
+  factory JToast() => _instance;
+
+  JToast._internal() : this._toast = FToast();
+
   //toast对象
-  final toast = FToast();
+  final FToast _toast;
+
+  @override
+  Future<void> init() async {}
 
   //显示toast
   void showToast(
     BuildContext context, {
     required ToastConfig config,
   }) {
-    toast.init(context);
-    return toast.showToast(
+    _toast.init(context);
+    return _toast.showToast(
       child: _buildToastWidget(context, config),
       toastDuration: config.duration,
-      gravity: config.gravity,
+      gravity: _alignGravity[config.align],
     );
   }
 
@@ -112,3 +121,19 @@ class Toast {
     );
   }
 }
+
+//单例调用
+final jToast = JToast();
+
+//位置与重力转换表
+final Map<Alignment, ToastGravity> _alignGravity = {
+  Alignment.topCenter: ToastGravity.TOP,
+  Alignment.topLeft: ToastGravity.TOP_LEFT,
+  Alignment.topRight: ToastGravity.TOP_RIGHT,
+  Alignment.center: ToastGravity.CENTER,
+  Alignment.centerLeft: ToastGravity.CENTER_LEFT,
+  Alignment.centerRight: ToastGravity.CENTER_RIGHT,
+  Alignment.bottomCenter: ToastGravity.BOTTOM,
+  Alignment.bottomLeft: ToastGravity.BOTTOM_LEFT,
+  Alignment.bottomRight: ToastGravity.BOTTOM_RIGHT,
+};

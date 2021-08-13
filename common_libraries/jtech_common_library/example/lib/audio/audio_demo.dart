@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/jcommon.dart';
+import 'package:package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
 import 'package:jtech_common_library/widgets/audio_player/audio_player.dart';
 import 'package:jtech_common_library/widgets/audio_player/config.dart';

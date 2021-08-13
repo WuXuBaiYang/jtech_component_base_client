@@ -1,10 +1,10 @@
 import 'package:example/listview_demo/list_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/jcommon.dart';
+import 'package:package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/gridview/base/controller.dart';
 import 'package:jtech_common_library/widgets/gridview/base/staggered.dart';
-import 'package:jtech_common_library/widgets/gridview/gridview.dart';
+import 'package:jtech_common_library/widgets/gridview/gridview_default.dart';
 
 /*
 * 表格组件demo

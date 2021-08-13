@@ -1,57 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:jtech_common_library/base/refresh/config.dart';
-import 'package:jtech_common_library/widgets/gridview/base/base_gridview.dart';
-import 'package:jtech_common_library/widgets/gridview/base/staggered.dart';
-import 'package:jtech_common_library/widgets/gridview/refresh/controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 刷新表格组件
 * @author wuxubaiyang
 * @Time 2021/7/20 下午3:15
 */
-class JRefreshGridView<V>
-    extends BaseGridView<JRefreshGridViewController<V>, V> {
-  //副方向上的最大元素数量
-  final int crossAxisCount;
-
-  //主方向元素间距
-  final double mainAxisSpacing;
-
-  //副方向元素间距
-  final double crossAxisSpacing;
-
+class JGridViewRefreshState<V>
+    extends BaseJGridViewState<JRefreshGridViewController<V>, V> {
   //刷新组件配置文件
   final RefreshConfig<V> refreshConfig;
 
-  JRefreshGridView({
+  JGridViewRefreshState({
+    //基本参数结构
+    required int crossAxisCount,
     required GridItemBuilder<V> itemBuilder,
-    required OnRefreshLoad<V> onRefreshLoad,
-    required this.crossAxisCount,
+    required GridViewConfig<V> config,
     JRefreshGridViewController<V>? controller,
-    RefreshConfig<V>? refreshConfig,
-    bool? enablePullDown,
-    bool? enablePullUp,
-    this.mainAxisSpacing = 4.0,
-    this.crossAxisSpacing = 4.0,
-    OnGridItemTap<V>? itemTap,
-    OnGridItemLongTap<V>? itemLongTap,
-    StaggeredTileBuilder? staggeredTileBuilder,
-    JStaggeredTile? staggeredTile,
-  })  : this.refreshConfig = (refreshConfig ?? RefreshConfig()).copyWith(
-          onRefreshLoad: onRefreshLoad,
-          enablePullDown: enablePullDown,
-          enablePullUp: enablePullUp,
-        ),
-        super(
+    //刷新组件参数结构
+    required this.refreshConfig,
+  }) : super(
+          crossAxisCount: crossAxisCount,
           controller: controller ?? JRefreshGridViewController(),
           itemBuilder: itemBuilder,
-          itemTap: itemTap,
-          itemLongTap: itemLongTap,
-          staggeredTile: staggeredTile,
-          staggeredTileBuilder: staggeredTileBuilder,
+          config: config,
         );
 
   @override
@@ -72,8 +47,8 @@ class JRefreshGridView<V>
                 buildGridItem(context, dataList[index], index),
             staggeredTileBuilder: (int index) =>
                 buildGridStaggered(dataList[index], index),
-            mainAxisSpacing: mainAxisSpacing,
-            crossAxisSpacing: crossAxisSpacing,
+            mainAxisSpacing: config.mainAxisSpacing,
+            crossAxisSpacing: config.crossAxisSpacing,
             crossAxisCount: crossAxisCount,
             itemCount: dataList.length,
             shrinkWrap: true,

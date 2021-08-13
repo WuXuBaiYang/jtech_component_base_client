@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //底部sheet操作点击事件回调-异步
 typedef SheetOptionTapAsync<T> = Future<T> Function();
@@ -12,7 +13,7 @@ typedef SheetOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/9 上午11:11
 */
-class SheetConfig<T> {
+class SheetConfig<T> extends BaseConfig {
   //外间距
   EdgeInsets margin;
 
@@ -80,7 +81,7 @@ class SheetConfig<T> {
     this.confirmItem,
     this.content,
     this.contentPadding =
-    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.cancelTap,
     this.cancelTapAsync,
     this.confirmTap,
@@ -104,7 +105,7 @@ class SheetConfig<T> {
   Future<T?> runConfirmTap() async =>
       confirmTap?.call() ?? await confirmTapAsync?.call();
 
-  //从参数中拷贝替换已有字段
+  @override
   SheetConfig<T> copyWith({
     EdgeInsets? margin,
     EdgeInsets? padding,

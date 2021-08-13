@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/badge/badge_container.dart';
-import 'package:jtech_common_library/widgets/navigation/base/item.dart';
-
-import 'config.dart';
-import 'controller.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 顶部分页导航
 * @author wuxubaiyang
 * @Time 2021/7/12 上午9:26
 */
-class JTabLayout<T extends NavigationItem>
-    extends BaseStatefulWidget<_JTabLayoutState> {
+class JTabLayout<T extends NavigationItem> extends BaseStatefulWidget {
   //控制器
   final JTabLayoutController<T> controller;
 
   //页面切换控制器
   final PageController pageController;
-
-  //状态管理
-  final _JTabLayoutState _jTabLayoutState;
 
   //判断是否可滑动切换页面
   final bool canScroll;
@@ -56,22 +47,36 @@ class JTabLayout<T extends NavigationItem>
     IndicatorConfig? indicatorConfig,
   })  : this.indicatorConfig = indicatorConfig ?? IndicatorConfig(),
         this.pageController =
-            PageController(initialPage: controller.currentIndex),
-        this._jTabLayoutState = _JTabLayoutState(
-          length: controller.itemLength,
-          initialIndex: controller.currentIndex,
-        );
+            PageController(initialPage: controller.currentIndex);
 
   @override
-  _JTabLayoutState createState() => _jTabLayoutState;
+  _JTabLayoutState getState() => _JTabLayoutState();
+}
+
+/*
+* tab导航状态
+* @author wuxubaiyang
+* @Time 2021/7/14 上午10:19
+*/
+class _JTabLayoutState extends BaseState<JTabLayout>
+    with SingleTickerProviderStateMixin {
+  //tab控制器
+  late TabController tabController;
 
   @override
   void initState() {
     super.initState();
+    //初始化tab控制器
+    tabController = TabController(
+      length: widget.controller.itemLength,
+      vsync: this,
+      initialIndex: widget.controller.currentIndex,
+    );
     //监听页码下标变化
-    controller.indexListenable.addListener(() {
-      if (controller.currentIndex != pageController.page?.round()) {
-        pageController.jumpToPage(controller.currentIndex);
+    widget.controller.indexListenable.addListener(() {
+      if (widget.controller.currentIndex !=
+          widget.pageController.page?.round()) {
+        widget.pageController.jumpToPage(widget.controller.currentIndex);
       }
     });
   }
@@ -83,13 +88,13 @@ class JTabLayout<T extends NavigationItem>
         _buildTabBar(),
         Expanded(
           child: PageView(
-            controller: pageController,
-            physics: canScroll ? null : NeverScrollableScrollPhysics(),
-            children: List.generate(controller.itemLength,
-                (index) => controller.getItem(index).page),
+            controller: widget.pageController,
+            physics: widget.canScroll ? null : NeverScrollableScrollPhysics(),
+            children: List.generate(widget.controller.itemLength,
+                (index) => widget.controller.getItem(index).page),
             onPageChanged: (index) {
-              _jTabLayoutState.tabController.animateTo(index);
-              controller.select(index);
+              tabController.animateTo(index);
+              widget.controller.select(index);
             },
           ),
         ),
@@ -102,29 +107,29 @@ class JTabLayout<T extends NavigationItem>
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(),
-      color: tabBarColor,
-      elevation: elevation,
+      color: widget.tabBarColor,
+      elevation: widget.elevation,
       child: ValueListenableBuilder<int>(
-        valueListenable: controller.indexListenable,
+        valueListenable: widget.controller.indexListenable,
         builder: (context, currentIndex, child) {
           return TabBar(
-            controller: _jTabLayoutState._tabController,
+            controller: tabController,
             labelColor: Colors.blueAccent,
             unselectedLabelColor: Colors.black,
-            isScrollable: !isFixed,
-            indicator: indicatorConfig.decoration,
-            indicatorColor: indicatorConfig.color,
-            indicatorPadding: indicatorConfig.padding,
-            indicatorWeight: indicatorConfig.weight,
-            indicatorSize: indicatorConfig.sizeByTab
+            isScrollable: !widget.isFixed,
+            indicator: widget.indicatorConfig.decoration,
+            indicatorColor: widget.indicatorConfig.color,
+            indicatorPadding: widget.indicatorConfig.padding,
+            indicatorWeight: widget.indicatorConfig.weight,
+            indicatorSize: widget.indicatorConfig.sizeByTab
                 ? TabBarIndicatorSize.tab
                 : TabBarIndicatorSize.label,
             onTap: (index) {
-              pageController.jumpToPage(index);
-              controller.select(index);
+              widget.pageController.jumpToPage(index);
+              widget.controller.select(index);
             },
-            tabs: List.generate(
-                controller.itemLength, (index) => _buildTabBarItem(index)),
+            tabs: List.generate(widget.controller.itemLength,
+                (index) => _buildTabBarItem(index)),
           );
         },
       ),
@@ -133,14 +138,14 @@ class JTabLayout<T extends NavigationItem>
 
   //构建tabBar子项
   _buildTabBarItem(int index) {
-    var item = controller.getItem(index);
-    bool selected = index == controller.currentIndex;
+    var item = widget.controller.getItem(index);
+    bool selected = index == widget.controller.currentIndex;
     return Container(
-      height: tabBarHeight,
+      height: widget.tabBarHeight,
       alignment: Alignment.center,
       child: JBadgeContainer(
-        listenable: controller.getBadgeListenable(index)!,
-        align: badgeAlign,
+        listenable: widget.controller.getBadgeListenable(index),
+        align: widget.badgeAlign,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -157,30 +162,8 @@ class JTabLayout<T extends NavigationItem>
   void dispose() {
     super.dispose();
     //销毁所有控制器
-    controller.dispose();
-    pageController.dispose();
-    _jTabLayoutState.tabController.dispose();
+    widget.controller.dispose();
+    widget.pageController.dispose();
+    tabController.dispose();
   }
-}
-
-/*
-* tab导航状态
-* @author wuxubaiyang
-* @Time 2021/7/14 上午10:19
-*/
-class _JTabLayoutState extends BaseStatefulWidgetState
-    with SingleTickerProviderStateMixin {
-  //tab控制器
-  TabController? _tabController;
-
-  _JTabLayoutState({required int length, int initialIndex = 0}) {
-    _tabController = TabController(
-      length: length,
-      vsync: this,
-      initialIndex: initialIndex,
-    );
-  }
-
-  //获取tab控制器
-  TabController get tabController => _tabController!;
 }

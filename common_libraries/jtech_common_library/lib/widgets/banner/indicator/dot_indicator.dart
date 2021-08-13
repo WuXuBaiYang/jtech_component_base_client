@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/banner/indicator/base_indicator.dart';
-import 'package:jtech_common_library/widgets/banner/item.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * banner圆点指示器

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:chewie/chewie.dart';
-import 'package:jtech_common_library/base/controller.dart';
+import 'package:jtech_common_library/base/base_controller.dart';
 import 'package:video_player/video_player.dart';
 
 /*

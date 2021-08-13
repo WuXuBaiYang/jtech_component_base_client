@@ -1,16 +1,23 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/tools/data_format.dart';
 
 /*
 * 计时器工具
 * @author jtechjh
 * @Time 2021/8/4 5:08 下午
 */
-@protected
-class JTimer {
+class JTimer extends BaseManage {
+  static final JTimer _instance = JTimer._internal();
+
+  factory JTimer() => _instance;
+
+  JTimer._internal();
+
+  @override
+  Future<void> init() async {}
+
   //缓存计时器
   final Map<String, Timer> cacheTimers = {};
 
@@ -94,3 +101,6 @@ class JTimer {
     });
   }
 }
+
+//单例调用
+final jTimer = JTimer();

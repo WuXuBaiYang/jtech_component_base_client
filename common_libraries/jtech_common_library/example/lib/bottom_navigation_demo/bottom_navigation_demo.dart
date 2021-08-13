@@ -2,11 +2,11 @@ import 'package:example/bottom_navigation_demo/navigation_page_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/jcommon.dart';
+import 'package:package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/widgets/app_page/navigation_page/controller.dart';
-import 'package:jtech_common_library/widgets/app_page/navigation_page/navigation_page.dart';
+import 'package:jtech_common_library/widgets/app_page/navigation_page/bottom_navigation.dart';
 import 'package:jtech_common_library/widgets/badge/config.dart';
-import 'package:jtech_common_library/widgets/navigation/base/item.dart';
+import 'package:jtech_common_library/widgets/navigation/base/config.dart';
 
 import 'navigation_page_2.dart';
 import 'navigation_page_3.dart';

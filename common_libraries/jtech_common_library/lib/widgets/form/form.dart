@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/widgets/form/controller.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
+
 
 //表单分割线构造器
 typedef FormDividerBuilder = Widget Function(BuildContext context, int index);
@@ -10,7 +11,7 @@ typedef FormDividerBuilder = Widget Function(BuildContext context, int index);
 * @author wuxubaiyang
 * @Time 2021/7/22 下午1:47
 */
-class JFormView extends BaseStatefulWidget {
+class JForm extends BaseStatelessWidget {
   //表单控制器
   final JFormController controller;
 
@@ -38,7 +39,7 @@ class JFormView extends BaseStatefulWidget {
   //表单分割线构造器
   final FormDividerBuilder? dividerBuilder;
 
-  JFormView({
+  JForm({
     required this.controller,
     required this.children,
     this.onChange,

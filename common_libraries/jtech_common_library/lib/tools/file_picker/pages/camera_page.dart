@@ -1,18 +1,15 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 摄像头操作基础页面
 * @author jtechjh
 * @Time 2021/7/30 2:36 下午
 */
-@protected
-abstract class BaseCameraPage extends BasePage {
+abstract class BaseCameraPage extends BaseStatelessPage {
   //是否使用前置摄像头,否则使用后置摄像头
   final ValueChangeNotifier<CameraLensDirection> _cameraDirection;
 

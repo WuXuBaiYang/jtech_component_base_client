@@ -1,20 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/badge/config.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 角标视图元素
 * @author wuxubaiyang
 * @Time 2021/7/12 上午10:29
 */
-class JBadgeView extends BaseStatefulWidget {
+class JBadge extends BaseStatelessWidget {
   //角标配置
   final BadgeConfig config;
 
   //从配置中加载角标组件
-  JBadgeView.create({
+  JBadge.create({
     required this.config,
   });
 

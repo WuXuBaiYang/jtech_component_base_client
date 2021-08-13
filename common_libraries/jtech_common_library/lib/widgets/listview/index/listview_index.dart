@@ -1,38 +1,35 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
-
-import 'config.dart';
-import 'controller.dart';
-import 'model.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 索引列表组件
 * @author wuxubaiyang
 * @Time 2021/7/8 上午9:23
 */
-class JIndexListView<V extends BaseIndexModel>
-    extends BaseListView<JIndexListViewController<V>, V> {
+class JListViewIndexState<V extends BaseIndexModel>
+    extends BaseJListViewState<JIndexListViewController<V>, V> {
   //索引弹出提示框配置文件
   final SusConfig susConfig;
 
   //索引条配置文件
   final IndexBarConfig indexBarConfig;
 
-  JIndexListView({
+  JListViewIndexState({
+    //列表基本参数结构
     required JIndexListViewController<V> controller,
     required ListItemBuilder<V> itemBuilder,
+    required ListViewConfig<V> config,
+    //索引列表组件参数结构
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
-    OnListItemTap<V>? itemTap,
-    OnListItemLongTap<V>? itemLongTap,
-  })  : susConfig = susConfig ?? SusConfig(),
-        indexBarConfig = indexBarConfig ?? IndexBarConfig(),
+  })  : this.susConfig = susConfig ?? SusConfig(),
+        this.indexBarConfig = indexBarConfig ?? IndexBarConfig(),
         super(
           controller: controller,
-          itemBuilder: itemBuilder,          itemTap: itemTap,
-        itemLongTap: itemLongTap,
+          itemBuilder: itemBuilder,
+          config: config,
         );
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:jtech_common_library/base/controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 音频录制组件控制器

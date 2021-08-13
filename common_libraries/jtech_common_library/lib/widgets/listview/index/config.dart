@@ -2,16 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/listview/base/base_listView.dart';
-
-import 'model.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 索引弹出提示框配置
 * @author wuxubaiyang
 * @Time 2021/7/8 上午10:31
 */
-class SusConfig<V extends BaseIndexModel> {
+class SusConfig<V extends BaseIndexModel> extends BaseConfig {
   //弹出提示框子项构造
   final ListItemBuilder<V>? itemBuilder;
 
@@ -26,6 +24,19 @@ class SusConfig<V extends BaseIndexModel> {
     this.itemHeight = 40,
     this.position,
   });
+
+  @override
+  SusConfig<V> copyWith({
+    ListItemBuilder<V>? itemBuilder,
+    double? itemHeight,
+    Offset? position,
+  }) {
+    return SusConfig<V>(
+      itemBuilder: itemBuilder ?? this.itemBuilder,
+      itemHeight: itemHeight ?? this.itemHeight,
+      position: position ?? this.position,
+    );
+  }
 }
 
 //索引条弹出提示框构造器
@@ -36,7 +47,7 @@ typedef IndexBarHintBuilder = Widget Function(BuildContext context, String tag);
 * @author wuxubaiyang
 * @Time 2021/7/8 上午11:35
 */
-class IndexBarConfig {
+class IndexBarConfig extends BaseConfig {
   //索引条屏幕弹出提示构造器
   IndexBarHintBuilder? hintBuilder;
 
@@ -149,4 +160,65 @@ class IndexBarConfig {
     this.indexHintPosition,
     this.indexHintOffset = Offset.zero,
   });
+
+  @override
+  IndexBarConfig copyWith({
+    //索引条屏幕弹出提示构造器
+    IndexBarHintBuilder? hintBuilder,
+    List<String>? dataList,
+    double? width,
+    double? height,
+    double? itemHeight,
+    AlignmentGeometry? alignment,
+    EdgeInsetsGeometry? margin,
+    bool? needRebuild,
+    bool? ignoreDragCancel,
+    Color? color,
+    Color? downColor,
+    Decoration? decoration,
+    Decoration? downDecoration,
+    TextStyle? textStyle,
+    TextStyle? downTextStyle,
+    TextStyle? selectTextStyle,
+    Decoration? downItemDecoration,
+    Decoration? selectItemDecoration,
+    double? indexHintWidth,
+    double? indexHintHeight,
+    Decoration? indexHintDecoration,
+    TextStyle? indexHintTextStyle,
+    Alignment? indexHintAlignment,
+    Alignment? indexHintChildAlignment,
+    Offset? indexHintPosition,
+    Offset? indexHintOffset,
+  }) {
+    return IndexBarConfig(
+      hintBuilder: hintBuilder ?? this.hintBuilder,
+      dataList: dataList ?? this.dataList,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      itemHeight: itemHeight ?? this.itemHeight,
+      alignment: alignment ?? this.alignment,
+      margin: margin ?? this.margin,
+      needRebuild: needRebuild ?? this.needRebuild,
+      ignoreDragCancel: ignoreDragCancel ?? this.ignoreDragCancel,
+      color: color ?? this.color,
+      downColor: downColor ?? this.downColor,
+      decoration: decoration ?? this.decoration,
+      downDecoration: downDecoration ?? this.downDecoration,
+      textStyle: textStyle ?? this.textStyle,
+      downTextStyle: downTextStyle ?? this.downTextStyle,
+      selectTextStyle: selectTextStyle ?? this.selectTextStyle,
+      downItemDecoration: downItemDecoration ?? this.downItemDecoration,
+      selectItemDecoration: selectItemDecoration ?? this.selectItemDecoration,
+      indexHintWidth: indexHintWidth ?? this.indexHintWidth,
+      indexHintHeight: indexHintHeight ?? this.indexHintHeight,
+      indexHintDecoration: indexHintDecoration ?? this.indexHintDecoration,
+      indexHintTextStyle: indexHintTextStyle ?? this.indexHintTextStyle,
+      indexHintAlignment: indexHintAlignment ?? this.indexHintAlignment,
+      indexHintChildAlignment:
+          indexHintChildAlignment ?? this.indexHintChildAlignment,
+      indexHintPosition: indexHintPosition ?? this.indexHintPosition,
+      indexHintOffset: indexHintOffset ?? this.indexHintOffset,
+    );
+  }
 }

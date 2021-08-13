@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_common_library/base/controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 表单控制器

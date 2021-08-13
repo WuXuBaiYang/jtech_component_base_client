@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'dialog/dialog.dart' as j;
+import 'package:jtech_base_library/jbase.dart';
+
+import 'dialog/dialog.dart';
 import 'sheet/sheet.dart';
 import 'snack/snack.dart';
 import 'toast/toast.dart';
@@ -10,20 +10,38 @@ import 'toast/toast.dart';
 * @author wuxubaiyang
 * @Time 2021/7/8 下午1:50
 */
-@protected
-class Popups {
+class JPopups extends BaseManage {
+  static final JPopups _instance = JPopups._internal();
+
+  factory JPopups() => _instance;
+
+  JPopups._internal();
+
   //创建dialog对象
-  final dialog = j.Dialog();
+  final dialog = JDialog();
 
   //创建sheet对象
-  final sheet = Sheet();
+  final sheet = JSheet();
 
   //toast消息提示
-  final toast = Toast();
+  final toast = JToast();
 
   //snack消息提示
-  final snack = Snack();
+  final snack = JSnack();
 
   //初始化方法
-  Future init() async {}
+  @override
+  Future init() async {
+    //初始化对话框方法
+    await dialog.init();
+    //初始化底部弹窗方法
+    await sheet.init();
+    //初始化toast消息方法
+    await toast.init();
+    //初始化snack消息方法
+    await snack.init();
+  }
 }
+
+//单例调用
+final jPopups = JPopups();

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:path_provider/path_provider.dart';
 
 /*
@@ -6,7 +7,16 @@ import 'package:path_provider/path_provider.dart';
 * @author wuxubaiyang
 * @Time 2021/7/26 下午3:04
 */
-class FileTool {
+class JFile extends BaseManage {
+  static final JFile _instance = JFile._internal();
+
+  factory JFile() => _instance;
+
+  JFile._internal();
+
+  @override
+  Future<void> init() async {}
+
   //图片缓存目录
   static final String imageCachePath = "/imageCache/";
 
@@ -135,3 +145,6 @@ class FileTool {
     return file.path;
   }
 }
+
+//单例调用
+final jFile = JFile();

@@ -1,12 +1,20 @@
-import 'package:flutter/widgets.dart';
+import 'package:jtech_base_library/jbase.dart';
 
 /*
 * 匹配工具
 * @author wuxubaiyang
 * @Time 2021/7/23 下午4:17
 */
-@protected
-class Matches {
+class JMatches extends BaseManage {
+  static final JMatches _instance = JMatches._internal();
+
+  factory JMatches() => _instance;
+
+  JMatches._internal();
+
+  @override
+  Future<void> init() async {}
+
   //匹配手机号(+86)
   bool hasPhoneNumber_86(String string) => hasMatch(
       RegExp(
@@ -39,3 +47,6 @@ class Matches {
   Iterable<Match> match(Pattern pattern, {required String string}) =>
       pattern.allMatches(string);
 }
+
+//单例调用
+final jMatches = JMatches();

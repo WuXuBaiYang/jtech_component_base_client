@@ -1,13 +1,13 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 视频播放器配置文件
 * @author jtechjh
 * @Time 2021/8/6 5:12 下午
 */
-class VideoPlayerConfig {
+class VideoPlayerConfig extends BaseConfig{
   //视频组件容器尺寸
   final Size? size;
 
@@ -31,6 +31,7 @@ class VideoPlayerConfig {
     this.align = Alignment.center,
   });
 
+  @override
   VideoPlayerConfig copyWith({
     Size? size,
     bool? autoSize,

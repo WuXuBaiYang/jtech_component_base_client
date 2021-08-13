@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
+import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/base/change_notifier.dart';
 import 'package:jtech_common_library/tools/file_picker/file_info.dart';
 import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
 import 'package:jtech_common_library/widgets/image/clip.dart';
 import 'package:jtech_common_library/widgets/image/config.dart';
-import 'package:jtech_common_library/widgets/image/jimage.dart';
+import 'package:jtech_common_library/widgets/image/image.dart';
 
 /*
 * 拍照页面

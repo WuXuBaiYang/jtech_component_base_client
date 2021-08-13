@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateless_widget.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
-import 'package:jtech_common_library/widgets/form/items/base/default_form_item_config.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
-import 'required_view.dart';
 
 //表单子项点击事件
 typedef OnFormItemTap<V> = void Function(V? value);
@@ -14,7 +12,7 @@ typedef OnFormItemTap<V> = void Function(V? value);
 * @author wuxubaiyang
 * @Time 2021/7/22 下午4:48
 */
-class DefaultFormItem<V> extends BaseStatelessWidget {
+class DefaultItem<V> extends BaseStatelessWidget {
   //子元素
   final Widget child;
 
@@ -25,18 +23,18 @@ class DefaultFormItem<V> extends BaseStatelessWidget {
   final FormFieldState<V> field;
 
   //配置文件
-  final DefaultFormItemConfig<V> config;
+  final DefaultItemConfig<V> config;
 
   //输入框样式配置
   final InputDecoration inputDecoration;
 
-  DefaultFormItem({
+  DefaultItem({
     required this.child,
     required this.field,
     this.enable = true,
     InputDecoration? inputDecoration,
-    DefaultFormItemConfig<V>? config,
-  })  : this.config = config ?? DefaultFormItemConfig(),
+    DefaultItemConfig<V>? config,
+  })  : this.config = config ?? DefaultItemConfig(),
         this.inputDecoration = inputDecoration ??= const InputDecoration(
           border: InputBorder.none,
         );
@@ -116,7 +114,7 @@ class DefaultFormItem<V> extends BaseStatelessWidget {
         buildSpace([config.leading, config.title], space: config.space),
         config.title ?? EmptyBox(),
         Visibility(
-          child: RequiredView(),
+          child: Required(),
           visible: config.required,
         ),
       ],

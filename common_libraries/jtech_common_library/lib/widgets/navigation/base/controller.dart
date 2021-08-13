@@ -1,11 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:jtech_common_library/base/controller.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-
-import 'item.dart';
-
-//导航变化监听
-typedef OnNavigationChange = void Function(int index);
+import 'package:jtech_common_library/jcommon.dart';
+import 'config.dart';
 
 /*
 * 底部导航控制器
@@ -13,7 +8,7 @@ typedef OnNavigationChange = void Function(int index);
 * @Time 2021/7/12 上午9:53
 */
 abstract class BaseNavigationController<T extends NavigationItem>
-    extends BaseController {
+    extends BaseController with NavigationControllerBadge {
   //记录当前选中下标
   final ValueChangeNotifier<int> _currentIndex;
 
@@ -41,16 +36,14 @@ abstract class BaseNavigationController<T extends NavigationItem>
 
   //选中一个下标
   void select(int index) {
-    if (isOverIndex(index)) index = 0;
+    if (index < 0 || index >= itemLength) index = 0;
     _currentIndex.setValue(index);
   }
-
-  //判断下标是否越界
-  bool isOverIndex(int index) => index < 0 || index >= _items.length;
 
   @override
   void addListener(VoidCallback listener) {
     _currentIndex.addListener(listener);
+    super.addListener(listener);
   }
 
   @override
@@ -59,5 +52,35 @@ abstract class BaseNavigationController<T extends NavigationItem>
     //销毁数据
     _currentIndex.dispose();
     _items.clear();
+    clearBadges();
   }
+}
+
+/*
+* 导航控制器的角标方法
+* @author jtechjh
+* @Time 2021/8/13 4:22 下午
+*/
+mixin NavigationControllerBadge {
+  //维护角标数据对象表
+  final Map<int, ValueChangeNotifier<BadgeConfig>> _badges = {};
+
+  //获取指定下标的角标监听对象
+  ValueChangeNotifier<BadgeConfig> getBadgeListenable(int index) {
+    if (!_badges.containsKey(index)) {
+      _badges[index] = ValueChangeNotifier(BadgeConfig.empty);
+    }
+    return _badges[index]!;
+  }
+
+  //添加角标
+  void addBadge(int index, BadgeConfig config) =>
+      getBadgeListenable(index).setValue(config);
+
+  //移除角标
+  void removeBadge(int index) =>
+      getBadgeListenable(index).setValue(BadgeConfig.empty);
+
+  //清除所有数据
+  void clearBadges() => _badges.clear();
 }

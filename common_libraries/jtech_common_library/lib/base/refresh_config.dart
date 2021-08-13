@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/base/config.dart';
+import 'package:jtech_common_library/base/base_config.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 //下拉刷新头部样式构建回调

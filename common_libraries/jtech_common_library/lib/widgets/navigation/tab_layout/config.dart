@@ -2,13 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 指示器配置
 * @author wuxubaiyang
 * @Time 2021/7/12 下午4:50
 */
-class IndicatorConfig {
+class IndicatorConfig extends BaseConfig {
   //指示器颜色
   Color? color;
 
@@ -31,4 +32,21 @@ class IndicatorConfig {
     this.decoration,
     this.sizeByTab = true,
   });
+
+  @override
+  IndicatorConfig copyWith({
+    Color? color,
+    double? weight,
+    EdgeInsets? padding,
+    Decoration? decoration,
+    bool? sizeByTab,
+  }) {
+    return IndicatorConfig(
+      color: color ?? this.color,
+      weight: weight ?? this.weight,
+      padding: padding ?? this.padding,
+      decoration: decoration ?? this.decoration,
+      sizeByTab: sizeByTab ?? this.sizeByTab,
+    );
+  }
 }

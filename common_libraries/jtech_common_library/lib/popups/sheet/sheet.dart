@@ -1,18 +1,24 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'config.dart';
-import 'file_picker.dart';
 
 /*
 * 弹出窗口
 * @author wuxubaiyang
 * @Time 2021/7/9 上午9:30
 */
-@protected
-class Sheet {
+class JSheet extends BaseManage {
+  static final JSheet _instance = JSheet._internal();
+
+  factory JSheet() => _instance;
+
+  JSheet._internal();
+
+  @override
+  Future<void> init() async {}
+
   //展示基本sheet
   Future<T?> showBottomSheet<T>(
     BuildContext context, {
@@ -184,84 +190,7 @@ class Sheet {
       child: config.content ?? EmptyBox(),
     );
   }
-
-  //展示文件选择弹窗
-  //压缩仅支持图片，视频压缩，其他暂不支持
-  Future<List<FileItem>?> showPickFile(
-    BuildContext context, {
-    required List<FilePickerMenuItem> menuItems,
-    bool multiple = false,
-    bool compress = true,
-  }) async {
-    return showBottomSheet<List<FileItem>>(context, builder: (context) {
-      return ListView.separated(
-        itemCount: menuItems.length,
-        separatorBuilder: (_, __) => Divider(),
-        itemBuilder: (context, index) {
-          var item = menuItems[index];
-          return ListTile(
-            title: Text(item.name),
-            onTap: () async {
-              List<FileItem>? result;
-              if (null == item.type) {
-                result = await showPickFile(
-                  context,
-                  menuItems: item.children,
-                );
-                if (null == result) return;
-              } else {
-                result = await _getChooseFiles(
-                    item.type!, item.extensions, multiple, compress);
-              }
-              jBase.router.pop(result);
-            },
-          );
-        },
-      );
-    });
-  }
-
-  //文件选择方法
-  Future<List<FileItem>> _getChooseFiles(
-    FilePickerType type,
-    List<String> extensions,
-    bool multiple,
-    bool compress,
-  ) async {
-    ///待完成
-    List<FileItem> files = [];
-    if (type == FilePickerType.imageTake) {
-      //图片拍摄
-    } else if (type == FilePickerType.videoRecord) {
-      //视频录制
-    } else if (type == FilePickerType.audioRecord) {
-      //音频录制
-    } else {
-      //文件选择
-      var result = await FilePicker.platform.pickFiles(
-        type: type.getFileType()!,
-        allowMultiple: multiple,
-        allowedExtensions: extensions,
-      );
-      for (var item in result?.files ?? []) {
-        files.add(FileItem(
-          path: item.path!,
-          name: item.name,
-          size: item.size,
-        ));
-      }
-    }
-    // if (compress) {
-    //   for (var item in files) {
-    //     File? file = File(item.path);
-    //     if (jCommon.tools.matches.isImageFile(file.absolute.path)) {
-    //       file = await jCommon.tools.media.compressImage(file);
-    //     } else if (jCommon.tools.matches.isVideoFile(file.absolute.path)) {
-    //       file = await jCommon.tools.media.compressVideo(file);
-    //     }
-    //     if (null != file) item.path = file.absolute.path;
-    //   }
-    // }
-    return files;
-  }
 }
+
+//单例调用
+final jSheet = JSheet();

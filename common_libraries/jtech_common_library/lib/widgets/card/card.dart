@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_common_library/base/empty_box.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 卡片视图
 * @author wuxubaiyang
 * @Time 2021/7/19 下午1:55
 */
-class JCard extends StatelessWidget {
+class JCard extends BaseStatelessWidget {
   //卡片子视图
   final Widget child;
 

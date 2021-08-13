@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_stateful_widget.dart';
-import 'package:jtech_common_library/base/value_change_notifier.dart';
-import 'package:jtech_common_library/widgets/badge/badge_view.dart';
-import 'package:jtech_common_library/widgets/badge/config.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 角标元素容器
 * @author wuxubaiyang
 * @Time 2021/7/16 下午2:30
 */
-class JBadgeContainer<T extends BadgeConfig> extends BaseStatefulWidget {
+class JBadgeContainer<T extends BadgeConfig> extends BaseStatelessWidget {
   //角标数据监听
   final ValueChangeNotifier<T> listenable;
 
@@ -36,7 +34,7 @@ class JBadgeContainer<T extends BadgeConfig> extends BaseStatefulWidget {
           child: ValueListenableBuilder<BadgeConfig>(
             valueListenable: listenable,
             builder: (context, badgeConfig, child) =>
-                JBadgeView.create(config: badgeConfig),
+                JBadge.create(config: badgeConfig),
           ),
         ),
       ],

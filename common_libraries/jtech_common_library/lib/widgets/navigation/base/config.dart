@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'navgiation_page.dart';
 
 /*
 * 底部导航子项，包含页面视图
@@ -9,7 +8,7 @@ import 'navgiation_page.dart';
 */
 class NavigationItem {
   //内容视图，必须继承自navigationPage
-  NavigationPage page;
+  Widget page;
 
   //导航子项标题
   Widget? title;

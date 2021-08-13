@@ -1,13 +1,14 @@
 import 'dart:core';
 import 'package:flutter/widgets.dart';
-import 'default_form_item.dart';
+import 'package:jtech_common_library/jcommon.dart';
+import 'default_item.dart';
 
 /*
 * 默认表单子项配置
 * @author wuxubaiyang
 * @Time 2021/7/22 下午4:48
 */
-class DefaultFormItemConfig<V> {
+class DefaultItemConfig<V> extends BaseConfig{
   //外间距
   EdgeInsetsGeometry margin;
 
@@ -56,7 +57,7 @@ class DefaultFormItemConfig<V> {
   //是否获取焦点
   bool isFocused;
 
-  DefaultFormItemConfig({
+  DefaultItemConfig({
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 8),
@@ -75,7 +76,8 @@ class DefaultFormItemConfig<V> {
     this.isFocused = false,
   });
 
-  DefaultFormItemConfig<V> copyWith({
+  @override
+  DefaultItemConfig<V> copyWith({
     EdgeInsets? margin,
     EdgeInsets? padding,
     EdgeInsets? contentPadding,
@@ -93,7 +95,7 @@ class DefaultFormItemConfig<V> {
     bool? isEmpty,
     bool? isFocused,
   }) {
-    return DefaultFormItemConfig<V>(
+    return DefaultItemConfig<V>(
       margin: margin ?? this.margin,
       padding: padding ?? this.padding,
       contentPadding: contentPadding ?? this.contentPadding,
