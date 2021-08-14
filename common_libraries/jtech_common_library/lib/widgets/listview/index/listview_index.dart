@@ -19,18 +19,12 @@ class JListViewIndexState<V extends BaseIndexModel>
   JListViewIndexState({
     //列表基本参数结构
     required JIndexListViewController<V> controller,
-    required ListItemBuilder<V> itemBuilder,
-    required ListViewConfig<V> config,
     //索引列表组件参数结构
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
   })  : this.susConfig = susConfig ?? SusConfig(),
         this.indexBarConfig = indexBarConfig ?? IndexBarConfig(),
-        super(
-          controller: controller,
-          itemBuilder: itemBuilder,
-          config: config,
-        );
+        super(controller: controller);
 
   @override
   Widget build(BuildContext context) {

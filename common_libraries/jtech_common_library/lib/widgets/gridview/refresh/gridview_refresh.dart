@@ -15,19 +15,9 @@ class JGridViewRefreshState<V>
   final RefreshConfig<V> refreshConfig;
 
   JGridViewRefreshState({
-    //基本参数结构
-    required int crossAxisCount,
-    required GridItemBuilder<V> itemBuilder,
-    required GridViewConfig<V> config,
     JRefreshGridViewController<V>? controller,
-    //刷新组件参数结构
     required this.refreshConfig,
-  }) : super(
-          crossAxisCount: crossAxisCount,
-          controller: controller ?? JRefreshGridViewController(),
-          itemBuilder: itemBuilder,
-          config: config,
-        );
+  }) : super(controller: controller ?? JRefreshGridViewController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +37,9 @@ class JGridViewRefreshState<V>
                 buildGridItem(context, dataList[index], index),
             staggeredTileBuilder: (int index) =>
                 buildGridStaggered(dataList[index], index),
-            mainAxisSpacing: config.mainAxisSpacing,
-            crossAxisSpacing: config.crossAxisSpacing,
-            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: widget.config.mainAxisSpacing,
+            crossAxisSpacing: widget.config.crossAxisSpacing,
+            crossAxisCount: widget.crossAxisCount,
             itemCount: dataList.length,
             shrinkWrap: true,
           ),

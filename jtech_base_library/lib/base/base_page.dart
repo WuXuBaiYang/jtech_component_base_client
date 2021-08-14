@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jtech_base_library/base/base_widget.dart';
+import 'package:jtech_base_library/jbase.dart';
 
 /*
 * 有状态页面基类

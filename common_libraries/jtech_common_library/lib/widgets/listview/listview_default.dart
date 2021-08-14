@@ -15,15 +15,9 @@ class JListViewDefaultState<V>
   JListViewDefaultState({
     //列表基本参数结构
     required JListViewController<V> controller,
-    required ListItemBuilder<V> itemBuilder,
-    required ListViewConfig<V> config,
     //列表默认组件参数结构
     this.canScroll = true,
-  }) : super(
-          controller: controller,
-          itemBuilder: itemBuilder,
-          config: config,
-        );
+  }) : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {

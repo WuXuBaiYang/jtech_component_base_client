@@ -15,18 +15,10 @@ class JGridViewDefaultState<V>
 
   JGridViewDefaultState({
     //基本参数结构
-    required int crossAxisCount,
     required JGridViewController<V> controller,
-    required GridItemBuilder<V> itemBuilder,
-    required GridViewConfig<V> config,
     //默认表格参数结构
     this.canScroll = true,
-  }) : super(
-          crossAxisCount: crossAxisCount,
-          controller: controller,
-          itemBuilder: itemBuilder,
-          config: config,
-        );
+  }) : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +30,9 @@ class JGridViewDefaultState<V>
               buildGridItem(context, dataList[index], index),
           staggeredTileBuilder: (int index) =>
               buildGridStaggered(dataList[index], index),
-          mainAxisSpacing: config.mainAxisSpacing,
-          crossAxisSpacing: config.crossAxisSpacing,
-          crossAxisCount: crossAxisCount,
+          mainAxisSpacing: widget.config.mainAxisSpacing,
+          crossAxisSpacing: widget.config.crossAxisSpacing,
+          crossAxisCount: widget.crossAxisCount,
           itemCount: dataList.length,
           physics: scrollPhysics,
           shrinkWrap: true,

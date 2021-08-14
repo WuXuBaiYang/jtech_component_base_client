@@ -15,16 +15,10 @@ class JListViewRefreshState<V>
 
   JListViewRefreshState({
     //列表基本参数结构
-    required ListItemBuilder<V> itemBuilder,
-    required ListViewConfig<V> config,
     JRefreshListViewController<V>? controller,
     //刷新列表组件参数结构
     required this.refreshConfig,
-  }) : super(
-          controller: controller ?? JRefreshGridViewController(),
-          itemBuilder: itemBuilder,
-          config: config,
-        );
+  }) : super(controller: controller ?? JRefreshGridViewController());
 
   @override
   Widget build(BuildContext context) {
