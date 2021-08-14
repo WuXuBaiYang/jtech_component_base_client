@@ -18,6 +18,9 @@ class MaterialPageRoot extends BaseStatelessWidget {
   //标题，左侧元素
   final Widget? appBarLeading;
 
+  //标题栏左侧按钮类型
+  final AppBarLeading appBarLeadingType;
+
   //标题文本
   final String appBarTitle;
 
@@ -44,6 +47,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     this.appBarTitle = '',
     this.appBar,
     this.appBarLeading,
+    this.appBarLeadingType = AppBarLeading.back,
     this.appBarActions = const [],
     this.backgroundColor,
     this.floatingActionButton,
@@ -58,6 +62,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     String appBarTitle = '',
     AppBar? appBar,
     Widget? appBarLeading,
+    AppBarLeading appBarLeadingType = AppBarLeading.back,
     List<Widget> appBarActions = const [],
     Color? backgroundColor,
     Widget? floatingActionButton,
@@ -78,6 +83,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
       appBarTitle: appBarTitle,
       appBar: appBar,
       appBarLeading: appBarLeading,
+      appBarLeadingType: appBarLeadingType,
       appBarActions: appBarActions,
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
@@ -105,6 +111,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     //页面基本参数
     String appBarTitle = '',
     Widget? appBarLeading,
+    AppBarLeading appBarLeadingType = AppBarLeading.back,
     List<Widget> appBarActions = const [],
     Color? backgroundColor,
     Widget? floatingActionButton,
@@ -123,7 +130,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     return MaterialPageRoot(
       appBar: AppBar(
         title: Text(appBarTitle),
-        leading: appBarLeading,
+        leading: appBarLeading ?? appBarLeadingType.leading,
         actions: appBarActions,
         bottom: JNavigation.tabBar(
           controller: controller,
@@ -151,7 +158,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     return Scaffold(
       appBar: appBar ??
           AppBar(
-            leading: appBarLeading,
+            leading: appBarLeading ?? appBarLeadingType.leading,
             title: Text(appBarTitle),
             actions: appBarActions,
           ),
@@ -162,5 +169,35 @@ class MaterialPageRoot extends BaseStatelessWidget {
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButtonAnimator: floatingActionButtonAnimator,
     );
+  }
+}
+
+/*
+* 标题栏左侧按钮类型
+* @author wuxubaiyang
+* @Time 2021/8/15 0:37
+*/
+enum AppBarLeading {
+  none,
+  back,
+  close,
+}
+
+/*
+* 扩展标题栏左侧按钮类型枚举方法
+* @author wuxubaiyang
+* @Time 2021/8/15 0:40
+*/
+extension AppBarLeadingExtension on AppBarLeading {
+  //获取leading组件
+  Widget? get leading {
+    switch (this) {
+      case AppBarLeading.back:
+        return BackButton();
+      case AppBarLeading.close:
+        return CloseButton();
+      case AppBarLeading.none:
+    }
+    return null;
   }
 }

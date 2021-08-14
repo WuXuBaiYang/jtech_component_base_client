@@ -70,7 +70,7 @@ class JTabLayoutState<V extends NavigationItem>
         builder: (context, currentIndex, child) {
           return TabBar(
             controller: tabController,
-            labelColor: Colors.blueAccent,
+            labelColor: Colors.white,
             unselectedLabelColor: Colors.black,
             isScrollable: !isFixed,
             indicator: indicatorConfig.decoration,

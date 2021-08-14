@@ -14,7 +14,10 @@ class TabLayoutDemo extends BaseStatelessPage {
   final JTabLayoutController controller =
       JTabLayoutController(initialIndex: 1, items: [
     NavigationItem.text(
-      page: NavigationPageDemo1(),
+      page: NavigationTestPage(
+        text: '页面1',
+        color: Colors.red,
+      ),
       title: "页面1",
       titleColor: Colors.black,
       activeTitleColor: Colors.red,
@@ -26,16 +29,22 @@ class TabLayoutDemo extends BaseStatelessPage {
       ),
     ),
     NavigationItem(
-      page: NavigationPageDemo2(),
+      page: NavigationTestPage(
+        text: '页面2',
+        color: Colors.yellow,
+      ),
       title: Text("页面2"),
       image: Icon(Icons.badge),
       activeImage: Icon(
         Icons.badge,
-        color: Colors.blue,
+        color: Colors.yellow,
       ),
     ),
     NavigationItem.text(
-      page: NavigationPageDemo3(),
+      page: NavigationTestPage(
+        text: '页面3',
+        color: Colors.green,
+      ),
       title: "页面3",
       titleColor: Colors.black,
       activeTitleColor: Colors.green,

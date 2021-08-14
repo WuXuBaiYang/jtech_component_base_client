@@ -128,9 +128,6 @@ class JVideoPlayerController extends BaseController {
   void dispose() {
     super.dispose();
     //销毁控制器
-    _videoController
-      ..dispose()
-      ..videoPlayerController
-      ..dispose();
+    _videoController..videoPlayerController.dispose()..dispose();
   }
 }

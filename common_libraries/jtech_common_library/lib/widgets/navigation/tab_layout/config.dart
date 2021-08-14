@@ -26,7 +26,7 @@ class IndicatorConfig extends BaseConfig {
   bool sizeByTab;
 
   IndicatorConfig({
-    this.color,
+    this.color = Colors.white,
     this.weight = 2.0,
     this.padding = EdgeInsets.zero,
     this.decoration,

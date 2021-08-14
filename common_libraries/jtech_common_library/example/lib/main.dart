@@ -63,8 +63,6 @@ class MyHomePage extends BaseStatelessPage {
     "表单组件": "/test/form_demo",
     "工具方法": "/test/tools_demo",
     "摄像头": "/test/camera",
-    "摄像头拍照": "/test/camera/take_photo_page",
-    "摄像头录制视频": "/test/camera/record_video_page",
     "视频播放器组件": "/test/video_player_demo",
     "音频组件": "/test/audio_demo",
   };
@@ -73,7 +71,7 @@ class MyHomePage extends BaseStatelessPage {
   Widget build(BuildContext context) {
     return MaterialPageRoot(
       appBarTitle: "example_common",
-      appBarLeading: CloseButton(),
+      appBarLeadingType: AppBarLeading.none,
       body: JListView.def<String>(
         controller: JListViewController(
           dataList: pages.keys.toList(),

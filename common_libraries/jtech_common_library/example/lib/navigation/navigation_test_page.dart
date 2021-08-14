@@ -7,48 +7,22 @@ import 'package:jtech_base_library/jbase.dart';
 * @author wuxubaiyang
 * @Time 2021/7/12 下午1:24
 */
-class NavigationPageDemo1 extends BaseStatelessPage {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      alignment: Alignment.center,
-      child: Text(
-        "页面1",
-        style: TextStyle(
-          fontSize: 60,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
+class NavigationTestPage extends BaseStatelessPage {
+  final String text;
+  final Color color;
 
-class NavigationPageDemo2 extends BaseStatelessPage {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-      alignment: Alignment.center,
-      child: Text(
-        "页面2",
-        style: TextStyle(
-          fontSize: 60,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
+  NavigationTestPage({
+    required this.text,
+    required this.color,
+  });
 
-class NavigationPageDemo3 extends BaseStatelessPage {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: color,
       alignment: Alignment.center,
       child: Text(
-        "页面3",
+        text,
         style: TextStyle(
           fontSize: 60,
           color: Colors.white,

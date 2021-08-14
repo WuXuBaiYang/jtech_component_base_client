@@ -17,16 +17,19 @@ class GridviewDemo extends BaseStatelessPage {
 
   @override
   Widget build(BuildContext context) {
-    return JListView.def<String>(
-      dividerBuilder: (_, index) => Divider(),
-      itemBuilder: (_, item, index) {
-        return ListTile(
-          title: Text(item),
-          onTap: () => jRouter.pushNamed(gridDemoMap[item]!),
-        );
-      },
-      controller: JListViewController(
-        dataList: gridDemoMap.keys.toList(),
+    return MaterialPageRoot(
+      appBarTitle: '表格组件demo',
+      body: JListView.def<String>(
+        dividerBuilder: (_, index) => Divider(),
+        itemBuilder: (_, item, index) {
+          return ListTile(
+            title: Text(item),
+            onTap: () => jRouter.pushNamed(gridDemoMap[item]!),
+          );
+        },
+        controller: JListViewController(
+          dataList: gridDemoMap.keys.toList(),
+        ),
       ),
     );
   }
