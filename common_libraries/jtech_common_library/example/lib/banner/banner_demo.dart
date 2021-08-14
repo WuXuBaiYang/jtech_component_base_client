@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/banner/banner.dart';
-import 'package:jtech_common_library/widgets/banner/controller.dart';
-import 'package:jtech_common_library/widgets/banner/config.dart';
-import 'package:jtech_common_library/widgets/image/image.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * banner demo
 * @author wuxubaiyang
 * @Time 2021/7/13 上午11:13
 */
-class BannerDemo extends BasePage {
+class BannerDemo extends BaseStatelessPage {
   //banner控制器
   final JBannerController controller = JBannerController(
     initialIndex: 0,
@@ -48,19 +44,17 @@ class BannerDemo extends BasePage {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("banner demo"),
-        actions: [
-          IconButton(
-            icon: Text("跳转最后一页"),
-            onPressed: () {
-              controller.select(2);
-            },
-          ),
-        ],
-      ),
-      body: JBannerView(
+    return MaterialPageRoot(
+      appBarTitle: "banner demo",
+      appBarActions: [
+        IconButton(
+          icon: Text("跳转最后一页"),
+          onPressed: () {
+            controller.select(2);
+          },
+        ),
+      ],
+      body: JBanner(
         controller: controller,
         showTitle: true,
         indicatorAlign: BannerAlign.right,

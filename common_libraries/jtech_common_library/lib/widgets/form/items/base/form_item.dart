@@ -10,12 +10,21 @@ import 'package:jtech_common_library/widgets/form/items/base/config.dart';
 * @author wuxubaiyang
 * @Time 2021/7/22 下午2:49
 */
-class JFormItem<V> extends BaseStatefulWidget {
-  //当前状态对象
-  final BaseJFormItemState currentState;
+class JFormItem<V> extends BaseStatefulWidgetMultiply {
+  //表单子项基本配置信息
+  final FormItemConfig<V> config;
+
+  //默认表单项配置文件
+  final DefaultItemConfig<V>? defaultConfig;
+
+  JFormItem({
+    required State<JFormItem<V>> currentState,
+    required this.config,
+    this.defaultConfig,
+  }) : super(currentState: currentState);
 
   //构建一个输入框表单子项
-  JFormItem.input({
+  static JFormItem input({
     //基本属性
     String? initialValue,
     FormFieldSetter<String>? onSaved,
@@ -45,41 +54,44 @@ class JFormItem<V> extends BaseStatefulWidget {
     OnInputAction? onEditingComplete,
     OnInputAction? onSubmitted,
     List<TextInputFormatter> inputFormatters = const [],
-  }) : this.currentState = JFormInputItemState(
-          initialValue: initialValue,
-          textStyle: textStyle,
-          validRegs: validRegs,
-          inputDecoration: inputDecoration,
-          minLines: minLines,
-          maxLines: maxLines,
-          maxLength: maxLength,
-          showCounter: showCounter,
-          readOnly: readOnly,
-          textAlign: textAlign,
-          obscureText: obscureText,
-          showObscureButton: showObscureButton,
-          showClearButton: showClearButton,
-          inputAction: inputAction,
-          onEditingComplete: onEditingComplete,
-          onSubmitted: onSubmitted,
-          inputFormatters: inputFormatters,
-          config: (baseConfig ?? FormItemConfig<String>()).copyWith(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-          ),
-          defaultConfig:
-              (defaultConfig ?? DefaultItemConfig<String>()).copyWith(
-            title: title,
-            leading: leading,
-            isArrow: isArrow,
-            onTap: onTap,
-            onLongTap: onLongTap,
-          ),
-        );
+  }) {
+    return JFormItem<String>(
+      currentState: JFormInputItemState(
+        initialValue: initialValue,
+        textStyle: textStyle,
+        validRegs: validRegs,
+        inputDecoration: inputDecoration,
+        minLines: minLines,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        showCounter: showCounter,
+        readOnly: readOnly,
+        textAlign: textAlign,
+        obscureText: obscureText,
+        showObscureButton: showObscureButton,
+        showClearButton: showClearButton,
+        inputAction: inputAction,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: onSubmitted,
+        inputFormatters: inputFormatters,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+      config: (baseConfig ?? FormItemConfig()).copyWith(
+        initialValue: initialValue,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+    );
+  }
 
   //构建头像表单项
-  JFormItem.avatar({
+  static JFormItem avatar({
     //基本属性
     String? initialValue,
     FormFieldSetter<String>? onSaved,
@@ -94,25 +106,26 @@ class JFormItem<V> extends BaseStatefulWidget {
     DefaultItemConfig<String>? defaultConfig,
     //头像属性
     required String url,
-  }) : this.currentState = JFormAvatarItemState(
-          url: url,
-          config: (baseConfig ?? FormItemConfig<String>()).copyWith(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-          ),
-          defaultConfig:
-              (defaultConfig ?? DefaultItemConfig<String>()).copyWith(
-            title: title,
-            leading: leading,
-            isArrow: isArrow,
-            onTap: onTap,
-            onLongTap: onLongTap,
-          ),
-        );
+  }) {
+    return JFormItem(
+      currentState: JFormAvatarItemState(),
+      config: (baseConfig ?? FormItemConfig<String>()).copyWith(
+        initialValue: initialValue,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig<String>()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+    );
+  }
 
   //构建自定义表单项
-  JFormItem.custom({
+  static JFormItem custom<V>({
     //基本属性
     V? initialValue,
     FormFieldSetter<V>? onSaved,
@@ -127,24 +140,28 @@ class JFormItem<V> extends BaseStatefulWidget {
     DefaultItemConfig<V>? defaultConfig,
     //自定义项属性
     required FormFieldBuilder<V> builder,
-  }) : this.currentState = JFormCustomItemState<V>(
-          builder: builder,
-          config: (baseConfig ?? FormItemConfig<V>()).copyWith(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-          ),
-          defaultConfig: (defaultConfig ?? DefaultItemConfig<V>()).copyWith(
-            title: title,
-            leading: leading,
-            isArrow: isArrow,
-            onTap: onTap,
-            onLongTap: onLongTap,
-          ),
-        );
+  }) {
+    return JFormItem<V>(
+      currentState: JFormCustomItemState(
+        builder: builder,
+      ),
+      config: (baseConfig ?? FormItemConfig()).copyWith(
+        initialValue: initialValue,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+    );
+  }
 
   //构建开关表单项
-  JFormItem.switchX({
+  static JFormItem switchX({
     //基本属性
     bool? initialValue,
     FormFieldSetter<bool>? onSaved,
@@ -160,27 +177,31 @@ class JFormItem<V> extends BaseStatefulWidget {
     //开关项属性
     Alignment alignment = Alignment.centerRight,
     bool clickFullArea = true,
-  }) : this.currentState = JFormSwitchItemState(
-          alignment: alignment,
-          clickFullArea: clickFullArea,
-          config: (baseConfig ?? FormItemConfig<bool>()).copyWith(
-            initialValue: initialValue,
-            onSaved: onSaved,
-            validator: validator,
-          ),
-          defaultConfig: (defaultConfig ?? DefaultItemConfig<bool>()).copyWith(
-            title: title,
-            leading: leading,
-            isArrow: isArrow,
-            onTap: onTap,
-            onLongTap: onLongTap,
-          ),
-        );
+  }) {
+    return JFormItem<bool>(
+      currentState: JFormSwitchItemState(
+        alignment: alignment,
+        clickFullArea: clickFullArea,
+      ),
+      config: (baseConfig ?? FormItemConfig()).copyWith(
+        initialValue: initialValue,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+    );
+  }
 
   //构建文本表单项
-  JFormItem.text({
+  static JFormItem text({
     //基本属性
-    String? initialValue,
+    String? text,
     FormFieldSetter<String>? onSaved,
     FormFieldValidator<String>? validator,
     FormItemConfig<String>? baseConfig,
@@ -194,25 +215,26 @@ class JFormItem<V> extends BaseStatefulWidget {
     //文本项属性
     TextStyle? textStyle,
     TextAlign textAlign = TextAlign.start,
-  }) : this.currentState = JFormTextItemState(
-    textStyle: textStyle,
-    textAlign: textAlign,
-    config: (baseConfig ?? FormItemConfig<String>()).copyWith(
-      initialValue: initialValue,
-      onSaved: onSaved,
-      validator: validator,
-    ),
-    defaultConfig: (defaultConfig ?? DefaultItemConfig<String>()).copyWith(
-      title: title,
-      leading: leading,
-      isArrow: isArrow,
-      onTap: onTap,
-      onLongTap: onLongTap,
-    ),
-  );
-
-  @override
-  BaseJFormItemState getState() => currentState;
+  }) {
+    return JFormItem<String>(
+      currentState: JFormTextItemState(
+        textStyle: textStyle,
+        textAlign: textAlign,
+      ),
+      config: (baseConfig ?? FormItemConfig()).copyWith(
+        initialValue: text,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+    );
+  }
 }
 
 /*
@@ -220,24 +242,13 @@ class JFormItem<V> extends BaseStatefulWidget {
 * @author jtechjh
 * @Time 2021/8/13 1:20 下午
 */
-abstract class BaseJFormItemState<V> extends BaseState<JFormItem> {
-  //表单子项基本配置信息
-  final FormItemConfig<V> config;
-
-  //默认表单项配置文件
-  final DefaultItemConfig<V>? defaultConfig;
-
-  BaseJFormItemState({
-    required this.config,
-    this.defaultConfig,
-  });
-
+abstract class BaseJFormItemState<V> extends BaseState<JFormItem<V>> {
   @override
   Widget build(BuildContext context) {
     return FormField<V>(
-      enabled: config.enabled,
-      initialValue: config.initialValue,
-      autovalidateMode: config.autoValidateMode,
+      enabled: widget.config.enabled,
+      initialValue: widget.config.initialValue,
+      autovalidateMode: widget.config.autoValidateMode,
       onSaved: (value) => onSavedValue(value),
       validator: (value) => onValidValue(value),
       builder: (field) => buildFormItem(context, field),
@@ -246,11 +257,11 @@ abstract class BaseJFormItemState<V> extends BaseState<JFormItem> {
 
   //保存事件
   @mustCallSuper
-  void onSavedValue(V? value) => config.onSaved?.call(value);
+  void onSavedValue(V? value) => widget.config.onSaved?.call(value);
 
   //数据校验事件
   @mustCallSuper
-  String? onValidValue(V? value) => config.validator?.call(value);
+  String? onValidValue(V? value) => widget.config.validator?.call(value);
 
   //构造主要内容
   Widget buildFormItem(BuildContext context, FormFieldState<V> field);
@@ -265,8 +276,8 @@ abstract class BaseJFormItemState<V> extends BaseState<JFormItem> {
       DefaultItem<V>(
         child: child,
         field: field,
-        config: defaultConfig ?? this.defaultConfig,
-        enable: config.enabled,
+        config: defaultConfig ?? widget.defaultConfig,
+        enable: widget.config.enabled,
         inputDecoration: inputDecoration,
       );
 }

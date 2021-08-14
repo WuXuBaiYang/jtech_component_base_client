@@ -13,16 +13,13 @@ class JListViewDefaultState<V>
   final bool canScroll;
 
   JListViewDefaultState({
-    //列表基本参数结构
-    required JListViewController<V> controller,
-    //列表默认组件参数结构
     this.canScroll = true,
-  }) : super(controller: controller);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<V>>(
-      valueListenable: controller.dataListenable,
+      valueListenable: widget.controller.dataListenable,
       builder: (context, dataList, child) {
         return ListView.separated(
           shrinkWrap: true,

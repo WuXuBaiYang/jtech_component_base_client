@@ -67,10 +67,6 @@ class JFormInputItemState extends BaseJFormItemState<String> {
   final List<TextInputFormatter> inputFormatters;
 
   JFormInputItemState({
-    //基本参数结构
-    required FormItemConfig<String> config,
-    DefaultItemConfig<String>? defaultConfig,
-    //输入框部分参数
     String? initialValue,
     TextStyle? textStyle,
     this.validRegs = const {},
@@ -93,8 +89,7 @@ class JFormInputItemState extends BaseJFormItemState<String> {
         this.showObscureButton = showObscureButton ?? obscureText,
         this.controller = TextEditingController(text: initialValue),
         this.maxLines = (maxLines < minLines) ? minLines : maxLines,
-        this.focusNode = FocusNode(),
-        super(config: config, defaultConfig: defaultConfig);
+        this.focusNode = FocusNode();
 
   @override
   void initState() {
@@ -127,15 +122,16 @@ class JFormInputItemState extends BaseJFormItemState<String> {
             minLines: minLines,
             maxLines: maxLines,
             maxLength: maxLength,
-            enabled: config.enabled,
+            enabled: widget.config.enabled,
             readOnly: readOnly,
             onChanged: (value) => field.didChange(value),
           ),
-          defaultConfig: defaultConfig?.copyWith(
+          defaultConfig: widget.defaultConfig?.copyWith(
             isEmpty: isValueEmpty,
             isFocused: focusNode.hasFocus,
-            desc: defaultConfig?.desc ?? _buildClearButton(field),
-            trailing: defaultConfig?.trailing ?? _buildObscureTextButton(),
+            desc: widget.defaultConfig?.desc ?? _buildClearButton(field),
+            trailing:
+                widget.defaultConfig?.trailing ?? _buildObscureTextButton(),
           ),
         );
       },
@@ -176,8 +172,8 @@ class JFormInputItemState extends BaseJFormItemState<String> {
   @override
   String? onValidValue(String? value) {
     var isEmptyValue = value?.isEmpty ?? true;
-    if (defaultConfig!.required && isEmptyValue) {
-      return defaultConfig!.requiredError;
+    if (widget.defaultConfig!.required && isEmptyValue) {
+      return widget.defaultConfig!.requiredError;
     }
     if (!isEmptyValue && validRegs.isNotEmpty) {
       for (var reg in validRegs.keys) {

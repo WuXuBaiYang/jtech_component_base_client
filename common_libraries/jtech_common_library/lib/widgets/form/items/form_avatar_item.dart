@@ -8,13 +8,7 @@ import 'package:jtech_common_library/jcommon.dart';
 * @Time 2021/7/26 上午10:50
 */
 class JFormAvatarItemState extends BaseJFormItemState<String> {
-  JFormAvatarItemState({
-    //基本参数结构
-    required FormItemConfig<String> config,
-    DefaultItemConfig<String>? defaultConfig,
-    //头像参数结构
-    required String url,
-  }) : super(config: config, defaultConfig: defaultConfig);
+  JFormAvatarItemState();
 
   @override
   Widget buildFormItem(BuildContext context, FormFieldState<String> field) {

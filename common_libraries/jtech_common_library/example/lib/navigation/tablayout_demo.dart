@@ -1,4 +1,4 @@
-import 'package:example/tablayout_demo/navigation_page_1.dart';
+import 'package:example/tablayout/navigation_test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/base/base_page.dart';
@@ -8,8 +8,8 @@ import 'package:jtech_common_library/widgets/navigation/base/config.dart';
 import 'package:jtech_common_library/widgets/navigation/tab_layout/controller.dart';
 import 'package:jtech_common_library/widgets/navigation/tab_layout/tab_layout.dart';
 
-import 'navigation_page_2.dart';
-import 'navigation_page_3.dart';
+import 'tablayout/navigation_page_2.dart';
+import 'tablayout/navigation_page_3.dart';
 
 /*
 * 底部导航demo

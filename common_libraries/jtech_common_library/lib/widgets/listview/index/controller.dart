@@ -1,6 +1,6 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/widgets/listview/base/controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 import 'model.dart';
 

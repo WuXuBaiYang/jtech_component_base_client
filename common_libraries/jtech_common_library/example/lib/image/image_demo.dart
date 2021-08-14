@@ -3,11 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/image/image.dart';
-import 'package:jtech_common_library/widgets/image/clip.dart';
-import 'package:jtech_common_library/widgets/image/config.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
@@ -16,18 +13,11 @@ import 'package:path/path.dart';
 * @author wuxubaiyang
 * @Time 2021/7/13 上午11:13
 */
-class ImageDemo extends BasePage {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class ImageDemo extends BaseStatelessPage {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("图片demo"),
-      ),
+    return MaterialPageRoot(
+      appBarTitle: "图片demo",
       body: SingleChildScrollView(
         child: Column(
           children: [

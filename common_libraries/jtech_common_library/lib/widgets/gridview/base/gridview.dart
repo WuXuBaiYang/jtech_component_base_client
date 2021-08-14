@@ -9,7 +9,8 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author wuxubaiyang
 * @Time 2021/7/19 下午4:06
 */
-class JGridView<V> extends BaseStatefulWidgetMultiply {
+class JGridView<T extends JListViewController<V>, V>
+    extends BaseStatefulWidgetMultiply {
   //副方向上的最大元素数量
   final int crossAxisCount;
 
@@ -19,11 +20,15 @@ class JGridView<V> extends BaseStatefulWidgetMultiply {
   //基本配置参数
   final GridViewConfig<V> config;
 
+  //控制器
+  final T controller;
+
   JGridView({
+    required this.controller,
     required this.crossAxisCount,
     required this.itemBuilder,
     required this.config,
-    required State<JGridView> currentState,
+    required State<JGridView<T, V>> currentState,
   }) : super(currentState: currentState);
 
   //创建基本表格组件
@@ -39,14 +44,14 @@ class JGridView<V> extends BaseStatefulWidgetMultiply {
     //默认表格组件参数
     bool canScroll = true,
   }) {
-    return JGridView<V>(
+    return JGridView<JGridViewController<V>, V>(
+        controller: controller,
         crossAxisCount: crossAxisCount,
         itemBuilder: itemBuilder,
-        currentState: JGridViewDefaultState<V>(
-          controller: controller,
+        currentState: JGridViewDefaultState(
           canScroll: canScroll,
         ),
-        config: (config ?? GridViewConfig<V>()).copyWith(
+        config: (config ?? GridViewConfig()).copyWith(
           itemTap: itemTap,
           itemLongTap: itemLongTap,
           staggeredTile: staggeredTile,
@@ -69,18 +74,18 @@ class JGridView<V> extends BaseStatefulWidgetMultiply {
     bool? enablePullUp,
     RefreshConfig<V>? refreshConfig,
   }) {
-    return JGridView<V>(
+    return JGridView<JRefreshGridViewController<V>, V>(
+      controller: controller ?? JRefreshGridViewController(),
       crossAxisCount: crossAxisCount,
       itemBuilder: itemBuilder,
-      currentState: JGridViewRefreshState<V>(
-        controller: controller,
+      currentState: JGridViewRefreshState(
         refreshConfig: (refreshConfig ?? RefreshConfig<V>()).copyWith(
           onRefreshLoad: onRefreshLoad,
           enablePullDown: enablePullDown,
           enablePullUp: enablePullUp,
         ),
       ),
-      config: (config ?? GridViewConfig<V>()).copyWith(
+      config: (config ?? GridViewConfig()).copyWith(
         itemTap: itemTap,
         itemLongTap: itemLongTap,
         staggeredTile: staggeredTile,
@@ -95,14 +100,7 @@ class JGridView<V> extends BaseStatefulWidgetMultiply {
 * @Time 2021/8/13 3:06 下午
 */
 abstract class BaseJGridViewState<T extends JListViewController<V>, V>
-    extends BaseState<JGridView> {
-  //控制器
-  final T controller;
-
-  BaseJGridViewState({
-    required this.controller,
-  });
-
+    extends BaseState<JGridView<T, V>> {
   //表格子项构造事件
   Widget buildGridItem(BuildContext context, V item, int index) {
     return InkWell(

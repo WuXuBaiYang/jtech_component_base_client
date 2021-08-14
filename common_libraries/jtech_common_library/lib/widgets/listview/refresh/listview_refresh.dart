@@ -14,19 +14,16 @@ class JListViewRefreshState<V>
   final RefreshConfig<V> refreshConfig;
 
   JListViewRefreshState({
-    //列表基本参数结构
-    JRefreshListViewController<V>? controller,
-    //刷新列表组件参数结构
     required this.refreshConfig,
-  }) : super(controller: controller ?? JRefreshGridViewController());
+  });
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<V>>(
-      valueListenable: controller.dataListenable,
+      valueListenable: widget.controller.dataListenable,
       builder: (context, dataList, child) {
         return SmartRefresher(
-          controller: controller.refreshController,
+          controller: widget.controller.refreshController,
           enablePullDown: refreshConfig.enablePullDown,
           enablePullUp: refreshConfig.enablePullUp,
           onRefresh: () => _loadDataList(false),
@@ -47,17 +44,18 @@ class JListViewRefreshState<V>
 
   //数据加载方法
   void _loadDataList(bool loadMore) async {
-    controller.resetRefreshState();
+    widget.controller.resetRefreshState();
     loadMore
         ? refreshConfig.onPullUpLoading?.call()
         : refreshConfig.onPullDownRefreshing?.call();
     try {
-      List<V>? result = await refreshConfig.onRefreshLoad
-          ?.call(controller.getRequestPageIndex(loadMore), controller.pageSize);
+      List<V>? result = await refreshConfig.onRefreshLoad?.call(
+          widget.controller.getRequestPageIndex(loadMore),
+          widget.controller.pageSize);
       //执行加载完成操作
-      controller.requestCompleted(result ?? [], loadMore: loadMore);
+      widget.controller.requestCompleted(result ?? [], loadMore: loadMore);
     } catch (e) {
-      controller.requestFail(loadMore);
+      widget.controller.requestFail(loadMore);
     }
   }
 }

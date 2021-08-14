@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 * @Time 2021/7/12 上午10:11
 */
 class NavigationItem {
-  //内容视图，必须继承自navigationPage
+  //内容视图
   Widget page;
 
   //导航子项标题

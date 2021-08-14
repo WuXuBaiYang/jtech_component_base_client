@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
-import 'package:jtech_common_library/widgets/audio_player/audio_player.dart';
-import 'package:jtech_common_library/widgets/audio_player/config.dart';
-import 'package:jtech_common_library/widgets/audio_player/controller.dart';
-import 'package:jtech_common_library/widgets/audio_record/audio_record.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 音频播放器/录音器组件演示
 * @author jtechjh
 * @Time 2021/8/10 10:55 上午
 */
-class AudioDemo extends BasePage {
+class AudioDemo extends BaseStatelessPage {
   //音频播放器demo地址
   final String audioSourceUrl =
       "https://luan.xyz/files/audio/nasa_on_a_mission.mp3";
@@ -23,7 +17,7 @@ class AudioDemo extends BasePage {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialRootPage(
+    return MaterialPageRoot(
       appBarTitle: "音频播放器/录音器",
       appBarActions: [
         PopupMenuButton(

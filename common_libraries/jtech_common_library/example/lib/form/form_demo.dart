@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
-import 'package:jtech_common_library/widgets/form/controller.dart';
-import 'package:jtech_common_library/widgets/form/form.dart';
-import 'package:jtech_common_library/widgets/form/items/form_custom_item.dart';
-import 'package:jtech_common_library/widgets/form/items/form_input_item/form_input_item.dart';
-import 'package:jtech_common_library/widgets/form/items/form_input_item/formatters.dart';
-import 'package:jtech_common_library/widgets/form/items/form_switch_item.dart';
-import 'package:jtech_common_library/widgets/form/items/form_text_item.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 表单组件demo页面
 * @author wuxubaiyang
 * @Time 2021/7/22 下午2:17
 */
-class FormDemo extends BasePage {
+class FormDemo extends BaseStatelessPage {
   //表单控制器
   final JFormController controller = JFormController();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialRootPage(
+    return MaterialPageRoot(
       appBarTitle: "form表单demo",
       appBarActions: [
         IconButton(
@@ -30,11 +22,10 @@ class FormDemo extends BasePage {
           onPressed: () => controller.submit(),
         ),
       ],
-      body: JFormView(
+      body: JForm(
         controller: controller,
         children: [
-          JFormTextItem(
-            enabled: true,
+          JFormItem.text(
             title: Text("文本-标题"),
             text: '测试表单子项',
             isArrow: true,
@@ -47,8 +38,7 @@ class FormDemo extends BasePage {
                   .showSnackInTime(context, text: "文本form项，长点击事件");
             },
           ),
-          JFormCustomItem<Map<String, String>>(
-            enabled: true,
+          JFormItem.custom<Map<String, String>>(
             title: Text("自定义-标题"),
             isArrow: true,
             initialValue: {
@@ -77,7 +67,7 @@ class FormDemo extends BasePage {
               );
             },
           ),
-          JFormInputItem(
+          JFormItem.input(
             title: Text("输入框-标题"),
             isArrow: true,
             maxLength: 10,
@@ -93,7 +83,7 @@ class FormDemo extends BasePage {
             },
             // onTap: (v){},
           ),
-          JFormSwitchItem(
+          JFormItem.switchX(
             title: Text("开关-标题"),
             initialValue: true,
             isArrow: true,

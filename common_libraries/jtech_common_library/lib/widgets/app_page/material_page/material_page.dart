@@ -53,17 +53,16 @@ class MaterialPageRoot extends BaseStatelessWidget {
   });
 
   //构建一个带有底部导航的页面组件
-  MaterialPageRoot.bottomBar({
+  static MaterialPageRoot withBottomNavigation({
     //页面基本参数
-    required this.body,
-    this.appBarTitle = '',
-    this.appBar,
-    this.appBarLeading,
-    this.appBarActions = const [],
-    this.backgroundColor,
-    this.floatingActionButton,
-    this.floatingActionButtonLocation,
-    this.floatingActionButtonAnimator,
+    String appBarTitle = '',
+    AppBar? appBar,
+    Widget? appBarLeading,
+    List<Widget> appBarActions = const [],
+    Color? backgroundColor,
+    Widget? floatingActionButton,
+    FloatingActionButtonLocation? floatingActionButtonLocation,
+    FloatingActionButtonAnimator? floatingActionButtonAnimator,
     //底部导航参数
     required JBottomNavigationController controller,
     bool canScroll = false,
@@ -74,17 +73,30 @@ class MaterialPageRoot extends BaseStatelessWidget {
     NotchLocation notchLocation = NotchLocation.none,
     double notchMargin = 4.0,
     NotchedShape notchedShape = const CircularNotchedRectangle(),
-  }) : this.bottomNavigationBar = JBottomNavigation(
-          controller: controller,
-          canScroll: canScroll,
-          navigationColor: navigationColor,
-          navigationHeight: navigationHeight,
-          elevation: elevation,
-          badgeAlign: badgeAlign,
-          notchLocation: notchLocation,
-          notchMargin: notchMargin,
-          notchedShape: notchedShape,
-        );
+  }) {
+    return MaterialPageRoot(
+      appBarTitle: appBarTitle,
+      appBar: appBar,
+      appBarLeading: appBarLeading,
+      appBarActions: appBarActions,
+      backgroundColor: backgroundColor,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButtonAnimator: floatingActionButtonAnimator,
+      body: body,
+      bottomNavigationBar: JBottomNavigation(
+        controller: controller,
+        canScroll: canScroll,
+        navigationColor: navigationColor,
+        navigationHeight: navigationHeight,
+        elevation: elevation,
+        badgeAlign: badgeAlign,
+        notchLocation: notchLocation,
+        notchMargin: notchMargin,
+        notchedShape: notchedShape,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

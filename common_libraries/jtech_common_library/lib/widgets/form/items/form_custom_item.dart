@@ -12,15 +12,8 @@ class JFormCustomItemState<V> extends BaseJFormItemState<V> {
   final FormFieldBuilder<V> builder;
 
   JFormCustomItemState({
-    //默认参数结构
-    required FormItemConfig<V> config,
-    DefaultItemConfig<V>? defaultConfig,
-    //自定义表单参数结构
     required this.builder,
-  }) : super(
-          config: config,
-          defaultConfig: defaultConfig,
-        );
+  });
 
   @override
   Widget buildFormItem(BuildContext context, FormFieldState<V> field) {

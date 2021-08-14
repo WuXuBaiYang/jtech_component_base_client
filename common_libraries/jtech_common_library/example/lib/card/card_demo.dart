@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/card/card.dart';
-import 'package:jtech_common_library/widgets/image/clip.dart';
-import 'package:jtech_common_library/widgets/image/config.dart';
-import 'package:jtech_common_library/widgets/image/image.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 卡片组件demo
 * @author wuxubaiyang
 * @Time 2021/7/19 下午3:21
 */
-class CardDemo extends BasePage {
+class CardDemo extends BaseStatelessPage {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("卡片demo"),
-      ),
+    return MaterialPageRoot(
+      appBarTitle: "卡片demo",
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -55,7 +50,8 @@ class CardDemo extends BasePage {
                   "https://img.zcool.cn/community/0173035e553071a801216518fc442f.jpg@1280w_1l_2o_100sh.jpg",
                   size: 200,
                   fit: BoxFit.cover,
-                  clip: ImageClipRRect(borderRadius: BorderRadius.only(
+                  clip: ImageClipRRect(
+                      borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   )),
@@ -65,7 +61,8 @@ class CardDemo extends BasePage {
                   "https://img.zcool.cn/community/0173035e553071a801216518fc442f.jpg@1280w_1l_2o_100sh.jpg",
                   size: 200,
                   fit: BoxFit.cover,
-                  clip: ImageClipRRect(borderRadius: BorderRadius.only(
+                  clip: ImageClipRRect(
+                      borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(8),
                     bottomLeft: Radius.circular(8),
                   )),
@@ -81,7 +78,8 @@ class CardDemo extends BasePage {
                   "https://img.zcool.cn/community/0173035e553071a801216518fc442f.jpg@1280w_1l_2o_100sh.jpg",
                   size: 100,
                   fit: BoxFit.cover,
-                  clip: ImageClipRRect(borderRadius: BorderRadius.only(
+                  clip: ImageClipRRect(
+                      borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     topLeft: Radius.circular(8),
                   )),
@@ -91,7 +89,8 @@ class CardDemo extends BasePage {
                   "https://img.zcool.cn/community/0173035e553071a801216518fc442f.jpg@1280w_1l_2o_100sh.jpg",
                   size: 100,
                   fit: BoxFit.cover,
-                  clip: ImageClipRRect(borderRadius: BorderRadius.only(
+                  clip: ImageClipRRect(
+                      borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),
                     bottomRight: Radius.circular(8),
                   )),

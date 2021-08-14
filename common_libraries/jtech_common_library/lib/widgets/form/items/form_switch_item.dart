@@ -15,13 +15,9 @@ class JFormSwitchItemState extends BaseJFormItemState<bool> {
   final bool clickFullArea;
 
   JFormSwitchItemState({
-    //默认参数结构
-    required FormItemConfig<bool> config,
-    DefaultItemConfig<bool>? defaultConfig,
-    //开关表单项参数结构
     this.alignment = Alignment.centerRight,
     this.clickFullArea = true,
-  }) : super(config: config, defaultConfig: defaultConfig);
+  });
 
   @override
   Widget buildFormItem(BuildContext context, FormFieldState<bool> field) {
@@ -34,16 +30,16 @@ class JFormSwitchItemState extends BaseJFormItemState<bool> {
           onChanged: (value) => field.didChange(value),
         ),
       ),
-      defaultConfig: defaultConfig?.copyWith(
+      defaultConfig: widget.defaultConfig?.copyWith(
         onTap: clickFullArea
             ? (value) {
                 if (clickFullArea) {
                   value = !value!;
                   field.didChange(value);
                 }
-                defaultConfig?.onTap?.call(value);
+                widget.defaultConfig?.onTap?.call(value);
               }
-            : defaultConfig?.onTap,
+            : widget.defaultConfig?.onTap,
       ),
     );
   }

@@ -1,26 +1,26 @@
-import 'package:example/listview_demo/list_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/listview/refresh/controller.dart';
-import 'package:jtech_common_library/widgets/listview/refresh/listview_refresh.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
+
+import 'list_item_model.dart';
 
 /*
 * 可刷新列表demo
 * @author wuxubaiyang
 * @Time 2021/7/6 下午2:17
 */
-class RefreshListViewDemo extends BasePage {
-  final JRefreshListViewController<ListItemModel> controller =
-      JRefreshListViewController();
+class RefreshListViewDemo extends BaseStatelessPage {
+  //控制器
+  final JRefreshListViewController<ListItemModel> controller;
+
+  RefreshListViewDemo() : this.controller = JRefreshListViewController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("加载列表测试"),
-      ),
-      body: JRefreshListView<ListItemModel>(
+    return MaterialPageRoot(
+      appBarTitle: "加载列表测试",
+      body: JListView.refresh<ListItemModel>(
         enablePullDown: true,
         enablePullUp: true,
         controller: controller,

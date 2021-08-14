@@ -1,52 +1,43 @@
-import 'package:example/banner/banner_demo.dart';
-import 'package:example/bottom_navigation_demo/bottom_navigation_demo.dart';
-import 'package:example/card/card_demo.dart';
-import 'package:example/form/form_demo.dart';
-import 'package:example/gridview/gridview_demo.dart';
-import 'package:example/image/image_demo.dart';
-import 'package:example/listview_demo/index_listview_demo.dart';
-import 'package:example/listview_demo/listview_demo.dart';
-import 'package:example/listview_demo/refresh_listview_demo.dart';
 import 'package:example/popups/popups_demo.dart';
-import 'package:example/tablayout_demo/tablayout_demo.dart';
 import 'package:example/tools/tools_page.dart';
-import 'package:example/video/video_player_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
-import 'package:jtech_common_library/tools/file_picker/pages/record_video_page.dart';
-import 'package:jtech_common_library/tools/file_picker/pages/take_photo_page.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
-import 'package:jtech_common_library/widgets/root_app/run.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'audio/audio_demo.dart';
-import 'gridview/gridview_refresh_demo.dart';
+import 'banner/banner_demo.dart';
+import 'bottom_navigation/bottom_navigation.dart';
+import 'card/card_demo.dart';
+import 'form/form_demo.dart';
+import 'gridview/gridview_demo.dart';
+import 'image/image_demo.dart';
+import 'listview_demo/index_listview_demo.dart';
+import 'listview_demo/listview_demo.dart';
+import 'listview_demo/refresh_listview_demo.dart';
+import 'tablayout/tablayout.dart';
+import 'video/video_player_demo.dart';
 
 void main() {
-  runMaterialRootAPP(
+  runMaterialAPP(
     title: "jtech common library",
     routes: {
       "/test/listview": (_) => ListViewDemo(),
-      "/test/refresh_listview": (_) => RefreshListViewDemo(),
-      "/test/index_listview": (_) => IndexListViewDemo(),
+      "/test/listview/refresh": (_) => RefreshListViewDemo(),
+      "/test/listview/index": (_) => IndexListViewDemo(),
+      "/test/listview/default": (_) => DefaultListViewDemo(),
       "/test/popups": (_) => PopupsDemo(),
-      "/test/bottom_navigation": (_) => BottomNavigationDemo(),
-      "/test/tab_layout": (_) => TabLayoutDemo(),
+      "/test/navigation": (_) => NavigationDemo(),
+      "/test/navigation/bottom_navigation": (_) => BottomNavigationDemo(),
+      "/test/navigation/tab_layout": (_) => TabLayoutDemo(),
       "/test/image": (_) => ImageDemo(),
       "/test/banner": (_) => BannerDemo(),
       "/test/card": (_) => CardDemo(),
       "/test/gridview": (_) => GridviewDemo(),
-      "/test/gridview_refresh": (_) => GridviewRefreshDemo(),
+      "/test/gridview/default": (_) => DefaultGridviewDemo(),
+      "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
-      "/test/take_photo_page": (_) => TakePhotoPage(
-            resolution: CameraResolution.medium,
-            maxCount: 5,
-          ),
-      "/test/record_video_page": (_) => RecordVideoPage(
-            resolution: CameraResolution.medium,
-            maxRecordDuration: Duration(seconds: 5),
-          ),
+      "/test/camera": (_) => CameraDemo(),
       "/test/video_player_demo": (_) => VideoPlayerDemo(),
       "/test/audio_demo": (_) => AudioDemo(),
     },
@@ -54,46 +45,39 @@ void main() {
   );
 }
 
-class MyHomePage extends BasePage {
+class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
-    "音频组件工具": "/test/audio_demo",
+    "列表组件": "/test/listview",
+    "弹层组件": "/test/popups",
+    "导航组件": "/test/navigation",
+    "图片组件": "/test/image",
+    "轮播图组件": "/test/banner",
+    "卡片组件": "/test/card",
+    "表格组件": "/test/gridview",
+    "表单组件": "/test/form_demo",
+    "工具方法": "/test/tools_demo",
+    "摄像头": "/test/camera",
+    "摄像头拍照": "/test/camera/take_photo_page",
+    "摄像头录制视频": "/test/camera/record_video_page",
     "视频播放器组件": "/test/video_player_demo",
-    "拍照页面": "/test/take_photo_page",
-    "视频录制页面": "/test/record_video_page",
-    "基本列表组件": "/test/listview",
-    "刷新列表组件": "/test/refresh_listview",
-    "索引列表组件": "/test/index_listview",
-    "弹窗系统事件": "/test/popups",
-    "底部导航组件": "/test/bottom_navigation",
-    "顶部tab导航组件": "/test/tab_layout",
-    "图片组件demo": "/test/image",
-    "banner demo": "/test/banner",
-    "卡片视图组件": "/test/card",
-    "基本表格组件": "/test/gridview",
-    "刷新表格组件": "/test/gridview_refresh",
-    "form表单组件": "/test/form_demo",
-    "工具方法demo": "/test/tools_demo",
+    "音频组件": "/test/audio_demo",
   };
 
   @override
   Widget build(BuildContext context) {
-    return MaterialRootPage(
+    return MaterialPageRoot(
       appBarTitle: "example_common",
       appBarLeading: CloseButton(),
-      body: ListView.separated(
-        separatorBuilder: (_, __) => Divider(),
-        itemCount: pages.length,
-        itemBuilder: (_, index) {
-          String title = pages.keys.elementAt(index);
-          return ListTile(
-            title: Text(title),
-            onTap: () async {
-              var result = await jBase.router.push(pages[title]!);
-              print("");
-            },
-          );
-        },
+      body: JListView.def<String>(
+        controller: JListViewController(
+          dataList: pages.keys.toList(),
+        ),
+        dividerBuilder: (_, index) => Divider(),
+        itemBuilder: (context, item, index) => ListTile(
+          title: Text(item),
+          onTap: () => jRouter.pushNamed(pages[item]!),
+        ),
       ),
     );
   }

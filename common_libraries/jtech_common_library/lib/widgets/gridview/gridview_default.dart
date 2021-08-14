@@ -14,16 +14,13 @@ class JGridViewDefaultState<V>
   final bool canScroll;
 
   JGridViewDefaultState({
-    //基本参数结构
-    required JGridViewController<V> controller,
-    //默认表格参数结构
     this.canScroll = true,
-  }) : super(controller: controller);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<V>>(
-      valueListenable: controller.dataListenable,
+      valueListenable: widget.controller.dataListenable,
       builder: (context, dataList, child) {
         return StaggeredGridView.countBuilder(
           itemBuilder: (context, index) =>

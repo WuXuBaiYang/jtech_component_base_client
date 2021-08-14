@@ -17,22 +17,18 @@ class JListViewIndexState<V extends BaseIndexModel>
   final IndexBarConfig indexBarConfig;
 
   JListViewIndexState({
-    //列表基本参数结构
-    required JIndexListViewController<V> controller,
-    //索引列表组件参数结构
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
   })  : this.susConfig = susConfig ?? SusConfig(),
-        this.indexBarConfig = indexBarConfig ?? IndexBarConfig(),
-        super(controller: controller);
+        this.indexBarConfig = indexBarConfig ?? IndexBarConfig();
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<List<V>>(
-        valueListenable: controller.dataListenable,
+        valueListenable: widget.controller.dataListenable,
         builder: (context, dataList, child) {
           return AzListView(
-            data: controller.dataList,
+            data: widget.controller.dataList,
             physics: BouncingScrollPhysics(),
             itemCount: dataList.length,
             itemBuilder: (context, index) =>
@@ -49,7 +45,8 @@ class JListViewIndexState<V extends BaseIndexModel>
               );
             },
             //侧边索引条参数
-            indexBarData: indexBarConfig.dataList ?? controller.indexDataList,
+            indexBarData:
+                indexBarConfig.dataList ?? widget.controller.indexDataList,
             indexBarWidth: indexBarConfig.width,
             indexBarHeight: indexBarConfig.height,
             indexBarItemHeight: indexBarConfig.itemHeight,

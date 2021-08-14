@@ -8,15 +8,20 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author wuxubaiyang
 * @Time 2021/7/5 上午9:24
 */
-class JListView<V> extends BaseStatefulWidgetMultiply {
+class JListView<T extends JListViewController<V>, V>
+    extends BaseStatefulWidgetMultiply {
   //子项构造器
   final ListItemBuilder<V> itemBuilder;
 
   //基本配置参数
   final ListViewConfig<V> config;
 
+  //控制器
+  final T controller;
+
   JListView({
-    required State<JListView> currentState,
+    required State<JListView<T, V>> currentState,
+    required this.controller,
     required this.itemBuilder,
     required this.config,
   }) : super(currentState: currentState);
@@ -26,21 +31,23 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
     //基本参数结构
     required ListItemBuilder<V> itemBuilder,
     required JListViewController<V> controller,
+    ListDividerBuilder? dividerBuilder,
     OnListItemTap<V>? itemTap,
     OnListItemLongTap<V>? itemLongTap,
     ListViewConfig<V>? config,
     //默认列表组件参数
     bool canScroll = true,
   }) {
-    return JListView<V>(
+    return JListView<JListViewController<V>, V>(
+      controller: controller,
       itemBuilder: itemBuilder,
-      currentState: JListViewDefaultState<V>(
-        controller: controller,
+      currentState: JListViewDefaultState(
         canScroll: canScroll,
       ),
       config: (config ?? ListViewConfig()).copyWith(
         itemTap: itemTap,
         itemLongTap: itemLongTap,
+        dividerBuilder: dividerBuilder,
       ),
     );
   }
@@ -49,6 +56,7 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
   static JListView refresh<V>({
     //基本参数结构
     required ListItemBuilder<V> itemBuilder,
+    ListDividerBuilder? dividerBuilder,
     JRefreshListViewController<V>? controller,
     OnListItemTap<V>? itemTap,
     OnListItemLongTap<V>? itemLongTap,
@@ -59,19 +67,20 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
     bool? enablePullUp,
     RefreshConfig<V>? refreshConfig,
   }) {
-    return JListView<V>(
+    return JListView<JRefreshListViewController<V>, V>(
+      controller: controller ?? JRefreshListViewController(),
       itemBuilder: itemBuilder,
-      currentState: JListViewRefreshState<V>(
-        controller: controller,
+      currentState: JListViewRefreshState(
         refreshConfig: (refreshConfig ?? RefreshConfig<V>()).copyWith(
           onRefreshLoad: onRefreshLoad,
           enablePullDown: enablePullDown,
           enablePullUp: enablePullUp,
         ),
       ),
-      config: (config ?? ListViewConfig<V>()).copyWith(
+      config: (config ?? ListViewConfig()).copyWith(
         itemTap: itemTap,
         itemLongTap: itemLongTap,
+        dividerBuilder: dividerBuilder,
       ),
     );
   }
@@ -81,6 +90,7 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
     //基本参数结构
     required ListItemBuilder<V> itemBuilder,
     required JIndexListViewController<V> controller,
+    ListDividerBuilder? dividerBuilder,
     OnListItemTap<V>? itemTap,
     OnListItemLongTap<V>? itemLongTap,
     ListViewConfig<V>? config,
@@ -88,16 +98,17 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
     SusConfig? susConfig,
     IndexBarConfig? indexBarConfig,
   }) {
-    return JListView<V>(
+    return JListView<JIndexListViewController<V>, V>(
+      controller: controller,
       itemBuilder: itemBuilder,
-      currentState: JListViewIndexState<V>(
-        controller: controller,
+      currentState: JListViewIndexState(
         susConfig: susConfig,
         indexBarConfig: indexBarConfig,
       ),
-      config: (config ?? ListViewConfig<V>()).copyWith(
+      config: (config ?? ListViewConfig()).copyWith(
         itemTap: itemTap,
         itemLongTap: itemLongTap,
+        dividerBuilder: dividerBuilder,
       ),
     );
   }
@@ -109,14 +120,7 @@ class JListView<V> extends BaseStatefulWidgetMultiply {
 * @Time 2021/8/13 5:09 下午
 */
 abstract class BaseJListViewState<T extends JListViewController<V>, V>
-    extends BaseState<JListView> {
-  //控制器
-  final T controller;
-
-  BaseJListViewState({
-    required this.controller,
-  });
-
+    extends BaseState<JListView<T, V>> {
   //列表子项构造事件
   Widget buildListItem(BuildContext context, V item, int index) {
     return InkWell(

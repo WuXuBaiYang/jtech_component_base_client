@@ -5,4 +5,8 @@ import 'package:jtech_common_library/widgets/listview/base/controller.dart';
 * @author wuxubaiyang
 * @Time 2021/7/19 下午4:05
 */
-class JGridViewController<V> extends JListViewController<V> {}
+class JGridViewController<V> extends JListViewController<V> {
+  JGridViewController({
+    List<V> dataList = const [],
+  }) : super(dataList: dataList);
+}

@@ -15,14 +15,9 @@ class JFormTextItemState extends BaseJFormItemState<String> {
   final TextAlign textAlign;
 
   JFormTextItemState({
-    //默认参数结构
-    required FormItemConfig<String> config,
-    DefaultItemConfig<String>? defaultConfig,
-    //文本表单项参数结构
     TextStyle? textStyle,
     this.textAlign = TextAlign.start,
-  })  : this.textStyle = textStyle ?? TextStyle(color: Colors.grey[600]),
-        super(config: config, defaultConfig: defaultConfig);
+  }) : this.textStyle = textStyle ?? TextStyle(color: Colors.grey[600]);
 
   @override
   Widget buildFormItem(BuildContext context, FormFieldState<String> field) {
