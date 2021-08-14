@@ -8,11 +8,11 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author wuxubaiyang
 * @Time 2021/7/20 下午2:49
 */
-class GridviewDemo extends BaseStatelessPage {
+class DefaultGridviewDemo extends BaseStatelessPage {
   //控制器
   final JGridViewController<ListItemModel> controller;
 
-  GridviewDemo()
+  DefaultGridviewDemo()
       : this.controller = JGridViewController(
           dataList: List.generate(
               100,

@@ -10,11 +10,11 @@ import 'list_item_model.dart';
 * @author wuxubaiyang
 * @Time 2021/7/6 下午2:17
 */
-class ListViewDemo extends BaseStatelessPage {
+class DefaultListViewDemo extends BaseStatelessPage {
   //控制器
   final JListViewController<ListItemModel> controller;
 
-  ListViewDemo()
+  DefaultListViewDemo()
       : this.controller = JListViewController(
           dataList: List.generate(
               100,

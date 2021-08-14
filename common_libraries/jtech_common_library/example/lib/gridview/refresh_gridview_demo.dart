@@ -8,11 +8,11 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author wuxubaiyang
 * @Time 2021/7/20 下午2:49
 */
-class GridviewRefreshDemo extends BaseStatelessPage {
+class RefreshGridviewDemo extends BaseStatelessPage {
   //控制器
   final JRefreshGridViewController<ListItemModel> controller;
 
-  GridviewRefreshDemo() : this.controller = JRefreshGridViewController();
+  RefreshGridviewDemo() : this.controller = JRefreshGridViewController();
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
@@ -9,17 +8,8 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author wuxubaiyang
 * @Time 2021/7/21 下午4:13
 */
-class JBottomNavigation<T extends NavigationItem>
-    extends BaseStatefulWidget {
-  //底部导航控制器
-  final JBottomNavigationController<T> controller;
-
-  //pageView控制器
-  final PageController pageController;
-
-  //判断是否可滑动切换页面
-  final bool canScroll;
-
+class JBottomNavigationState<V extends NavigationItem>
+    extends BaseJNavigationState<JBottomNavigationController<V>, V> {
   //导航条颜色
   final Color navigationColor;
 
@@ -41,10 +31,7 @@ class JBottomNavigation<T extends NavigationItem>
   //notch形状样式
   final NotchedShape notchedShape;
 
-  JBottomNavigation({
-    //导航部分参数
-    required this.controller,
-    this.canScroll = false,
+  JBottomNavigationState({
     this.navigationColor = Colors.white,
     this.navigationHeight = 60,
     this.elevation = 8,
@@ -52,52 +39,30 @@ class JBottomNavigation<T extends NavigationItem>
     this.notchLocation = NotchLocation.none,
     this.notchMargin = 4.0,
     this.notchedShape = const CircularNotchedRectangle(),
-  }) : pageController = PageController(initialPage: controller.currentIndex);
-
-  @override
-  _JBottomNavigationPageState getState() => _JBottomNavigationPageState();
-}
-
-/*
-* 底部导航组件状态
-* @author jtechjh
-* @Time 2021/8/13 10:42 上午
-*/
-class _JBottomNavigationPageState extends BaseState<JBottomNavigation> {
-  @override
-  void initState() {
-    super.initState();
-    //监听页码变化
-    widget.controller.indexListenable.addListener(() {
-      if (widget.controller.currentIndex !=
-          widget.pageController.page?.round()) {
-        widget.pageController.jumpToPage(widget.controller.currentIndex);
-      }
-    });
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      elevation: widget.elevation,
-      color: widget.navigationColor,
-      shape: widget.notchedShape,
-      notchMargin: widget.notchMargin,
+      elevation: elevation,
+      color: navigationColor,
+      shape: notchedShape,
+      notchMargin: notchMargin,
       child: Container(
-        height: widget.navigationHeight,
+        height: navigationHeight,
         child: ValueListenableBuilder<int>(
           valueListenable: widget.controller.indexListenable,
           builder: (context, currentIndex, child) {
             var bottomBars = List<Widget>.generate(
               widget.controller.itemLength,
-                  (index) => _buildBottomBarItem(widget.controller.getItem(index),
+              (index) => _buildBottomBarItem(widget.controller.getItem(index),
                   index == currentIndex, index),
             );
-            if (widget.notchLocation != NotchLocation.none) {
+            if (notchLocation != NotchLocation.none) {
               int notchIndex = 0;
-              if (widget.notchLocation == NotchLocation.end) {
+              if (notchLocation == NotchLocation.end) {
                 notchIndex = widget.controller.itemLength;
-              } else if (widget.notchLocation == NotchLocation.center) {
+              } else if (notchLocation == NotchLocation.center) {
                 notchIndex = widget.controller.itemLength ~/ 2;
               }
               bottomBars.insert(notchIndex, Expanded(child: EmptyBox()));
@@ -114,7 +79,7 @@ class _JBottomNavigationPageState extends BaseState<JBottomNavigation> {
     return Expanded(
       child: JBadgeContainer(
         listenable: widget.controller.getBadgeListenable(index),
-        align: widget.badgeAlign,
+        align: badgeAlign,
         child: InkWell(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -124,10 +89,7 @@ class _JBottomNavigationPageState extends BaseState<JBottomNavigation> {
               (selected ? item.activeTitle : item.title) ?? EmptyBox(),
             ],
           ),
-          onTap: () {
-            widget.pageController.jumpToPage(index);
-            widget.controller.select(index);
-          },
+          onTap: () => widget.controller.select(index),
         ),
       ),
     );
@@ -138,7 +100,6 @@ class _JBottomNavigationPageState extends BaseState<JBottomNavigation> {
     super.dispose();
     //销毁控制器
     widget.controller.dispose();
-    widget.pageController.dispose();
   }
 }
 

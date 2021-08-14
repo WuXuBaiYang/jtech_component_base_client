@@ -1,32 +1,24 @@
-import 'package:example/tablayout/navigation_test_page.dart';
+import 'package:example/navigation/navigation_test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/widgets/badge/badge.dart';
-import 'package:jtech_common_library/widgets/badge/config.dart';
-import 'package:jtech_common_library/widgets/navigation/base/config.dart';
-import 'package:jtech_common_library/widgets/navigation/tab_layout/controller.dart';
-import 'package:jtech_common_library/widgets/navigation/tab_layout/tab_layout.dart';
-
-import 'tablayout/navigation_page_2.dart';
-import 'tablayout/navigation_page_3.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 底部导航demo
 * @author wuxubaiyang
 * @Time 2021/7/12 上午11:32
 */
-class TabLayoutDemo extends BasePage {
+class TabLayoutDemo extends BaseStatelessPage {
   //底部导航控制器
   final JTabLayoutController controller =
       JTabLayoutController(initialIndex: 1, items: [
     NavigationItem.text(
-      page: TabPageDemo1(),
+      page: NavigationPageDemo1(),
       title: "页面1",
       titleColor: Colors.black,
       activeTitleColor: Colors.red,
       activeFontSize: 18,
-      // title: Text("页面1"),
       image: Icon(Icons.home),
       activeImage: Icon(
         Icons.home,
@@ -34,7 +26,7 @@ class TabLayoutDemo extends BasePage {
       ),
     ),
     NavigationItem(
-      page: TabPageDemo2(),
+      page: NavigationPageDemo2(),
       title: Text("页面2"),
       image: Icon(Icons.badge),
       activeImage: Icon(
@@ -43,12 +35,11 @@ class TabLayoutDemo extends BasePage {
       ),
     ),
     NavigationItem.text(
-      page: TabPageDemo3(),
+      page: NavigationPageDemo3(),
       title: "页面3",
       titleColor: Colors.black,
       activeTitleColor: Colors.green,
       activeFontSize: 18,
-      // title: Text("页面3"),
       image: Icon(Icons.build),
       activeImage: Icon(
         Icons.build,
@@ -59,34 +50,19 @@ class TabLayoutDemo extends BasePage {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("顶部导航demo"),
-        actions: [
-          IconButton(
-            icon: Text("角标"),
-            onPressed: () {
-              controller.addBadge(
-                1,
-                BadgeConfig(
-                  text: "99+",
-                  // size: 15,
-                  // elevation: 0,
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Text("跳转最后一页"),
-            onPressed: () {
-              controller.select(2);
-            },
-          ),
-        ],
-      ),
-      body: JTabLayout(
-        controller: controller,
-      ),
+    return MaterialPageRoot.withTabLayout(
+      controller: controller,
+      appBarTitle: "顶部导航demo",
+      appBarActions: [
+        IconButton(
+          icon: Text("角标"),
+          onPressed: () => controller.addBadge(1, BadgeConfig(text: "99+")),
+        ),
+        IconButton(
+          icon: Text("跳转最后一页"),
+          onPressed: () => controller.select(2),
+        ),
+      ],
     );
   }
 }

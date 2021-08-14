@@ -4,8 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
-import 'config.dart';
-
 /*
 * dialog弹窗管理
 * @author wuxubaiyang
@@ -216,4 +214,4 @@ class JDialog extends BaseManage {
 }
 
 //单例调用
-final jDialog = Dialog();
+final jDialog = JDialog();

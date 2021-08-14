@@ -1,28 +1,24 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/popups/dialog/config.dart';
-import 'package:jtech_common_library/popups/sheet/config.dart';
-import 'package:jtech_common_library/popups/toast/config.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 弹窗系统事件
 * @author wuxubaiyang
 * @Time 2021/7/8 下午2:57
 */
-class PopupsDemo extends BasePage {
+class PopupsDemo extends BaseStatelessPage {
   //测试弹窗方法
   final Map<String, Function> testPopups = {
     "显示加载弹窗，3秒后关闭": (BuildContext context) async {
-      jCommon.popups.dialog.showLoading(context);
+      jDialog.showLoading(context);
       await Future.delayed(Duration(seconds: 3));
-      jCommon.popups.dialog.hideLoadingDialog();
+      jDialog.hideLoadingDialog();
     },
     "显示自定义加载弹窗，3秒后关闭": (BuildContext context) async {
-      jCommon.popups.dialog.showLoading(context, builder: (_) {
+      jDialog.showLoading(context, builder: (_) {
         return Card(
           child: Column(
             children: [
@@ -33,7 +29,7 @@ class PopupsDemo extends BasePage {
         );
       });
       await Future.delayed(Duration(seconds: 3));
-      jCommon.popups.dialog.hideLoadingDialog();
+      jDialog.hideLoadingDialog();
     },
     "显示弹窗": (BuildContext context) async {
       var result = await jCommon.popups.dialog.showCustomDialog<String>(
@@ -145,16 +141,14 @@ class PopupsDemo extends BasePage {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("弹窗系统事件"),
-        actions: [
-          IconButton(
-            icon: Text("test"),
-            onPressed: () {},
-          ),
-        ],
-      ),
+    return MaterialPageRoot(
+      appBarTitle: "弹窗系统事件",
+      appBarActions: [
+        IconButton(
+          icon: Text("test"),
+          onPressed: () {},
+        ),
+      ],
       body: ListView.separated(
         itemCount: testPopups.length,
         separatorBuilder: (_, __) => Divider(),

@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/base/base_page.dart';
-import 'package:jtech_common_library/base/change_notifier.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/app_page/material_page/material_page.dart';
-import 'package:jtech_common_library/widgets/listview/base/controller.dart';
-import 'package:jtech_common_library/widgets/listview/listview_default.dart';
+import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 工具demo页面
 * @author wuxubaiyang
 * @Time 2021/7/23 下午4:42
 */
-class ToolsDemo extends BasePage {
+class ToolsDemo extends BaseStatelessPage {
   //管理折叠组件状态
-  final ListValueChangeNotifier<bool> expandStatus =
-      ListValueChangeNotifier.empty();
+  final ListValueChangeNotifier<bool> expandStatus;
 
   //工具标题
-  final List<String> toolsTitleList = [
+  static final List<String> toolsTitleList = [
     "日期格式化工具",
     "正则匹配工具",
     "其他",
   ];
 
   //工具折叠列表
-  final List<Map<String, Function>> toolList = [
+  static final List<Map<String, Function>> toolList = [
     //日期格式化工具表
     {
       "全中文日期时间格式化": () {
@@ -85,16 +80,13 @@ class ToolsDemo extends BasePage {
     },
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    //遍历折叠工具集合，设置初始值
-    expandStatus.setValue(toolList.map<bool>((e) => false).toList());
-  }
+  ToolsDemo()
+      : this.expandStatus =
+            ListValueChangeNotifier(toolList.map<bool>((e) => false).toList());
 
   @override
   Widget build(BuildContext context) {
-    return MaterialRootPage(
+    return MaterialPageRoot(
       appBarTitle: "工具测试类",
       body: SingleChildScrollView(
         child: ValueListenableBuilder<List<bool>>(
@@ -109,7 +101,7 @@ class ToolsDemo extends BasePage {
                   headerBuilder: (context, isExpand) {
                     return ListTile(title: Text(toolsTitleList[index]));
                   },
-                  body: JListView<String>(
+                  body: JListView.def<String>(
                     canScroll: false,
                     controller: JListViewController(
                       dataList: tools.keys.toList(),
@@ -127,9 +119,8 @@ class ToolsDemo extends BasePage {
                   ),
                 );
               }),
-              expansionCallback: (index, expand) {
-                expandStatus.putValue(index, !expand);
-              },
+              expansionCallback: (index, expand) =>
+                  expandStatus.putValue(index, !expand),
             );
           },
         ),

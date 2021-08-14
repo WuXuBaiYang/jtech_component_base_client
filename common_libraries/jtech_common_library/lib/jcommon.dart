@@ -77,6 +77,7 @@ export 'widgets/navigation/tab_layout/controller.dart';
 export 'widgets/navigation/tab_layout/tab_layout.dart';
 export 'widgets/navigation/bottom_navigation/controller.dart';
 export 'widgets/navigation/bottom_navigation/bottom_navigation.dart';
+export 'widgets/navigation/base/navigation.dart';
 export 'widgets/listview/base/controller.dart';
 export 'widgets/listview/base/listView.dart';
 export 'widgets/listview/index/config.dart';

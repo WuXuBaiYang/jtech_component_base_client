@@ -53,7 +53,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
   });
 
   //构建一个带有底部导航的页面组件
-  static MaterialPageRoot withBottomNavigation({
+  static MaterialPageRoot withBottomNavigation<V extends NavigationItem>({
     //页面基本参数
     String appBarTitle = '',
     AppBar? appBar,
@@ -63,8 +63,8 @@ class MaterialPageRoot extends BaseStatelessWidget {
     Widget? floatingActionButton,
     FloatingActionButtonLocation? floatingActionButtonLocation,
     FloatingActionButtonAnimator? floatingActionButtonAnimator,
-    //底部导航参数
-    required JBottomNavigationController controller,
+    //导航参数
+    required JBottomNavigationController<V> controller,
     bool canScroll = false,
     Color navigationColor = Colors.white,
     double navigationHeight = 60,
@@ -83,10 +83,12 @@ class MaterialPageRoot extends BaseStatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButtonAnimator: floatingActionButtonAnimator,
-      body: body,
-      bottomNavigationBar: JBottomNavigation(
+      body: JNavigation.pageView(
         controller: controller,
         canScroll: canScroll,
+      ),
+      bottomNavigationBar: JNavigation.bottomBar(
+        controller: controller,
         navigationColor: navigationColor,
         navigationHeight: navigationHeight,
         elevation: elevation,
@@ -94,6 +96,52 @@ class MaterialPageRoot extends BaseStatelessWidget {
         notchLocation: notchLocation,
         notchMargin: notchMargin,
         notchedShape: notchedShape,
+      ),
+    );
+  }
+
+  //构建带有顶部导航的页面组件
+  static MaterialPageRoot withTabLayout<V extends NavigationItem>({
+    //页面基本参数
+    String appBarTitle = '',
+    Widget? appBarLeading,
+    List<Widget> appBarActions = const [],
+    Color? backgroundColor,
+    Widget? floatingActionButton,
+    FloatingActionButtonLocation? floatingActionButtonLocation,
+    FloatingActionButtonAnimator? floatingActionButtonAnimator,
+    //导航参数
+    required JTabLayoutController<V> controller,
+    bool canScroll = true,
+    Color tabBarColor = Colors.transparent,
+    double elevation = 0,
+    bool isFixed = true,
+    double tabBarHeight = 55,
+    Alignment badgeAlign = Alignment.topRight,
+    IndicatorConfig? indicatorConfig,
+  }) {
+    return MaterialPageRoot(
+      appBar: AppBar(
+        title: Text(appBarTitle),
+        leading: appBarLeading,
+        actions: appBarActions,
+        bottom: JNavigation.tabBar(
+          controller: controller,
+          tabBarColor: tabBarColor,
+          elevation: elevation,
+          isFixed: isFixed,
+          tabBarHeight: tabBarHeight,
+          badgeAlign: badgeAlign,
+          indicatorConfig: indicatorConfig,
+        ),
+      ),
+      backgroundColor: backgroundColor,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButtonAnimator: floatingActionButtonAnimator,
+      body: JNavigation.pageView(
+        controller: controller,
+        canScroll: canScroll,
       ),
     );
   }
