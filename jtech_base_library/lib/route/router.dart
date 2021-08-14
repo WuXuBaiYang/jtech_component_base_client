@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 * @author jtechjh
 * @Time 2021/8/13 9:02 上午
 */
-class JRouter extends BaseManage{
+class JRouter extends BaseManage {
   static final JRouter _instance = JRouter._internal();
 
   factory JRouter() => _instance;
@@ -25,7 +26,24 @@ class JRouter extends BaseManage{
   Future init() async {}
 
   //页面跳转
-  Future<T?>? push<T>(String url) {
+  Future<T?>? push<T>(
+    Widget page, {
+    String? name,
+    Object? arguments,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) {
+    return navigator?.push<T>(_createMaterialPageRoute<T>(
+      page,
+      name: name,
+      arguments: arguments,
+      maintainState: maintainState,
+      fullscreenDialog: fullscreenDialog,
+    ));
+  }
+
+  //页面跳转
+  Future<T?>? pushNamed<T>(String url) {
     var uri = Uri.parse(url);
     return navigator?.pushNamed<T>(
       uri.path,
@@ -33,8 +51,29 @@ class JRouter extends BaseManage{
     );
   }
 
+  //页面跳转并移除到目标页面
+  Future<T?>? pushAndRemoveUntil<T>(
+    Widget page, {
+    required untilPath,
+    String? name,
+    Object? arguments,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) {
+    return navigator?.pushAndRemoveUntil<T>(
+      _createMaterialPageRoute<T>(
+        page,
+        name: name,
+        arguments: arguments,
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+      ),
+      ModalRoute.withName(untilPath),
+    );
+  }
+
   //跳转页面并一直退出到目标页面
-  Future<T?>? pushAndRemoveUntil<T>(String url, {required untilPath}) {
+  Future<T?>? pushNamedAndRemoveUntil<T>(String url, {required untilPath}) {
     var uri = Uri.parse(url);
     return navigator?.pushNamedAndRemoveUntil<T>(
       uri.path,
@@ -43,8 +82,25 @@ class JRouter extends BaseManage{
     );
   }
 
+  //跳转页面并一直退出到目标页面
+  Future<T?>? pushReplacement<T, TO>(
+    Widget page, {
+    String? name,
+    Object? arguments,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) {
+    return navigator?.pushReplacement<T, TO>(_createMaterialPageRoute<T>(
+      page,
+      name: name,
+      arguments: arguments,
+      maintainState: maintainState,
+      fullscreenDialog: fullscreenDialog,
+    ));
+  }
+
   //跳转并替换当前页面
-  Future<T?>? pushReplacement<T, TO>(String url, {TO? result}) {
+  Future<T?>? pushReplacementNamed<T, TO>(String url, {TO? result}) {
     var uri = Uri.parse(url);
     return navigator?.pushReplacementNamed<T, TO>(
       uri.path,
@@ -54,7 +110,7 @@ class JRouter extends BaseManage{
   }
 
   //退出当前页面并跳转目标页面
-  Future<T?>? popAndPush<T, TO>(String url, {TO? result}) {
+  Future<T?>? popAndPushNamed<T, TO>(String url, {TO? result}) {
     var uri = Uri.parse(url);
     return navigator?.popAndPushNamed<T, TO>(
       uri.path,
@@ -62,6 +118,24 @@ class JRouter extends BaseManage{
       arguments: uri.queryParameters,
     );
   }
+
+  //创建Material风格的页面路由对象
+  MaterialPageRoute<T> _createMaterialPageRoute<T>(
+    Widget page, {
+    String? name,
+    Object? arguments,
+    bool maintainState = true,
+    bool fullscreenDialog = false,
+  }) =>
+      MaterialPageRoute<T>(
+        fullscreenDialog: fullscreenDialog,
+        maintainState: maintainState,
+        builder: (context) => page,
+        settings: RouteSettings(
+          name: name,
+          arguments: arguments,
+        ),
+      );
 
   //页面退出
   Future<bool>? maybePop<T>([T? result]) => navigator?.maybePop<T>(result);

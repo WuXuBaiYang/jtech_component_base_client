@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:jtech_common_library/jcommon.dart';
 
 //附件选择后处理方法回调
 typedef OnFilePickHandle = Future<File> Function(File file);
@@ -8,17 +9,28 @@ typedef OnFilePickHandle = Future<File> Function(File file);
 * @author jtechjh
 * @Time 2021/7/30 1:55 下午
 */
-class JPickerConfig {
-  //附件选择后的处理方法回调
-  final OnFilePickHandle? filePickHandle;
-
+class JPickerConfig extends BaseConfig {
   //附件类型
   final JPickerType type;
 
+  //附件选择后的处理方法回调
+  final OnFilePickHandle? filePickHandle;
+
   JPickerConfig({
-    required this.type,
+    this.type = JPickerType.custom,
     this.filePickHandle,
   });
+
+  @override
+  JPickerConfig copyWith({
+    JPickerType? type,
+    OnFilePickHandle? filePickHandle,
+  }) {
+    return JPickerConfig(
+      type: type ?? this.type,
+      filePickHandle: filePickHandle ?? this.filePickHandle,
+    );
+  }
 }
 
 /*

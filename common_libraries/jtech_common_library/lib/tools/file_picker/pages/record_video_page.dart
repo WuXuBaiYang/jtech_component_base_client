@@ -4,24 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/base/change_notifier.dart';
-import 'package:package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/tools/file_picker/file_info.dart';
-import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
-import 'package:jtech_common_library/widgets/image/clip.dart';
-import 'package:jtech_common_library/widgets/image/config.dart';
-import 'package:jtech_common_library/widgets/image/image.dart';
-import 'package:jtech_common_library/tools/data_format.dart';
-import 'package:jtech_common_library/widgets/video_player/config.dart';
-import 'package:jtech_common_library/widgets/video_player/video_player.dart';
 
 /*
 * 视频录制页面
 * @author jtechjh
 * @Time 2021/8/3 5:03 下午
 */
-@protected
-class RecordVideoPage extends BaseCameraPage {
+class RecordVideoPageState extends BaseCameraPageState {
   //记录当前已生成文件集合
   final ListValueChangeNotifier<JFileInfo> fileList;
 
@@ -46,25 +35,19 @@ class RecordVideoPage extends BaseCameraPage {
   //最大可录制时长
   final Duration maxRecordDuration;
 
-  RecordVideoPage({
-    bool front = false,
-    CameraResolution? resolution,
+  RecordVideoPageState({
     this.maxCount = 1,
     this.maxRecordDuration = const Duration(seconds: 60),
-  })  : this.fileList = ListValueChangeNotifier.empty(),
-        this.currentIndex = ValueChangeNotifier(0),
-        this.pageController = PageController(),
-        this.recordState = ValueChangeNotifier(RecordState.none),
-        this.recordTick = ValueChangeNotifier(maxRecordDuration),
-        assert(maxCount > 0, "最大数量不可小于等于0"),
+  })  : assert(maxCount > 0, "最大数量不可小于等于0"),
         assert(
           maxRecordDuration.inSeconds >= 1 && maxRecordDuration.inMinutes <= 30,
           "录制时间范围 1秒-30分钟",
         ),
-        super(
-          front: front,
-          resolution: resolution,
-        );
+        this.fileList = ListValueChangeNotifier.empty(),
+        this.currentIndex = ValueChangeNotifier(0),
+        this.pageController = PageController(),
+        this.recordState = ValueChangeNotifier(RecordState.none),
+        this.recordTick = ValueChangeNotifier(maxRecordDuration);
 
   @override
   Widget buildContent(BuildContext context) {
@@ -298,7 +281,7 @@ class RecordVideoPage extends BaseCameraPage {
                   Feedback.forTap(context);
                   return _startRecordVideo(context, state);
                 }
-                jBase.router.pop(fileList.value);
+                jBase.router.pop<List<JFileInfo>>(fileList.value);
               },
             ),
             Expanded(
@@ -344,7 +327,7 @@ class RecordVideoPage extends BaseCameraPage {
   //开始录制视频
   void _startRecordVideo(BuildContext context, RecordState state) async {
     try {
-      cameraBusy = true;
+      widget.cameraBusy.setValue(true);
       if (state.isNone) {
         recordState.setValue(RecordState.prepare);
         await controller?.prepareForVideoRecording();
@@ -360,7 +343,7 @@ class RecordVideoPage extends BaseCameraPage {
     } catch (e) {
       recordState.setValue(RecordState.none);
       _cancelRecordTimer();
-      cameraBusy = false;
+      widget.cameraBusy.setValue(false);
     }
   }
 
@@ -386,7 +369,7 @@ class RecordVideoPage extends BaseCameraPage {
         recordState.setValue(RecordState.none);
         var result = await controller?.stopVideoRecording();
         if (null == result) return null;
-        cameraBusy = false;
+        widget.cameraBusy.setValue(false);
         fileList.insertValue(0, [
           await JFileInfo.loadFromXFile(result),
         ]);

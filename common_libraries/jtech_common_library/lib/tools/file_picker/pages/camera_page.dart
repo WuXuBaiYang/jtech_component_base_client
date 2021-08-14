@@ -9,50 +9,83 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author jtechjh
 * @Time 2021/7/30 2:36 下午
 */
-abstract class BaseCameraPage extends BaseStatelessPage {
+class CameraPage extends BaseStatefulPageMultiply {
   //是否使用前置摄像头,否则使用后置摄像头
-  final ValueChangeNotifier<CameraLensDirection> _cameraDirection;
+  final ValueChangeNotifier<CameraLensDirection> cameraDirection;
 
   //控制器表
-  final Map<CameraLensDirection, CameraController> _controllerMap;
+  final Map<CameraLensDirection, CameraController> controllerMap;
 
   //记录摄像头是否正在占用中
-  final ValueChangeNotifier<bool> _cameraBusy;
+  final ValueChangeNotifier<bool> cameraBusy;
 
   //摄像头使用分辨率
   final CameraResolution resolution;
 
   //管理闪光灯状态
-  final ValueChangeNotifier<FlashMode> _flashMode;
+  final ValueChangeNotifier<FlashMode> flashMode;
 
-  BaseCameraPage({
+  CameraPage({
     required bool front,
     required CameraResolution? resolution,
-  })  : this._cameraDirection = ValueChangeNotifier(CameraLensDirection.front),
+    required State<CameraPage> currentState,
+  })  : this.cameraDirection = ValueChangeNotifier(CameraLensDirection.front),
         this.resolution = resolution ?? CameraResolution.medium,
-        this._flashMode = ValueChangeNotifier(FlashMode.off),
-        this._cameraBusy = ValueChangeNotifier(false),
-        this._controllerMap = {};
+        this.flashMode = ValueChangeNotifier(FlashMode.off),
+        this.cameraBusy = ValueChangeNotifier(false),
+        this.controllerMap = {},
+        super(currentState: currentState);
 
-  //获取当前摄像头方向
-  CameraLensDirection get cameraDirect => _cameraDirection.value;
+  //跳转到拍照页面并返回照片数据
+  static Future<List<JFileInfo>?>? takePhoto({
+    int maxCount = 1,
+    bool front = false,
+    CameraResolution? resolution,
+  }) async {
+    return jRouter.push<List<JFileInfo>>(CameraPage(
+      resolution: resolution,
+      front: front,
+      currentState: TakePhotoPageState(
+        maxCount: maxCount,
+      ),
+    ));
+  }
 
+  //跳转到视频录制页面并返回照片数据
+  static Future<List<JFileInfo>?>? recordVideo({
+    int maxCount = 1,
+    Duration maxRecordDuration = const Duration(seconds: 60),
+    bool front = false,
+    CameraResolution? resolution,
+  }) async {
+    return jRouter.push<List<JFileInfo>>(CameraPage(
+      resolution: resolution,
+      front: front,
+      currentState: RecordVideoPageState(
+        maxCount: maxCount,
+        maxRecordDuration: maxRecordDuration,
+      ),
+    ));
+  }
+}
+
+/*
+* 摄像头页面状态基类
+* @author wuxubaiyang
+* @Time 2021/8/14 10:57
+*/
+abstract class BaseCameraPageState extends BaseState<CameraPage> {
   //判断当前摄像头是否为前置状态
-  bool get isCameraFront => cameraDirect == CameraLensDirection.front;
+  bool get isCameraFront =>
+      widget.cameraDirection.value == CameraLensDirection.front;
 
   //获取当前使用的控制器
-  CameraController? get controller => _controllerMap[cameraDirect];
-
-  //判断摄像头是否正在使用中
-  bool get isCameraBusy => _cameraBusy.value;
-
-  //设置当前摄像头操作状态
-  set cameraBusy(bool busy) => _cameraBusy.setValue(busy);
+  CameraController? get controller =>
+      widget.controllerMap[widget.cameraDirection.value];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialRootPage(
-      appBarTitle: '',
+    return MaterialPageRoot(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -73,7 +106,7 @@ abstract class BaseCameraPage extends BaseStatelessPage {
   //构建摄像机基础结构部分
   Widget buildCameraPreview(BuildContext context) {
     return ValueListenableBuilder<CameraLensDirection>(
-      valueListenable: _cameraDirection,
+      valueListenable: widget.cameraDirection,
       builder: (context, value, child) {
         return FutureBuilder<CameraController?>(
           future: _initCamera(),
@@ -90,9 +123,9 @@ abstract class BaseCameraPage extends BaseStatelessPage {
 
   //初始化摄像头方法
   Future<CameraController?> _initCamera() async {
-    var currDirect = _cameraDirection.value;
-    if (_controllerMap.containsKey(currDirect)) {
-      return _controllerMap[currDirect]?..initialize();
+    var currDirect = widget.cameraDirection.value;
+    if (widget.controllerMap.containsKey(currDirect)) {
+      return widget.controllerMap[currDirect]?..initialize();
     }
     var cameras = await availableCameras();
     //根据当前状态查找目标摄像头
@@ -104,16 +137,16 @@ abstract class BaseCameraPage extends BaseStatelessPage {
     }
     var controller = CameraController(
       target ?? cameras[0],
-      resolution.resolutionPreset,
+      widget.resolution.resolutionPreset,
     )..setFocusMode(FocusMode.auto);
     await controller.initialize();
-    return _controllerMap[currDirect] = controller;
+    return widget.controllerMap[currDirect] = controller;
   }
 
   //构建手电筒开关
   Widget _buildTorchLightAction() {
     return ValueListenableBuilder<FlashMode>(
-      valueListenable: _flashMode,
+      valueListenable: widget.flashMode,
       builder: (context, value, child) {
         if (isCameraFront) return EmptyBox();
         var isOn = value == FlashMode.torch;
@@ -122,7 +155,7 @@ abstract class BaseCameraPage extends BaseStatelessPage {
           onPressed: () {
             var newMode = isOn ? FlashMode.off : FlashMode.torch;
             controller?.setFlashMode(newMode);
-            _flashMode.setValue(newMode);
+            widget.flashMode.setValue(newMode);
           },
         );
       },
@@ -132,19 +165,19 @@ abstract class BaseCameraPage extends BaseStatelessPage {
   //构建摄像头方向切换开关
   _buildCameraDirectionAction() {
     return ValueListenableBuilder<bool>(
-      valueListenable: _cameraBusy,
+      valueListenable: widget.cameraBusy,
       builder: (context, value, child) {
         if (value) return EmptyBox();
         return IconButton(
           icon: Icon(Icons.flip_camera_android),
           onPressed: () {
-            var currDirect = _cameraDirection.value;
-            _cameraDirection.setValue(
+            var currDirect = widget.cameraDirection.value;
+            widget.cameraDirection.setValue(
               currDirect == CameraLensDirection.front
                   ? CameraLensDirection.back
                   : CameraLensDirection.front,
             );
-            _flashMode.update(true);
+            widget.flashMode.update(true);
           },
         );
       },
@@ -155,7 +188,7 @@ abstract class BaseCameraPage extends BaseStatelessPage {
   void dispose() {
     super.dispose();
     //销毁全部摄像头
-    _controllerMap.forEach((key, value) => value.dispose());
+    widget.controllerMap.forEach((key, value) => value.dispose());
   }
 }
 
@@ -168,7 +201,6 @@ class CameraResolution {
   //清晰度枚举
   final ResolutionPreset resolutionPreset;
 
-  @protected
   const CameraResolution(this.resolutionPreset);
 
   static const low = CameraResolution(ResolutionPreset.low);

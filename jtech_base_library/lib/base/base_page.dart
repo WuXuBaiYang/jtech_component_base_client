@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:jtech_base_library/base/base_widget.dart';
 
 /*
@@ -6,6 +7,17 @@ import 'package:jtech_base_library/base/base_widget.dart';
 * @Time 2021/7/5 上午9:27
 */
 abstract class BaseStatefulPage extends BaseStatefulWidget {}
+
+/*
+* 有状态页面基类-多状态
+* @author wuxubaiyang
+* @Time 2021/7/5 上午9:27
+*/
+abstract class BaseStatefulPageMultiply extends BaseStatefulWidgetMultiply {
+  BaseStatefulPageMultiply({
+    required State<BaseStatefulPageMultiply> currentState,
+  }) : super(currentState: currentState);
+}
 
 /*
 * 无状态页面基类

@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/base/change_notifier.dart';
-import 'package:jtech_common_library/tools/file_picker/file_info.dart';
-import 'package:jtech_common_library/tools/file_picker/pages/camera_page.dart';
-import 'package:jtech_common_library/widgets/image/clip.dart';
-import 'package:jtech_common_library/widgets/image/config.dart';
-import 'package:jtech_common_library/widgets/image/image.dart';
 
 /*
 * 拍照页面
 * @author jtechjh
 * @Time 2021/7/30 2:30 下午
 */
-@protected
-class TakePhotoPage extends BaseCameraPage {
+class TakePhotoPageState extends BaseCameraPageState {
   //记录当前已拍摄照片数量
   final ListValueChangeNotifier<JFileInfo> photoList;
 
@@ -28,18 +21,12 @@ class TakePhotoPage extends BaseCameraPage {
   //最大可拍摄数量
   final int maxCount;
 
-  TakePhotoPage({
-    bool front = false,
-    CameraResolution? resolution,
+  TakePhotoPageState({
     this.maxCount = 1,
-  })  : this.photoList = ListValueChangeNotifier.empty(),
+  })  : assert(maxCount > 0, "最大数量不可小于等于0"),
+        this.photoList = ListValueChangeNotifier.empty(),
         this.currentIndex = ValueChangeNotifier(0),
-        this.pageController = PageController(),
-        assert(maxCount > 0, "最大数量不可小于等于0"),
-        super(
-          front: front,
-          resolution: resolution,
-        );
+        this.pageController = PageController();
 
   @override
   Widget buildContent(BuildContext context) {
@@ -176,7 +163,7 @@ class TakePhotoPage extends BaseCameraPage {
                   return _takeAndPutPhoto();
                 }
                 //非拍照状态下，点击则会退出当前页面并返回已拍照数据
-                jBase.router.pop(photoList.value);
+                jRouter.pop<List<JFileInfo>>(photoList.value);
               },
             ),
             Expanded(
