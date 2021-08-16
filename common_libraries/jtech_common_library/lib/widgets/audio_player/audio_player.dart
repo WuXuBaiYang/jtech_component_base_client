@@ -153,16 +153,25 @@ class _JAudioPlayerState extends BaseState<JAudioPlayer> {
         var ratio = snap.data!.ratio;
         var fCurr = jCommon.tools.durationFormat.formatMMSS(curr);
         var fMax = jCommon.tools.durationFormat.formatMMSS(max);
+        bool isPlaying = widget.controller.isPlaying;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Slider(
-              value: ratio,
-              onChanged: (value) {
-                var duration = max.multiply(value);
-                widget.controller.seekToPlay(duration);
-              },
-            ),
+            max.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.symmetric(vertical: 22, horizontal: 24),
+                    child: LinearProgressIndicator(
+                      value: isPlaying ? null : 0,
+                      backgroundColor: isPlaying ? null : Colors.grey,
+                    ),
+                  )
+                : Slider(
+                    value: ratio,
+                    onChanged: (value) {
+                      var duration = max.multiply(value);
+                      widget.controller.seekToPlay(duration);
+                    },
+                  ),
             Text(
               "$fCurr/$fMax",
               style: TextStyle(
