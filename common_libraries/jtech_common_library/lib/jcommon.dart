@@ -19,6 +19,8 @@ export 'popups/snack/config.dart';
 export 'popups/snack/snack.dart';
 export 'popups/toast/config.dart';
 export 'popups/toast/toast.dart';
+export 'popups/overlay/config.dart';
+export 'popups/overlay/overlay.dart';
 
 //导出工具方法
 export 'tools/data_format.dart';
@@ -92,6 +94,7 @@ export 'widgets/listview/listview_default.dart';
 export 'widgets/listview/listview_default.dart';
 export 'widgets/listview/base/config.dart';
 export 'widgets/listview/base/listView.dart';
+export 'widgets/popup_button/popup_button.dart';
 
 /*
 * 通用组件方法入口

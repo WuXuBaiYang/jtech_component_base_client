@@ -7,6 +7,10 @@ import 'package:flutter/widgets.dart';
 * @Time 2021/7/5 上午9:26
 */
 abstract class BaseStatefulWidget extends StatefulWidget {
+  BaseStatefulWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => getState();
 
@@ -43,4 +47,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {}
 * @author jtechjh
 * @Time 2021/8/12 5:27 下午
 */
-abstract class BaseStatelessWidget extends StatelessWidget {}
+abstract class BaseStatelessWidget extends StatelessWidget {
+  BaseStatelessWidget({
+    Key? key,
+  }) : super(key: key);
+}

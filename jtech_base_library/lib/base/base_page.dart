@@ -6,7 +6,11 @@ import 'package:jtech_base_library/jbase.dart';
 * @author wuxubaiyang
 * @Time 2021/7/5 上午9:27
 */
-abstract class BaseStatefulPage extends BaseStatefulWidget {}
+abstract class BaseStatefulPage extends BaseStatefulWidget {
+  BaseStatefulPage({
+    Key? key,
+  }) : super(key: key);
+}
 
 /*
 * 有状态页面基类-多状态
@@ -16,7 +20,8 @@ abstract class BaseStatefulPage extends BaseStatefulWidget {}
 abstract class BaseStatefulPageMultiply extends BaseStatefulWidgetMultiply {
   BaseStatefulPageMultiply({
     required State<BaseStatefulPageMultiply> currentState,
-  }) : super(currentState: currentState);
+    Key? key,
+  }) : super(currentState: currentState, key: key);
 }
 
 /*
@@ -24,4 +29,8 @@ abstract class BaseStatefulPageMultiply extends BaseStatefulWidgetMultiply {
 * @author jtechjh
 * @Time 2021/8/12 5:28 下午
 */
-abstract class BaseStatelessPage extends BaseStatelessWidget {}
+abstract class BaseStatelessPage extends BaseStatelessWidget {
+  BaseStatelessPage({
+    Key? key,
+  }) : super(key: key);
+}

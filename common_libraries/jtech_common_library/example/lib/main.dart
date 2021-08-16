@@ -6,6 +6,7 @@ import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'audio/audio_demo.dart';
 import 'banner/banner_demo.dart';
+import 'button/button_demo.dart';
 import 'camera/camera_demo.dart';
 import 'card/card_demo.dart';
 import 'form/form_demo.dart';
@@ -26,6 +27,7 @@ void main() {
   runMaterialAPP(
     title: "jtech common library",
     routes: {
+      "/test/button": (_) => ButtonDemo(),
       "/test/listview": (_) => ListViewDemo(),
       "/test/listview/refresh": (_) => RefreshListViewDemo(),
       "/test/listview/index": (_) => IndexListViewDemo(),
@@ -53,6 +55,7 @@ void main() {
 class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
+    "按钮组件": "/test/button",
     "列表组件": "/test/listview",
     "弹层组件": "/test/popups",
     "导航组件": "/test/navigation",

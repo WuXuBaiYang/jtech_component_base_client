@@ -1,4 +1,5 @@
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/popups/overlay/overlay.dart';
 
 import 'dialog/dialog.dart';
 import 'sheet/sheet.dart';
@@ -29,6 +30,9 @@ class JPopups extends BaseManage {
   //snack消息提示
   final snack = JSnack();
 
+  //弹增组件
+  final overlay = JOverlay();
+
   //初始化方法
   @override
   Future init() async {
@@ -40,6 +44,8 @@ class JPopups extends BaseManage {
     await toast.init();
     //初始化snack消息方法
     await snack.init();
+    //初始化弹层组件
+    await overlay.init();
   }
 }
 

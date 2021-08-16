@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/popups/popups.dart';
 
 /*
 * 弹窗系统事件
@@ -136,17 +137,42 @@ class PopupsDemo extends BaseStatelessPage {
         actionLabel: "关闭",
         onActionTap: () {},
       );
-    },
+    }
   };
 
   @override
   Widget build(BuildContext context) {
+    var key = GlobalKey();
     return MaterialPageRoot(
       appBarTitle: "弹窗系统事件",
       appBarActions: [
         IconButton(
-          icon: Text("test"),
-          onPressed: () {},
+          key: key,
+          icon: Text("overlay"),
+          onPressed: () async {
+            var result = await jOverlay.showByKey<String>(
+              context,
+              key: key,
+              overlaySize: Size(100, 100),
+              builder: (context, dismiss) {
+                return Container(
+                  color: Colors.red,
+                  width: 100,
+                  height: 100,
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => dismiss("close"),
+                  ),
+                );
+              },
+            );
+            if (null == result) {
+              jToast.showShortToastTxt(context, text: "电击背景关闭");
+            } else {
+              jToast.showShortToastTxt(context, text: "电击按钮关闭");
+            }
+          },
         ),
       ],
       body: ListView.separated(
