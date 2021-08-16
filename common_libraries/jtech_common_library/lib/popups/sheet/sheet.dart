@@ -111,6 +111,8 @@ class JSheet extends BaseManage {
     return Material(
         color: Colors.transparent,
         child: InkWell(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Card(

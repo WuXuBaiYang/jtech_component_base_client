@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:jtech_common_library/popups/overlay/config.dart';
 
 //弹层内容构造器
@@ -37,23 +38,30 @@ class JOverlay extends BaseManage {
     Completer<T?> completer = Completer();
     var offset = config.getOffset(context);
     _entries[key] = OverlayEntry(
-      builder: (context) => GestureDetector(
-        child: Material(
-          color: Colors.transparent,
-          child: Stack(
-            children: [
-              Positioned(
-                child: builder(
-                  context,
-                      (result) => completer.complete(result),
-                ),
-                left: offset.dx,
-                top: offset.dy,
+      builder: (context) => Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: [
+            GestureDetector(
+              child: Container(
+                color: Colors.transparent,
+                width: double.infinity,
+                height: double.infinity,
               ),
-            ],
-          ),
+              onTapDown: (_) => completer.complete(),
+            ),
+            Positioned(
+              child: builder(
+                context,
+                (result) => completer.complete(result),
+              ),
+              width: config.size.width,
+              height: config.size.height,
+              left: offset.dx,
+              top: offset.dy,
+            ),
+          ],
         ),
-        onTapDown: (_) => completer.complete(),
       ),
     );
     Overlay.of(context)?.insert(_entries[key]!);

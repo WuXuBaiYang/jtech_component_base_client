@@ -246,16 +246,27 @@ class _JAudioPlayerState extends BaseState<JAudioPlayer> {
     return ValueListenableBuilder<double>(
       valueListenable: widget.controller.audioSpeedListenable,
       builder: (context, value, child) {
-        ///待完成
-        return Row(
-          children: [
-            Icon(Icons.speed, size: 20),
-            SizedBox(width: 2),
-            Text(
-              "x${value.toStringAsFixed(1)}",
-              style: TextStyle(fontSize: 12),
-            ),
-          ],
+        return JPopupButton.text<double>(
+          context,
+          child: Row(
+            children: [
+              Icon(Icons.speed, size: 20),
+              SizedBox(width: 2),
+              Text(
+                "x${value.toStringAsFixed(1)}",
+                style: TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
+          builder: (_, dismiss) => _buildSlidePopup(
+            dismiss: dismiss,
+            value: value,
+            max: 3.0,
+            onValueLabelChange: (v) => "x${v.toStringAsFixed(1)}",
+          ),
+          size: slidePopupSize,
+          onPopupDismiss: (result) =>
+              widget.controller.setSpeed(result ?? value),
         );
       },
     );
@@ -271,10 +282,67 @@ class _JAudioPlayerState extends BaseState<JAudioPlayer> {
         if (value > 0.5) icon = Icons.volume_up_rounded;
         if (value > 0 && value <= 0.5) icon = Icons.volume_down_rounded;
         if (value <= 0) icon = Icons.volume_mute_rounded;
-
-        ///待完成
-        return Icon(icon);
+        return JPopupButton.icon<double>(
+          context,
+          icon: Icon(icon),
+          builder: (_, dismiss) => _buildSlidePopup(
+            dismiss: dismiss,
+            value: value,
+            onValueLabelChange: (v) => "${(v * 100).toInt()}%",
+          ),
+          size: slidePopupSize,
+          onPopupDismiss: (result) =>
+              widget.controller.setVolume(result ?? value),
+        );
       },
+    );
+  }
+
+  //滑动弹层尺寸
+  final Size slidePopupSize = Size(55, 210);
+
+  //构建滑动弹层
+  Widget _buildSlidePopup({
+    required void Function(double result) dismiss,
+    double value = 0.0,
+    double max = 1.0,
+    Function(double value)? onValueLabelChange,
+  }) {
+    return SizedBox.fromSize(
+      child: RotatedBox(
+        quarterTurns: 135,
+        child: StatefulBuilder(
+          builder: (context, setState) => JCard.row(
+            padding: EdgeInsets.only(left: null != onValueLabelChange ? 8 : 0),
+            borderRadius: BorderRadius.circular(8),
+            children: [
+              Visibility(
+                child: RotatedBox(
+                  quarterTurns: 45,
+                  child: Text(
+                    onValueLabelChange?.call(value) ?? "",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ),
+                visible: null != onValueLabelChange,
+              ),
+              Expanded(
+                child: Slider(
+                  value: value,
+                  max: max,
+                  autofocus: true,
+                  onChanged: (v) => setState(() => value = v),
+                  onChangeEnd: (v) => dismiss(v),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      size: slidePopupSize,
     );
   }
 

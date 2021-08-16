@@ -41,7 +41,7 @@ class JPopupButton extends BaseStatefulWidget {
         padding: padding,
         iconSize: iconSize,
         color: color,
-        onPressed: () => showPopup(
+        onPressed: () => _showPopup(
           context,
           key: key,
           size: size,
@@ -70,7 +70,7 @@ class JPopupButton extends BaseStatefulWidget {
       button: TextButton(
         child: child,
         style: style,
-        onPressed: () => showPopup(
+        onPressed: () => _showPopup(
           context,
           key: key,
           size: size,
@@ -83,7 +83,7 @@ class JPopupButton extends BaseStatefulWidget {
   }
 
   //展示自定义弹层
-  static void showPopup<T>(
+  static void _showPopup<T>(
     BuildContext context, {
     required GlobalKey key,
     required OverlayBuilder<T> builder,
