@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:record/record.dart';
@@ -48,10 +49,20 @@ class JAudioRecordController extends BaseController {
   ValueListenable<AudioState> get audioStateListenable => _audioState;
 
   //启动录制
-  Future<void> startRecord({
+  Future<void> startRecord(
+    BuildContext context, {
     required String path,
   }) async {
     if (isStopped && !hasMaxCount) {
+      //检查权限
+      bool hasPermission = await jPermission.checkAllGranted(
+        context,
+        permissions: [
+          PermissionRequest.storage(),
+          PermissionRequest.microphone(),
+        ],
+      );
+      if (!hasPermission) return;
       await _recorder.start(
         path: path,
         encoder: AudioEncoder.AAC,

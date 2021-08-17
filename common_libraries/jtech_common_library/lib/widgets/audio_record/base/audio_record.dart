@@ -127,8 +127,12 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
   }
 
   //构建播放按钮
-  Widget buildPlayButton(AudioState state,
-      {double iconSize = 60, Color? iconColor}) {
+  Widget buildPlayButton(
+    BuildContext context, {
+    required AudioState state,
+    double iconSize = 60,
+    Color? iconColor,
+  }) {
     return IconButton(
       icon: Icon(state == AudioState.progressing
           ? Icons.pause_circle_outline_rounded
@@ -138,6 +142,7 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
       onPressed: () async {
         if (state == AudioState.stopped) {
           await widget.controller.startRecord(
+            context,
             path: await widget.getFilePath(),
           );
         } else if (state == AudioState.progressing) {
