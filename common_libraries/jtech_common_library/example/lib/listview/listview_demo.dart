@@ -11,7 +11,7 @@ import 'package:jtech_common_library/jcommon.dart';
 class ListViewDemo extends BaseStatelessPage {
   //列表组件
   final Map<String, String> listviewMap = {
-    "默认列表": "/test/listview/default",
+    "默认列表": "/test/listview/full",
     "刷新列表": "/test/listview/refresh",
     "索引列表": "/test/listview/index",
   };

@@ -93,4 +93,11 @@ class JNavigation<T extends BaseNavigationController<V>,
 * @Time 2021/8/14 20:19
 */
 abstract class BaseJNavigationState<T extends BaseNavigationController<V>,
-    V extends NavigationItem> extends BaseState<JNavigation> {}
+    V extends NavigationItem> extends BaseState<JNavigation> {
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    widget.controller.dispose();
+  }
+}

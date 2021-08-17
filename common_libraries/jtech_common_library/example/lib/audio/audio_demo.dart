@@ -13,8 +13,10 @@ class AudioDemo extends BaseStatelessPage {
   final String audioSourceUrl =
       "https://luan.xyz/files/audio/nasa_on_a_mission.mp3";
 
-  //播放器控制器
-  final JAudioPlayerController playerController = JAudioPlayerController();
+  //完全版控制器
+  final JAudioPlayerController playerControllerFull = JAudioPlayerController();
+  //简易版控制器
+  final JAudioPlayerController playerControllerSimple = JAudioPlayerController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class AudioDemo extends BaseStatelessPage {
                 child: ListTile(
                   title: Text("进度定位到50秒"),
                   onTap: () {
-                    playerController.seekToPlay(Duration(seconds: 50));
+                    playerControllerFull.seekToPlay(Duration(seconds: 50));
                     jBase.router.pop();
                   },
                 ),
@@ -38,7 +40,7 @@ class AudioDemo extends BaseStatelessPage {
                 child: ListTile(
                   title: Text("2倍速播放"),
                   onTap: () {
-                    playerController.setSpeed(2);
+                    playerControllerFull.setSpeed(2);
                     jBase.router.pop();
                   },
                 ),
@@ -47,7 +49,7 @@ class AudioDemo extends BaseStatelessPage {
                 child: ListTile(
                   title: Text("静音"),
                   onTap: () {
-                    playerController.setVolume(0);
+                    playerControllerFull.setVolume(0);
                     jBase.router.pop();
                   },
                 ),
@@ -56,7 +58,7 @@ class AudioDemo extends BaseStatelessPage {
                 child: ListTile(
                   title: Text("切换播放器"),
                   onTap: () {
-                    playerController.speakerToggle();
+                    playerControllerFull.speakerToggle();
                     jBase.router.pop();
                   },
                 ),
@@ -68,13 +70,25 @@ class AudioDemo extends BaseStatelessPage {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          JAudioPlayer.net(
-            audioSourceUrl,
-            controller: playerController,
-            config: AudioPlayerConfig(
+          SizedBox(height: 35),
+          Text("完整版音频播放器"),
+          SizedBox(height: 35),
+          JAudioPlayer.full(
+            dataSource: DataSource.net(audioSourceUrl),
+            controller: playerControllerFull,
+            fullConfig: FullAudioPlayerConfig(
               title: Text("这里是播放器标题"),
             ),
           ),
+          SizedBox(height: 35),
+          Text("简易版音频播放器"),
+          SizedBox(height: 35),
+          JAudioPlayer.simple(
+            dataSource: DataSource.net(audioSourceUrl),
+            controller: playerControllerSimple,
+          ),
+          SizedBox(height: 35),
+          Text("完全版录音器"),
           SizedBox(height: 35),
           JAudioRecord(
             onRecordFinish: (String path) {

@@ -182,4 +182,11 @@ class JFormInputItemState extends BaseJFormItemState<String> {
     }
     return super.onValidValue(value);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    controller.dispose();
+  }
 }

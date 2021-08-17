@@ -119,4 +119,11 @@ abstract class BaseJGridViewState<T extends JListViewController<V>, V>
     var staggered = widget.config.staggeredTileBuilder?.call(item, index);
     return (staggered ?? widget.config.staggeredTile).staggered;
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    widget.controller.dispose();
+  }
 }

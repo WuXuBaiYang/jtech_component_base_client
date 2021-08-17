@@ -139,4 +139,11 @@ abstract class BaseJListViewState<T extends JListViewController<V>, V>
     if (null == widget.config.dividerBuilder) return EmptyBox();
     return widget.config.dividerBuilder!(context, index);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁控制器
+    widget.controller.dispose();
+  }
 }

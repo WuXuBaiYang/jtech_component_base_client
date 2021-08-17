@@ -1,15 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
-* 音频播放器配置文件
+* 音频播放器配置对象
 * @author jtechjh
-* @Time 2021/8/10 9:58 上午
+* @Time 2021/8/17 9:21 上午
 */
 class AudioPlayerConfig extends BaseConfig {
   //外间距
@@ -19,13 +18,10 @@ class AudioPlayerConfig extends BaseConfig {
   EdgeInsetsGeometry padding;
 
   //悬浮高度
-  double? elevation;
+  double elevation;
 
   //卡片背景色
   Color backgroundColor;
-
-  //资源管理
-  DataSource? dataSource;
 
   //是否自动播放
   bool autoPlay;
@@ -39,41 +35,19 @@ class AudioPlayerConfig extends BaseConfig {
   //默认播放速度
   double? speed;
 
-  //是否支持音量控制功能
-  bool allowVolume;
-
-  //是否支持倍速播放功能
-  bool allowSpeed;
-
-  //是否支持扬声器，听筒切换功能
-  bool allowSpeakerToggle;
-
-  //标题部分组件
-  Widget? title;
-
-  //标题部分内间距
-  EdgeInsetsGeometry titlePadding;
-
   AudioPlayerConfig({
-    this.dataSource,
     this.autoPlay = false,
     this.startAt = Duration.zero,
     this.volume,
     this.speed,
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
-    this.elevation,
+    this.elevation = 8.0,
     this.backgroundColor = Colors.white,
-    this.allowVolume = true,
-    this.allowSpeed = true,
-    this.allowSpeakerToggle = false,
-    this.title,
-    this.titlePadding = const EdgeInsets.symmetric(vertical: 8),
   });
 
   @override
   AudioPlayerConfig copyWith({
-    DataSource? dataSource,
     bool? autoPlay,
     Duration? startAt,
     double? volume,
@@ -82,15 +56,8 @@ class AudioPlayerConfig extends BaseConfig {
     EdgeInsetsGeometry? padding,
     double? elevation,
     Color? backgroundColor,
-    bool? allowVolume,
-    bool? allowSpeed,
-    bool? allowSpeakerToggle,
-    Widget? title,
-    bool? centerTitle,
-    EdgeInsetsGeometry? titlePadding,
   }) {
     return AudioPlayerConfig(
-      dataSource: dataSource ?? this.dataSource,
       autoPlay: autoPlay ?? this.autoPlay,
       startAt: startAt ?? this.startAt,
       volume: volume ?? this.volume,
@@ -99,14 +66,10 @@ class AudioPlayerConfig extends BaseConfig {
       padding: padding ?? this.padding,
       elevation: elevation ?? this.elevation,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      allowVolume: allowVolume ?? this.allowVolume,
-      allowSpeed: allowSpeed ?? this.allowSpeed,
-      allowSpeakerToggle: allowSpeakerToggle ?? this.allowSpeakerToggle,
-      title: title ?? this.title,
-      titlePadding: titlePadding ?? this.titlePadding,
     );
   }
 }
+
 
 /*
 * 音频播放器资源管理类

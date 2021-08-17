@@ -94,13 +94,6 @@ class JBottomNavigationState<V extends NavigationItem>
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    //销毁控制器
-    widget.controller.dispose();
-  }
 }
 
 /*
