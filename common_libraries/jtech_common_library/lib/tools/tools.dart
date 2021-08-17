@@ -30,6 +30,9 @@ class JTools extends BaseManage {
   //计时器工具
   final timer = JTimer();
 
+  //权限管理
+  final permission = JPermission();
+
   @override
   Future<void> init() async {
     //初始化日期格式化
@@ -42,6 +45,8 @@ class JTools extends BaseManage {
     await file.init();
     //初始化计时器
     await timer.init();
+    //初始化权限管理
+    await permission.init();
   }
 
   //生成id

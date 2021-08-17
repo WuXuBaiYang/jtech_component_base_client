@@ -65,11 +65,17 @@ dependencies:
   # 音频播放器
   audioplayers: ^0.19.1
 
+  # 录音器
+  record: ^3.0.0
+
   # 摄像头管理
   camera: ^0.8.1+7
 
   # 路径管理
   path_provider: ^2.0.2
+
+  # 权限管理
+  permission_handler: ^8.1.4+2
   
 
   # The following adds the Cupertino Icons font to your application.

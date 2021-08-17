@@ -35,6 +35,8 @@ export 'tools/file_picker/pages/record_audio_page.dart';
 export 'tools/file_picker/pages/record_video_page.dart';
 export 'tools/file_picker/pages/take_photo_page.dart';
 export 'tools/file_picker/config.dart';
+export 'tools/permission/config.dart';
+export 'tools/permission/permission.dart';
 
 //导出组件
 export 'widgets/base/empty_box.dart';
