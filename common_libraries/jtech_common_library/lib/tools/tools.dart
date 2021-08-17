@@ -54,6 +54,10 @@ class JTools extends BaseManage {
     var time = DateTime.now().millisecondsSinceEpoch;
     return "${time}_${Random(seed ?? time).nextDouble()}";
   }
+
+  //生成时间戳签名
+  String getDateSign() =>
+      dataFormat.format("yyyyMMddHHmmssSSS", DateTime.now());
 }
 
 //单例调用

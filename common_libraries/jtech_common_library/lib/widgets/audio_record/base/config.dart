@@ -29,6 +29,9 @@ class AudioRecordConfig extends BaseConfig {
   //最大可录制时长
   final Duration maxDuration;
 
+  //文件存储路径(自定义存储路径时，不需要指定文件类型)
+  final String? savePath;
+
   AudioRecordConfig({
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(15),
@@ -36,6 +39,7 @@ class AudioRecordConfig extends BaseConfig {
     this.backgroundColor = Colors.white,
     this.onRecordFinish,
     this.maxDuration = const Duration(seconds: 60),
+    this.savePath,
   });
 
   @override
@@ -46,6 +50,7 @@ class AudioRecordConfig extends BaseConfig {
     Color? backgroundColor,
     OnRecordFinish? onRecordFinish,
     Duration? maxDuration,
+    String? savePath,
   }) {
     return AudioRecordConfig(
       margin: margin ?? this.margin,
@@ -54,6 +59,7 @@ class AudioRecordConfig extends BaseConfig {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       onRecordFinish: onRecordFinish ?? this.onRecordFinish,
       maxDuration: maxDuration ?? this.maxDuration,
+      savePath: savePath ?? this.savePath,
     );
   }
 }

@@ -16,7 +16,7 @@ class JAudioRecordFullState extends BaseJAudioRecordState {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildAudioContent() {
     return EmptyBox();
   }
 }

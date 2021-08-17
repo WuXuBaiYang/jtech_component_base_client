@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:path_provider/path_provider.dart';
 
 /*
@@ -23,6 +24,9 @@ class JFile extends BaseManage {
   //视频缓存目录
   static final String videoCachePath = "/videoCache/";
 
+  //音频缓存目录
+  static final String audioCachePath = "/audioCache/";
+
   //清除视频缓存目录文件
   Future<bool> clearVideoCache() async {
     return clearCache(path: videoCachePath);
@@ -40,6 +44,18 @@ class JFile extends BaseManage {
       await dir.delete(recursive: true);
     }
     return true;
+  }
+
+  //获取音频缓存目录大小
+  Future<String> getAudioCacheSize({
+    bool lowerCase = false,
+    int fixed = 1,
+  }) {
+    return getCacheSize(
+      path: audioCachePath,
+      lowerCase: lowerCase,
+      fixed: fixed,
+    );
   }
 
   //获取视频缓存目录大小
@@ -118,29 +134,50 @@ class JFile extends BaseManage {
 
   //获取本地缓存文件目录
   Future<String> getCacheDirPath({String path = ""}) async {
-    if (!path.startsWith("/")) path = "/$path";
     var dir = await getTemporaryDirectory();
-    dir = Directory("${dir.path}$path");
+    dir = Directory(join(dir.path, path));
     if (!dir.existsSync()) dir.createSync(recursive: true);
     return dir.path;
   }
 
   //获取图片缓存路径
+  Future<String> getImageCacheDirPath() =>
+      getCacheDirPath(path: imageCachePath);
+
+  //获取图片缓存文件地址
   Future<String> getImageCacheFilePath(String fileName,
       {bool create = true}) async {
     if (fileName.isEmpty) return fileName;
-    var dirPath = await getCacheDirPath(path: imageCachePath);
-    var file = File("$dirPath$fileName");
+    var dirPath = await getImageCacheDirPath();
+    var file = File(join(dirPath, fileName));
     if (create && !file.existsSync()) file.createSync(recursive: true);
     return file.path;
   }
 
   //获取视频缓存路径
+  Future<String> getVideoCacheDirPath() =>
+      getCacheDirPath(path: videoCachePath);
+
+  //获取视频缓存文件地址
   Future<String> getVideoCacheFilePath(String fileName,
       {bool create = true}) async {
     if (fileName.isEmpty) return fileName;
-    var dirPath = await getCacheDirPath(path: videoCachePath);
-    var file = File("$dirPath$fileName");
+    var dirPath = await getVideoCacheDirPath();
+    var file = File(join(dirPath, fileName));
+    if (create && !file.existsSync()) file.createSync(recursive: true);
+    return file.path;
+  }
+
+  //获取音频缓存路径
+  Future<String> getAudioCacheDirPath() =>
+      getCacheDirPath(path: audioCachePath);
+
+  //获取音频缓存文件地址
+  Future<String> getAudioCacheFilePath(String fileName,
+      {bool create = true}) async {
+    if (fileName.isEmpty) return fileName;
+    var dirPath = await getAudioCacheDirPath();
+    var file = File(join(dirPath, fileName));
     if (create && !file.existsSync()) file.createSync(recursive: true);
     return file.path;
   }

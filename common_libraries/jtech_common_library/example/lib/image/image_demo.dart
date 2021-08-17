@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 
 /*
 * 图片demo

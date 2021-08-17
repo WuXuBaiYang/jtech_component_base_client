@@ -9,7 +9,7 @@ import 'package:jtech_common_library/jcommon.dart';
 */
 class JAudioRecordSimpleState extends BaseJAudioRecordState {
   @override
-  Widget build(BuildContext context) {
+  Widget buildAudioContent() {
     return EmptyBox();
   }
 }

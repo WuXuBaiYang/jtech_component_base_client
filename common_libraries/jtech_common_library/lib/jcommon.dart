@@ -9,6 +9,7 @@ export 'base/base_config.dart';
 export 'base/base_controller.dart';
 export 'base/change_notifier.dart';
 export 'base/refresh_config.dart';
+export 'package:path/path.dart';
 
 //导出弹层方法
 export 'popups/dialog/config.dart';

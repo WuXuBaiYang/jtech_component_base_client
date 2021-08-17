@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
@@ -71,6 +72,13 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
       ),
     );
   }
+
+  //获取音频文件存储路径
+  Future<String> getFilePath() async {
+    var fileName = "${jTools.getDateSign()}.m4a"; //暂时用固定后缀
+    var dirPath = config.savePath ?? await jFile.getAudioCacheDirPath();
+    return join(dirPath, fileName);
+  }
 }
 
 /*
@@ -79,6 +87,68 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
 * @Time 2021/8/13 10:53 上午
 */
 abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
+  @override
+  Widget build(BuildContext context) {
+    return JCard.single(
+      margin: widget.config.margin,
+      padding: widget.config.padding,
+      elevation: widget.config.elevation,
+      color: widget.config.backgroundColor,
+      child: buildAudioContent(),
+    );
+  }
+
+  //构建音频录音器容器
+  Widget buildAudioContent();
+
+  //创建进度条
+  Widget buildProgressBar(Duration curr) {
+    bool isStopped = widget.controller.isStopped;
+    var color = isStopped ? Colors.grey : null;
+    var ratio = curr.divide(widget.config.maxDuration);
+    return RotatedBox(
+      quarterTurns: 180,
+      child: LinearProgressIndicator(
+        value: 1 - ratio,
+        color: color,
+        backgroundColor: color,
+      ),
+    );
+  }
+
+  //创建进度文字提示
+  Widget buildProgressLabel(Duration curr, {TextStyle? textStyle}) {
+    var fCurr = jDurationFormat.formatMMSS(curr);
+    var fMax = jDurationFormat.formatMMSS(widget.config.maxDuration);
+    return Text(
+      "$fCurr/$fMax",
+      style: textStyle ?? TextStyle(fontSize: 12, color: Colors.grey),
+    );
+  }
+
+  //构建播放按钮
+  Widget buildPlayButton(AudioState state,
+      {double iconSize = 60, Color? iconColor}) {
+    return IconButton(
+      icon: Icon(state == AudioState.progressing
+          ? Icons.pause_circle_outline_rounded
+          : Icons.play_circle_outline_rounded),
+      iconSize: iconSize,
+      color: iconColor,
+      onPressed: () async {
+        if (state == AudioState.stopped) {
+          await widget.controller.startRecord(
+            path: await widget.getFilePath(),
+          );
+        } else if (state == AudioState.progressing) {
+          await widget.controller.pauseRecord();
+        } else if (state == AudioState.pause) {
+          await widget.controller.resumeRecord();
+        }
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
