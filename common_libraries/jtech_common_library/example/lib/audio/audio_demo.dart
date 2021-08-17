@@ -15,8 +15,10 @@ class AudioDemo extends BaseStatelessPage {
 
   //完全版控制器
   final JAudioPlayerController playerControllerFull = JAudioPlayerController();
+
   //简易版控制器
-  final JAudioPlayerController playerControllerSimple = JAudioPlayerController();
+  final JAudioPlayerController playerControllerSimple =
+      JAudioPlayerController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,16 @@ class AudioDemo extends BaseStatelessPage {
           SizedBox(height: 35),
           Text("完全版录音器"),
           SizedBox(height: 35),
-          JAudioRecord(
+          JAudioRecord.full(
+            onRecordFinish: (String path) {
+              jCommon.popups.snack
+                  .showSnackInTime(context, text: "录音存储路径：$path");
+            },
+          ),
+          SizedBox(height: 35),
+          Text("简易版录音器"),
+          SizedBox(height: 35),
+          JAudioRecord.simple(
             onRecordFinish: (String path) {
               jCommon.popups.snack
                   .showSnackInTime(context, text: "录音存储路径：$path");
