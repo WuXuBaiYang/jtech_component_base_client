@@ -74,7 +74,7 @@ class JAudioPlayerController extends BaseController {
   bool get isSpeakerPlay => _speakerToggle.value;
 
   //判断当前是否正在播放
-  bool get isPlaying => _audioState.value == AudioState.playing;
+  bool get isPlaying => _audioState.value == AudioState.progressing;
 
   //判断当前是否正在暂停
   bool get isPause => _audioState.value == AudioState.pause;
@@ -113,7 +113,7 @@ class JAudioPlayerController extends BaseController {
         );
       }
       if (_setupSuccess(result)) {
-        return _audioState.setValue(AudioState.playing);
+        return _audioState.setValue(AudioState.progressing);
       }
     }
     return false;
@@ -121,16 +121,18 @@ class JAudioPlayerController extends BaseController {
 
   //暂停播放
   Future<void> pausePlay() async {
-    if (!isPlaying) return;
-    var result = await _player.pause();
-    if (_setupSuccess(result)) _audioState.setValue(AudioState.pause);
+    if (isPlaying) {
+      var result = await _player.pause();
+      if (_setupSuccess(result)) _audioState.setValue(AudioState.pause);
+    }
   }
 
   //恢复播放
   Future<void> resumePlay() async {
-    if (!isPause) return;
-    var result = await _player.resume();
-    if (_setupSuccess(result)) _audioState.setValue(AudioState.playing);
+    if (isPause) {
+      var result = await _player.resume();
+      if (_setupSuccess(result)) _audioState.setValue(AudioState.progressing);
+    }
   }
 
   //停止播放
@@ -195,7 +197,7 @@ class JAudioPlayerController extends BaseController {
         _audioState.setValue(AudioState.stopped);
         break;
       case PlayerState.PLAYING:
-        _audioState.setValue(AudioState.playing);
+        _audioState.setValue(AudioState.progressing);
         break;
       case PlayerState.PAUSED:
         _audioState.setValue(AudioState.pause);
@@ -251,7 +253,7 @@ class PlayProgress {
 * @Time 2021/8/10 1:19 下午
 */
 enum AudioState {
-  playing,
+  progressing,
   stopped,
   pause,
 }

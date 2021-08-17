@@ -30,28 +30,29 @@ class JFileInfo {
 
   JFileInfo({
     required this.path,
-    this.name,
+    String? name,
     this.length,
-    this.mimeType,
-  });
+    String? mimeType,
+  })  : this.name = name ?? path.substring(path.lastIndexOf(r"\/")),
+        this.mimeType = mimeType ?? name?.substring(name.lastIndexOf(r"\."));
 
   //获取为file类型
   File get file => File(path);
 
   //判断文件类型是否为图片
-  bool get isImageType => jCommon.tools.matches.isImageFile(path);
+  bool get isImageType => jMatches.isImageFile(path);
 
   //获取图片缩略图
-  Future<File> getImageThumbnail()async{
+  Future<File> getImageThumbnail() async {
     ///待完成
     return File(path);
   }
 
   //判断文件类型是否为视频
-  bool get isVideoType => jCommon.tools.matches.isVideoFile(path);
+  bool get isVideoType => jMatches.isVideoFile(path);
 
   //获取视频缩略图
-  Future<File> getVideoThumbnail()async{
+  Future<File> getVideoThumbnail() async {
     ///待完成
     return File(path);
   }

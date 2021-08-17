@@ -144,7 +144,7 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
   Widget buildPlayButton(AudioState state,
       {double iconSize = 60, Color? iconColor}) {
     return IconButton(
-      icon: Icon(state == AudioState.playing
+      icon: Icon(state == AudioState.progressing
           ? Icons.pause_circle_outline_rounded
           : Icons.play_circle_outline_rounded),
       iconSize: iconSize,
@@ -156,7 +156,7 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
             fromDataBuffer: await widget.dataSource.audioData,
             startAt: widget.config.startAt,
           );
-        } else if (state == AudioState.playing) {
+        } else if (state == AudioState.progressing) {
           await widget.controller.pausePlay();
         } else if (state == AudioState.pause) {
           await widget.controller.resumePlay();

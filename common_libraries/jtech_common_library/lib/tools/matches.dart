@@ -39,6 +39,10 @@ class JMatches extends BaseManage {
   bool isVideoFile(String string) =>
       hasMatch(RegExp(r'.mp4|.avi|.rvmb'), string: string);
 
+  //判断是否为音频类型
+  bool isAudioFile(String string) =>
+      hasMatch(RegExp(r'.mp3|.aac'), string: string);
+
   //判断是否存在匹配内容
   bool hasMatch(Pattern pattern, {required String string}) =>
       match(pattern, string: string).isNotEmpty;
