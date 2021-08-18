@@ -65,7 +65,7 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
       currentState: JAudioRecordSimpleState(),
       config: (config ?? AudioRecordConfig()).copyWith(
         margin: margin,
-        padding: padding,
+        padding: padding ?? EdgeInsets.all(8),
         elevation: elevation,
         maxDuration: maxDuration,
         onRecordFinish: onRecordFinish,
@@ -94,12 +94,12 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
       padding: widget.config.padding,
       elevation: widget.config.elevation,
       color: widget.config.backgroundColor,
-      child: buildAudioContent(),
+      child: buildAudioContent(context),
     );
   }
 
   //构建音频录音器容器
-  Widget buildAudioContent();
+  Widget buildAudioContent(BuildContext context);
 
   //创建进度条
   Widget buildProgressBar(Duration curr) {
@@ -107,7 +107,7 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
     var color = isStopped ? Colors.grey : null;
     var ratio = curr.divide(widget.config.maxDuration);
     return RotatedBox(
-      quarterTurns: 180,
+      quarterTurns: 90,
       child: LinearProgressIndicator(
         value: 1 - ratio,
         color: color,
@@ -127,7 +127,7 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
   }
 
   //构建播放按钮
-  Widget buildPlayButton(
+  Widget buildRecordButton(
     BuildContext context, {
     required AudioState state,
     double iconSize = 60,
@@ -141,6 +141,9 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
       color: iconColor,
       onPressed: () async {
         if (state == AudioState.stopped) {
+          if (widget.controller.hasMaxCount) {
+            return jToast.showShortToastTxt(context, text: "已达到最大数量限制");
+          }
           await widget.controller.startRecord(
             context,
             path: await widget.getFilePath(),

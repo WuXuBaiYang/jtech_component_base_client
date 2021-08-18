@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -198,7 +200,7 @@ class TakePhotoPageState extends BaseCameraPageState {
     var result = await controller?.takePicture();
     if (null == result) return;
     photoList.insertValue(0, [
-      await JFileInfo.loadFromXFile(result),
+      await JFileInfo.fromPath(result.path),
     ]);
     currentIndex.update(true);
   }

@@ -9,11 +9,11 @@ import 'package:jtech_common_library/jcommon.dart';
 */
 class JAudioPlayerSimpleState extends BaseJAudioPlayerState {
   @override
-  Widget buildAudioContent() {
+  Widget buildAudioContent(context) {
     return Row(
       children: [
         _buildPlayOptions(),
-        Expanded(child: _buildProgressSlider()),
+        Expanded(child: _buildPlayProgress()),
       ],
     );
   }
@@ -29,16 +29,18 @@ class JAudioPlayerSimpleState extends BaseJAudioPlayerState {
   }
 
   //构建播放器进度部分
-  Widget _buildProgressSlider() {
+  Widget _buildPlayProgress() {
     return StreamBuilder<PlayProgress>(
       initialData: PlayProgress.zero(),
       stream: widget.controller.onProgress,
       builder: (context, snap) {
         if (!snap.hasData) return EmptyBox();
         var max = snap.data!.duration;
-        return Row(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Expanded(child: buildProgressSlider(snap.data!.ratio, max)),
+            SizedBox(height: 12),
+            buildProgressSlider(snap.data!.ratio, max),
             buildProgressLabel(snap.data!.position, max,
                 textStyle: TextStyle(fontSize: 10)),
           ],

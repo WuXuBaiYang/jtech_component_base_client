@@ -16,7 +16,7 @@ class JAudioPlayerFullState extends BaseJAudioPlayerState {
   });
 
   @override
-  Widget buildAudioContent() {
+  Widget buildAudioContent(context) {
     return Column(
       children: [
         _buildTitleContent(),

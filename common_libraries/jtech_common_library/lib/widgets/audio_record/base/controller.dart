@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jtech_common_library/jcommon.dart';
@@ -34,10 +32,13 @@ class JAudioRecordController extends BaseController {
   bool get isStopped => _audioState.value == AudioState.stopped;
 
   //判断是否已达到最大录音数量
-  bool get hasMaxCount => _maxRecordCount >= _audioList.length;
+  bool get hasMaxCount => _audioList.length >= _maxRecordCount;
 
   //获取所有已录音文件
   List<JFileInfo> get audioFiles => _audioList.value;
+
+  //移除已有文件记录
+  void removeRecordFile(JFileInfo fileInfo) => _audioList.removeValue(fileInfo);
 
   JAudioRecordController({int maxRecordCount = 1})
       : this._recorder = Record(),
@@ -47,6 +48,9 @@ class JAudioRecordController extends BaseController {
 
   //获取录音器状态监听器
   ValueListenable<AudioState> get audioStateListenable => _audioState;
+
+  //录音文件集合变化监听
+  ValueListenable<List<JFileInfo>> get audioListListenable => _audioList;
 
   //启动录制
   Future<void> startRecord(
@@ -94,16 +98,18 @@ class JAudioRecordController extends BaseController {
     if (isStopped) return null;
     var result = await _recorder.stop();
     if (null != result) {
-      var file = File(result);
       _audioList.insertValue(0, [
-        JFileInfo(
-          path: file.absolute.path,
-          length: await file.length(),
-        ),
+        await JFileInfo.fromPath(result),
       ]);
     }
     _audioState.setValue(AudioState.stopped);
     return result;
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+    _audioState.addListener(listener);
   }
 
   @override

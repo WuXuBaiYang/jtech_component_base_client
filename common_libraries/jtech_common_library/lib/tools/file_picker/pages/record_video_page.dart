@@ -371,7 +371,7 @@ class RecordVideoPageState extends BaseCameraPageState {
         if (null == result) return null;
         widget.cameraBusy.setValue(false);
         fileList.insertValue(0, [
-          await JFileInfo.loadFromXFile(result),
+          await JFileInfo.fromPath(result.path),
         ]);
         currentIndex.update(true);
         _cancelRecordTimer();

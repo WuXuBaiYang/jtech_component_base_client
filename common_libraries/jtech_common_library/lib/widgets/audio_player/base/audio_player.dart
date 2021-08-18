@@ -101,12 +101,12 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
       padding: widget.config.padding,
       elevation: widget.config.elevation,
       color: widget.config.backgroundColor,
-      child: buildAudioContent(),
+      child: buildAudioContent(context),
     );
   }
 
   //构建音频播放器容器
-  Widget buildAudioContent();
+  Widget buildAudioContent(BuildContext context);
 
   //创建进度拖动/指示条
   Widget buildProgressSlider(double ratio, Duration max) {

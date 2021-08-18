@@ -19,13 +19,13 @@ class JFile extends BaseManage {
   Future<void> init() async {}
 
   //图片缓存目录
-  static final String imageCachePath = "/imageCache/";
+  static final String imageCachePath = "imageCache/";
 
   //视频缓存目录
-  static final String videoCachePath = "/videoCache/";
+  static final String videoCachePath = "videoCache/";
 
   //音频缓存目录
-  static final String audioCachePath = "/audioCache/";
+  static final String audioCachePath = "audioCache/";
 
   //清除视频缓存目录文件
   Future<bool> clearVideoCache() async {
@@ -185,3 +185,27 @@ class JFile extends BaseManage {
 
 //单例调用
 final jFile = JFile();
+
+/*
+* 扩展文件方法
+* @author jtechjh
+* @Time 2021/8/18 10:51 上午
+*/
+extension FileExtension on File {
+  //获取文件名
+  String? get name {
+    var index = path.lastIndexOf(r'/');
+    if (index >= 0 && index < path.length) {
+      return path.substring(index + 1);
+    }
+  }
+
+  //获取文件后缀
+  String? get suffixes {
+    var index = path.lastIndexOf(r'.');
+    var sepIndex = path.lastIndexOf(r'/');
+    if (index >= 0 && index <= path.length && index > sepIndex) {
+      return path.substring(index);
+    }
+  }
+}

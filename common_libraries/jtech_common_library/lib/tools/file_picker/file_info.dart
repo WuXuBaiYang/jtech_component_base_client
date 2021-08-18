@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
@@ -25,16 +23,26 @@ class JFileInfo {
   //文件大小
   int? length;
 
-  //文件类型
-  String? mimeType;
+  //文件后缀
+  String? suffixes;
 
   JFileInfo({
     required this.path,
-    String? name,
+    this.name,
     this.length,
-    String? mimeType,
-  })  : this.name = name ?? path.substring(path.lastIndexOf(r"\/")),
-        this.mimeType = mimeType ?? name?.substring(name.lastIndexOf(r"\."));
+    this.suffixes,
+  });
+
+  //从文件路径中加载
+  static Future<JFileInfo> fromPath(String path) => fromFile(File(path));
+
+  //从文件中加载
+  static Future<JFileInfo> fromFile(File file) async => JFileInfo(
+        path: file.path,
+        length: await file.length(),
+        name: file.name,
+        suffixes: file.suffixes,
+      );
 
   //获取为file类型
   File get file => File(path);
@@ -56,12 +64,4 @@ class JFileInfo {
     ///待完成
     return File(path);
   }
-
-  //从xFile中加载数据
-  static Future<JFileInfo> loadFromXFile(XFile xFile) async => JFileInfo(
-        path: xFile.path,
-        name: xFile.name,
-        length: await xFile.length(),
-        mimeType: xFile.mimeType,
-      );
 }

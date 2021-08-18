@@ -69,45 +69,47 @@ class AudioDemo extends BaseStatelessPage {
           },
         ),
       ],
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 35),
-          Text("完整版音频播放器"),
-          SizedBox(height: 35),
-          JAudioPlayer.full(
-            dataSource: DataSource.net(audioSourceUrl),
-            controller: playerControllerFull,
-            fullConfig: FullAudioPlayerConfig(
-              title: Text("这里是播放器标题"),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 35),
+            Text("完整版音频播放器"),
+            SizedBox(height: 35),
+            JAudioPlayer.full(
+              dataSource: DataSource.net(audioSourceUrl),
+              controller: playerControllerFull,
+              fullConfig: FullAudioPlayerConfig(
+                title: Text("这里是播放器标题"),
+              ),
             ),
-          ),
-          SizedBox(height: 35),
-          Text("简易版音频播放器"),
-          SizedBox(height: 35),
-          JAudioPlayer.simple(
-            dataSource: DataSource.net(audioSourceUrl),
-            controller: playerControllerSimple,
-          ),
-          SizedBox(height: 35),
-          Text("完全版录音器"),
-          SizedBox(height: 35),
-          JAudioRecord.full(
-            onRecordFinish: (String path) {
-              jCommon.popups.snack
-                  .showSnackInTime(context, text: "录音存储路径：$path");
-            },
-          ),
-          SizedBox(height: 35),
-          Text("简易版录音器"),
-          SizedBox(height: 35),
-          JAudioRecord.simple(
-            onRecordFinish: (String path) {
-              jCommon.popups.snack
-                  .showSnackInTime(context, text: "录音存储路径：$path");
-            },
-          ),
-        ],
+            SizedBox(height: 35),
+            Text("简易版音频播放器"),
+            SizedBox(height: 35),
+            JAudioPlayer.simple(
+              dataSource: DataSource.net(audioSourceUrl),
+              controller: playerControllerSimple,
+            ),
+            SizedBox(height: 35),
+            Text("完全版录音器"),
+            SizedBox(height: 35),
+            JAudioRecord.full(
+              onRecordFinish: (String path) {
+                jCommon.popups.snack
+                    .showSnackInTime(context, text: "录音存储路径：$path");
+              },
+            ),
+            SizedBox(height: 35),
+            Text("简易版录音器"),
+            SizedBox(height: 35),
+            JAudioRecord.simple(
+              onRecordFinish: (String path) {
+                jCommon.popups.snack
+                    .showSnackInTime(context, text: "录音存储路径：$path");
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

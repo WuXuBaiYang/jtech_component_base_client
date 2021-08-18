@@ -55,6 +55,7 @@ void main() {
 class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
+    "音频组件": "/test/audio_demo",
     "按钮组件": "/test/button",
     "列表组件": "/test/listview",
     "弹层组件": "/test/popups",
@@ -67,7 +68,6 @@ class MyHomePage extends BaseStatelessPage {
     "工具方法": "/test/tools_demo",
     "摄像头": "/test/camera",
     "视频播放器组件": "/test/video_player_demo",
-    "音频组件": "/test/audio_demo",
   };
 
   @override
