@@ -29,22 +29,25 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
     double? elevation,
-    Duration? maxDuration,
     OnRecordFinish? onRecordFinish,
     //完整版录音器参数
     FullAudioRecordConfig? fullConfig,
+    Widget? title,
+    EdgeInsetsGeometry? titlePadding,
   }) {
     return JAudioRecord(
       controller: controller ?? JAudioRecordController(),
-      currentState: JAudioRecordFullState(
-        config: (fullConfig ?? FullAudioRecordConfig()).copyWith(),
-      ),
       config: (config ?? AudioRecordConfig()).copyWith(
         margin: margin,
         padding: padding,
         elevation: elevation,
-        maxDuration: maxDuration,
         onRecordFinish: onRecordFinish,
+      ),
+      currentState: JAudioRecordFullState(
+        config: (fullConfig ?? FullAudioRecordConfig()).copyWith(
+          title: title,
+          titlePadding: titlePadding,
+        ),
       ),
     );
   }
@@ -67,7 +70,6 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
         margin: margin,
         padding: padding ?? EdgeInsets.all(8),
         elevation: elevation,
-        maxDuration: maxDuration,
         onRecordFinish: onRecordFinish,
       ),
     );
@@ -101,11 +103,31 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
   //构建音频录音器容器
   Widget buildAudioContent(BuildContext context);
 
+  //构建进度相关组件
+  Widget buildRecordProgress() {
+    return StreamBuilder<AudioProgress>(
+      stream: widget.controller.onProgress,
+      initialData: AudioProgress.zero(),
+      builder: (context, snap) {
+        var curr = snap.data!.position;
+        var max = snap.data!.duration;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(height: 12),
+            buildProgressBar(curr, max),
+            buildProgressLabel(curr, max)
+          ],
+        );
+      },
+    );
+  }
+
   //创建进度条
-  Widget buildProgressBar(Duration curr) {
+  Widget buildProgressBar(Duration curr, Duration max) {
     bool isStopped = widget.controller.isStopped;
     var color = isStopped ? Colors.grey : null;
-    var ratio = curr.divide(widget.config.maxDuration);
+    var ratio = curr.divide(max);
     return RotatedBox(
       quarterTurns: 90,
       child: LinearProgressIndicator(
@@ -117,9 +139,13 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
   }
 
   //创建进度文字提示
-  Widget buildProgressLabel(Duration curr, {TextStyle? textStyle}) {
+  Widget buildProgressLabel(
+    Duration curr,
+    Duration max, {
+    TextStyle? textStyle,
+  }) {
     var fCurr = jDurationFormat.formatMMSS(curr);
-    var fMax = jDurationFormat.formatMMSS(widget.config.maxDuration);
+    var fMax = jDurationFormat.formatMMSS(max);
     return Text(
       "$fCurr/$fMax",
       style: textStyle ?? TextStyle(fontSize: 12, color: Colors.grey),

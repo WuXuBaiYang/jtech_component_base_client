@@ -28,8 +28,7 @@ class JAudioPlayerController extends BaseController {
   final ValueChangeNotifier<bool> _speakerToggle;
 
   //播放进度管理
-  final StreamController<PlayProgress> _positionController =
-      StreamController<PlayProgress>.broadcast();
+  final StreamController<AudioProgress> _positionController;
 
   JAudioPlayerController({
     double volume = 1.0,
@@ -39,7 +38,8 @@ class JAudioPlayerController extends BaseController {
         this._speakerToggle = ValueChangeNotifier(isSpeaker),
         this._audioVolume = ValueChangeNotifier(volume),
         this._audioSpeed = ValueChangeNotifier(speed),
-        this._audioState = ValueChangeNotifier(AudioState.stopped) {
+        this._audioState = ValueChangeNotifier(AudioState.stopped),
+        this._positionController = StreamController<AudioProgress>.broadcast() {
     //设置扬声器播放状态
     _player.playingRouteState =
         isSpeakerPlay ? PlayingRoute.SPEAKERS : PlayingRoute.EARPIECE;
@@ -47,9 +47,9 @@ class JAudioPlayerController extends BaseController {
     _player.onNotificationPlayerStateChanged
         .listen((event) => _onStateChange(event));
     _player.onPlayerStateChanged.listen((event) => _onStateChange(event));
-    _player.onDurationChanged.listen((event) => this._audioDuration = event);
+    _player.onDurationChanged.listen((event) => this._maxDuration = event);
     _player.onAudioPositionChanged.listen((event) => _positionController
-        .add(PlayProgress.from(duration: _audioDuration, position: event)));
+        .add(AudioProgress.from(duration: _maxDuration, position: event)));
   }
 
   //获取播放器状态监听器
@@ -83,10 +83,10 @@ class JAudioPlayerController extends BaseController {
   bool get isStopped => _audioState.value == AudioState.stopped;
 
   //获取播放进度
-  Stream<PlayProgress> get onProgress => _positionController.stream;
+  Stream<AudioProgress> get onProgress => _positionController.stream;
 
   //记录音频总时长
-  Duration _audioDuration = Duration.zero;
+  Duration _maxDuration = Duration.zero;
 
   //开始播放
   Future<bool> startPlay({
@@ -144,7 +144,7 @@ class JAudioPlayerController extends BaseController {
 
   //拖动播放进度
   Future<bool> seekToPlay(Duration duration) async {
-    if (isStopped || duration.greaterThan(_audioDuration)) return false;
+    if (isStopped || duration.greaterThan(_maxDuration)) return false;
     var result = await _player.seek(duration);
     return _setupSuccess(result);
   }
@@ -193,7 +193,7 @@ class JAudioPlayerController extends BaseController {
   _onStateChange(PlayerState event) async {
     switch (event) {
       case PlayerState.STOPPED:
-        _positionController.add(PlayProgress.zero());
+        _positionController.add(AudioProgress.zero());
         _audioState.setValue(AudioState.stopped);
         break;
       case PlayerState.PLAYING:
@@ -220,11 +220,11 @@ class JAudioPlayerController extends BaseController {
 }
 
 /*
-* 播放进度对象
+* 进度对象
 * @author jtechjh
 * @Time 2021/8/9 5:42 下午
 */
-class PlayProgress {
+class AudioProgress {
   //音频总时长
   final Duration duration;
 
@@ -237,11 +237,11 @@ class PlayProgress {
   //获取播放进度
   double get ratio => position.divide(duration);
 
-  PlayProgress.zero()
+  AudioProgress.zero()
       : this.duration = Duration.zero,
         this.position = Duration.zero;
 
-  PlayProgress.from({
+  AudioProgress.from({
     required this.duration,
     required this.position,
   });

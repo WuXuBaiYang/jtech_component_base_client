@@ -26,9 +26,6 @@ class AudioRecordConfig extends BaseConfig {
   //录制结束回调
   final OnRecordFinish? onRecordFinish;
 
-  //最大可录制时长
-  final Duration maxDuration;
-
   //文件存储路径(自定义存储路径时，不需要指定文件类型)
   final String? savePath;
 
@@ -38,7 +35,6 @@ class AudioRecordConfig extends BaseConfig {
     this.elevation = 8.0,
     this.backgroundColor = Colors.white,
     this.onRecordFinish,
-    this.maxDuration = const Duration(seconds: 60),
     this.savePath,
   });
 
@@ -49,7 +45,6 @@ class AudioRecordConfig extends BaseConfig {
     double? elevation,
     Color? backgroundColor,
     OnRecordFinish? onRecordFinish,
-    Duration? maxDuration,
     String? savePath,
   }) {
     return AudioRecordConfig(
@@ -58,7 +53,6 @@ class AudioRecordConfig extends BaseConfig {
       elevation: elevation ?? this.elevation,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       onRecordFinish: onRecordFinish ?? this.onRecordFinish,
-      maxDuration: maxDuration ?? this.maxDuration,
       savePath: savePath ?? this.savePath,
     );
   }

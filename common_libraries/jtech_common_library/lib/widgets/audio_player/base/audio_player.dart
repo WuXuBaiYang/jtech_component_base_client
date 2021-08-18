@@ -140,6 +140,27 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
     );
   }
 
+  //构建播放器进度部分
+  Widget buildPlayerProgress() {
+    return StreamBuilder<AudioProgress>(
+      initialData: AudioProgress.zero(),
+      stream: widget.controller.onProgress,
+      builder: (context, snap) {
+        if (!snap.hasData) return EmptyBox();
+        var max = snap.data!.duration;
+        var curr = snap.data!.position;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(height: 12),
+            buildProgressSlider(snap.data!.ratio, max),
+            buildProgressLabel(curr, max),
+          ],
+        );
+      },
+    );
+  }
+
   //构建播放按钮
   Widget buildPlayButton(AudioState state,
       {double iconSize = 60, Color? iconColor}) {

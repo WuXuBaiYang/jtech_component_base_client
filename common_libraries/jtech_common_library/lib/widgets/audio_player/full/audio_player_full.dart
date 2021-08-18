@@ -20,7 +20,7 @@ class JAudioPlayerFullState extends BaseJAudioPlayerState {
     return Column(
       children: [
         _buildTitleContent(),
-        _buildProgressSlider(),
+        buildPlayerProgress(),
         _buildPlayerOptions(),
       ],
     );
@@ -37,26 +37,6 @@ class JAudioPlayerFullState extends BaseJAudioPlayerState {
           _buildSpeakerToggleAction(),
         ],
       ),
-    );
-  }
-
-  //构建播放器进度部分
-  Widget _buildProgressSlider() {
-    return StreamBuilder<PlayProgress>(
-      initialData: PlayProgress.zero(),
-      stream: widget.controller.onProgress,
-      builder: (context, snap) {
-        if (!snap.hasData) return EmptyBox();
-        var max = snap.data!.duration;
-        var curr = snap.data!.position;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            buildProgressSlider(snap.data!.ratio, max),
-            buildProgressLabel(curr, max),
-          ],
-        );
-      },
     );
   }
 

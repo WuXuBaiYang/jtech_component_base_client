@@ -22,6 +22,12 @@ class JAudioRecordController extends BaseController {
   //最大可录音数量
   final int _maxRecordCount;
 
+  //最大录制时长
+  final Duration _maxDuration;
+
+  //录音进度管理
+  final StreamController<AudioProgress> _positionController;
+
   //判断当前是否正在录音
   bool get isRecording => _audioState.value == AudioState.progressing;
 
@@ -40,17 +46,24 @@ class JAudioRecordController extends BaseController {
   //移除已有文件记录
   void removeRecordFile(JFileInfo fileInfo) => _audioList.removeValue(fileInfo);
 
-  JAudioRecordController({int maxRecordCount = 1})
-      : this._recorder = Record(),
+  JAudioRecordController({
+    int maxRecordCount = 1,
+    Duration maxDuration = const Duration(seconds: 60),
+  })  : this._recorder = Record(),
+        this._maxDuration = maxDuration,
         this._maxRecordCount = maxRecordCount,
         this._audioList = ListValueChangeNotifier.empty(),
-        this._audioState = ValueChangeNotifier(AudioState.stopped);
+        this._audioState = ValueChangeNotifier(AudioState.stopped),
+        this._positionController = StreamController<AudioProgress>.broadcast();
 
   //获取录音器状态监听器
   ValueListenable<AudioState> get audioStateListenable => _audioState;
 
   //录音文件集合变化监听
   ValueListenable<List<JFileInfo>> get audioListListenable => _audioList;
+
+  //录音进度
+  Stream<AudioProgress> get onProgress => _positionController.stream;
 
   //启动录制
   Future<void> startRecord(
@@ -74,6 +87,7 @@ class JAudioRecordController extends BaseController {
         samplingRate: 44100.0,
       );
       _audioState.setValue(AudioState.progressing);
+      _startTimer();
     }
   }
 
@@ -82,6 +96,7 @@ class JAudioRecordController extends BaseController {
     if (isRecording) {
       await _recorder.pause();
       _audioState.setValue(AudioState.pause);
+      _cancelTimer();
     }
   }
 
@@ -90,6 +105,7 @@ class JAudioRecordController extends BaseController {
     if (isPause) {
       await _recorder.resume();
       _audioState.setValue(AudioState.progressing);
+      _startTimer();
     }
   }
 
@@ -103,8 +119,40 @@ class JAudioRecordController extends BaseController {
       ]);
     }
     _audioState.setValue(AudioState.stopped);
+    _recordDuration = Duration.zero;
+    _cancelTimer();
+    _updateAudioProgress(_recordDuration, _maxDuration);
     return result;
   }
+
+  //记录计时器id
+  String _timerKey = "";
+
+  //记录已录制时间
+  Duration _recordDuration = Duration.zero;
+
+  //启动计时器
+  void _startTimer() {
+    _timerKey = jTimer.countdown(
+      maxDuration: _maxDuration.subtract(_recordDuration),
+      callback: (remaining, passTime) {
+        _recordDuration = passTime;
+        _updateAudioProgress(_recordDuration, _maxDuration);
+      },
+      onFinish: () => stopRecord(),
+    );
+    _updateAudioProgress(_recordDuration, _maxDuration);
+  }
+
+  //更新进度
+  void _updateAudioProgress(Duration position, Duration duration) =>
+      _positionController.add(AudioProgress.from(
+        position: position,
+        duration: duration,
+      ));
+
+  //取消计时器
+  void _cancelTimer() => jTimer.cancel(_timerKey);
 
   @override
   void addListener(VoidCallback listener) {
@@ -118,5 +166,6 @@ class JAudioRecordController extends BaseController {
     //销毁录音器
     _recorder.dispose();
     _audioList.clear();
+    _cancelTimer();
   }
 }

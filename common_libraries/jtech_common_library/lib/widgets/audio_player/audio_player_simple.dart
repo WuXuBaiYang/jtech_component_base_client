@@ -13,7 +13,7 @@ class JAudioPlayerSimpleState extends BaseJAudioPlayerState {
     return Row(
       children: [
         _buildPlayOptions(),
-        Expanded(child: _buildPlayProgress()),
+        Expanded(child: buildPlayerProgress()),
       ],
     );
   }
@@ -24,27 +24,6 @@ class JAudioPlayerSimpleState extends BaseJAudioPlayerState {
       valueListenable: widget.controller.audioStateListenable,
       builder: (context, value, child) {
         return buildPlayButton(value, iconSize: 35);
-      },
-    );
-  }
-
-  //构建播放器进度部分
-  Widget _buildPlayProgress() {
-    return StreamBuilder<PlayProgress>(
-      initialData: PlayProgress.zero(),
-      stream: widget.controller.onProgress,
-      builder: (context, snap) {
-        if (!snap.hasData) return EmptyBox();
-        var max = snap.data!.duration;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SizedBox(height: 12),
-            buildProgressSlider(snap.data!.ratio, max),
-            buildProgressLabel(snap.data!.position, max,
-                textStyle: TextStyle(fontSize: 10)),
-          ],
-        );
       },
     );
   }
