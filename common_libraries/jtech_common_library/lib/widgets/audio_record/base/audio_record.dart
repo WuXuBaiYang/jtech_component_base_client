@@ -157,6 +157,67 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
     );
   }
 
+  //构建录音文件列表按钮
+  Widget buildRecordListButton(BuildContext context) {
+    return ValueListenableBuilder<List<JFileInfo>>(
+      valueListenable: widget.controller.audioListListenable,
+      builder: (context, value, child) {
+        return Visibility(
+          visible: value.isNotEmpty,
+          child: IconButton(
+            icon: Icon(Icons.history_rounded),
+            onPressed: () => _showRecordListPopup(context),
+          ),
+        );
+      },
+    );
+  }
+
+  //展示录音列表弹窗
+  void _showRecordListPopup(BuildContext context) => jDialog.showCustomDialog(
+        context,
+        config: DialogConfig(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          margin: EdgeInsets.all(15),
+          content: ValueListenableBuilder<List<JFileInfo>>(
+            valueListenable: widget.controller.audioListListenable,
+            builder: (context, value, child) => ListView.separated(
+              shrinkWrap: true,
+              itemCount: value.length,
+              separatorBuilder: (_, __) => Divider(),
+              itemBuilder: (_, index) {
+                var item = value[index];
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item.name ?? ""),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: JAudioPlayer.simple(
+                          dataSource: DataSource.file(item.file),
+                          elevation: 0,
+                        )),
+                        IconButton(
+                          icon: Icon(Icons.delete_outline_rounded),
+                          onPressed: () {
+                            widget.controller.removeRecordFile(item);
+                            if (widget.controller.audioFiles.isEmpty) {
+                              jRouter.pop();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
   @override
   void dispose() {
     super.dispose();
