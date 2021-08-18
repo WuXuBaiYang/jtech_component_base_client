@@ -35,7 +35,7 @@ class JAudioRecordSimpleState extends BaseJAudioRecordState {
               visible: value != AudioState.stopped,
               child: IconButton(
                 icon: Icon(Icons.stop),
-                onPressed: () => widget.controller.stopRecord(),
+                onPressed: () => widget.controller.stop(),
               ),
             )
           ],

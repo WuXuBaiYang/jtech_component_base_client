@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/audio_player/audio_player_simple.dart';
 
 /*
 * 音频播放器
@@ -110,7 +109,7 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
 
   //创建进度拖动/指示条
   Widget buildProgressSlider(double ratio, Duration max) {
-    bool isPlaying = widget.controller.isPlaying;
+    bool isPlaying = widget.controller.isProgressing;
     if (max.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 22, horizontal: 24),
@@ -172,15 +171,15 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
       color: iconColor,
       onPressed: () async {
         if (state == AudioState.stopped) {
-          await widget.controller.startPlay(
+          await widget.controller.start(
             fromURI: widget.dataSource.audioURI,
             fromDataBuffer: await widget.dataSource.audioData,
             startAt: widget.config.startAt,
           );
         } else if (state == AudioState.progressing) {
-          await widget.controller.pausePlay();
+          await widget.controller.pause();
         } else if (state == AudioState.pause) {
-          await widget.controller.resumePlay();
+          await widget.controller.resume();
         }
       },
     );

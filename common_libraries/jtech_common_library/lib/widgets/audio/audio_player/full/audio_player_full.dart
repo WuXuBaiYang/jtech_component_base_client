@@ -56,7 +56,7 @@ class JAudioPlayerFullState extends BaseJAudioPlayerState {
                     visible: value != AudioState.stopped,
                     child: IconButton(
                       icon: Icon(Icons.stop),
-                      onPressed: () => widget.controller.stopPlay(),
+                      onPressed: () => widget.controller.stop(),
                     ),
                   ),
                   Expanded(child: EmptyBox()),

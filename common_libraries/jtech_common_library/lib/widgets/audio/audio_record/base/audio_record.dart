@@ -170,14 +170,14 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
           if (widget.controller.hasMaxCount) {
             return jToast.showShortToastTxt(context, text: "已达到最大数量限制");
           }
-          await widget.controller.startRecord(
+          await widget.controller.start(
             context,
             path: await widget.getFilePath(),
           );
         } else if (state == AudioState.progressing) {
-          await widget.controller.pauseRecord();
+          await widget.controller.pause();
         } else if (state == AudioState.pause) {
-          await widget.controller.resumeRecord();
+          await widget.controller.resume();
         }
       },
     );

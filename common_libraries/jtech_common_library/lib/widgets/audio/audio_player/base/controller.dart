@@ -11,12 +11,9 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author jtechjh
 * @Time 2021/8/9 5:35 下午
 */
-class JAudioPlayerController extends BaseController {
+class JAudioPlayerController extends BaseAudioController {
   //播放器对象
   final AudioPlayer _player;
-
-  //播放器状态管理
-  final ValueChangeNotifier<AudioState> _audioState;
 
   //音量控制
   final ValueChangeNotifier<double> _audioVolume;
@@ -26,34 +23,6 @@ class JAudioPlayerController extends BaseController {
 
   //扬声器听筒切换状态
   final ValueChangeNotifier<bool> _speakerToggle;
-
-  //播放进度管理
-  final StreamController<AudioProgress> _positionController;
-
-  JAudioPlayerController({
-    double volume = 1.0,
-    double speed = 1.0,
-    bool isSpeaker = true,
-  })  : this._player = AudioPlayer(),
-        this._speakerToggle = ValueChangeNotifier(isSpeaker),
-        this._audioVolume = ValueChangeNotifier(volume),
-        this._audioSpeed = ValueChangeNotifier(speed),
-        this._audioState = ValueChangeNotifier(AudioState.stopped),
-        this._positionController = StreamController<AudioProgress>.broadcast() {
-    //设置扬声器播放状态
-    _player.playingRouteState =
-        isSpeakerPlay ? PlayingRoute.SPEAKERS : PlayingRoute.EARPIECE;
-    //监听播放器状态变化
-    _player.onNotificationPlayerStateChanged
-        .listen((event) => _onStateChange(event));
-    _player.onPlayerStateChanged.listen((event) => _onStateChange(event));
-    _player.onDurationChanged.listen((event) => this._maxDuration = event);
-    _player.onAudioPositionChanged.listen((event) => _positionController
-        .add(AudioProgress.from(duration: _maxDuration, position: event)));
-  }
-
-  //获取播放器状态监听器
-  ValueListenable<AudioState> get audioStateListenable => _audioState;
 
   //获取播放器音量监听器
   ValueListenable<double> get audioVolumeListenable => _audioVolume;
@@ -73,23 +42,31 @@ class JAudioPlayerController extends BaseController {
   //获取当前扬声器播放状态
   bool get isSpeakerPlay => _speakerToggle.value;
 
-  //判断当前是否正在播放
-  bool get isPlaying => _audioState.value == AudioState.progressing;
-
-  //判断当前是否正在暂停
-  bool get isPause => _audioState.value == AudioState.pause;
-
-  //判断当前是否停止
-  bool get isStopped => _audioState.value == AudioState.stopped;
-
-  //获取播放进度
-  Stream<AudioProgress> get onProgress => _positionController.stream;
-
   //记录音频总时长
   Duration _maxDuration = Duration.zero;
 
+  JAudioPlayerController({
+    double volume = 1.0,
+    double speed = 1.0,
+    bool isSpeaker = true,
+  })  : this._player = AudioPlayer(),
+        this._speakerToggle = ValueChangeNotifier(isSpeaker),
+        this._audioVolume = ValueChangeNotifier(volume),
+        this._audioSpeed = ValueChangeNotifier(speed) {
+    //设置扬声器播放状态
+    _player.playingRouteState =
+        isSpeakerPlay ? PlayingRoute.SPEAKERS : PlayingRoute.EARPIECE;
+    //监听播放器状态变化
+    _player.onNotificationPlayerStateChanged
+        .listen((event) => _onStateChange(event));
+    _player.onPlayerStateChanged.listen((event) => _onStateChange(event));
+    _player.onDurationChanged.listen((event) => this._maxDuration = event);
+    _player.onAudioPositionChanged.listen((event) => updateAudioProgress(
+        AudioProgress.from(duration: _maxDuration, position: event)));
+  }
+
   //开始播放
-  Future<bool> startPlay({
+  Future<bool> start({
     String? fromURI,
     Uint8List? fromDataBuffer,
     Duration startAt = Duration.zero,
@@ -113,33 +90,33 @@ class JAudioPlayerController extends BaseController {
         );
       }
       if (_setupSuccess(result)) {
-        return _audioState.setValue(AudioState.progressing);
+        return updateAudioState(AudioState.progressing);
       }
     }
     return false;
   }
 
   //暂停播放
-  Future<void> pausePlay() async {
-    if (isPlaying) {
+  Future<void> pause() async {
+    if (isProgressing) {
       var result = await _player.pause();
-      if (_setupSuccess(result)) _audioState.setValue(AudioState.pause);
+      if (_setupSuccess(result)) updateAudioState(AudioState.pause);
     }
   }
 
   //恢复播放
-  Future<void> resumePlay() async {
+  Future<void> resume() async {
     if (isPause) {
       var result = await _player.resume();
-      if (_setupSuccess(result)) _audioState.setValue(AudioState.progressing);
+      if (_setupSuccess(result)) updateAudioState(AudioState.progressing);
     }
   }
 
   //停止播放
-  Future<void> stopPlay() async {
+  Future<void> stop() async {
     if (isStopped) return;
     var result = await _player.stop();
-    if (_setupSuccess(result)) _audioState.setValue(AudioState.stopped);
+    if (_setupSuccess(result)) updateAudioState(AudioState.stopped);
   }
 
   //拖动播放进度
@@ -183,29 +160,28 @@ class JAudioPlayerController extends BaseController {
 
   @override
   void addListener(VoidCallback listener) {
-    _audioState.addListener(listener);
+    super.addListener(listener);
     _audioVolume.addListener(listener);
     _audioSpeed.addListener(listener);
-    super.addListener(listener);
   }
 
   //播放器状态变化
   _onStateChange(PlayerState event) async {
     switch (event) {
       case PlayerState.STOPPED:
-        _positionController.add(AudioProgress.zero());
-        _audioState.setValue(AudioState.stopped);
+        updateAudioProgress(AudioProgress.zero());
+        updateAudioState(AudioState.stopped);
         break;
       case PlayerState.PLAYING:
-        _audioState.setValue(AudioState.progressing);
+        updateAudioState(AudioState.progressing);
         break;
       case PlayerState.PAUSED:
-        _audioState.setValue(AudioState.pause);
+        updateAudioState(AudioState.pause);
         break;
       case PlayerState.COMPLETED:
         var result = await _player.release();
         if (_setupSuccess(result)) {
-          _audioState.setValue(AudioState.stopped);
+          updateAudioState(AudioState.stopped);
         }
         break;
     }
@@ -217,43 +193,4 @@ class JAudioPlayerController extends BaseController {
     //销毁控制器
     _player.dispose();
   }
-}
-
-/*
-* 进度对象
-* @author jtechjh
-* @Time 2021/8/9 5:42 下午
-*/
-class AudioProgress {
-  //音频总时长
-  final Duration duration;
-
-  //当前播放时长
-  final Duration position;
-
-  //判断总播放时长是否为空
-  bool get isEmpty => duration.inMicroseconds == 0;
-
-  //获取播放进度
-  double get ratio => position.divide(duration);
-
-  AudioProgress.zero()
-      : this.duration = Duration.zero,
-        this.position = Duration.zero;
-
-  AudioProgress.from({
-    required this.duration,
-    required this.position,
-  });
-}
-
-/*
-* 音频状态管理
-* @author jtechjh
-* @Time 2021/8/10 1:19 下午
-*/
-enum AudioState {
-  progressing,
-  stopped,
-  pause,
 }
