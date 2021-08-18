@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:jtech_base_library/jbase.dart';
@@ -33,6 +34,9 @@ class JTools extends BaseManage {
   //权限管理
   final permission = JPermission();
 
+  //文件选择器
+  final filePicker = JFilePicker();
+
   @override
   Future<void> init() async {
     //初始化日期格式化
@@ -47,6 +51,8 @@ class JTools extends BaseManage {
     await timer.init();
     //初始化权限管理
     await permission.init();
+    //初始化文件选择器
+    await filePicker.init();
   }
 
   //生成id
@@ -58,6 +64,12 @@ class JTools extends BaseManage {
   //生成时间戳签名
   String getDateSign() =>
       dataFormat.format("yyyyMMddHHmmssSSS", DateTime.now());
+
+  //获取视频缩略图
+  Future<File> getVideoThumbnail(File file) async {
+    ///待实现
+    return file;
+  }
 }
 
 //单例调用

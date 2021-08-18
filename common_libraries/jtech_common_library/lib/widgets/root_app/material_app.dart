@@ -44,7 +44,7 @@ class MaterialAPPRoot extends BaseStatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: title,
-        navigatorKey: jBase.router.navigateKey,
+        navigatorKey: jRouter.navigateKey,
         theme: theme ?? ThemeData.light(),
         locale: locale ?? const Locale('zh', ''),
         localizationsDelegates: [

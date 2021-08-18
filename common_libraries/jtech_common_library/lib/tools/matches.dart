@@ -41,7 +41,7 @@ class JMatches extends BaseManage {
 
   //判断是否为音频类型
   bool isAudioFile(String string) =>
-      hasMatch(RegExp(r'.mp3|.aac'), string: string);
+      hasMatch(RegExp(r'.mp3|.aac|.m4a'), string: string);
 
   //判断是否存在匹配内容
   bool hasMatch(Pattern pattern, {required String string}) =>

@@ -156,7 +156,7 @@ class RecordVideoPageState extends BaseCameraPageState {
               }
               var item = fileList.getItem(index - offset);
               return FutureBuilder<File>(
-                future: item!.getVideoThumbnail(),
+                future: jTools.getVideoThumbnail(item!.file),
                 builder: (_, snap) {
                   if (!snap.hasData) return EmptyBox();
                   return _buildPreviewIndicatorItem(

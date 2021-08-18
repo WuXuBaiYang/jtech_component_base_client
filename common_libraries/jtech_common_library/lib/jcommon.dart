@@ -35,6 +35,13 @@ export 'tools/file_picker/pages/camera_page.dart';
 export 'tools/file_picker/pages/record_video_page.dart';
 export 'tools/file_picker/pages/take_photo_page.dart';
 export 'tools/file_picker/config.dart';
+export 'tools/file_picker/picker.dart';
+export 'tools/file_picker/process/process.dart';
+export 'tools/file_picker/process/image/compress.dart';
+export 'tools/file_picker/process/image/crop.dart';
+export 'tools/file_picker/process/image/image.dart';
+export 'tools/file_picker/process/video/compress.dart';
+export 'tools/file_picker/process/video/video.dart';
 export 'tools/permission/config.dart';
 export 'tools/permission/permission.dart';
 

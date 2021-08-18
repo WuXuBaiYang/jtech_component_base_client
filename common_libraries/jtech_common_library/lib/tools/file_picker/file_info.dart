@@ -6,7 +6,28 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author jtechjh
 * @Time 2021/7/30 5:42 下午
 */
-class JPickerResult {}
+class JPickerResult {
+  //已选择文件集合
+  final List<JFileInfo> files;
+
+  JPickerResult({
+    required this.files,
+  });
+
+  //判断是否为空
+  bool get isEmpty => files.isEmpty;
+
+  //判断是否为单文件
+  bool get isSingle => files.length == 1;
+
+  //获取文件数量
+  int get length => files.length;
+
+  //获取单文件
+  JFileInfo? get singleFile {
+    if (isSingle) return files.first;
+  }
+}
 
 /*
 * 单文件信息
@@ -50,18 +71,9 @@ class JFileInfo {
   //判断文件类型是否为图片
   bool get isImageType => jMatches.isImageFile(path);
 
-  //获取图片缩略图
-  Future<File> getImageThumbnail() async {
-    ///待完成
-    return File(path);
-  }
-
   //判断文件类型是否为视频
   bool get isVideoType => jMatches.isVideoFile(path);
 
-  //获取视频缩略图
-  Future<File> getVideoThumbnail() async {
-    ///待完成
-    return File(path);
-  }
+  //判断文件类型是否为音频
+  bool get isAudioType => jMatches.isAudioFile(path);
 }
