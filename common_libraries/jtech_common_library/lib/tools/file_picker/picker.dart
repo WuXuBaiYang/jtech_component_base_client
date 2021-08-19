@@ -34,6 +34,7 @@ class JFilePicker extends BaseManage {
     return jSheet.showMenuBottomSheet<JPickerResult, PickerMenuItem>(
       context,
       items: items,
+      canScroll: false,
       onItemTap: (item, _) async {
         jRouter.pop(await _doPick(context, item, maxCount));
       },

@@ -101,6 +101,7 @@ class JSheet extends BaseManage {
     bool showDivider = true,
     OnMenuItemTap<T>? onItemTap,
     OnMenuItemLongPress<T>? onItemLongPress,
+    bool canScroll = true,
   }) {
     return showCustomBottomSheet<V>(
       context,
@@ -111,6 +112,7 @@ class JSheet extends BaseManage {
           separatorBuilder: (_, __) => showDivider ? Divider() : EmptyBox(),
           padding: EdgeInsets.zero,
           itemCount: items.length,
+          physics: canScroll ? null : NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (_, index) {
             var item = items[index];
@@ -122,7 +124,7 @@ class JSheet extends BaseManage {
                 onItemTap?.call(item, index);
                 item.onTap?.call();
               },
-              onLongPress:(){
+              onLongPress: () {
                 onItemLongPress?.call(item, index);
                 item.onLongPress?.call();
               },
