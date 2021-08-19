@@ -5,4 +5,9 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author jtechjh
 * @Time 2021/8/18 4:39 下午
 */
-class VideoCompress extends BaseVideoProcess {}
+class VideoCompress extends BaseVideoProcess {
+  @override
+  Future<JFileInfo> process(JFileInfo fileInfo) async {
+    return fileInfo;
+  }
+}

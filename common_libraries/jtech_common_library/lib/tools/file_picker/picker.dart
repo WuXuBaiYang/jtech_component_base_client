@@ -271,8 +271,25 @@ class JFilePicker extends BaseManage {
         break;
     }
     if (null != files && files.isNotEmpty) {
+      files = await _processFiles(files, item);
       return JPickerResult(files: files);
     }
+  }
+
+  //处理文件
+  Future<List<JFileInfo>> _processFiles(
+    List<JFileInfo> files,
+    PickerMenuItem item,
+  ) async {
+    var process = item.process;
+    if (null == process || process.isEmpty) return files;
+    List<JFileInfo> tempList = [];
+    for (var f in files) {
+      for (var p in process) {
+        tempList.add(await p.process(f));
+      }
+    }
+    return tempList;
   }
 
   //选择文件方法

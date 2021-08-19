@@ -5,4 +5,9 @@ import 'package:jtech_common_library/jcommon.dart';
 * @author jtechjh
 * @Time 2021/8/18 4:40 下午
 */
-class ImageCrop extends BaseImageProcess {}
+class ImageCrop extends BaseImageProcess {
+  @override
+  Future<JFileInfo> process(JFileInfo fileInfo)async {
+    return fileInfo;
+  }
+}
