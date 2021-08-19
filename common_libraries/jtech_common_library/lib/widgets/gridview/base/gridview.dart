@@ -110,6 +110,7 @@ class JGridView<T extends JListViewController<V>, V>
     Alignment deleteAlign = Alignment.topRight,
     bool canScroll = true,
     required List<PickerMenuItem> menuItems,
+    OnAccessoryFilePreview? onFilePreview,
   }) {
     return JGridView<JAccessoryGridViewController<JFileInfo>, JFileInfo>(
       controller: controller ?? JAccessoryGridViewController(),
@@ -122,6 +123,7 @@ class JGridView<T extends JListViewController<V>, V>
         deleteAlign: deleteAlign,
         canScroll: canScroll,
         menuItems: menuItems,
+        onFilePreview: onFilePreview,
       ),
       config: (config ?? GridViewConfig()).copyWith(
         itemTap: itemTap,

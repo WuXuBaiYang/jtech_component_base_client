@@ -3,6 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
+//附件预览回调，
+//返回true则使用预设方法，如无预设方法则没有任何反应,
+//返回false则不会使用预设方法，需要使用者自行实现预览功能
+typedef OnAccessoryFilePreview = bool Function(
+    JFileInfo item, int totalCount, int index);
+
 /*
 * 刷新表格组件
 * @author wuxubaiyang
@@ -29,7 +35,13 @@ class JAccessoryRefreshState extends BaseJGridViewState<
   final List<PickerMenuItem> menuItems;
 
   //子项默认内间距
-  final EdgeInsets itemPadding = EdgeInsets.all(15);
+  final EdgeInsets itemPadding;
+
+  //子项圆角
+  final BorderRadius itemRadius;
+
+  //附件预览回调
+  final OnAccessoryFilePreview? onFilePreview;
 
   JAccessoryRefreshState({
     this.maxCount = 9,
@@ -38,6 +50,9 @@ class JAccessoryRefreshState extends BaseJGridViewState<
     this.deleteAlign = Alignment.topRight,
     this.canScroll = true,
     required this.menuItems,
+    this.onFilePreview,
+    this.itemPadding = const EdgeInsets.all(15),
+    this.itemRadius = const BorderRadius.all(Radius.circular(8)),
   });
 
   @override
@@ -71,18 +86,17 @@ class JAccessoryRefreshState extends BaseJGridViewState<
 
   //构建附件添加子项
   Widget _buildGridItemAdd(BuildContext context, int index) {
-    var borderRadius = BorderRadius.circular(8);
     return Padding(
       padding: itemPadding,
       child: addButton ??
           Ink(
             decoration: BoxDecoration(
-                borderRadius: borderRadius,
+                borderRadius: itemRadius,
                 border: Border.all(
                   color: Colors.black26,
                 )),
             child: InkWell(
-              borderRadius: borderRadius,
+              borderRadius: itemRadius,
               child: Icon(
                 Icons.add_rounded,
                 size: 55,
