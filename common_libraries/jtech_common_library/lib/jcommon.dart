@@ -9,6 +9,7 @@ export 'base/base_config.dart';
 export 'base/base_controller.dart';
 export 'base/change_notifier.dart';
 export 'base/refresh_config.dart';
+export 'base/base_menu.dart';
 export 'package:path/path.dart';
 
 //导出弹层方法
@@ -42,6 +43,7 @@ export 'tools/file_picker/process/image/crop.dart';
 export 'tools/file_picker/process/image/image.dart';
 export 'tools/file_picker/process/video/compress.dart';
 export 'tools/file_picker/process/video/video.dart';
+export 'tools/file_picker/process/audio/audio.dart';
 export 'tools/permission/config.dart';
 export 'tools/permission/permission.dart';
 

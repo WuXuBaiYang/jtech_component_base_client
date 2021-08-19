@@ -4,6 +4,11 @@ import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'config.dart';
 
+//菜单点击事件
+typedef OnMenuItemTap<T> = void Function(T item, int index);
+//菜单长点击事件
+typedef OnMenuItemLongPress<T> = void Function(T item, int index);
+
 /*
 * 弹出窗口
 * @author wuxubaiyang
@@ -82,6 +87,49 @@ class JSheet extends BaseManage {
         confirmItem: confirmItem,
         confirmTap: confirmTap,
         inSafeArea: inSafeArea,
+      ),
+    );
+  }
+
+  //展示底部弹出菜单
+  Future<V?> showMenuBottomSheet<V, T extends MenuItem>(
+    BuildContext context, {
+    required List<T> items,
+    SheetConfig<V>? config,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
+    EdgeInsetsGeometry contentPadding = EdgeInsets.zero,
+    bool showDivider = true,
+    OnMenuItemTap<T>? onItemTap,
+    OnMenuItemLongPress<T>? onItemLongPress,
+  }) {
+    return showCustomBottomSheet<V>(
+      context,
+      config: (config ?? SheetConfig()).copyWith(
+        padding: padding,
+        contentPadding: contentPadding,
+        content: ListView.separated(
+          separatorBuilder: (_, __) => showDivider ? Divider() : EmptyBox(),
+          padding: EdgeInsets.zero,
+          itemCount: items.length,
+          shrinkWrap: true,
+          itemBuilder: (_, index) {
+            var item = items[index];
+            return ListTile(
+              leading: item.leading,
+              title: item.title,
+              subtitle: item.subTitle,
+              onTap: () {
+                onItemTap?.call(item, index);
+                item.onTap?.call();
+              },
+              onLongPress:(){
+                onItemLongPress?.call(item, index);
+                item.onLongPress?.call();
+              },
+              trailing: item.trailing,
+            );
+          },
+        ),
       ),
     );
   }

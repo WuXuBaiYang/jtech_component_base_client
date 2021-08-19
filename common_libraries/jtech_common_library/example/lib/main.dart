@@ -1,3 +1,4 @@
+import 'package:example/picker/picker_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tools/tools_page.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ void main() {
       "/test/camera": (_) => CameraDemo(),
       "/test/video_player_demo": (_) => VideoPlayerDemo(),
       "/test/audio_demo": (_) => AudioDemo(),
+      "/test/file_picker": (_) => FilePickerDemo(),
     },
     homePage: MyHomePage(),
   );
@@ -55,6 +57,7 @@ void main() {
 class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
+    "附件选择方法": "/test/file_picker",
     "音频组件": "/test/audio_demo",
     "按钮组件": "/test/button",
     "列表组件": "/test/listview",

@@ -28,26 +28,185 @@ class JFilePicker extends BaseManage {
     bool showSheetOnlyOne = false,
   }) async {
     if (items.isEmpty) return null;
-    if (showSheetOnlyOne && items.length == 1) {
+    if (!showSheetOnlyOne && items.length == 1) {
       return _doPick(context, items.first, maxCount);
     }
-    return jSheet.showCustomBottomSheet<JPickerResult>(
+    return jSheet.showMenuBottomSheet<JPickerResult, PickerMenuItem>(
       context,
-      config: SheetConfig(
-        content: ListView.separated(
-          separatorBuilder: (_, __) => Divider(),
-          itemCount: items.length,
-          itemBuilder: (_, index) {
-            var item = items[index];
-            return ListTile(
-              leading: item.leading,
-              title: item.title,
-              subtitle: item.subTitle,
-              onTap: () => _doPick(context, item, maxCount),
-            );
-          },
-        ),
-      ),
+      items: items,
+      onItemTap: (item, _) async {
+        jRouter.pop(await _doPick(context, item, maxCount));
+      },
+      contentPadding: EdgeInsets.symmetric(vertical: 15),
+    );
+  }
+
+  //图片选择方法
+  Future<JPickerResult?> pickImage(
+    BuildContext context, {
+    int maxCount = 1,
+    bool showSheetOnlyOne = false,
+    bool takePhoto = true,
+    //基础参数
+    Widget? title,
+    Widget? subTitle,
+    Widget? leading,
+    List<BaseImageProcess>? process,
+    List<String>? allowedExtensions,
+    VoidCallback? onTap,
+    //图片处理部分参数
+    bool compress = true,
+    bool crop = false,
+    CameraResolution? resolution,
+  }) {
+    List<PickerMenuItem> items = [
+      PickerMenuItem.image(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        allowedExtensions: allowedExtensions,
+        onTap: onTap,
+        compress: compress,
+        crop: crop,
+      )
+    ];
+    if (takePhoto) {
+      items.add(PickerMenuItem.imageTake(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        onTap: onTap,
+        compress: compress,
+        crop: crop,
+        resolution: resolution,
+      ));
+    }
+    return pick(
+      context,
+      items: items,
+      showSheetOnlyOne: showSheetOnlyOne,
+      maxCount: maxCount,
+    );
+  }
+
+  //视频选择方法
+  Future<JPickerResult?> pickVideo(
+    BuildContext context, {
+    int maxCount = 1,
+    bool showSheetOnlyOne = false,
+    bool recordVideo = true,
+    Duration? maxRecordDuration,
+    CameraResolution? resolution,
+    //基础参数
+    Widget? title,
+    Widget? subTitle,
+    Widget? leading,
+    List<BaseVideoProcess>? process,
+    List<String>? allowedExtensions,
+    VoidCallback? onTap,
+    //视频处理部分参数
+    bool compress = true,
+  }) {
+    List<PickerMenuItem> items = [
+      PickerMenuItem.video(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        allowedExtensions: allowedExtensions,
+        onTap: onTap,
+        compress: compress,
+      )
+    ];
+    if (recordVideo) {
+      items.add(PickerMenuItem.videoRecord(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        onTap: onTap,
+        compress: compress,
+        maxRecordDuration: maxRecordDuration,
+        resolution: resolution,
+      ));
+    }
+    return pick(
+      context,
+      items: items,
+      showSheetOnlyOne: showSheetOnlyOne,
+    );
+  }
+
+  //音频选择方法
+  Future<JPickerResult?> pickAudio(
+    BuildContext context, {
+    int maxCount = 1,
+    bool showSheetOnlyOne = false,
+    bool recordAudio = true,
+    Duration? maxRecordDuration,
+    //基础参数
+    Widget? title,
+    Widget? subTitle,
+    Widget? leading,
+    List<BaseAudioProcess>? process,
+    List<String>? allowedExtensions,
+    VoidCallback? onTap,
+  }) {
+    List<PickerMenuItem> items = [
+      PickerMenuItem.audio(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        allowedExtensions: allowedExtensions,
+        onTap: onTap,
+      )
+    ];
+    if (recordAudio) {
+      items.add(PickerMenuItem.audioRecord(
+        title: title,
+        subTitle: subTitle,
+        leading: leading,
+        process: process,
+        onTap: onTap,
+        maxRecordDuration: maxRecordDuration,
+      ));
+    }
+    return pick(
+      context,
+      items: items,
+      showSheetOnlyOne: showSheetOnlyOne,
+    );
+  }
+
+  //自定义文件选择方法
+  Future<JPickerResult?> pickCustom(
+    BuildContext context, {
+    int maxCount = 1,
+    bool showSheetOnlyOne = false,
+    //基础参数
+    Widget? title,
+    Widget? subTitle,
+    Widget? leading,
+    List<BaseAudioProcess>? process,
+    required List<String> allowedExtensions,
+    VoidCallback? onTap,
+  }) {
+    return pick(
+      context,
+      items: [
+        PickerMenuItem.custom(
+          title: title,
+          subTitle: subTitle,
+          leading: leading,
+          process: process,
+          allowedExtensions: allowedExtensions,
+          onTap: onTap,
+        )
+      ],
+      showSheetOnlyOne: showSheetOnlyOne,
     );
   }
 
@@ -57,7 +216,7 @@ class JFilePicker extends BaseManage {
     PickerMenuItem item,
     int maxCount,
   ) async {
-    item.onPress?.call();
+    item.onTap?.call();
     List<JFileInfo>? files;
     switch (item.type) {
       case PickerType.image:
