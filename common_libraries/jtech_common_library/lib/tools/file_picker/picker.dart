@@ -88,8 +88,8 @@ class JFilePicker extends BaseManage {
     return pick(
       context,
       items: items,
-      showSheetOnlyOne: showSheetOnlyOne,
       maxCount: maxCount,
+      showSheetOnlyOne: showSheetOnlyOne,
     );
   }
 
@@ -137,6 +137,7 @@ class JFilePicker extends BaseManage {
     return pick(
       context,
       items: items,
+      maxCount: maxCount,
       showSheetOnlyOne: showSheetOnlyOne,
     );
   }
@@ -179,6 +180,7 @@ class JFilePicker extends BaseManage {
     return pick(
       context,
       items: items,
+      maxCount: maxCount,
       showSheetOnlyOne: showSheetOnlyOne,
     );
   }
@@ -208,6 +210,7 @@ class JFilePicker extends BaseManage {
           onTap: onTap,
         )
       ],
+      maxCount: maxCount,
       showSheetOnlyOne: showSheetOnlyOne,
     );
   }

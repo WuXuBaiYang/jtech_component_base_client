@@ -49,4 +49,11 @@ abstract class BaseAudioController extends BaseController {
     //添加音频状态监听
     _audioState.addListener(listener);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //销毁流
+    _positionController.close();
+  }
 }

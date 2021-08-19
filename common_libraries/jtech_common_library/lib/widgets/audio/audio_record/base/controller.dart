@@ -99,8 +99,8 @@ class JAudioRecordController extends BaseAudioController {
     _recordDuration = Duration.zero;
     _cancelTimer();
     updateAudioProgress(AudioProgress.from(
-      duration: _recordDuration,
-      position: _maxDuration,
+      position: _recordDuration,
+      duration: _maxDuration,
     ));
     return result;
   }
@@ -118,15 +118,15 @@ class JAudioRecordController extends BaseAudioController {
       callback: (remaining, passTime) {
         _recordDuration = passTime;
         updateAudioProgress(AudioProgress.from(
-          duration: _recordDuration,
-          position: _maxDuration,
+          position: _recordDuration,
+          duration: _maxDuration,
         ));
       },
       onFinish: () => stop(),
     );
     updateAudioProgress(AudioProgress.from(
-      duration: _recordDuration,
-      position: _maxDuration,
+      position: _recordDuration,
+      duration: _maxDuration,
     ));
   }
 

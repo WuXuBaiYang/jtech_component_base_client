@@ -23,10 +23,14 @@ class JDialog extends BaseManage {
   Future<T?> show<T>(
     BuildContext context, {
     required WidgetBuilder builder,
+    Color barrierColor = Colors.black54,
+    bool barrierDismissible = true,
   }) {
     return showDialog<T>(
       context: context,
       builder: builder,
+      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible,
     );
   }
 
@@ -64,6 +68,8 @@ class JDialog extends BaseManage {
     return show<T>(
       context,
       builder: (context) => _buildCustomDialog(config),
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
     );
   }
 
@@ -71,24 +77,46 @@ class JDialog extends BaseManage {
   Widget _buildCustomDialog(DialogConfig config) {
     return Material(
       color: Colors.transparent,
-      child: Center(
-        child: Card(
-          margin: config.margin,
-          color: config.dialogColor,
-          child: Container(
-            constraints: config.constraints,
-            padding: config.padding,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildCustomDialogTitle(config),
-                _buildCustomDialogContent(config),
-                _buildCustomDialogOptions(config),
-              ],
+      child: WillPopScope(
+        child: Stack(
+          children: [
+            GestureDetector(
+              child: Container(
+                color: config.barrierColor,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              onTap: () {
+                if (!config.force && config.barrierDismissible) {
+                  jRouter.pop();
+                }
+              },
             ),
-          ),
+            Align(
+              alignment: config.align,
+              child: Card(
+                margin: config.margin,
+                color: config.dialogColor,
+                child: Container(
+                  constraints: config.constraints,
+                  padding: config.padding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildCustomDialogTitle(config),
+                      _buildCustomDialogContent(config),
+                      _buildCustomDialogOptions(config),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
+        onWillPop: () async {
+          return !config.force;
+        },
       ),
     );
   }

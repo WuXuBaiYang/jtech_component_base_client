@@ -12,7 +12,7 @@ typedef DialogOptionTap<T> = T Function();
 * @author wuxubaiyang
 * @Time 2021/7/8 下午4:15
 */
-class DialogConfig<T> extends BaseConfig{
+class DialogConfig<T> extends BaseConfig {
   //内间距
   EdgeInsets padding;
 
@@ -79,7 +79,23 @@ class DialogConfig<T> extends BaseConfig{
   //如果点击事件返回null，是否继续关闭dialog
   bool nullToDismiss;
 
+  //对齐方式
+  Alignment align;
+
+  //底背景颜色
+  Color barrierColor;
+
+  //底背景是否点击关闭弹窗
+  bool barrierDismissible;
+
+  //弹窗是否可被后退取消
+  bool force;
+
   DialogConfig({
+    this.align = Alignment.center,
+    this.barrierColor = Colors.black54,
+    this.barrierDismissible = true,
+    this.force = false,
     this.padding = const EdgeInsets.all(15),
     this.margin = const EdgeInsets.symmetric(vertical: 120, horizontal: 55),
     this.dialogColor = Colors.white,
@@ -92,7 +108,7 @@ class DialogConfig<T> extends BaseConfig{
     this.title,
     this.titlePadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.contentPadding =
-    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
     this.content,
     this.optionsPadding = EdgeInsets.zero,
     this.confirmItem,
@@ -107,11 +123,11 @@ class DialogConfig<T> extends BaseConfig{
     this.tapDismiss = true,
     this.nullToDismiss = true,
   }) : constraints = BoxConstraints(
-    minWidth: minWidth,
-    minHeight: minHeight,
-    maxWidth: maxWidth,
-    maxHeight: maxHeight,
-  );
+          minWidth: minWidth,
+          minHeight: minHeight,
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+        );
 
   //判断标题部分组件是否展示
   bool get showTitle => null != titleIcon || null != title;
@@ -162,8 +178,16 @@ class DialogConfig<T> extends BaseConfig{
     DialogOptionTapAsync<T>? optionTapAsync,
     bool? tapDismiss,
     bool? nullToDismiss,
+    Alignment? align,
+    Color? barrierColor,
+    bool? barrierDismissible,
+    bool? force,
   }) {
     return DialogConfig<T>(
+      align: align ?? this.align,
+      barrierColor: barrierColor ?? this.barrierColor,
+      barrierDismissible: barrierDismissible ?? this.barrierDismissible,
+      force: force ?? this.force,
       padding: padding ?? this.padding,
       margin: margin ?? this.margin,
       dialogColor: dialogColor ?? this.dialogColor,

@@ -29,7 +29,8 @@ class CameraPage extends BaseStatefulPageMultiply {
     required bool front,
     required CameraResolution? resolution,
     required State<CameraPage> currentState,
-  })  : this.cameraDirection = ValueChangeNotifier(CameraLensDirection.front),
+  })  : this.cameraDirection = ValueChangeNotifier(
+            front ? CameraLensDirection.front : CameraLensDirection.back),
         this.resolution = resolution ?? CameraResolution.medium,
         this.flashMode = ValueChangeNotifier(FlashMode.off),
         this.cameraBusy = ValueChangeNotifier(false),

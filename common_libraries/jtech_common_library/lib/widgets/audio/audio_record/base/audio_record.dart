@@ -186,56 +186,64 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
       builder: (context, value, child) {
         return Visibility(
           visible: value.isNotEmpty,
-          child: IconButton(
-            icon: Icon(Icons.history_rounded),
-            onPressed: () => _showRecordListPopup(context),
-          ),
+          child: value.length == 1
+              ? IconButton(
+                  icon: Icon(Icons.history_rounded),
+                  onPressed: () =>
+                      _showRecordPlayerDialog(context, value.first),
+                )
+              : PopupMenuButton<JFileInfo>(
+                  icon: Icon(Icons.history_rounded),
+                  itemBuilder: (context) {
+                    var files = widget.controller.audioFiles;
+                    return List.generate(
+                      files.length,
+                      (index) {
+                        var item = files[index];
+                        return PopupMenuItem(
+                          child: Text(item.name ?? ""),
+                          value: item,
+                        );
+                      },
+                    );
+                  },
+                  onSelected: (value) =>
+                      _showRecordPlayerDialog(context, value),
+                ),
         );
       },
     );
   }
 
-  //展示录音列表弹窗
-  void _showRecordListPopup(BuildContext context) => jDialog.showCustomDialog(
+  //展示录音弹窗
+  void _showRecordPlayerDialog(BuildContext context, JFileInfo fileInfo) =>
+      jDialog.showCustomDialog(
         context,
         config: DialogConfig(
           padding: EdgeInsets.symmetric(vertical: 15),
           margin: EdgeInsets.all(15),
-          content: ValueListenableBuilder<List<JFileInfo>>(
-            valueListenable: widget.controller.audioListListenable,
-            builder: (context, value, child) => ListView.separated(
-              shrinkWrap: true,
-              itemCount: value.length,
-              separatorBuilder: (_, __) => Divider(),
-              itemBuilder: (_, index) {
-                var item = value[index];
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item.name ?? ""),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: JAudioPlayer.simple(
-                          dataSource: DataSource.file(item.file),
-                          elevation: 0,
-                        )),
-                        IconButton(
-                          icon: Icon(Icons.delete_outline_rounded),
-                          onPressed: () {
-                            widget.controller.removeRecordFile(item);
-                            if (widget.controller.audioFiles.isEmpty) {
-                              jRouter.pop();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(fileInfo.name ?? ""),
+              Row(
+                children: [
+                  Expanded(
+                      child: JAudioPlayer.simple(
+                    dataSource: DataSource.file(fileInfo.file),
+                    elevation: 0,
+                  )),
+                  IconButton(
+                    icon: Icon(Icons.delete_outline_rounded),
+                    onPressed: () {
+                      widget.controller.removeRecordFile(fileInfo);
+                      jRouter.pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       );

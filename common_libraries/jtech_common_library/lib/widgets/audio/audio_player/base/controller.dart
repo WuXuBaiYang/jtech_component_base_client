@@ -188,9 +188,9 @@ class JAudioPlayerController extends BaseAudioController {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void dispose() async {
     //销毁控制器
-    _player.dispose();
+    await _player.dispose();
+    super.dispose();
   }
 }

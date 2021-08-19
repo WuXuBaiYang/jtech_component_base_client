@@ -159,11 +159,23 @@ class JSheet extends BaseManage {
       ],
     );
     return Material(
-        color: Colors.transparent,
-        child: InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          child: Align(
+      color: Colors.transparent,
+      child: Stack(
+        children: [
+          GestureDetector(
+            child: Container(
+              color: Colors.transparent,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            onTap: () async {
+              var result = await config.runCancelTap();
+              if (config.nullToDismiss || null != result) {
+                jBase.router.pop(result);
+              }
+            },
+          ),
+          Align(
             alignment: Alignment.bottomCenter,
             child: Card(
               color: config.sheetColor,
@@ -176,13 +188,9 @@ class JSheet extends BaseManage {
               ),
             ),
           ),
-          onTap: () async {
-            var result = await config.runCancelTap();
-            if (config.nullToDismiss || null != result) {
-              jBase.router.pop(result);
-            }
-          },
-        ));
+        ],
+      ),
+    );
   }
 
   //构建自定义底部sheet标题部分
@@ -193,7 +201,7 @@ class JSheet extends BaseManage {
       child: Row(
         children: [
           _buildCustomBottomSheetOptionItem(
-            child: config.cancelItem ?? EmptyBox(),
+            child: config.cancelItem,
             onTap: () async {
               var result = await config.runCancelTap();
               if (config.nullToDismiss || null != result) {
@@ -211,7 +219,7 @@ class JSheet extends BaseManage {
           ),
           SizedBox(width: 8),
           _buildCustomBottomSheetOptionItem(
-            child: config.confirmItem ?? EmptyBox(),
+            child: config.confirmItem,
             onTap: () async {
               var result = await config.runConfirmTap();
               if (config.nullToDismiss || null != result) {
@@ -226,9 +234,10 @@ class JSheet extends BaseManage {
 
   //构建自定义底部sheet操作部分容器
   _buildCustomBottomSheetOptionItem({
-    required Widget child,
+    required Widget? child,
     required VoidCallback onTap,
   }) {
+    if (null == child) return EmptyBox();
     return child is Text
         ? TextButton(onPressed: onTap, child: child)
         : IconButton(onPressed: onTap, icon: child);
