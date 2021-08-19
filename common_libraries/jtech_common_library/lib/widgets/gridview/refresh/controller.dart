@@ -1,4 +1,4 @@
-import 'package:jtech_common_library/widgets/listview/refresh/controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 表格刷新组件控制器

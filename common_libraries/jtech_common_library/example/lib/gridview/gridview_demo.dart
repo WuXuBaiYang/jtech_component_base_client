@@ -11,8 +11,9 @@ import 'package:jtech_common_library/jcommon.dart';
 class GridviewDemo extends BaseStatelessPage {
   //表格组件列表
   final Map<String, String> gridDemoMap = {
-    "默认表格格": "/test/gridview/full",
-    "刷新表格格": "/test/gridview/refresh",
+    "默认表格": "/test/gridview/full",
+    "刷新表格": "/test/gridview/refresh",
+    "附件表格": "/test/gridview/accessory",
   };
 
   @override

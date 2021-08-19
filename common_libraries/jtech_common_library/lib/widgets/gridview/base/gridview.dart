@@ -15,7 +15,7 @@ class JGridView<T extends JListViewController<V>, V>
   final int crossAxisCount;
 
   //子项构造器
-  final GridItemBuilder<V> itemBuilder;
+  final GridItemBuilder<V>? itemBuilder;
 
   //基本配置参数
   final GridViewConfig<V> config;
@@ -92,6 +92,44 @@ class JGridView<T extends JListViewController<V>, V>
       ),
     );
   }
+
+  //创建附件表格组件
+  static JGridView accessory({
+    //基本参数结构
+    int crossAxisCount = 3,
+    GridItemBuilder<JFileInfo>? itemBuilder,
+    JAccessoryGridViewController<JFileInfo>? controller,
+    OnGridItemTap<JFileInfo>? itemTap,
+    OnGridItemLongTap<JFileInfo>? itemLongTap,
+    JStaggeredTile? staggeredTile,
+    GridViewConfig<JFileInfo>? config,
+    //附件表格组件参数
+    int maxCount = 9,
+    Widget? addButton,
+    Widget? deleteButton,
+    Alignment deleteAlign = Alignment.topRight,
+    bool canScroll = true,
+    required List<PickerMenuItem> menuItems,
+  }) {
+    return JGridView<JAccessoryGridViewController<JFileInfo>, JFileInfo>(
+      controller: controller ?? JAccessoryGridViewController(),
+      crossAxisCount: crossAxisCount,
+      itemBuilder: itemBuilder,
+      currentState: JAccessoryRefreshState(
+        maxCount: maxCount,
+        addButton: addButton,
+        deleteButton: deleteButton,
+        deleteAlign: deleteAlign,
+        canScroll: canScroll,
+        menuItems: menuItems,
+      ),
+      config: (config ?? GridViewConfig()).copyWith(
+        itemTap: itemTap,
+        itemLongTap: itemLongTap,
+        staggeredTile: staggeredTile ?? JStaggeredTile.count(1, 1),
+      ),
+    );
+  }
 }
 
 /*
@@ -104,7 +142,7 @@ abstract class BaseJGridViewState<T extends JListViewController<V>, V>
   //表格子项构造事件
   Widget buildGridItem(BuildContext context, V item, int index) {
     return InkWell(
-      child: widget.itemBuilder(context, item, index),
+      child: widget.itemBuilder?.call(context, item, index),
       onTap: null != widget.config.itemTap
           ? () => widget.config.itemTap!(item, index)
           : null,

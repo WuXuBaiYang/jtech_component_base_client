@@ -17,6 +17,9 @@ class JPickerResult {
   //判断是否为空
   bool get isEmpty => files.isEmpty;
 
+  //判断是否非空
+  bool get isNoEmpty => files.isNotEmpty;
+
   //判断是否为单文件
   bool get isSingle => files.length == 1;
 

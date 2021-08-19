@@ -1,3 +1,4 @@
+import 'package:example/gridview/accessory_gridview_demo.dart';
 import 'package:example/picker/picker_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tools/tools_page.dart';
@@ -43,6 +44,7 @@ void main() {
       "/test/gridview": (_) => GridviewDemo(),
       "/test/gridview/full": (_) => DefaultGridviewDemo(),
       "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
+      "/test/gridview/accessory": (_) => AccessoryGridviewDemo(),
       "/test/form_demo": (_) => FormDemo(),
       "/test/tools_demo": (_) => ToolsDemo(),
       "/test/camera": (_) => CameraDemo(),

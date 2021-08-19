@@ -85,6 +85,8 @@ export 'widgets/gridview/base/config.dart';
 export 'widgets/gridview/refresh/controller.dart';
 export 'widgets/gridview/refresh/gridview_refresh.dart';
 export 'widgets/gridview/gridview_default.dart';
+export 'widgets/gridview/accessory/controller.dart';
+export 'widgets/gridview/accessory/gridview_accessory.dart';
 export 'widgets/image/clip.dart';
 export 'widgets/image/config.dart';
 export 'widgets/image/image.dart';
