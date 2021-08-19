@@ -26,6 +26,7 @@ class JFilePicker extends BaseManage {
     int maxCount = 1,
     //当只有一个选项的时候，是否显示sheet
     bool showSheetOnlyOne = false,
+    bool canScroll = false,
   }) async {
     if (items.isEmpty) return null;
     if (!showSheetOnlyOne && items.length == 1) {
@@ -34,7 +35,7 @@ class JFilePicker extends BaseManage {
     return jSheet.showMenuBottomSheet<JPickerResult, PickerMenuItem>(
       context,
       items: items,
-      canScroll: false,
+      canScroll: canScroll,
       onItemTap: (item, _) async {
         jRouter.pop(await _doPick(context, item, maxCount));
       },
