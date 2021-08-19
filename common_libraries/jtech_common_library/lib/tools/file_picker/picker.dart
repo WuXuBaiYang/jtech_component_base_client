@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,15 +34,18 @@ class JFilePicker extends BaseManage {
     if (!showSheetOnlyOne && items.length == 1) {
       return _doPick(context, items.first, maxCount);
     }
-    return jSheet.showMenuBottomSheet<JPickerResult, PickerMenuItem>(
+    Completer<JPickerResult?> completer = Completer();
+    jSheet.showMenuBottomSheet<JPickerResult, PickerMenuItem>(
       context,
       items: items,
       canScroll: canScroll,
       onItemTap: (item, _) async {
-        jRouter.pop(await _doPick(context, item, maxCount));
+        jRouter.pop();
+        completer.complete(_doPick(context, item, maxCount));
       },
       contentPadding: EdgeInsets.symmetric(vertical: 15),
     );
+    return completer.future;
   }
 
   //图片选择方法
