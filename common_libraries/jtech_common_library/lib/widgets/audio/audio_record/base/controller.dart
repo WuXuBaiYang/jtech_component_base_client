@@ -33,9 +33,9 @@ class JAudioRecordController extends BaseAudioController {
 
   JAudioRecordController({
     int maxRecordCount = 1,
-    Duration maxDuration = const Duration(seconds: 60),
+    Duration? maxDuration,
   })  : this._recorder = Record(),
-        this._maxDuration = maxDuration,
+        this._maxDuration = maxDuration ?? Duration(seconds: 60),
         this._maxRecordCount = maxRecordCount,
         this._audioList = ListValueChangeNotifier.empty();
 

@@ -54,7 +54,7 @@ class CameraPage extends BaseStatefulPageMultiply {
   //跳转到视频录制页面并返回照片数据
   static Future<List<JFileInfo>?>? recordVideo({
     int maxCount = 1,
-    Duration maxRecordDuration = const Duration(seconds: 60),
+    Duration? maxRecordDuration,
     bool front = false,
     CameraResolution? resolution,
   }) async {
@@ -63,7 +63,7 @@ class CameraPage extends BaseStatefulPageMultiply {
       front: front,
       currentState: RecordVideoPageState(
         maxCount: maxCount,
-        maxRecordDuration: maxRecordDuration,
+        maxRecordDuration: maxRecordDuration ?? Duration(seconds: 60),
       ),
     ));
   }

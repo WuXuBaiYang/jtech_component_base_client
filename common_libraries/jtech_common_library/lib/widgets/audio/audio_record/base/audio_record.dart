@@ -29,7 +29,6 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
     double? elevation,
-    OnRecordFinish? onRecordFinish,
     //完整版录音器参数
     FullAudioRecordConfig? fullConfig,
     Widget? title,
@@ -41,7 +40,6 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
         margin: margin,
         padding: padding,
         elevation: elevation,
-        onRecordFinish: onRecordFinish,
       ),
       currentState: JAudioRecordFullState(
         config: (fullConfig ?? FullAudioRecordConfig()).copyWith(
@@ -61,7 +59,6 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
     EdgeInsetsGeometry? padding,
     double? elevation,
     Duration? maxDuration,
-    OnRecordFinish? onRecordFinish,
   }) {
     return JAudioRecord(
       controller: controller ?? JAudioRecordController(),
@@ -70,7 +67,6 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
         margin: margin,
         padding: padding ?? EdgeInsets.all(8),
         elevation: elevation,
-        onRecordFinish: onRecordFinish,
       ),
     );
   }

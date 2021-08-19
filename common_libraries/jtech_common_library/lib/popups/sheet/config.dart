@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 //底部sheet操作点击事件回调-异步
-typedef SheetOptionTapAsync<T> = Future<T> Function();
+typedef SheetOptionTapAsync<T> = Future<T?> Function();
 //底部sheet操作点击事件回调
-typedef SheetOptionTap<T> = T Function();
+typedef SheetOptionTap<T> = T? Function();
 
 /*
 * 自定义底部弹窗配置对象

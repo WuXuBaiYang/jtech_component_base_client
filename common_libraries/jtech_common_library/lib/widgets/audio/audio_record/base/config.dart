@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
-//录音结束回调
-typedef OnRecordFinish = void Function(String path);
-
 /*
 * 录音器组件配置对象
 * @author jtechjh
@@ -23,9 +20,6 @@ class AudioRecordConfig extends BaseConfig {
   //卡片背景色
   Color backgroundColor;
 
-  //录制结束回调
-  final OnRecordFinish? onRecordFinish;
-
   //文件存储路径(自定义存储路径时，不需要指定文件类型)
   final String? savePath;
 
@@ -34,7 +28,6 @@ class AudioRecordConfig extends BaseConfig {
     this.padding = const EdgeInsets.all(15),
     this.elevation = 8.0,
     this.backgroundColor = Colors.white,
-    this.onRecordFinish,
     this.savePath,
   });
 
@@ -44,7 +37,6 @@ class AudioRecordConfig extends BaseConfig {
     EdgeInsetsGeometry? padding,
     double? elevation,
     Color? backgroundColor,
-    OnRecordFinish? onRecordFinish,
     String? savePath,
   }) {
     return AudioRecordConfig(
@@ -52,7 +44,6 @@ class AudioRecordConfig extends BaseConfig {
       padding: padding ?? this.padding,
       elevation: elevation ?? this.elevation,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      onRecordFinish: onRecordFinish ?? this.onRecordFinish,
       savePath: savePath ?? this.savePath,
     );
   }

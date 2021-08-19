@@ -19,12 +19,13 @@ class AudioDemo extends BaseStatelessPage {
   //简易版控制器
   final JAudioPlayerController playerControllerSimple =
       JAudioPlayerController();
+
   //完全版录音器控制器
-  final JAudioRecordController recordControllerFull =
-  JAudioRecordController();
+  final JAudioRecordController recordControllerFull = JAudioRecordController();
+
   //简易版录音器控制器
   final JAudioRecordController recordControllerSimple =
-  JAudioRecordController();
+      JAudioRecordController();
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +102,6 @@ class AudioDemo extends BaseStatelessPage {
             SizedBox(height: 35),
             JAudioRecord.full(
               controller: recordControllerFull,
-              onRecordFinish: (String path) {
-                jCommon.popups.snack
-                    .showSnackInTime(context, text: "录音存储路径：$path");
-              },
               fullConfig: FullAudioRecordConfig(
                 title: Text("这里是录音器标题"),
               ),
@@ -114,10 +111,6 @@ class AudioDemo extends BaseStatelessPage {
             SizedBox(height: 35),
             JAudioRecord.simple(
               controller: recordControllerSimple,
-              onRecordFinish: (String path) {
-                jCommon.popups.snack
-                    .showSnackInTime(context, text: "录音存储路径：$path");
-              },
             ),
           ],
         ),

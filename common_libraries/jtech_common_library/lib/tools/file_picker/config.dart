@@ -20,23 +20,31 @@ class PickerMenuItem<T extends BaseFileProcess> {
   //选择文件类型
   final PickerType type;
 
-  //自定义类型时，使用扩展判断
-  final List<String> extensions;
+  //允许通过的文件类型后缀集合
+  final List<String>? allowedExtensions;
 
   //文件处理方法集合(顺序执行)
-  final List<T> process;
+  final List<T>? process;
 
   //选项触发回调
   final VoidCallback? onPress;
 
+  //最大录制时长
+  final Duration? maxRecordDuration;
+
+  //使用摄像头清晰度
+  final CameraResolution? resolution;
+
   PickerMenuItem({
     required this.title,
     required this.type,
-    this.extensions = const [],
-    this.process = const [],
+    this.allowedExtensions,
+    this.process,
     this.subTitle,
     this.leading,
     this.onPress,
+    this.maxRecordDuration ,
+    this.resolution,
   });
 
   //图片选择
@@ -46,14 +54,19 @@ class PickerMenuItem<T extends BaseFileProcess> {
     Widget? subTitle,
     Widget? leading,
     List<BaseImageProcess>? process,
+    List<String>? allowedExtensions,
     VoidCallback? onPress,
     //图片处理部分参数
     bool compress = true,
     bool crop = false,
   }) {
-    process ??= [];
-    if (compress) process.add(ImageCompress());
-    if (crop) process.add(ImageCrop());
+    List<BaseImageProcess> temp = [];
+    if (crop) temp.add(ImageCrop());
+    if (compress) temp.add(ImageCompress());
+    if (temp.isNotEmpty) {
+      process ??= [];
+      process.insertAll(0, temp);
+    }
     return PickerMenuItem(
       title: title ?? Text("图片选择"),
       subTitle: subTitle,
@@ -61,6 +74,7 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.image,
       process: process,
       onPress: onPress,
+      allowedExtensions: allowedExtensions,
     );
   }
 
@@ -75,10 +89,15 @@ class PickerMenuItem<T extends BaseFileProcess> {
     //图片处理部分参数
     bool compress = true,
     bool crop = false,
+    CameraResolution? resolution,
   }) {
-    process ??= [];
-    if (compress) process.add(ImageCompress());
-    if (crop) process.add(ImageCrop());
+    List<BaseImageProcess> temp = [];
+    if (crop) temp.add(ImageCrop());
+    if (compress) temp.add(ImageCompress());
+    if (temp.isNotEmpty) {
+      process ??= [];
+      process.insertAll(0, temp);
+    }
     return PickerMenuItem(
       title: title ?? Text("图片拍摄"),
       subTitle: subTitle,
@@ -86,6 +105,7 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.imageTake,
       process: process,
       onPress: onPress,
+      resolution: resolution,
     );
   }
 
@@ -96,12 +116,17 @@ class PickerMenuItem<T extends BaseFileProcess> {
     Widget? subTitle,
     Widget? leading,
     List<BaseVideoProcess>? process,
+    List<String>? allowedExtensions,
     VoidCallback? onPress,
     //视频处理部分参数
     bool compress = true,
   }) {
-    process ??= [];
-    if (compress) process.add(VideoCompress());
+    List<BaseVideoProcess> temp = [];
+    if (compress) temp.add(VideoCompress());
+    if (temp.isNotEmpty) {
+      process ??= [];
+      process.insertAll(0, temp);
+    }
     return PickerMenuItem(
       title: title ?? Text("视频选择"),
       subTitle: subTitle,
@@ -109,6 +134,7 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.video,
       process: process,
       onPress: onPress,
+      allowedExtensions: allowedExtensions,
     );
   }
 
@@ -122,9 +148,15 @@ class PickerMenuItem<T extends BaseFileProcess> {
     VoidCallback? onPress,
     //视频处理部分参数
     bool compress = true,
+    Duration? maxRecordDuration,
+    CameraResolution? resolution,
   }) {
-    process ??= [];
-    if (compress) process.add(VideoCompress());
+    List<BaseVideoProcess> temp = [];
+    if (compress) temp.add(VideoCompress());
+    if (temp.isNotEmpty) {
+      process ??= [];
+      process.insertAll(0, temp);
+    }
     return PickerMenuItem(
       title: title ?? Text("视频录制"),
       subTitle: subTitle,
@@ -132,6 +164,8 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.videoRecord,
       process: process,
       onPress: onPress,
+      maxRecordDuration: maxRecordDuration,
+      resolution: resolution,
     );
   }
 
@@ -142,9 +176,9 @@ class PickerMenuItem<T extends BaseFileProcess> {
     Widget? subTitle,
     Widget? leading,
     List<BaseAudioProcess>? process,
+    List<String>? allowedExtensions,
     VoidCallback? onPress,
   }) {
-    process ??= [];
     return PickerMenuItem(
       title: title ?? Text("音频选择"),
       subTitle: subTitle,
@@ -152,6 +186,7 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.audio,
       process: process,
       onPress: onPress,
+      allowedExtensions: allowedExtensions,
     );
   }
 
@@ -162,9 +197,9 @@ class PickerMenuItem<T extends BaseFileProcess> {
     Widget? subTitle,
     Widget? leading,
     List<BaseAudioProcess>? process,
+    Duration? maxRecordDuration,
     VoidCallback? onPress,
   }) {
-    process ??= [];
     return PickerMenuItem(
       title: title ?? Text("音频录制"),
       subTitle: subTitle,
@@ -172,6 +207,7 @@ class PickerMenuItem<T extends BaseFileProcess> {
       type: PickerType.audioRecord,
       process: process,
       onPress: onPress,
+      maxRecordDuration: maxRecordDuration,
     );
   }
 
@@ -183,17 +219,16 @@ class PickerMenuItem<T extends BaseFileProcess> {
     Widget? leading,
     List<BaseAudioProcess>? process,
     //自定义类型参数
-    required List<String> extensions,
+    required List<String> allowedExtensions,
     VoidCallback? onPress,
   }) {
-    process ??= [];
     return PickerMenuItem(
       title: title ?? Text("自定义类型"),
       subTitle: subTitle,
       leading: leading,
       type: PickerType.custom,
       process: process,
-      extensions: extensions,
+      allowedExtensions: allowedExtensions,
       onPress: onPress,
     );
   }
