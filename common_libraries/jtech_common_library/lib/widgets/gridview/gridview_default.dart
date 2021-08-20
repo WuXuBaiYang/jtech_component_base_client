@@ -19,22 +19,25 @@ class JGridViewDefaultState<V>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<V>>(
-      valueListenable: widget.controller.dataListenable,
-      builder: (context, dataList, child) {
-        return StaggeredGridView.countBuilder(
-          itemBuilder: (context, index) =>
-              buildGridItem(context, dataList[index], index),
-          staggeredTileBuilder: (int index) =>
-              buildGridStaggered(dataList[index], index),
-          mainAxisSpacing: widget.config.mainAxisSpacing,
-          crossAxisSpacing: widget.config.crossAxisSpacing,
-          crossAxisCount: widget.crossAxisCount,
-          itemCount: dataList.length,
-          physics: scrollPhysics,
-          shrinkWrap: true,
-        );
-      },
+    return Container(
+      margin: widget.config.margin,
+      child: ValueListenableBuilder<List<V>>(
+        valueListenable: widget.controller.dataListenable,
+        builder: (context, dataList, child) {
+          return StaggeredGridView.countBuilder(
+            itemBuilder: (context, index) =>
+                buildGridItem(context, dataList[index], index),
+            staggeredTileBuilder: (int index) =>
+                buildGridStaggered(dataList[index], index),
+            mainAxisSpacing: widget.config.mainAxisSpacing,
+            crossAxisSpacing: widget.config.crossAxisSpacing,
+            crossAxisCount: widget.crossAxisCount,
+            itemCount: dataList.length,
+            physics: scrollPhysics,
+            shrinkWrap: true,
+          );
+        },
+      ),
     );
   }
 

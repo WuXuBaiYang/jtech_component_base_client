@@ -20,30 +20,33 @@ class JGridViewRefreshState<V>
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<V>>(
-      valueListenable: widget.controller.dataListenable,
-      builder: (context, dataList, child) {
-        return SmartRefresher(
-          controller: widget.controller.refreshController,
-          enablePullDown: refreshConfig.enablePullDown,
-          enablePullUp: refreshConfig.enablePullUp,
-          onRefresh: () => _loadDataList(false),
-          onLoading: () => _loadDataList(true),
-          header: refreshConfig.header?.value ?? ClassicHeader(),
-          footer: refreshConfig.footer?.value ?? ClassicFooter(),
-          child: StaggeredGridView.countBuilder(
-            itemBuilder: (context, index) =>
-                buildGridItem(context, dataList[index], index),
-            staggeredTileBuilder: (int index) =>
-                buildGridStaggered(dataList[index], index),
-            mainAxisSpacing: widget.config.mainAxisSpacing,
-            crossAxisSpacing: widget.config.crossAxisSpacing,
-            crossAxisCount: widget.crossAxisCount,
-            itemCount: dataList.length,
-            shrinkWrap: true,
-          ),
-        );
-      },
+    return Container(
+      margin: widget.config.margin,
+      child: ValueListenableBuilder<List<V>>(
+        valueListenable: widget.controller.dataListenable,
+        builder: (context, dataList, child) {
+          return SmartRefresher(
+            controller: widget.controller.refreshController,
+            enablePullDown: refreshConfig.enablePullDown,
+            enablePullUp: refreshConfig.enablePullUp,
+            onRefresh: () => _loadDataList(false),
+            onLoading: () => _loadDataList(true),
+            header: refreshConfig.header?.value ?? ClassicHeader(),
+            footer: refreshConfig.footer?.value ?? ClassicFooter(),
+            child: StaggeredGridView.countBuilder(
+              itemBuilder: (context, index) =>
+                  buildGridItem(context, dataList[index], index),
+              staggeredTileBuilder: (int index) =>
+                  buildGridStaggered(dataList[index], index),
+              mainAxisSpacing: widget.config.mainAxisSpacing,
+              crossAxisSpacing: widget.config.crossAxisSpacing,
+              crossAxisCount: widget.crossAxisCount,
+              itemCount: dataList.length,
+              shrinkWrap: true,
+            ),
+          );
+        },
+      ),
     );
   }
 

@@ -65,30 +65,33 @@ class JAccessoryRefreshState extends BaseJGridViewState<
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<JFileInfo>>(
-      valueListenable: widget.controller.dataListenable,
-      builder: (context, dataList, child) {
-        return StaggeredGridView.countBuilder(
-          itemBuilder: (context, index) {
-            if (isAddButton(index)) {
-              return _buildGridItemAdd(context, index);
-            }
-            return _buildGridItem(context, dataList[index], index);
-          },
-          staggeredTileBuilder: (int index) {
-            if (isAddButton(index)) {
-              return widget.config.staggeredTile.staggered;
-            }
-            return buildGridStaggered(dataList[index], index);
-          },
-          mainAxisSpacing: widget.config.mainAxisSpacing,
-          crossAxisSpacing: widget.config.crossAxisSpacing,
-          crossAxisCount: widget.crossAxisCount,
-          itemCount: dataLength,
-          physics: scrollPhysics,
-          shrinkWrap: true,
-        );
-      },
+    return Container(
+      margin: widget.config.margin,
+      child: ValueListenableBuilder<List<JFileInfo>>(
+        valueListenable: widget.controller.dataListenable,
+        builder: (context, dataList, child) {
+          return StaggeredGridView.countBuilder(
+            itemBuilder: (context, index) {
+              if (isAddButton(index)) {
+                return _buildGridItemAdd(context, index);
+              }
+              return _buildGridItem(context, dataList[index], index);
+            },
+            staggeredTileBuilder: (int index) {
+              if (isAddButton(index)) {
+                return widget.config.staggeredTile.staggered;
+              }
+              return buildGridStaggered(dataList[index], index);
+            },
+            mainAxisSpacing: widget.config.mainAxisSpacing,
+            crossAxisSpacing: widget.config.crossAxisSpacing,
+            crossAxisCount: widget.crossAxisCount,
+            itemCount: dataLength,
+            physics: scrollPhysics,
+            shrinkWrap: true,
+          );
+        },
+      ),
     );
   }
 
@@ -163,11 +166,19 @@ class JAccessoryRefreshState extends BaseJGridViewState<
           alignment: deleteAlign,
           child: deleteButton ??
               JCard.single(
+                elevation: 1,
                 padding: EdgeInsets.zero,
+                margin: EdgeInsets.zero,
                 child: IconButton(
-                  splashRadius: 12,
-                  color: Colors.redAccent,
-                  icon: Icon(Icons.delete_outline),
+                  splashRadius: 14,
+                  padding: EdgeInsets.all(6),
+                  iconSize: 18,
+                  color: Colors.black26,
+                  icon: Icon(Icons.close),
+                  constraints: BoxConstraints(
+                    minHeight: 20,
+                    minWidth: 20,
+                  ),
                   onPressed: () => widget.controller.remove(item),
                 ),
                 circle: true,

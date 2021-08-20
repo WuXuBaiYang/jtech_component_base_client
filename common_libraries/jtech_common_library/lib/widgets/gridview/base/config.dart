@@ -20,6 +20,9 @@ typedef StaggeredTileBuilder<V> = JStaggeredTile? Function(V item, int index);
 * @Time 2021/8/13 3:11 下午
 */
 class GridViewConfig<V> extends BaseConfig {
+  //整体边距
+  final EdgeInsetsGeometry margin;
+
   //主方向元素间距
   final double mainAxisSpacing;
 
@@ -44,6 +47,7 @@ class GridViewConfig<V> extends BaseConfig {
     this.staggeredTileBuilder,
     this.mainAxisSpacing = 4.0,
     this.crossAxisSpacing = 4.0,
+    this.margin = EdgeInsets.zero,
     JStaggeredTile? staggeredTile,
   }) : this.staggeredTile = staggeredTile ?? JStaggeredTile.fit(1);
 
@@ -55,6 +59,7 @@ class GridViewConfig<V> extends BaseConfig {
     double? mainAxisSpacing,
     double? crossAxisSpacing,
     JStaggeredTile? staggeredTile,
+    EdgeInsetsGeometry? margin,
   }) {
     return GridViewConfig<V>(
       itemTap: itemTap ?? this.itemTap,
@@ -63,6 +68,7 @@ class GridViewConfig<V> extends BaseConfig {
       mainAxisSpacing: mainAxisSpacing ?? this.mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing ?? this.crossAxisSpacing,
       staggeredTile: staggeredTile ?? this.staggeredTile,
+      margin: margin ?? this.margin,
     );
   }
 }

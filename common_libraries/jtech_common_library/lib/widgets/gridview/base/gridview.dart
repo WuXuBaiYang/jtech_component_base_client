@@ -94,28 +94,29 @@ class JGridView<T extends JListViewController<V>, V>
   }
 
   //创建附件表格组件
-  static JGridView accessory({
-    //基本参数结构
-    int crossAxisCount = 3,
-    GridItemBuilder<JFileInfo>? itemBuilder,
-    JAccessoryGridViewController<JFileInfo>? controller,
-    OnGridItemTap<JFileInfo>? itemTap,
-    OnGridItemLongTap<JFileInfo>? itemLongTap,
-    JStaggeredTile? staggeredTile,
-    GridViewConfig<JFileInfo>? config,
-    //附件表格组件参数
-    int maxCount = 9,
-    Widget? addButton,
-    Widget? deleteButton,
-    Alignment deleteAlign = Alignment.topRight,
-    bool canScroll = true,
-    required List<PickerMenuItem> menuItems,
-    OnAccessoryFilePreview? onFilePreview,
-    EdgeInsets itemPadding = const EdgeInsets.all(8),
-    BorderRadius itemRadius = const BorderRadius.all(Radius.circular(8)),
-    bool modify = true,
-    Map<RegExp,Widget>? itemThumbnailMap
-  }) {
+  static JGridView accessory(
+      {
+      //基本参数结构
+      int crossAxisCount = 3,
+      GridItemBuilder<JFileInfo>? itemBuilder,
+      JAccessoryGridViewController<JFileInfo>? controller,
+      OnGridItemTap<JFileInfo>? itemTap,
+      OnGridItemLongTap<JFileInfo>? itemLongTap,
+      JStaggeredTile? staggeredTile,
+      EdgeInsetsGeometry margin = const EdgeInsets.all(8),
+      GridViewConfig<JFileInfo>? config,
+      //附件表格组件参数
+      int maxCount = 9,
+      Widget? addButton,
+      Widget? deleteButton,
+      Alignment deleteAlign = Alignment.topRight,
+      bool canScroll = true,
+      required List<PickerMenuItem> menuItems,
+      OnAccessoryFilePreview? onFilePreview,
+      EdgeInsets itemPadding = const EdgeInsets.all(8),
+      BorderRadius itemRadius = const BorderRadius.all(Radius.circular(8)),
+      bool modify = true,
+      Map<RegExp, Widget>? itemThumbnailMap}) {
     return JGridView<JAccessoryGridViewController<JFileInfo>, JFileInfo>(
       controller: controller ?? JAccessoryGridViewController(),
       crossAxisCount: crossAxisCount,
@@ -137,6 +138,7 @@ class JGridView<T extends JListViewController<V>, V>
         itemTap: itemTap,
         itemLongTap: itemLongTap,
         staggeredTile: staggeredTile ?? JStaggeredTile.count(1, 1),
+        margin: margin,
       ),
     );
   }
