@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:jtech_common_library/jcommon.dart';
@@ -65,34 +68,35 @@ class JAccessoryRefreshState extends BaseJGridViewState<
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: widget.config.margin,
-      child: ValueListenableBuilder<List<JFileInfo>>(
-        valueListenable: widget.controller.dataListenable,
-        builder: (context, dataList, child) {
-          return StaggeredGridView.countBuilder(
-            itemBuilder: (context, index) {
-              if (isAddButton(index)) {
-                return _buildGridItemAdd(context, index);
-              }
-              return _buildGridItem(context, dataList[index], index);
-            },
-            staggeredTileBuilder: (int index) {
-              if (isAddButton(index)) {
-                return widget.config.staggeredTile.staggered;
-              }
-              return buildGridStaggered(dataList[index], index);
-            },
-            mainAxisSpacing: widget.config.mainAxisSpacing,
-            crossAxisSpacing: widget.config.crossAxisSpacing,
-            crossAxisCount: widget.crossAxisCount,
-            itemCount: dataLength,
-            physics: scrollPhysics,
-            shrinkWrap: true,
-          );
-        },
-      ),
-    );
+    return Image.asset("lib/assets/file_type/text.png",bundle: rootBundle,);
+    // return Container(
+    //   margin: widget.config.margin,
+    //   child: ValueListenableBuilder<List<JFileInfo>>(
+    //     valueListenable: widget.controller.dataListenable,
+    //     builder: (context, dataList, child) {
+    //       return StaggeredGridView.countBuilder(
+    //         itemBuilder: (context, index) {
+    //           if (isAddButton(index)) {
+    //             return _buildGridItemAdd(context, index);
+    //           }
+    //           return _buildGridItem(context, dataList[index], index);
+    //         },
+    //         staggeredTileBuilder: (int index) {
+    //           if (isAddButton(index)) {
+    //             return widget.config.staggeredTile.staggered;
+    //           }
+    //           return buildGridStaggered(dataList[index], index);
+    //         },
+    //         mainAxisSpacing: widget.config.mainAxisSpacing,
+    //         crossAxisSpacing: widget.config.crossAxisSpacing,
+    //         crossAxisCount: widget.crossAxisCount,
+    //         itemCount: dataLength,
+    //         physics: scrollPhysics,
+    //         shrinkWrap: true,
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   //构建附件添加子项
@@ -240,7 +244,7 @@ class JAccessoryRefreshState extends BaseJGridViewState<
   String getFileTypeIcon(JFileInfo fileInfo) {
     var suffix = fileInfo.suffixes;
     var assetName = _fileTypeMap[suffix] ?? _fileTypeMap["unknown"]!;
-    return "assets/file_type/$assetName";
+    return "lib/assets/file_type/$assetName";
   }
 
   //判断是否为添加按钮
@@ -261,28 +265,28 @@ class JAccessoryRefreshState extends BaseJGridViewState<
 
 //预设文件类型表
 final Map<String, String> _fileTypeMap = {
-  "7z": "7z.png",
-  "avi": "avi.png",
-  "bmp": "bmp.png",
-  "docx": "docx.png",
-  "jpeg": "jpeg.png",
-  "jpg": "jpg.png",
-  "md": "md.png",
-  "mp3": "mp3.png",
-  "mp4": "mp4.png",
-  "mp5": "mp5.png",
-  "mpge": "mpge.png",
-  "pdf": "pdf.png",
-  "png": "png.png",
-  "ppt": "ppt.png",
-  "rar": "rar.png",
-  "svg": "svg.png",
-  "tar": "tar.png",
-  "text": "text.png",
-  "txt": "txt.png",
-  "ttf": "ttf.png",
-  "xlsx": "xlsx.png",
-  "xml": "xml.png",
-  "zip": "zip.png",
+  ".7z": "7z.png",
+  ".avi": "avi.png",
+  ".bmp": "bmp.png",
+  ".docx": "docx.png",
+  ".jpeg": "jpeg.png",
+  ".jpg": "jpg.png",
+  ".md": "md.png",
+  ".mp3": "mp3.png",
+  ".mp4": "mp4.png",
+  ".mp5": "mp5.png",
+  ".mpge": "mpge.png",
+  ".pdf": "pdf.png",
+  ".png": "png.png",
+  ".ppt": "ppt.png",
+  ".rar": "rar.png",
+  ".svg": "svg.png",
+  ".tar": "tar.png",
+  ".text": "text.png",
+  ".txt": "text.png",
+  ".ttf": "ttf.png",
+  ".xlsx": "xlsx.png",
+  ".xml": "xml.png",
+  ".zip": "zip.png",
   "unknown": "unknown.png",
 };
