@@ -111,6 +111,10 @@ class JGridView<T extends JListViewController<V>, V>
     bool canScroll = true,
     required List<PickerMenuItem> menuItems,
     OnAccessoryFilePreview? onFilePreview,
+    EdgeInsets itemPadding = const EdgeInsets.all(8),
+    BorderRadius itemRadius = const BorderRadius.all(Radius.circular(8)),
+    bool modify = true,
+    Map<RegExp,Widget>? itemThumbnailMap
   }) {
     return JGridView<JAccessoryGridViewController<JFileInfo>, JFileInfo>(
       controller: controller ?? JAccessoryGridViewController(),
@@ -124,6 +128,10 @@ class JGridView<T extends JListViewController<V>, V>
         canScroll: canScroll,
         menuItems: menuItems,
         onFilePreview: onFilePreview,
+        itemPadding: itemPadding,
+        itemRadius: itemRadius,
+        modify: modify,
+        itemThumbnailMap: itemThumbnailMap,
       ),
       config: (config ?? GridViewConfig()).copyWith(
         itemTap: itemTap,

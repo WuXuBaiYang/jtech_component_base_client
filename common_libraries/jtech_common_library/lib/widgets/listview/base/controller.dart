@@ -23,6 +23,9 @@ class JListViewController<V> extends BaseController {
   //获取数据变化监听
   ValueListenable<List<V>> get dataListenable => _dataList;
 
+  //从集合中移除对象
+  void remove(V item) => _dataList.removeValue(item);
+
   //覆盖数据
   void setData(List<V> newData) {
     if (isFilterData) return;

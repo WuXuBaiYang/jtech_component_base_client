@@ -7,6 +7,6 @@ import 'package:jtech_common_library/jcommon.dart';
 */
 class JAccessoryGridViewController<V> extends JListViewController<V> {
   JAccessoryGridViewController({
-    List<V> dataList = const [],
-  }) : super(dataList: dataList);
+    List<V>? dataList,
+  }) : super(dataList: dataList ?? []);
 }
