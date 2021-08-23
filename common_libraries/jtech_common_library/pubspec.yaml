@@ -76,6 +76,9 @@ dependencies:
 
   # 权限管理
   permission_handler: ^8.1.4+2
+
+  # 图标库
+  font_awesome_flutter: ^9.1.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -97,8 +100,8 @@ flutter:
 
   # To add Flutter specific assets to your application, add an assets section,
   # like this:
-  assets:
-    - lib/assets/file_type/
+  # assets:
+  #   - lib/assets/file_type/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -117,6 +117,7 @@ export 'widgets/listview/listview_default.dart';
 export 'widgets/listview/base/config.dart';
 export 'widgets/listview/base/listView.dart';
 export 'widgets/popup_button/popup_button.dart';
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /*
 * 通用组件方法入口
