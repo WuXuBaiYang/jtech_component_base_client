@@ -226,14 +226,11 @@ class JAccessoryRefreshState extends BaseJGridViewState<
       );
     }
     //配置其他类型文件的预设样式
-    return Container(
-      alignment: Alignment.center,
-      child: Opacity(
-        opacity: 0.26,
-        child: FaIcon(
-          _fileTypeMap[item.suffixes] ?? FontAwesomeIcons.exclamation,
-          size: 55,
-        ),
+    return Center(
+      child: Icon(
+        _fileTypeMap[item.suffixes] ?? FontAwesomeIcons.exclamation,
+        size: 55,
+        color: Colors.black26,
       ),
     );
   }
