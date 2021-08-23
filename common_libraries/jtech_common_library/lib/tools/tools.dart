@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/tools/prewview/prewview.dart';
 
 /*
 * 通用工具箱
@@ -37,6 +38,9 @@ class JTools extends BaseManage {
   //文件选择器
   final filePicker = JFilePicker();
 
+  //预览工具方法
+  final preview = JPreview();
+
   @override
   Future<void> init() async {
     //初始化日期格式化
@@ -53,6 +57,8 @@ class JTools extends BaseManage {
     await permission.init();
     //初始化文件选择器
     await filePicker.init();
+    //预览工具方法
+    await preview.init();
   }
 
   //生成id

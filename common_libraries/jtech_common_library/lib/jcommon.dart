@@ -46,6 +46,9 @@ export 'tools/file_picker/process/video/video.dart';
 export 'tools/file_picker/process/audio/audio.dart';
 export 'tools/permission/config.dart';
 export 'tools/permission/permission.dart';
+export 'tools/prewview/prewview.dart';
+export 'tools/prewview/config.dart';
+export 'tools/prewview/pages/preview_page.dart';
 
 //导出组件
 export 'widgets/base/empty_box.dart';
