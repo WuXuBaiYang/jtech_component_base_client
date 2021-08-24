@@ -36,28 +36,31 @@ dependencies:
   pull_to_refresh: ^2.0.0
 
   # 索引列表组件
-  azlistview: ^2.0.0-nullsafety.0
+  azlistview: ^1.1.1
 
   # 拼音库
   lpinyin: ^2.0.3
 
   # toast库
-  fluttertoast: ^8.0.7
+  fluttertoast: ^8.0.8
 
   # 网络图片缓存库
-  cached_network_image: ^3.0.0
+  cached_network_image: ^3.1.0
 
   # 图片加载库
   octo_image: ^1.0.0+1
+
+  # 图片浏览库
+  photo_view: ^0.12.0
 
   # 表格组件
   flutter_staggered_grid_view: ^0.4.0
 
   # 文件选择库
-  file_picker: ^3.0.3
+  file_picker: ^4.0.0
 
   # 视频播放器组件
-  video_player: ^2.1.12
+  video_player: ^2.1.14
 
   # 视频播放器组件
   chewie: ^1.2.2
@@ -69,7 +72,7 @@ dependencies:
   record: ^3.0.0
 
   # 摄像头管理
-  camera: ^0.8.1+7
+  camera: ^0.9.0
 
   # 路径管理
   path_provider: ^2.0.2

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:jtech_common_library/base/base_controller.dart';
+import 'package:jtech_common_library/jcommon.dart';
 import 'package:video_player/video_player.dart';
 
 /*
@@ -14,6 +15,31 @@ class JVideoPlayerController extends BaseController {
 
   //获取视频控制器
   ChewieController get videoController => _videoController;
+
+  //从fileInfo中加载
+  JVideoPlayerController.fileInfo({
+    required JFileInfo fileInfo,
+    bool? autoPlay,
+    Duration? startAt,
+    bool? looping,
+    bool? showControls,
+    bool? allowedScreenSleep,
+    bool? allowFullScreen,
+    bool? allowMuting,
+    bool? allowPlaybackSpeedChanging,
+  }) : this._videoController = _createController(
+          controller: fileInfo.isNetFile
+              ? VideoPlayerController.network(fileInfo.uri)
+              : VideoPlayerController.file(fileInfo.file),
+          autoPlay: autoPlay,
+          startAt: startAt,
+          looping: looping,
+          showControls: showControls,
+          allowedScreenSleep: allowedScreenSleep,
+          allowFullScreen: allowFullScreen,
+          allowMuting: allowMuting,
+          allowPlaybackSpeedChanging: allowPlaybackSpeedChanging,
+        );
 
   //asset资源
   JVideoPlayerController.asset({

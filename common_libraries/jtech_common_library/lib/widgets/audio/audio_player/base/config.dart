@@ -70,7 +70,6 @@ class AudioPlayerConfig extends BaseConfig {
   }
 }
 
-
 /*
 * 音频播放器资源管理类
 * @author jtechjh
@@ -85,6 +84,9 @@ class DataSource {
 
   //缓存文件流
   Uint8List? _sourceData;
+
+  //从fileInfo中加载资源
+  DataSource.fileInfo(JFileInfo fileInfo) : _sourceUri = fileInfo.uri;
 
   //加载远程资源地址
   DataSource.net(this._sourceUri);

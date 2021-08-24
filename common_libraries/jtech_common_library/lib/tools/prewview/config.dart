@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
+//预览页面子项构造器
+typedef PreviewItemBuilder = Widget? Function(
+    BuildContext context, JFileInfo fileInfo, int index);
+
 /*
 * 预览配置对象
 * @author jtechjh
@@ -31,6 +35,9 @@ class PreviewConfig extends BaseConfig {
   //点击空白处是否关闭预览
   bool barrierDismissible;
 
+  //预览子项构造器
+  PreviewItemBuilder? itemBuilder;
+
   PreviewConfig({
     this.showAppbar = false,
     this.appbarColor,
@@ -40,6 +47,7 @@ class PreviewConfig extends BaseConfig {
     this.centerTitle = true,
     this.color = Colors.black38,
     this.barrierDismissible = true,
+    this.itemBuilder,
   });
 
   @override
@@ -52,6 +60,7 @@ class PreviewConfig extends BaseConfig {
     bool? centerTitle,
     Color? color,
     bool? barrierDismissible,
+    PreviewItemBuilder? itemBuilder,
   }) {
     return PreviewConfig(
       showAppbar: showAppbar ?? this.showAppbar,
@@ -62,6 +71,7 @@ class PreviewConfig extends BaseConfig {
       centerTitle: centerTitle ?? this.centerTitle,
       color: color ?? this.color,
       barrierDismissible: barrierDismissible ?? this.barrierDismissible,
+      itemBuilder: itemBuilder ?? this.itemBuilder,
     );
   }
 }

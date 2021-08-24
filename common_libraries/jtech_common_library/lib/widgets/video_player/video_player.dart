@@ -31,6 +31,38 @@ class JVideoPlayer extends BaseStatefulWidget {
           size: size,
         );
 
+  //从fileInfo中加载视频
+  JVideoPlayer.fileInfo({
+    required JFileInfo fileInfo,
+    bool? autoPlay,
+    Duration? startAt,
+    bool? looping,
+    bool? showControls,
+    bool? allowedScreenSleep,
+    bool? allowFullScreen,
+    bool? allowMuting,
+    bool? allowPlaybackSpeedChanging,
+    Color? backgroundColor,
+    bool? autoSize,
+    Size? size,
+    VideoPlayerConfig? config,
+  })  : this.controller = JVideoPlayerController.fileInfo(
+          fileInfo: fileInfo,
+          autoPlay: autoPlay,
+          startAt: startAt,
+          looping: looping,
+          showControls: showControls,
+          allowedScreenSleep: allowedScreenSleep,
+          allowFullScreen: allowFullScreen,
+          allowMuting: allowMuting,
+          allowPlaybackSpeedChanging: allowPlaybackSpeedChanging,
+        ),
+        this.config = (config ?? VideoPlayerConfig()).copyWith(
+          backgroundColor: backgroundColor,
+          autoSize: autoSize,
+          size: size,
+        );
+
   //加载本地视频
   JVideoPlayer.file({
     required File file,

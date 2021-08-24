@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:photo_view/photo_view.dart';
 
 /*
 * 图片视图框架
@@ -26,6 +27,29 @@ class JImage extends BaseStatelessWidget {
 
   //长点击事件
   final VoidCallback? imageLongTap;
+
+  //从fileInfo文件中家在
+  JImage.fileInfo(
+    JFileInfo fileInfo, {
+    ErrorBuilder? errorBuilder,
+    double? width,
+    double? height,
+    double? size,
+    BoxFit? fit,
+    ImageClip? clip,
+    ImageConfig? config,
+    this.imageTap,
+    this.imageLongTap,
+  })  : image = (fileInfo.isNetFile
+            ? CachedNetworkImageProvider(fileInfo.uri)
+            : FileImage(fileInfo.file)) as ImageProvider,
+        this.config = (config ?? ImageConfig()).copyWith(
+          width: size ?? width,
+          height: size ?? height,
+          fit: fit,
+          errorBuilder: errorBuilder,
+          clip: clip,
+        );
 
   //本地图片文件路径
   JImage.filePath(
