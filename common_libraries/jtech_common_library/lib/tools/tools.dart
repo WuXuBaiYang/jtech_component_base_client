@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'dart:math';
-
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/tools/prewview/prewview.dart';
 
 /*
 * 通用工具箱

@@ -19,13 +19,13 @@ class JFile extends BaseManage {
   Future<void> init() async {}
 
   //图片缓存目录
-  static final String imageCachePath = "imageCache/";
+  static final String imageCachePath = "imageCache";
 
   //视频缓存目录
-  static final String videoCachePath = "videoCache/";
+  static final String videoCachePath = "videoCache";
 
   //音频缓存目录
-  static final String audioCachePath = "audioCache/";
+  static final String audioCachePath = "audioCache";
 
   //清除视频缓存目录文件
   Future<bool> clearVideoCache() async {
