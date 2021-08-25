@@ -162,7 +162,7 @@ class JVideoPlayer extends BaseStatefulWidget {
 * @author jtechjh
 * @Time 2021/8/13 4:03 下午
 */
-class _JVideoPlayerState extends BaseState<JVideoPlayer> {
+class _JVideoPlayerState extends BaseState<JVideoPlayer>{
   @override
   void initState() {
     super.initState();

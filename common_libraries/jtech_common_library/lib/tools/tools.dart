@@ -70,12 +70,6 @@ class JTools extends BaseManage {
   //生成时间戳签名
   String getDateSign() =>
       dataFormat.format("yyyyMMddHHmmssSSS", DateTime.now());
-
-  //获取视频缩略图
-  Future<File> getVideoThumbnail(File file) async {
-    ///待实现
-    return file;
-  }
 }
 
 //单例调用

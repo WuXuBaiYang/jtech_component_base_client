@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
@@ -108,17 +106,20 @@ class RecordVideoPageState extends BaseCameraPageState {
       valueListenable: fileList,
       builder: (_, value, child) {
         var offset = (hasMaxCount || value.isEmpty) ? 0 : 1;
-        return PageView(
+        return PageView.builder(
           controller: pageController,
+          itemCount: value.length + offset,
           onPageChanged: (index) => currentIndex.setValue(index),
-          children: List.generate(value.length + offset, (index) {
+          itemBuilder: ( context,  index) {
             if (offset > 0 && index == 0) return EmptyBox();
             var item = value[index - offset];
             return Container(
               color: Colors.black,
+              alignment: Alignment.topCenter,
               child: JVideoPlayer.file(
                 file: item.file,
                 autoPlay: true,
+                allowFullScreen: false,
                 config: VideoPlayerConfig(
                   align: Alignment.topCenter,
                   initialBuilder: (_) => EmptyBox(),
@@ -126,7 +127,7 @@ class RecordVideoPageState extends BaseCameraPageState {
                 ),
               ),
             );
-          }),
+          },
         );
       },
     );
@@ -154,27 +155,15 @@ class RecordVideoPageState extends BaseCameraPageState {
                   index: index,
                 );
               }
-              var item = fileList.getItem(index - offset);
-              return FutureBuilder<File>(
-                future: jTools.getVideoThumbnail(item!.file),
-                builder: (_, snap) {
-                  if (!snap.hasData) return EmptyBox();
-                  return _buildPreviewIndicatorItem(
-                    selected: selected,
-                    child: JImage.file(
-                      snap.data!,
-                      config: ImageConfig(
-                        clip: ImageClipRRect(
-                          borderRadius: indicatorBorderRadius,
-                        ),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: indicatorBorderRadius),
-                    index: index,
-                  );
-                },
+              return _buildPreviewIndicatorItem(
+                selected: selected,
+                child: FaIcon(
+                  FontAwesomeIcons.fileVideo,
+                  color: Colors.white,
+                ),
+                shape:
+                    RoundedRectangleBorder(borderRadius: indicatorBorderRadius),
+                index: index,
               );
             }),
           ),
@@ -194,6 +183,7 @@ class RecordVideoPageState extends BaseCameraPageState {
       icon: Container(
         height: 35,
         width: 35,
+        alignment: Alignment.center,
         padding: EdgeInsets.all(4),
         decoration: ShapeDecoration(
           shape: shape,
