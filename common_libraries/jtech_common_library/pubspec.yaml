@@ -85,6 +85,9 @@ dependencies:
 
   # 图片压缩库
   flutter_luban: ^0.1.13
+
+  # 网络请求库
+  dio: ^4.0.0
   
 
   # The following adds the Cupertino Icons font to your application.
