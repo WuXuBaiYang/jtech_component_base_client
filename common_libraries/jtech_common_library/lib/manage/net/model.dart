@@ -27,16 +27,17 @@ class RequestModel extends BaseModel {
     Map<String, dynamic>? headers,
   })  : this._queryParameters = queryParameters,
         this._headers = headers,
-  ///
+
+        ///
         this._data = FormData.fromMap({});
 }
+
 /*
 * 接口请求form表单对象构造
 * @author jtechjh
 * @Time 2021/8/25 5:17 下午
 */
-class RequestForm{
-}
+class RequestForm {}
 
 /*
 * 请求响应对象
