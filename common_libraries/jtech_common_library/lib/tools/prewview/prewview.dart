@@ -15,6 +15,28 @@ class JPreview extends BaseManage {
 
   @override
   Future<void> init() async {}
+
+  //展示附件预览
+  Future<int?>? show({
+    required List<JFileInfo> fileList,
+    PreviewItemBuilder? itemBuilder,
+    bool showAppbar = false,
+    String? title,
+    bool showCounter = true,
+    PreviewConfig? config,
+    int initialIndex = 0,
+  }) {
+    return jRouter.push<int>(PreviewPage(
+      fileList: fileList,
+      initialIndex: initialIndex,
+      config: (config ?? PreviewConfig()).copyWith(
+        itemBuilder: itemBuilder,
+        showAppbar: showAppbar,
+        title: title,
+        showCounter: showCounter,
+      ),
+    ));
+  }
 }
 
 //单例调用

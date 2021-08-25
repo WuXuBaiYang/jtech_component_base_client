@@ -29,12 +29,6 @@ class PreviewConfig extends BaseConfig {
   //标题是否居中
   bool centerTitle;
 
-  //背景色
-  Color color;
-
-  //点击空白处是否关闭预览
-  bool barrierDismissible;
-
   //预览子项构造器
   PreviewItemBuilder? itemBuilder;
 
@@ -45,8 +39,6 @@ class PreviewConfig extends BaseConfig {
     this.title = "",
     this.showCounter = true,
     this.centerTitle = true,
-    this.color = Colors.black38,
-    this.barrierDismissible = true,
     this.itemBuilder,
   });
 
@@ -69,8 +61,6 @@ class PreviewConfig extends BaseConfig {
       title: title ?? this.title,
       showCounter: showCounter ?? this.showCounter,
       centerTitle: centerTitle ?? this.centerTitle,
-      color: color ?? this.color,
-      barrierDismissible: barrierDismissible ?? this.barrierDismissible,
       itemBuilder: itemBuilder ?? this.itemBuilder,
     );
   }

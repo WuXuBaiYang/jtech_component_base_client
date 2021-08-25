@@ -18,6 +18,7 @@ class AccessoryGridviewDemo extends BaseStatelessPage {
         menuItems: [
           PickerMenuItem.image(),
           PickerMenuItem.video(),
+          PickerMenuItem.audio(),
           PickerMenuItem.custom(allowedExtensions: ["txt"]),
         ],
       ),

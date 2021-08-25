@@ -36,7 +36,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
 
   # 索引列表组件
-  azlistview: ^1.1.1
+  azlistview: ^2.0.0-nullsafety.0
 
   # 拼音库
   lpinyin: ^2.0.3

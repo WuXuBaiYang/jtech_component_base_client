@@ -22,12 +22,10 @@ class JVideoPlayer extends BaseStatefulWidget {
   JVideoPlayer({
     required this.controller,
     Color? backgroundColor,
-    bool? autoSize,
     Size? size,
     VideoPlayerConfig? config,
   }) : this.config = (config ?? VideoPlayerConfig()).copyWith(
           backgroundColor: backgroundColor,
-          autoSize: autoSize,
           size: size,
         );
 
@@ -43,7 +41,6 @@ class JVideoPlayer extends BaseStatefulWidget {
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
     Color? backgroundColor,
-    bool? autoSize,
     Size? size,
     VideoPlayerConfig? config,
   })  : this.controller = JVideoPlayerController.fileInfo(
@@ -59,7 +56,6 @@ class JVideoPlayer extends BaseStatefulWidget {
         ),
         this.config = (config ?? VideoPlayerConfig()).copyWith(
           backgroundColor: backgroundColor,
-          autoSize: autoSize,
           size: size,
         );
 
@@ -75,7 +71,6 @@ class JVideoPlayer extends BaseStatefulWidget {
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
     Color? backgroundColor,
-    bool? autoSize,
     Size? size,
     VideoPlayerConfig? config,
   })  : this.controller = JVideoPlayerController.file(
@@ -91,7 +86,6 @@ class JVideoPlayer extends BaseStatefulWidget {
         ),
         this.config = (config ?? VideoPlayerConfig()).copyWith(
           backgroundColor: backgroundColor,
-          autoSize: autoSize,
           size: size,
         );
 
@@ -108,7 +102,6 @@ class JVideoPlayer extends BaseStatefulWidget {
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
     Color? backgroundColor,
-    bool? autoSize,
     Size? size,
     VideoPlayerConfig? config,
   })  : this.controller = JVideoPlayerController.net(
@@ -125,7 +118,6 @@ class JVideoPlayer extends BaseStatefulWidget {
         ),
         this.config = (config ?? VideoPlayerConfig()).copyWith(
           backgroundColor: backgroundColor,
-          autoSize: autoSize,
           size: size,
         );
 
@@ -142,7 +134,6 @@ class JVideoPlayer extends BaseStatefulWidget {
     bool? allowMuting,
     bool? allowPlaybackSpeedChanging,
     Color? backgroundColor,
-    bool? autoSize,
     Size? size,
     VideoPlayerConfig? config,
   })  : this.controller = JVideoPlayerController.asset(
@@ -159,7 +150,6 @@ class JVideoPlayer extends BaseStatefulWidget {
         ),
         this.config = (config ?? VideoPlayerConfig()).copyWith(
           backgroundColor: backgroundColor,
-          autoSize: autoSize,
           size: size,
         );
 
@@ -184,24 +174,17 @@ class _JVideoPlayerState extends BaseState<JVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    if (!videoValue.isInitialized) {
+      return widget.config.initialBuilder?.call(context) ??
+          _buildDefaultInitial();
+    }
     return SizedBox.fromSize(
-      size: widget.config.size,
+      size: widget.config.size ?? _getVideoSize(context, videoValue.size),
       child: Container(
         color: widget.config.backgroundColor,
         alignment: widget.config.align,
-        child: Builder(
-          builder: (context) {
-            if (!videoValue.isInitialized) {
-              return widget.config.initialBuilder?.call(context) ??
-                  _buildDefaultInitial();
-            }
-            return SizedBox.fromSize(
-              size: _getVideoSize(context, videoValue.size),
-              child: Chewie(
-                controller: widget.controller.videoController,
-              ),
-            );
-          },
+        child: Chewie(
+          controller: widget.controller.videoController,
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/route/router.dart';
+import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -18,7 +18,7 @@ class PreviewPage extends StatelessWidget {
   final ValueChangeNotifier<int> currentIndex;
 
   //页面控制器
-  final PageController? controller;
+  final PageController controller;
 
   //数据源
   final List<JFileInfo> fileList;
@@ -27,16 +27,17 @@ class PreviewPage extends StatelessWidget {
     Key? key,
     required this.config,
     required this.fileList,
-    this.controller,
     int initialIndex = 0,
   })  : this.currentIndex = ValueChangeNotifier(initialIndex),
+        this.controller = PageController(initialPage: initialIndex),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialPageRoot(
       appBar: _buildAppBar(),
-      backgroundColor: config.color,
+      showAppbar: config.showAppbar,
+      backgroundColor: Colors.black,
       body: PageView.builder(
         controller: controller,
         itemCount: fileList.length,
@@ -50,10 +51,7 @@ class PreviewPage extends StatelessWidget {
                   width: double.infinity,
                   height: double.infinity,
                 ),
-                onTapDown: (_) {
-                  if (!config.barrierDismissible) return;
-                  jRouter.pop(currentIndex.value);
-                },
+                onTapDown: (_) => _popPreview(),
               ),
               config.itemBuilder?.call(context, item, index) ??
                   Center(child: _buildPreviewItem(item, index)),
@@ -66,7 +64,6 @@ class PreviewPage extends StatelessWidget {
 
   //构建标题栏
   PreferredSizeWidget? _buildAppBar() {
-    if (!config.showAppbar) return null;
     return AppBar(
       title: ValueListenableBuilder(
         valueListenable: currentIndex,
@@ -92,54 +89,50 @@ class PreviewPage extends StatelessWidget {
             ? CachedNetworkImageProvider(fileInfo.uri)
             : FileImage(fileInfo.file)) as ImageProvider,
         heroAttributes: PhotoViewHeroAttributes(tag: fileInfo.uri),
-        loadingBuilder: (context, event) {
-          return CircularProgressIndicator();
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return Icon(
-            Icons.broken_image_outlined,
-            color: Colors.black26,
-            size: 55,
-          );
-        },
+        loadingBuilder: (context, event) => CircularProgressIndicator(),
+        onTapUp: (_, __, ___) => _popPreview(),
+        errorBuilder: (context, error, stackTrace) => Icon(
+          Icons.broken_image_outlined,
+          color: Colors.white,
+          size: 55,
+        ),
       );
     }
-    if (fileInfo.isAudioType) {
-      return Center(
-        child: JVideoPlayer.fileInfo(
-          fileInfo: fileInfo,
-          allowedScreenSleep: false,
-          allowFullScreen: false,
-          allowMuting: false,
-          allowPlaybackSpeedChanging: false,
-        ),
+    if (fileInfo.isVideoType) {
+      return JVideoPlayer.fileInfo(
+        fileInfo: fileInfo,
+        backgroundColor: Colors.black,
+        allowedScreenSleep: false,
+        allowFullScreen: false,
+        allowMuting: false,
+        allowPlaybackSpeedChanging: false,
       );
     }
     if (fileInfo.isAudioType) {
       return JAudioPlayer.full(
         dataSource: DataSource.fileInfo(fileInfo),
-        fullConfig: FullAudioPlayerConfig(
-          allowSpeed: false,
-          allowVolume: false,
-          allowSpeakerToggle: false,
-        ),
       );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           Icons.info_outline_rounded,
-          color: Colors.black26,
+          color: Colors.white,
           size: 55,
         ),
+        SizedBox(height: 8),
         Text(
           "不支持的文件类型",
           style: TextStyle(
-            color: Colors.black26,
+            color: Colors.white,
           ),
         ),
       ],
     );
   }
+
+  //推出预览
+  void _popPreview() => jRouter.pop(currentIndex.value);
 }

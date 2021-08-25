@@ -12,6 +12,9 @@ class MaterialPageRoot extends BaseStatelessWidget {
   //标题组件
   final PreferredSizeWidget? appBar;
 
+  //判断是否展示标题栏
+  final bool showAppbar;
+
   //页面内容元素
   final Widget body;
 
@@ -46,6 +49,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     required this.body,
     this.appBarTitle = '',
     this.appBar,
+    this.showAppbar = true,
     this.appBarLeading,
     this.appBarLeadingType = AppBarLeading.back,
     this.appBarActions = const [],
@@ -61,6 +65,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     //页面基本参数
     String appBarTitle = '',
     AppBar? appBar,
+    bool showAppbar = true,
     Widget? appBarLeading,
     AppBarLeading appBarLeadingType = AppBarLeading.back,
     List<Widget> appBarActions = const [],
@@ -82,6 +87,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
     return MaterialPageRoot(
       appBarTitle: appBarTitle,
       appBar: appBar,
+      showAppbar: showAppbar,
       appBarLeading: appBarLeading,
       appBarLeadingType: appBarLeadingType,
       appBarActions: appBarActions,
@@ -110,6 +116,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
   static MaterialPageRoot withTabLayout<V extends NavigationItem>({
     //页面基本参数
     String appBarTitle = '',
+    bool showAppbar = true,
     Widget? appBarLeading,
     AppBarLeading appBarLeadingType = AppBarLeading.back,
     List<Widget> appBarActions = const [],
@@ -142,6 +149,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
           indicatorConfig: indicatorConfig,
         ),
       ),
+      showAppbar: showAppbar,
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
@@ -156,12 +164,14 @@ class MaterialPageRoot extends BaseStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar ??
-          AppBar(
-            leading: appBarLeading ?? appBarLeadingType.leading,
-            title: Text(appBarTitle),
-            actions: appBarActions,
-          ),
+      appBar: showAppbar
+          ? appBar ??
+              AppBar(
+                leading: appBarLeading ?? appBarLeadingType.leading,
+                title: Text(appBarTitle),
+                actions: appBarActions,
+              )
+          : null,
       body: body,
       backgroundColor: backgroundColor,
       bottomNavigationBar: bottomNavigationBar,

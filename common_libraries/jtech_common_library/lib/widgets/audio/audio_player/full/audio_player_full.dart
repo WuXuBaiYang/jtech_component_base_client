@@ -18,6 +18,7 @@ class JAudioPlayerFullState extends BaseJAudioPlayerState {
   @override
   Widget buildAudioContent(context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildTitleContent(),
         buildPlayerProgress(),

@@ -150,6 +150,7 @@ abstract class BaseJAudioPlayerState extends BaseState<JAudioPlayer> {
         var curr = snap.data!.position;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 12),
             buildProgressSlider(snap.data!.ratio, max),

@@ -11,9 +11,6 @@ class VideoPlayerConfig extends BaseConfig{
   //视频组件容器尺寸
   final Size? size;
 
-  //是否自适应组件尺寸
-  final bool autoSize;
-
   //背景色
   final Color backgroundColor;
 
@@ -25,7 +22,6 @@ class VideoPlayerConfig extends BaseConfig{
 
   VideoPlayerConfig({
     this.size,
-    this.autoSize = true,
     this.backgroundColor = Colors.grey,
     this.initialBuilder,
     this.align = Alignment.center,
@@ -34,14 +30,12 @@ class VideoPlayerConfig extends BaseConfig{
   @override
   VideoPlayerConfig copyWith({
     Size? size,
-    bool? autoSize,
     Color? backgroundColor,
     WidgetBuilder? initialBuilder,
     Alignment? align,
   }) {
     return VideoPlayerConfig(
       size: size ?? this.size,
-      autoSize: autoSize ?? this.autoSize,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       initialBuilder: initialBuilder ?? this.initialBuilder,
       align: align ?? this.align,
