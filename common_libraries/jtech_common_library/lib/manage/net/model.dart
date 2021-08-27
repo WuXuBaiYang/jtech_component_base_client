@@ -39,9 +39,57 @@ class RequestModel extends BaseModel {
 */
 class RequestForm {}
 
+//请求响应业务逻辑判断回调
+typedef OnResponseSuccess = bool Function(int code, String message);
+
 /*
 * 请求响应对象
 * @author jtechjh
 * @Time 2021/8/25 3:55 下午
 */
-class ResponseModel extends BaseModel {}
+class ResponseModel<T> extends BaseModel {
+  //状态码
+  final int statusCode;
+
+  //状态描述
+  final String statusMessage;
+
+  //响应状态码
+  final int code;
+
+  //响应描述
+  final String message;
+
+  //返回值
+  final T data;
+
+  //判断响应状态是否成功的回调
+  final OnResponseSuccess _responseSuccess;
+
+  //判断网络请求是否成功
+  bool get httpSuccess => statusCode == 200 || statusCode == 201;
+
+  //判断接口请求是否成功(需使用者自行实现)
+  bool get requestSuccess => _responseSuccess(code, message);
+
+  //判断整体请求是否成功(网络+接口业务全成功)
+  bool get success => httpSuccess && requestSuccess;
+
+  //获取响应消息
+  String get responseMessage {
+    List<String> list = [];
+    if (statusMessage.isNotEmpty) list.add(statusMessage);
+    if (message.isNotEmpty) list.add(message);
+    return list.join(";");
+  }
+
+  //构建响应对象
+  ResponseModel({
+    required this.statusCode,
+    required this.statusMessage,
+    required this.code,
+    required this.message,
+    required this.data,
+    required OnResponseSuccess responseSuccess,
+  }) : this._responseSuccess = responseSuccess;
+}
