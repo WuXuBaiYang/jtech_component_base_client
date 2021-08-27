@@ -11,6 +11,7 @@ export 'base/change_notifier.dart';
 export 'base/refresh_config.dart';
 export 'base/base_menu.dart';
 export 'package:path/path.dart';
+export 'package:http_parser/http_parser.dart';
 
 //导出弹层方法
 export 'popups/dialog/config.dart';

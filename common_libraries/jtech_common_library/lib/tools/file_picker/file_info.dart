@@ -30,6 +30,14 @@ class JPickerResult {
   JFileInfo? get singleFile {
     if (isSingle) return files.first;
   }
+
+  //转换为接口请求的文件集合类型
+  List<RequestFileItem> toRequestFiles() => files
+      .map<RequestFileItem>((item) => RequestFileItem(
+            filePath: item.uri,
+            filename: item.name,
+          ))
+      .toList();
 }
 
 /*

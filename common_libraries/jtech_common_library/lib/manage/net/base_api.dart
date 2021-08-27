@@ -38,7 +38,7 @@ abstract class BaseJAPI {
   Future<ResponseModel<T>> request<T>(
     String path, {
     APIMethod method = APIMethod.get,
-    RequestModel? request,
+    RequestModel? requestModel,
     String? cancelKey,
     OnResponseHandle<T>? responseHandle,
   }) async {
@@ -47,11 +47,11 @@ abstract class BaseJAPI {
     try {
       var response = await _dio.request(
         path,
-        queryParameters: request?.queryParameters,
-        data: request?.data,
+        queryParameters: requestModel?.queryParameters,
+        data: requestModel?.data,
         options: Options(
           method: method.text,
-          headers: request?.headers,
+          headers: requestModel?.headers,
         ),
         cancelToken: jAPICancel.generateToken(cancelKey),
       );
@@ -69,6 +69,66 @@ abstract class BaseJAPI {
     return responseHandle?.call(statusCode, statusMessage, data) ??
         handleResponse<T>(statusCode, statusMessage, data);
   }
+
+  //http-get请求
+  Future<ResponseModel<T>> get<T>(
+    String path, {
+    RequestModel? requestModel,
+    String? cancelKey,
+    OnResponseHandle<T>? responseHandle,
+  }) =>
+      request<T>(
+        path,
+        method: APIMethod.get,
+        requestModel: requestModel,
+        cancelKey: cancelKey,
+        responseHandle: responseHandle,
+      );
+
+  //http-post请求
+  Future<ResponseModel<T>> post<T>(
+    String path, {
+    RequestModel? requestModel,
+    String? cancelKey,
+    OnResponseHandle<T>? responseHandle,
+  }) =>
+      request<T>(
+        path,
+        method: APIMethod.post,
+        requestModel: requestModel,
+        cancelKey: cancelKey,
+        responseHandle: responseHandle,
+      );
+
+  //http-put请求
+  Future<ResponseModel<T>> put<T>(
+    String path, {
+    RequestModel? requestModel,
+    String? cancelKey,
+    OnResponseHandle<T>? responseHandle,
+  }) =>
+      request<T>(
+        path,
+        method: APIMethod.put,
+        requestModel: requestModel,
+        cancelKey: cancelKey,
+        responseHandle: responseHandle,
+      );
+
+  //http-delete请求
+  Future<ResponseModel<T>> delete<T>(
+    String path, {
+    RequestModel? requestModel,
+    String? cancelKey,
+    OnResponseHandle<T>? responseHandle,
+  }) =>
+      request<T>(
+        path,
+        method: APIMethod.delete,
+        requestModel: requestModel,
+        cancelKey: cancelKey,
+        responseHandle: responseHandle,
+      );
 
   //取消请求
   void cancel(String key) => jAPICancel.cancelRequest(key);

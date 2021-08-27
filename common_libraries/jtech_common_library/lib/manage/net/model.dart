@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 /*
 * 请求对象
@@ -8,28 +11,51 @@ import 'package:jtech_base_library/jbase.dart';
 */
 class RequestModel extends BaseModel {
   //查询参数
-  final Map<String, dynamic>? _queryParameters;
+  final Map<String, dynamic>? queryParameters;
 
   //消息体
-  final dynamic _data;
+  final dynamic data;
 
   //头部参数
-  final Map<String, dynamic>? _headers;
+  final Map<String, dynamic>? headers;
 
-  Map<String, dynamic>? get queryParameters => _queryParameters;
+  RequestModel({
+    this.queryParameters,
+    this.headers,
+    this.data,
+  });
 
-  dynamic get data => _data;
+  //构造为query方法结构，无data
+  RequestModel.query({
+    required this.queryParameters,
+    this.headers,
+  }) : this.data = null;
 
-  Map<String, dynamic>? get headers => _headers;
+  //构造为map结构的data
+  RequestModel.map({
+    required this.data,
+    this.queryParameters,
+    this.headers,
+  });
 
-  RequestModel.fromForm({
+  //构造为json(字符串)结构的data
+  RequestModel.json({
+    required String data,
+    this.queryParameters,
+    this.headers,
+  }) : this.data = jsonDecode(data);
+
+  //表单构建模式
+  static RequestFormBuilder form({
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
-  })  : this._queryParameters = queryParameters,
-        this._headers = headers,
-
-        ///
-        this._data = FormData.fromMap({});
+    Map<String, dynamic>? data,
+  }) =>
+      RequestFormBuilder(
+        queryParameters: queryParameters,
+        headers: headers,
+        data: data,
+      );
 }
 
 /*
@@ -37,7 +63,83 @@ class RequestModel extends BaseModel {
 * @author jtechjh
 * @Time 2021/8/25 5:17 下午
 */
-class RequestForm {}
+class RequestFormBuilder extends RequestModel {
+  RequestFormBuilder({
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? data,
+  }) : super(
+            queryParameters: queryParameters,
+            headers: headers,
+            data: FormData.fromMap(data ?? {}));
+
+  //添加参数
+  RequestFormBuilder add(String key, dynamic value) =>
+      this..addAll({key: value});
+
+  //添加多个参数
+  RequestFormBuilder addAll(Map<String, dynamic> data) => this
+    ..data.fields.addAll(
+        data.map((key, value) => MapEntry(key, value.toString())).entries);
+
+  //添加文件
+  RequestFormBuilder addFileSync(
+    String key,
+    String filePath, {
+    String? filename,
+    MediaType? mediaType,
+  }) =>
+      this
+        ..data.files.add(MapEntry(
+              key,
+              MultipartFile.fromFileSync(
+                filePath,
+                filename: filename,
+                contentType: mediaType,
+              ),
+            ));
+
+  //添加多个文件
+  RequestFormBuilder addFilesSync(
+    String key,
+    List<RequestFileItem> files,
+  ) =>
+      this
+        ..data.files.addAll(files
+            .map((item) => MapEntry(
+                key,
+                MultipartFile.fromFileSync(
+                  item.filePath,
+                  filename: item.filename,
+                  contentType: item.mediaType,
+                )))
+            .toList());
+
+  //构建为请求对象
+  RequestModel build() => this;
+}
+
+/*
+* 接口请求文件对象
+* @author jtechjh
+* @Time 2021/8/27 4:56 下午
+*/
+class RequestFileItem {
+  //文件路径
+  final String filePath;
+
+  //文件名
+  final String? filename;
+
+  //文件类型
+  final MediaType? mediaType;
+
+  RequestFileItem({
+    required this.filePath,
+    this.filename,
+    this.mediaType,
+  });
+}
 
 //请求响应业务逻辑判断回调
 typedef OnResponseSuccess = bool Function(int code, String message);
