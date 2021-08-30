@@ -72,7 +72,7 @@ dependencies:
   record: ^3.0.0
 
   # 摄像头管理
-  camera: ^0.9.0
+  camera: ^0.9.2+1
 
   # 路径管理
   path_provider: ^2.0.2
@@ -88,7 +88,12 @@ dependencies:
 
   # 网络请求库
   dio: ^4.0.0
-  
+
+  # sp存储
+  shared_preferences: ^2.0.7
+
+  # 加密算法
+  crypto: ^3.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

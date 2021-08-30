@@ -29,6 +29,8 @@ export 'popups/overlay/overlay.dart';
 export 'manage/net/api_cancel.dart';
 export 'manage/net/base_api.dart';
 export 'manage/net/model.dart';
+export 'manage/cache/cache.dart';
+export 'manage/manage.dart';
 
 //导出工具方法
 export 'tools/data_format.dart';

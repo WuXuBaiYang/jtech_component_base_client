@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
@@ -67,6 +69,9 @@ class JTools extends BaseManage {
   //生成时间戳签名
   String getDateSign() =>
       dataFormat.format("yyyyMMddHHmmssSSS", DateTime.now());
+
+  //生成md5
+  String md5(String value) => crypto.md5.convert(utf8.encode(value)).toString();
 }
 
 //单例调用
