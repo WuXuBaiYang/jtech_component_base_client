@@ -19,12 +19,17 @@ class JManage extends BaseManage {
   //缓存管理
   final cache = JCacheManage();
 
+  //本地通知管理
+  final notification = JNotificationManage();
+
   @override
   Future<void> init() async {
     //初始化接口取消管理
     await apiCancel.init();
     //初始化缓存管理
     await cache.init();
+    //初始化通知管理
+    await notification.init();
   }
 }
 
