@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 */
 class JCacheManage extends BaseManage {
   //时效字段后缀
-  final String expirationSuffix = "expiration";
+  final String _expirationSuffix = "expiration";
 
   static final JCacheManage _instance = JCacheManage._internal();
 
@@ -30,41 +30,41 @@ class JCacheManage extends BaseManage {
   }
 
   //获取int类型
-  int? getInt(String key) {
-    if (!_checkExpiration(key)) return null;
-    return _sp.getInt(key);
+  int? getInt(String key, {int? def}) {
+    if (!_checkExpiration(key)) return def;
+    return _sp.getInt(key) ?? def;
   }
 
   //获取bool类型
-  bool? getBool(String key) {
-    if (!_checkExpiration(key)) return null;
-    return _sp.getBool(key);
+  bool? getBool(String key, {bool? def}) {
+    if (!_checkExpiration(key)) return def;
+    return _sp.getBool(key) ?? def;
   }
 
   //获取double类型
-  double? getDouble(String key) {
-    if (!_checkExpiration(key)) return null;
-    return _sp.getDouble(key);
+  double? getDouble(String key, {double? def}) {
+    if (!_checkExpiration(key)) return def;
+    return _sp.getDouble(key) ?? def;
   }
 
   //获取String类型
-  String? getString(String key) {
-    if (!_checkExpiration(key)) return null;
-    return _sp.getString(key);
+  String? getString(String key, {String? def}) {
+    if (!_checkExpiration(key)) return def;
+    return _sp.getString(key) ?? def;
   }
 
   //获取StringList类型
-  List<String>? getStringList(String key) {
-    if (!_checkExpiration(key)) return null;
-    return _sp.getStringList(key);
+  List<String>? getStringList(String key, {List<String>? def}) {
+    if (!_checkExpiration(key)) return def;
+    return _sp.getStringList(key) ?? def;
   }
 
   //获取json类型
-  dynamic getJson(String key) {
-    if (!_checkExpiration(key)) return null;
+  dynamic getJson(String key, {dynamic def}) {
+    if (!_checkExpiration(key)) return def;
     var value = _sp.getString(key);
-    if (null == value) return null;
-    return jsonDecode(value);
+    if (null == value) return def;
+    return jsonDecode(value) ?? def;
   }
 
   //设置int类型
@@ -172,7 +172,7 @@ class JCacheManage extends BaseManage {
 
   //获取有效期的存储字段
   String _getExpirationKey(String key) {
-    key = "${key}_$expirationSuffix";
+    key = "${key}_$_expirationSuffix";
     return "${key}_${jTools.md5(key)}";
   }
 }

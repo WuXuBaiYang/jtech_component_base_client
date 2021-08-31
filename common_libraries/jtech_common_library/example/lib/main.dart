@@ -1,4 +1,5 @@
 import 'package:example/gridview/accessory_gridview_demo.dart';
+import 'package:example/manage/manage_demo.dart';
 import 'package:example/picker/picker_demo.dart';
 import 'package:example/popups/popups_demo.dart';
 import 'package:example/tools/tools_page.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/popups/popups.dart';
 import 'audio/audio_demo.dart';
 import 'banner/banner_demo.dart';
 import 'button/button_demo.dart';
@@ -27,38 +29,50 @@ import 'video/video_player_demo.dart';
 
 void main() {
   runMaterialAPP(
-    title: "jtech common library",
-    routes: {
-      "/test/button": (_) => ButtonDemo(),
-      "/test/listview": (_) => ListViewDemo(),
-      "/test/listview/refresh": (_) => RefreshListViewDemo(),
-      "/test/listview/index": (_) => IndexListViewDemo(),
-      "/test/listview/full": (_) => DefaultListViewDemo(),
-      "/test/popups": (_) => PopupsDemo(),
-      "/test/navigation": (_) => NavigationDemo(),
-      "/test/navigation/bottom_navigation": (_) => BottomNavigationDemo(),
-      "/test/navigation/tab_layout": (_) => TabLayoutDemo(),
-      "/test/image": (_) => ImageDemo(),
-      "/test/banner": (_) => BannerDemo(),
-      "/test/card": (_) => CardDemo(),
-      "/test/gridview": (_) => GridviewDemo(),
-      "/test/gridview/full": (_) => DefaultGridviewDemo(),
-      "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
-      "/test/gridview/accessory": (_) => AccessoryGridviewDemo(),
-      "/test/form_demo": (_) => FormDemo(),
-      "/test/tools_demo": (_) => ToolsDemo(),
-      "/test/camera": (_) => CameraDemo(),
-      "/test/video_player_demo": (_) => VideoPlayerDemo(),
-      "/test/audio_demo": (_) => AudioDemo(),
-      "/test/file_picker": (_) => FilePickerDemo(),
-    },
-    homePage: MyHomePage(),
-  );
+      title: "jtech common library",
+      routes: {
+        "/test/button": (_) => ButtonDemo(),
+        "/test/listview": (_) => ListViewDemo(),
+        "/test/listview/refresh": (_) => RefreshListViewDemo(),
+        "/test/listview/index": (_) => IndexListViewDemo(),
+        "/test/listview/full": (_) => DefaultListViewDemo(),
+        "/test/popups": (_) => PopupsDemo(),
+        "/test/navigation": (_) => NavigationDemo(),
+        "/test/navigation/bottom_navigation": (_) => BottomNavigationDemo(),
+        "/test/navigation/tab_layout": (_) => TabLayoutDemo(),
+        "/test/image": (_) => ImageDemo(),
+        "/test/banner": (_) => BannerDemo(),
+        "/test/card": (_) => CardDemo(),
+        "/test/gridview": (_) => GridviewDemo(),
+        "/test/gridview/full": (_) => DefaultGridviewDemo(),
+        "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
+        "/test/gridview/accessory": (_) => AccessoryGridviewDemo(),
+        "/test/form_demo": (_) => FormDemo(),
+        "/test/tools_demo": (_) => ToolsDemo(),
+        "/test/camera": (_) => CameraDemo(),
+        "/test/video_player_demo": (_) => VideoPlayerDemo(),
+        "/test/audio_demo": (_) => AudioDemo(),
+        "/test/file_picker": (_) => FilePickerDemo(),
+        "/test/manage_demo": (_) => ManageDemo(),
+      },
+      welcomePage: WelcomePage(),
+      homePage: MyHomePage(),
+      welcomeInitial: () async {
+        await jToast.init();
+        await jManage.init();
+        await jPopups.init();
+      });
 }
 
+/*
+* 主页面
+* @author jtechjh
+* @Time 2021/8/31 5:28 下午
+*/
 class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
+    "管理工具": "/test/manage_demo",
     "附件选择方法": "/test/file_picker",
     "音频组件": "/test/audio_demo",
     "按钮组件": "/test/button",
@@ -88,6 +102,31 @@ class MyHomePage extends BaseStatelessPage {
         itemBuilder: (context, item, index) => ListTile(
           title: Text(item),
           onTap: () => jRouter.pushNamed(pages[item]!),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+* 欢迎页面
+* @author jtechjh
+* @Time 2021/8/31 5:28 下午
+*/
+class WelcomePage extends BaseStatelessPage {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialPageRoot(
+      showAppbar: false,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FlutterLogo(),
+            SizedBox(height: 15),
+            Text("测试demo用例"),
+          ],
         ),
       ),
     );
