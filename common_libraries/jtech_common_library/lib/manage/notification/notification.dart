@@ -73,7 +73,7 @@ class JNotificationManage extends BaseManage {
     required bool indeterminate,
     NotificationConfig? config,
   }) {
-    if (null == body) {
+    if (null == body && !indeterminate) {
       double ratio = (progress / maxProgress.toDouble()) * 100;
       body = "$progress/$maxProgress ${ratio.toStringAsFixed(1)}%";
     }
@@ -93,7 +93,7 @@ class JNotificationManage extends BaseManage {
           enableLights: false,
           enableVibration: false,
           ongoing: true,
-          onlyAlertOnce: false,
+          onlyAlertOnce: true,
         ),
         iosConfig: IOSNotificationConfig(
           presentSound: false,
@@ -231,4 +231,4 @@ class JNotificationManage extends BaseManage {
 }
 
 //单例调用
-final jNotificationManage = JNotificationManage();
+final jNotification = JNotificationManage();

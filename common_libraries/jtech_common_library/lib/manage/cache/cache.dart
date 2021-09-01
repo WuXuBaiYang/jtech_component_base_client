@@ -73,7 +73,7 @@ class JCacheManage extends BaseManage {
     int value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setInt(key, value);
   }
 
@@ -83,7 +83,7 @@ class JCacheManage extends BaseManage {
     double value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setDouble(key, value);
   }
 
@@ -93,7 +93,7 @@ class JCacheManage extends BaseManage {
     bool value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setBool(key, value);
   }
 
@@ -103,7 +103,7 @@ class JCacheManage extends BaseManage {
     String value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setString(key, value);
   }
 
@@ -113,7 +113,7 @@ class JCacheManage extends BaseManage {
     List<String> value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setStringList(key, value);
   }
 
@@ -123,7 +123,7 @@ class JCacheManage extends BaseManage {
     Map<K, V> value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setString(key, jsonEncode(value));
   }
 
@@ -133,7 +133,7 @@ class JCacheManage extends BaseManage {
     List<V> value, {
     Duration? expiration,
   }) async {
-    if (!await _setupExpiration(key)) return false;
+    if (!await _setupExpiration(key,expiration: expiration)) return false;
     return _sp.setString(key, jsonEncode(value));
   }
 
@@ -143,7 +143,7 @@ class JCacheManage extends BaseManage {
   }
 
   //清空缓存的所有字段
-  Future<bool> clearAll() {
+  Future<bool> removeAll() {
     return _sp.clear();
   }
 
