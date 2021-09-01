@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_common_library/manage/net/model.dart';
 
 //单次请求的响应回调控制
 typedef OnResponseHandle<T> = ResponseModel<T> Function(
@@ -65,6 +66,12 @@ abstract class BaseJAPI {
     } catch (e) {
       statusCode = -1;
       statusMessage = "请求失败";
+    }
+    if (null == data) {
+      return ResponseModel.empty(
+        statusCode: statusCode,
+        statusMessage: statusMessage,
+      );
     }
     return responseHandle?.call(statusCode, statusMessage, data) ??
         handleResponse<T>(statusCode, statusMessage, data);
@@ -135,7 +142,7 @@ abstract class BaseJAPI {
 
   //处理请求响应
   ResponseModel<T> handleResponse<T>(
-      int statusCode, String statusMessage, dynamic data);
+      int statusCode, String statusMessage, dynamic result);
 }
 
 /*

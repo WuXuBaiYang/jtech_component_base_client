@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
+import 'test_api.dart';
+
 /*
 * 管理工具方法
 * @author jtechjh
@@ -71,8 +73,12 @@ class ManageDemo extends BaseStatelessPage {
     },
     //网络管理
     {
-      "匹配手机号(+86) 18600000000": () {
-        return jCommon.tools.matches.hasPhoneNumber_86("18600000000");
+      "请求每日一句话": () {
+        return TestAPI().getDailyTalk().then((value) {
+          print("请求每日一句话：${value.data?["comment"]}");
+        }).catchError((e) {
+          print("error：$e");
+        });
       }
     },
     //通知管理

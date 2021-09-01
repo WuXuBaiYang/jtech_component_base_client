@@ -142,7 +142,7 @@ class RequestFileItem {
 }
 
 //请求响应业务逻辑判断回调
-typedef OnResponseSuccess = bool Function(int code, String message);
+typedef OnResponseSuccess = bool Function(String code, String message);
 
 /*
 * 请求响应对象
@@ -157,13 +157,13 @@ class ResponseModel<T> extends BaseModel {
   final String statusMessage;
 
   //响应状态码
-  final int code;
+  final String code;
 
   //响应描述
   final String message;
 
   //返回值
-  final T data;
+  final T? data;
 
   //判断响应状态是否成功的回调
   final OnResponseSuccess _responseSuccess;
@@ -172,7 +172,7 @@ class ResponseModel<T> extends BaseModel {
   bool get httpSuccess => statusCode == 200 || statusCode == 201;
 
   //判断接口请求是否成功(需使用者自行实现)
-  bool get requestSuccess => _responseSuccess(code, message);
+  bool get requestSuccess => _responseSuccess.call(code, message);
 
   //判断整体请求是否成功(网络+接口业务全成功)
   bool get success => httpSuccess && requestSuccess;
@@ -194,4 +194,17 @@ class ResponseModel<T> extends BaseModel {
     required this.data,
     required OnResponseSuccess responseSuccess,
   }) : this._responseSuccess = responseSuccess;
+
+  //构建失败响应对象
+  ResponseModel.empty({
+    required this.statusCode,
+    required this.statusMessage,
+    this.data,
+  })  : this.code = "$statusCode",
+        this.message = statusMessage,
+        this._responseSuccess = _defResponseSuccess;
+
+  //响应结果判断
+  static bool _defResponseSuccess(String code, String message) =>
+      code == "200" || code == "201";
 }
