@@ -12,9 +12,6 @@ class JMatches extends BaseManage {
 
   JMatches._internal();
 
-  @override
-  Future<void> init() async {}
-
   //手机号正则
   final _phoneNumberRegExp = RegExp(
       r'^((\+86)?|(\+86-)?)1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$');

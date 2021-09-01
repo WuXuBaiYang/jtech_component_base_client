@@ -16,9 +16,6 @@ class JSnack extends BaseManage {
 
   JSnack._internal();
 
-  @override
-  Future<void> init() async {}
-
   //显示基础snack提示
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnack(
       BuildContext context,

@@ -5,5 +5,5 @@
 */
 abstract class BaseManage {
   //初始化方法
-  Future<void> init();
+  Future<void> init() async {}
 }

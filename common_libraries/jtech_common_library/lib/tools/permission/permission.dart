@@ -20,9 +20,6 @@ class JPermission extends BaseManage {
 
   JPermission._internal();
 
-  @override
-  Future<void> init() async {}
-
   //检查集合中的权限是否全部通过
   //默认将请求失败的权限通过toast提示出来，当回调不为空时则不进行toast提示
   Future<bool> checkAllGranted(

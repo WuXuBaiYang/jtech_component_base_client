@@ -25,9 +25,6 @@ class JOverlay extends BaseManage {
   //缓存当前启用的弹层对象
   final Map<Key, OverlayEntry> _entries = {};
 
-  @override
-  Future<void> init() async {}
-
   //显示基础弹层组件
   Future<T?> show<T>(
     BuildContext context, {

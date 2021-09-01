@@ -16,7 +16,7 @@ class ManageDemo extends BaseStatelessPage {
   static final List<String> toolsTitleList = [
     "缓存管理",
     "网络管理",
-    "消息通知",
+    "通知管理",
   ];
 
   //折叠列表
@@ -38,8 +38,8 @@ class ManageDemo extends BaseStatelessPage {
     },
     //通知管理
     {
-      "匹配手机号(+86) 18600000000": () {
-        return jCommon.tools.matches.hasPhoneNumber_86("18600000000");
+      "弹出简易通知": () {
+        return jNotificationManage.showSimple(title: "简易通知标题");
       }
     },
   ];

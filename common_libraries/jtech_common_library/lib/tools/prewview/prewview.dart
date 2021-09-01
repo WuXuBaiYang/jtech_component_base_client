@@ -13,9 +13,6 @@ class JPreview extends BaseManage {
 
   JPreview._internal();
 
-  @override
-  Future<void> init() async {}
-
   //展示附件预览
   Future<int?>? show({
     required List<JFileInfo> fileList,

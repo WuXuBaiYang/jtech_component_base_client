@@ -24,7 +24,7 @@ class JNotificationManage extends BaseManage {
   JNotificationManage._internal();
 
   //默认图标名称
-  final String _defaultIconName = "ic_launcher";
+  final String _defaultIconName = "app_icon";
 
   //接受通知消息回调集合
   final List<OnReceiveNotification> _receiveNotificationListeners = [];
@@ -35,18 +35,30 @@ class JNotificationManage extends BaseManage {
   //通知推送管理
   late FlutterLocalNotificationsPlugin localNotification;
 
+  //通知栏初始化状态记录
+  bool? _initialized;
+
+  //获取初始化状态
+  bool get initialized => _initialized ?? false;
+
   @override
   Future<void> init() async {
-    localNotification = FlutterLocalNotificationsPlugin()
-      ..initialize(
-        InitializationSettings(
-          android: AndroidInitializationSettings(_defaultIconName),
-          iOS: IOSInitializationSettings(
-            onDidReceiveLocalNotification: _onReceiveNotification,
-          ),
+    localNotification = FlutterLocalNotificationsPlugin();
+    //尝试初始化通知栏
+    initNotification(_defaultIconName).then((value) => _initialized = value);
+  }
+
+  //初始化通知栏消息
+  Future<bool?> initNotification(String icon) async {
+    return localNotification.initialize(
+      InitializationSettings(
+        android: AndroidInitializationSettings(icon),
+        iOS: IOSInitializationSettings(
+          onDidReceiveLocalNotification: _onReceiveNotification,
         ),
-        onSelectNotification: _onNotificationSelect,
-      );
+      ),
+      onSelectNotification: _onNotificationSelect,
+    );
   }
 
   //显示进度通知
@@ -123,6 +135,10 @@ class JNotificationManage extends BaseManage {
   Future<void> show({
     required NotificationConfig config,
   }) async {
+    assert(
+        initialized,
+        "请在 android-app-src-main-res-drawable 目录下添加 app_icon 图片文件；"
+        "或者调用 jNotificationManage.initNotification() 自行指定默认图标");
     //申请ios权限
     if (Platform.isIOS) {
       var result = await localNotification

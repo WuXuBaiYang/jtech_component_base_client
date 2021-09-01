@@ -16,9 +16,6 @@ class JAPICancelManage extends BaseManage {
   //缓存接口取消key
   final Map<String, JCancelToken> _cancelKeyMap = {};
 
-  @override
-  Future<void> init() async {}
-
   //生成一个取消授权并返回
   JCancelToken generateToken(String key) {
     if (null != _cancelKeyMap[key]) {

@@ -16,9 +16,6 @@ class JDialog extends BaseManage {
 
   JDialog._internal();
 
-  @override
-  Future<void> init() async {}
-
   //弹窗基础方法
   Future<T?> show<T>(
     BuildContext context, {

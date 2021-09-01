@@ -21,9 +21,6 @@ class JSheet extends BaseManage {
 
   JSheet._internal();
 
-  @override
-  Future<void> init() async {}
-
   //展示基本sheet
   Future<T?> showBottomSheet<T>(
     BuildContext context, {

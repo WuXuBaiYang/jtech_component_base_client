@@ -18,9 +18,6 @@ class JFilePicker extends BaseManage {
 
   JFilePicker._internal();
 
-  @override
-  Future<void> init() async {}
-
   //附件选择基础方法
   Future<JPickerResult?> pick(
     BuildContext context, {

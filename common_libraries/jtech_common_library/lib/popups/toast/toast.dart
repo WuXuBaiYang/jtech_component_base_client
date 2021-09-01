@@ -21,9 +21,6 @@ class JToast extends BaseManage {
   //toast对象
   final FToast _toast;
 
-  @override
-  Future<void> init() async {}
-
   //显示toast
   void showToast(
     BuildContext context, {

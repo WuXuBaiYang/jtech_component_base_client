@@ -29,39 +29,35 @@ import 'video/video_player_demo.dart';
 
 void main() {
   runMaterialAPP(
-      title: "jtech common library",
-      routes: {
-        "/test/button": (_) => ButtonDemo(),
-        "/test/listview": (_) => ListViewDemo(),
-        "/test/listview/refresh": (_) => RefreshListViewDemo(),
-        "/test/listview/index": (_) => IndexListViewDemo(),
-        "/test/listview/full": (_) => DefaultListViewDemo(),
-        "/test/popups": (_) => PopupsDemo(),
-        "/test/navigation": (_) => NavigationDemo(),
-        "/test/navigation/bottom_navigation": (_) => BottomNavigationDemo(),
-        "/test/navigation/tab_layout": (_) => TabLayoutDemo(),
-        "/test/image": (_) => ImageDemo(),
-        "/test/banner": (_) => BannerDemo(),
-        "/test/card": (_) => CardDemo(),
-        "/test/gridview": (_) => GridviewDemo(),
-        "/test/gridview/full": (_) => DefaultGridviewDemo(),
-        "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
-        "/test/gridview/accessory": (_) => AccessoryGridviewDemo(),
-        "/test/form_demo": (_) => FormDemo(),
-        "/test/tools_demo": (_) => ToolsDemo(),
-        "/test/camera": (_) => CameraDemo(),
-        "/test/video_player_demo": (_) => VideoPlayerDemo(),
-        "/test/audio_demo": (_) => AudioDemo(),
-        "/test/file_picker": (_) => FilePickerDemo(),
-        "/test/manage_demo": (_) => ManageDemo(),
-      },
-      welcomePage: WelcomePage(),
-      homePage: MyHomePage(),
-      welcomeInitial: () async {
-        await jToast.init();
-        await jManage.init();
-        await jPopups.init();
-      });
+    title: "jtech common library",
+    routes: {
+      "/test/button": (_) => ButtonDemo(),
+      "/test/listview": (_) => ListViewDemo(),
+      "/test/listview/refresh": (_) => RefreshListViewDemo(),
+      "/test/listview/index": (_) => IndexListViewDemo(),
+      "/test/listview/full": (_) => DefaultListViewDemo(),
+      "/test/popups": (_) => PopupsDemo(),
+      "/test/navigation": (_) => NavigationDemo(),
+      "/test/navigation/bottom_navigation": (_) => BottomNavigationDemo(),
+      "/test/navigation/tab_layout": (_) => TabLayoutDemo(),
+      "/test/image": (_) => ImageDemo(),
+      "/test/banner": (_) => BannerDemo(),
+      "/test/card": (_) => CardDemo(),
+      "/test/gridview": (_) => GridviewDemo(),
+      "/test/gridview/full": (_) => DefaultGridviewDemo(),
+      "/test/gridview/refresh": (_) => RefreshGridviewDemo(),
+      "/test/gridview/accessory": (_) => AccessoryGridviewDemo(),
+      "/test/form_demo": (_) => FormDemo(),
+      "/test/tools_demo": (_) => ToolsDemo(),
+      "/test/camera": (_) => CameraDemo(),
+      "/test/video_player_demo": (_) => VideoPlayerDemo(),
+      "/test/audio_demo": (_) => AudioDemo(),
+      "/test/file_picker": (_) => FilePickerDemo(),
+      "/test/manage_demo": (_) => ManageDemo(),
+    },
+    welcomePage: WelcomePage(),
+    homePage: MyHomePage(),
+  );
 }
 
 /*

@@ -15,9 +15,6 @@ class JTimer extends BaseManage {
 
   JTimer._internal();
 
-  @override
-  Future<void> init() async {}
-
   //缓存计时器
   final Map<String, Timer> cacheTimers = {};
 

@@ -13,9 +13,6 @@ class JDataFormat extends BaseManage {
 
   JDataFormat._internal();
 
-  @override
-  Future<void> init() async {}
-
   //全日期时间格式-中文
   String formatFullDateTimeZH(DateTime dateTime) =>
       format("yyyy年MM月dd日 hh时mm分ss秒", dateTime);

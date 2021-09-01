@@ -15,9 +15,6 @@ class JFile extends BaseManage {
 
   JFile._internal();
 
-  @override
-  Future<void> init() async {}
-
   //图片缓存目录
   static final String imageCachePath = "imageCache";
 

@@ -12,9 +12,6 @@ class JDurationFormat extends BaseManage {
 
   JDurationFormat._internal();
 
-  @override
-  Future<void> init() async {}
-
   //维护一张替换表
   final Map<String, Function> _regMap = {
     "hh": (_, dur) => "${dur.inHours}".padLeft(2, '0'),
