@@ -60,7 +60,7 @@ class FormDemo extends BaseStatelessPage {
                     TextSpan(
                         text: "红色",
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.redAccent,
                         )),
                   ],
                 ),
