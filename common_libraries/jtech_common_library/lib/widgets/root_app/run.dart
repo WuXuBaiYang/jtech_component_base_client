@@ -22,24 +22,19 @@ void runMaterialAPP({
   Locale? locale,
   Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
   Iterable<Locale>? supportedLocales,
-}) =>
-    runApp(MaterialAPPRoot(
-      title: title,
-      routes: routes,
-      theme: theme,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      supportedLocales: supportedLocales,
-      homePage: Builder(
-        builder: (context) {
-          if (null != welcomePage) {
-            _loadInitial(welcomeInitial, welcomeDuration, homePage);
-            return welcomePage;
-          }
-          return homePage;
-        },
-      ),
-    ));
+}) {
+  _loadInitial(welcomeInitial, welcomeDuration, homePage);
+  runApp(MaterialAPPRoot(
+    title: title,
+    routes: routes,
+    theme: theme,
+    locale: locale,
+    navigatorKey: jRouter.navigateKey,
+    localizationsDelegates: localizationsDelegates,
+    supportedLocales: supportedLocales,
+    homePage: welcomePage ?? homePage,
+  ));
+}
 
 //加载初始化方法
 Future<void> _loadInitial(

@@ -31,6 +31,9 @@ class MaterialAPPRoot extends BaseStatelessWidget {
   //路由方法集合
   final Map<String, WidgetBuilder> routes;
 
+  //路由管理key
+  final GlobalKey<NavigatorState>? navigatorKey;
+
   MaterialAPPRoot({
     required this.title,
     required this.homePage,
@@ -39,12 +42,13 @@ class MaterialAPPRoot extends BaseStatelessWidget {
     this.locale,
     this.localizationsDelegates,
     this.supportedLocales,
+    this.navigatorKey,
   });
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: title,
-        navigatorKey: jRouter.navigateKey,
+        navigatorKey: navigatorKey,
         theme: theme ?? ThemeData.light(),
         locale: locale ?? const Locale('zh', ''),
         localizationsDelegates: [

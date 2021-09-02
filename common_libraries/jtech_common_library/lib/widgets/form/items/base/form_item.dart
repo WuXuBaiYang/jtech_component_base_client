@@ -93,7 +93,6 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
   //构建头像表单项
   static JFormItem avatar({
     //基本属性
-    String? initialValue,
     FormFieldSetter<String>? onSaved,
     FormFieldValidator<String>? validator,
     FormItemConfig<String>? baseConfig,
@@ -110,7 +109,7 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
     return JFormItem(
       currentState: JFormAvatarItemState(),
       config: (baseConfig ?? FormItemConfig<String>()).copyWith(
-        initialValue: initialValue,
+        initialValue: url,
         onSaved: onSaved,
         validator: validator,
       ),

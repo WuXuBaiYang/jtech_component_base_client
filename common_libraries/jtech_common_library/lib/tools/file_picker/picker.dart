@@ -313,8 +313,7 @@ class JFilePicker extends BaseManage {
       List<JFileInfo> files = [];
       for (var f in result.files) {
         if (--maxCount < 0) break;
-        if (null == f.path) continue;
-        files.add(await JFileInfo.fromPath(f.path!));
+        files.add(await JFileInfo.fromPath(f.path));
       }
       return files;
     }
