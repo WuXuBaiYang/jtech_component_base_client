@@ -103,6 +103,7 @@ export 'widgets/gridview/accessory/gridview_accessory.dart';
 export 'widgets/image/clip.dart';
 export 'widgets/image/config.dart';
 export 'widgets/image/image.dart';
+export 'widgets/image/controller.dart';
 export 'widgets/root_app/material_app.dart';
 export 'widgets/root_app/run.dart';
 export 'widgets/video_player/config.dart';

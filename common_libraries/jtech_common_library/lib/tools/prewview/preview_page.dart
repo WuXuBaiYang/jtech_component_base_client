@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:photo_view/photo_view.dart';
 
 /*
 * 预览页面基类
@@ -84,17 +82,23 @@ class PreviewPage extends StatelessWidget {
   //构建预览子项
   Widget _buildPreviewItem(JFileInfo fileInfo, int index) {
     if (fileInfo.isImageType) {
-      return PhotoView(
-        imageProvider: (fileInfo.isNetFile
-            ? CachedNetworkImageProvider(fileInfo.uri)
-            : FileImage(fileInfo.file)) as ImageProvider,
-        heroAttributes: PhotoViewHeroAttributes(tag: fileInfo.uri),
-        loadingBuilder: (context, event) => CircularProgressIndicator(),
-        onTapUp: (_, __, ___) => _popPreview(),
-        errorBuilder: (context, error, stackTrace) => Icon(
-          Icons.broken_image_outlined,
-          color: Colors.white,
-          size: 55,
+      return Hero(
+        tag: fileInfo.uri,
+        child: GestureDetector(
+          child: JImage.fileInfo(
+            fileInfo,
+            width: double.maxFinite,
+            placeholderBuilder: (context) => CircularProgressIndicator(),
+            errorBuilder: (context, error, stackTrace) => Icon(
+              Icons.broken_image_outlined,
+              color: Colors.white,
+              size: 55,
+            ),
+            gestureConfig: ImageGestureConfig(
+              inPageView: true,
+            ),
+          ),
+          onTapDown: (_) => _popPreview(),
         ),
       );
     }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'clip.dart';
@@ -10,37 +11,22 @@ typedef PlaceholderBuilder = Widget Function(BuildContext context);
 
 //图片异常占位构造器
 typedef ErrorBuilder = Widget Function(
-    BuildContext context, Object error, StackTrace? stackTrace);
+    BuildContext context, Object? error, StackTrace? stackTrace);
 
 /*
 * 图片加载配置文件
 * @author wuxubaiyang
 * @Time 2021/7/13 下午1:49
 */
-class ImageConfig extends BaseConfig{
+class ImageConfig extends BaseConfig {
   //图片构造器
   ImageBuilder? imageBuilder;
 
-  //占位格构柱奥奇
+  //占位图构造器
   PlaceholderBuilder? placeholderBuilder;
 
   //异常构造器
   ErrorBuilder? errorBuilder;
-
-  //占位图渐入时间
-  Duration placeholderFadeInDuration;
-
-  //渐出时间
-  Duration fadeOutDuration;
-
-  //渐出动画
-  Curve fadeOutCurve;
-
-  //渐入时间
-  Duration fadeInDuration;
-
-  //渐入动画
-  Curve fadeInCurve;
 
   //宽度
   double? width;
@@ -66,24 +52,19 @@ class ImageConfig extends BaseConfig{
   //绘制清晰度
   FilterQuality filterQuality;
 
-  //缓存宽度
-  int? cacheWidth;
-
-  //缓存高度
-  int? cacheHeight;
-
   //图片裁剪方法
   ImageClip? clip;
+
+  //编辑管理配置，非空则启用
+  ImageEditorConfig? editorConfig;
+
+  //手势控制配置，非空则启用
+  ImageGestureConfig? gestureConfig;
 
   ImageConfig({
     this.imageBuilder,
     this.placeholderBuilder,
     this.errorBuilder,
-    this.placeholderFadeInDuration = Duration.zero,
-    this.fadeOutDuration = const Duration(milliseconds: 1000),
-    this.fadeOutCurve = Curves.easeOut,
-    this.fadeInDuration = const Duration(milliseconds: 500),
-    this.fadeInCurve = Curves.easeIn,
     this.width,
     this.height,
     this.fit,
@@ -92,9 +73,9 @@ class ImageConfig extends BaseConfig{
     this.color,
     this.colorBlendMode,
     this.filterQuality = FilterQuality.low,
-    this.cacheWidth,
-    this.cacheHeight,
     this.clip,
+    this.editorConfig,
+    this.gestureConfig,
   });
 
   @override
@@ -102,11 +83,6 @@ class ImageConfig extends BaseConfig{
     ImageBuilder? imageBuilder,
     PlaceholderBuilder? placeholderBuilder,
     ErrorBuilder? errorBuilder,
-    Duration? placeholderFadeInDuration,
-    Duration? fadeOutDuration,
-    Curve? fadeOutCurve,
-    Duration? fadeInDuration,
-    Curve? fadeInCurve,
     double? width,
     double? height,
     BoxFit? fit,
@@ -115,20 +91,14 @@ class ImageConfig extends BaseConfig{
     Color? color,
     BlendMode? colorBlendMode,
     FilterQuality? filterQuality,
-    int? cacheWidth,
-    int? cacheHeight,
     ImageClip? clip,
+    ImageEditorConfig? editorConfig,
+    ImageGestureConfig? gestureConfig,
   }) {
     return ImageConfig(
       imageBuilder: imageBuilder ?? this.imageBuilder,
       placeholderBuilder: placeholderBuilder ?? this.placeholderBuilder,
       errorBuilder: errorBuilder ?? this.errorBuilder,
-      placeholderFadeInDuration:
-          placeholderFadeInDuration ?? this.placeholderFadeInDuration,
-      fadeOutDuration: fadeOutDuration ?? this.fadeOutDuration,
-      fadeOutCurve: fadeOutCurve ?? this.fadeOutCurve,
-      fadeInDuration: fadeInDuration ?? this.fadeInDuration,
-      fadeInCurve: fadeInCurve ?? this.fadeInCurve,
       width: width ?? this.width,
       height: height ?? this.height,
       fit: fit ?? this.fit,
@@ -137,9 +107,122 @@ class ImageConfig extends BaseConfig{
       color: color ?? this.color,
       colorBlendMode: colorBlendMode ?? this.colorBlendMode,
       filterQuality: filterQuality ?? this.filterQuality,
-      cacheWidth: cacheWidth ?? this.cacheWidth,
-      cacheHeight: cacheHeight ?? this.cacheHeight,
       clip: clip ?? this.clip,
+      editorConfig: editorConfig ?? this.editorConfig,
+      gestureConfig: gestureConfig ?? this.gestureConfig,
+    );
+  }
+}
+
+/*
+* 图片编辑配置参数
+* @author jtechjh
+* @Time 2021/9/3 2:26 下午
+*/
+class ImageEditorConfig extends BaseConfig {
+  //编辑控制器
+  final ImageEditorController? controller;
+
+  //最大缩放比例
+  final double maxScale;
+
+  //裁剪框内间距
+  final EdgeInsets cropRectPadding;
+
+  //角尺寸
+  final Size cornerSize;
+
+  //角颜色
+  final Color? cornerColor;
+
+  //格子线颜色
+  final Color? lineColor;
+
+  //格子线高度
+  final double lineHeight;
+
+  //裁剪比例,null为自由比例
+  //其他比例设置方式例如 9:16 = 9.0/16.0
+  final double? cropAspectRatio;
+
+  ImageEditorConfig({
+    this.controller,
+    this.maxScale = 3.0,
+    this.cropRectPadding = const EdgeInsets.all(15),
+    this.cornerSize = const Size(30, 5),
+    this.cornerColor,
+    this.lineColor,
+    this.lineHeight = 0.5,
+    this.cropAspectRatio,
+  });
+
+  @override
+  ImageEditorConfig copyWith({
+    ImageEditorController? controller,
+    double? maxScale,
+    EdgeInsets? cropRectPadding,
+    Size? cornerSize,
+    Color? cornerColor,
+    Color? lineColor,
+    double? lineHeight,
+    double? cropAspectRatio,
+  }) {
+    return ImageEditorConfig(
+      controller: controller ?? this.controller,
+      maxScale: maxScale ?? this.maxScale,
+      cropRectPadding: cropRectPadding ?? this.cropRectPadding,
+      cornerSize: cornerSize ?? this.cornerSize,
+      cornerColor: cornerColor ?? this.cornerColor,
+      lineColor: lineColor ?? this.lineColor,
+      lineHeight: lineHeight ?? this.lineHeight,
+      cropAspectRatio: cropAspectRatio ?? this.cropAspectRatio,
+    );
+  }
+}
+
+/*
+* 图片手势控制配置参数
+* @author jtechjh
+* @Time 2021/9/3 2:26 下午
+*/
+class ImageGestureConfig extends BaseConfig {
+  //手势控制器
+  final ImageGestureController? controller;
+
+  //最小缩放比例
+  final double minScale;
+
+  //最大缩放比例
+  final double maxScale;
+
+  //默认缩放比例
+  final double initialScale;
+
+  //判断是否在pageView组件中
+  final bool inPageView;
+
+  ImageGestureConfig({
+    this.controller,
+    this.minScale = 0.6,
+    this.maxScale = 3.0,
+    this.initialScale = 1.0,
+    this.inPageView = false,
+  });
+
+  @override
+  ImageGestureConfig copyWith({
+    ImageGestureController? controller,
+    double? minScale,
+    double? maxScale,
+    double? initialScale,
+    bool? inPageView,
+  }) {
+    return ImageGestureConfig(
+      controller: controller ?? this.controller,
+      minScale: minScale ?? this.minScale,
+      maxScale: maxScale ?? this.maxScale,
+      initialScale: initialScale ?? this.initialScale,
+      inPageView: inPageView ?? this.inPageView,
     );
   }
 }

@@ -66,9 +66,7 @@ class JFileInfo {
   });
 
   //从网络地址中加载
-  static Future<JFileInfo> fromUrl(String url) async => JFileInfo(
-        uri: url,
-      );
+  static Future<JFileInfo> fromUrl(String url) async => JFileInfo(uri: url);
 
   //从文件路径中加载
   static Future<JFileInfo> fromPath(String path) => fromFile(File(path));

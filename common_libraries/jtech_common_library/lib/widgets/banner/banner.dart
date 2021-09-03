@@ -196,17 +196,9 @@ class _JBannerState extends BaseState<JBanner> {
   Widget _buildBannerItem(BuildContext context, BannerItem item, int index) {
     return GestureDetector(
       child: item.builder(context),
-      onTap: null != widget.itemTap
-          ? () {
-              Feedback.forTap(context);
-              widget.itemTap!(item, index);
-            }
-          : null,
+      onTap: null != widget.itemTap ? () => widget.itemTap!(item, index) : null,
       onLongPress: null != widget.itemLongTap
-          ? () {
-              Feedback.forLongPress(context);
-              widget.itemLongTap!(item, index);
-            }
+          ? () => widget.itemLongTap!(item, index)
           : null,
     );
   }
