@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -105,15 +107,44 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
     DefaultItemConfig<ImageDataSource>? defaultConfig,
     //头像资源对象
     required ImageDataSource dataSource,
+    Color color = Colors.white,
+    double elevation = 1.0,
+    ErrorBuilder? errorBuilder,
+    PlaceholderBuilder? placeholderBuilder,
+    double size = 35,
+    bool circle = true,
+    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(8)),
+    EdgeInsets padding = const EdgeInsets.all(2),
+    bool clickFullArea = true,
+    OnAvatarUpload? onAvatarUpload,
+    bool pickImage = false,
+    bool takePhoto = false,
+    Alignment alignment = Alignment.centerRight,
   }) {
-    return JFormItem(
-      currentState: JFormAvatarItemState(),
+    return JFormItem<ImageDataSource>(
+      currentState: JFormAvatarItemState(
+        dataSource: dataSource,
+        color: color,
+        elevation: elevation,
+        errorBuilder: errorBuilder,
+        placeholderBuilder: placeholderBuilder,
+        size: size,
+        circle: circle,
+        borderRadius: borderRadius,
+        padding: padding,
+        clickFullArea: clickFullArea,
+        onAvatarUpload: onAvatarUpload,
+        pickImage: pickImage,
+        takePhoto: takePhoto,
+        alignment: alignment,
+      ),
       config: (baseConfig ?? FormItemConfig<ImageDataSource>()).copyWith(
         initialValue: dataSource,
         onSaved: onSaved,
         validator: validator,
       ),
-      defaultConfig: (defaultConfig ?? DefaultItemConfig<ImageDataSource>()).copyWith(
+      defaultConfig:
+          (defaultConfig ?? DefaultItemConfig<ImageDataSource>()).copyWith(
         title: title,
         leading: leading,
         isArrow: isArrow,

@@ -88,10 +88,21 @@ class FormDemo extends BaseStatelessPage {
             initialValue: true,
             isArrow: true,
             clickFullArea: true,
-            onTap: (value){
+            onTap: (value) {
               print("");
             },
           ),
+          JFormItem.avatar(
+              title: Text("头像-标题"),
+              isArrow: true,
+              clickFullArea: true,
+              dataSource: ImageDataSource.net(
+                  "https://tse3-mm.cn.bing.net/th/id/OIP-C.ov0aqcnMFb1I27ctV1_BKAHaEK?w=299&h=180&c=7&r=0&o=5&pid=1.7"),
+              pickImage: true,
+              takePhoto: true,
+              onAvatarUpload: (filePath) async {
+                return JFileInfo(uri: filePath);
+              }),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),
       ),

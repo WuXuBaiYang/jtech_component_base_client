@@ -80,6 +80,7 @@ export 'widgets/audio/audio_player/audio_player_simple.dart';
 export 'widgets/audio/base/config.dart';
 export 'widgets/audio/base/controller.dart';
 export 'widgets/avatar/avatar.dart';
+export 'widgets/avatar/controller.dart';
 export 'widgets/badge/config.dart';
 export 'widgets/badge/badge.dart';
 export 'widgets/badge/container.dart';

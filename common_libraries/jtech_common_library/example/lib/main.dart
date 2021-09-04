@@ -8,7 +8,7 @@ import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'audio/audio_demo.dart';
-import 'avatar/card_demo.dart';
+import 'avatar/avatar_demo.dart';
 import 'banner/banner_demo.dart';
 import 'button/button_demo.dart';
 import 'camera/camera_demo.dart';

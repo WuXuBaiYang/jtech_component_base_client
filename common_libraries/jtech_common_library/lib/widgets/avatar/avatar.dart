@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/avatar/controller.dart';
 
 //头像点击事件
-typedef OnAvatarTap = void Function(ImageDataSource dataSource);
+typedef OnAvatarChange = void Function(ImageDataSource dataSource);
 
 /*
 * 头像组件
@@ -14,7 +13,10 @@ typedef OnAvatarTap = void Function(ImageDataSource dataSource);
 */
 class JAvatar extends BaseStatelessWidget {
   //头像点击事件
-  final OnAvatarTap? onTap;
+  final OnAvatarChange? onTap;
+
+  //头像更新事件
+  final OnAvatarChange? onChange;
 
   //背景色
   final Color color;
@@ -49,6 +51,7 @@ class JAvatar extends BaseStatelessWidget {
   JAvatar({
     required this.controller,
     this.onTap,
+    this.onChange,
     this.color = Colors.white,
     this.elevation = 0.0,
     this.placeholderBuilder,
@@ -64,7 +67,8 @@ class JAvatar extends BaseStatelessWidget {
   JAvatar.square({
     required ImageDataSource dataSource,
     OnAvatarUpload? onAvatarUpload,
-    OnAvatarTap? onTap,
+    OnAvatarChange? onTap,
+    OnAvatarChange? onChange,
     Color color = Colors.white,
     double elevation = 0.0,
     PlaceholderBuilder? placeholderBuilder,
@@ -76,12 +80,14 @@ class JAvatar extends BaseStatelessWidget {
     bool pickImage = false,
     bool takePhoto = false,
   }) : this(
-          controller: JAvatarController(
+          controller: JAvatarController.withMenu(
             dataSource: dataSource,
             onAvatarUpload: onAvatarUpload,
-            pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
+            pickImage: pickImage,
+            takePhoto: takePhoto,
           ),
           onTap: onTap,
+          onChange: onChange,
           color: color,
           elevation: elevation,
           placeholderBuilder: placeholderBuilder,
@@ -97,7 +103,8 @@ class JAvatar extends BaseStatelessWidget {
   JAvatar.circle({
     required ImageDataSource dataSource,
     OnAvatarUpload? onAvatarUpload,
-    OnAvatarTap? onTap,
+    OnAvatarChange? onTap,
+    OnAvatarChange? onChange,
     Color color = Colors.white,
     double elevation = 0.0,
     PlaceholderBuilder? placeholderBuilder,
@@ -109,12 +116,14 @@ class JAvatar extends BaseStatelessWidget {
     bool pickImage = false,
     bool takePhoto = false,
   }) : this(
-          controller: JAvatarController(
+          controller: JAvatarController.withMenu(
             dataSource: dataSource,
             onAvatarUpload: onAvatarUpload,
-            pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
+            pickImage: pickImage,
+            takePhoto: takePhoto,
           ),
           onTap: onTap,
+          onChange: onChange,
           color: color,
           elevation: elevation,
           placeholderBuilder: placeholderBuilder,
@@ -140,7 +149,9 @@ class JAvatar extends BaseStatelessWidget {
       ),
       onTap: () {
         onTap?.call(controller.dataSource);
-        controller.pickAvatar(context);
+        controller.pickAvatar(context).then((value) {
+          if (null != value) onChange?.call(value);
+        });
       },
     );
   }
@@ -162,31 +173,5 @@ class JAvatar extends BaseStatelessWidget {
         );
       },
     );
-  }
-
-  //生成选择菜单
-  static List<PickerMenuItem> _generatePickerMenu(
-    bool pickImage,
-    bool takePhoto,
-  ) {
-    List<PickerMenuItem> items = [];
-    final List<BaseImageProcess> process = [
-      ImageCompress(),
-      ImageCrop(
-        initialCropRatio: 1,
-        enableRatioMenu: false,
-      )
-    ];
-    if (pickImage) {
-      items.add(PickerMenuItem.image(
-        process: process,
-      ));
-    }
-    if (takePhoto) {
-      items.add(PickerMenuItem.imageTake(
-        process: process,
-      ));
-    }
-    return items;
   }
 }

@@ -38,9 +38,21 @@ class JAvatarController extends BaseController {
         this._pickerMenuItems = pickerMenuItems,
         this._onAvatarUpload = onAvatarUpload;
 
+  //集成菜单功能
+  JAvatarController.withMenu({
+    required ImageDataSource dataSource,
+    OnAvatarUpload? onAvatarUpload,
+    bool pickImage = false,
+    bool takePhoto = false,
+  }) : this(
+          dataSource: dataSource,
+          onAvatarUpload: onAvatarUpload,
+          pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
+        );
+
   //选择头像
-  void pickAvatar(BuildContext context) async {
-    if (_pickerMenuItems.isEmpty) return;
+  Future<ImageDataSource?> pickAvatar(BuildContext context) async {
+    if (_pickerMenuItems.isEmpty) return null;
     var result = await jFilePicker.pick(
       context,
       items: _pickerMenuItems,
@@ -48,10 +60,37 @@ class JAvatarController extends BaseController {
     if (null != result && result.isNoEmpty) {
       var fileInfo = result.singleFile;
       fileInfo = await _onAvatarUpload!(fileInfo!.uri);
-      if (null == fileInfo) return;
+      if (null == fileInfo) return null;
       _dataSource.setValue(
         ImageDataSource.fileInfo(fileInfo),
       );
+      return dataSource;
     }
+  }
+
+  //生成选择菜单
+  static List<PickerMenuItem> _generatePickerMenu(
+    bool pickImage,
+    bool takePhoto,
+  ) {
+    List<PickerMenuItem> items = [];
+    final List<BaseImageProcess> process = [
+      ImageCompress(),
+      ImageCrop(
+        initialCropRatio: 1,
+        enableRatioMenu: false,
+      )
+    ];
+    if (pickImage) {
+      items.add(PickerMenuItem.image(
+        process: process,
+      ));
+    }
+    if (takePhoto) {
+      items.add(PickerMenuItem.imageTake(
+        process: process,
+      ));
+    }
+    return items;
   }
 }
