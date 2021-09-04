@@ -14,8 +14,8 @@ import 'package:jtech_common_library/jcommon.dart';
 * @Time 2021/7/13 上午10:44
 */
 class JImage extends BaseStatelessWidget {
-  //图片对象代理
-  final ImageProvider image;
+  //图片资源管理
+  final ImageDataSource dataSource;
 
   //配置文件信息
   final ImageConfig config;
@@ -25,6 +25,31 @@ class JImage extends BaseStatelessWidget {
 
   //长点击事件
   final VoidCallback? imageLongTap;
+
+  JImage({
+    required this.dataSource,
+    ErrorBuilder? errorBuilder,
+    PlaceholderBuilder? placeholderBuilder,
+    double? width,
+    double? height,
+    double? size,
+    BoxFit? fit,
+    ImageClip? clip,
+    ImageConfig? config,
+    ImageEditorConfig? editorConfig,
+    ImageGestureConfig? gestureConfig,
+    this.imageTap,
+    this.imageLongTap,
+  }) : this.config = (config ?? ImageConfig()).copyWith(
+          width: size ?? width,
+          height: size ?? height,
+          fit: fit,
+          errorBuilder: errorBuilder,
+          placeholderBuilder: placeholderBuilder,
+          clip: clip,
+          editorConfig: editorConfig,
+          gestureConfig: gestureConfig,
+        );
 
   //从fileInfo文件中家在
   JImage.fileInfo(
@@ -39,20 +64,22 @@ class JImage extends BaseStatelessWidget {
     ImageConfig? config,
     ImageEditorConfig? editorConfig,
     ImageGestureConfig? gestureConfig,
-    this.imageTap,
-    this.imageLongTap,
-  })  : image = (fileInfo.isNetFile
-            ? ExtendedNetworkImageProvider(fileInfo.uri)
-            : FileImage(fileInfo.file)) as ImageProvider,
-        this.config = (config ?? ImageConfig()).copyWith(
-          width: size ?? width,
-          height: size ?? height,
-          fit: fit,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
+  }) : this(
+          dataSource: ImageDataSource.fileInfo(fileInfo),
+          width: width,
+          height: height,
           errorBuilder: errorBuilder,
           placeholderBuilder: placeholderBuilder,
           clip: clip,
+          size: size,
+          fit: fit,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   //本地图片文件路径
@@ -72,16 +99,16 @@ class JImage extends BaseStatelessWidget {
     VoidCallback? imageLongTap,
   }) : this.file(
           File(path),
-          errorBuilder: errorBuilder,
-          placeholderBuilder: placeholderBuilder,
           width: width,
           height: height,
+          errorBuilder: errorBuilder,
+          placeholderBuilder: placeholderBuilder,
+          clip: clip,
           size: size,
           fit: fit,
-          clip: clip,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
-          config: config,
           imageTap: imageTap,
           imageLongTap: imageLongTap,
         );
@@ -99,18 +126,22 @@ class JImage extends BaseStatelessWidget {
     ImageConfig? config,
     ImageEditorConfig? editorConfig,
     ImageGestureConfig? gestureConfig,
-    this.imageTap,
-    this.imageLongTap,
-  })  : image = FileImage(file),
-        this.config = (config ?? ImageConfig()).copyWith(
-          width: size ?? width,
-          height: size ?? height,
-          fit: fit,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
+  }) : this(
+          dataSource: ImageDataSource.file(file),
+          width: width,
+          height: height,
           errorBuilder: errorBuilder,
           placeholderBuilder: placeholderBuilder,
           clip: clip,
+          size: size,
+          fit: fit,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   //assets图片文件
@@ -128,18 +159,26 @@ class JImage extends BaseStatelessWidget {
     ImageConfig? config,
     ImageEditorConfig? editorConfig,
     ImageGestureConfig? gestureConfig,
-    this.imageTap,
-    this.imageLongTap,
-  })  : image = AssetImage(name, bundle: bundle, package: package),
-        this.config = (config ?? ImageConfig()).copyWith(
-          width: size ?? width,
-          height: size ?? height,
-          fit: fit,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
+  }) : this(
+          dataSource: ImageDataSource.assets(
+            name,
+            bundle: bundle,
+            package: package,
+          ),
+          width: width,
+          height: height,
           errorBuilder: errorBuilder,
           placeholderBuilder: placeholderBuilder,
           clip: clip,
+          size: size,
+          fit: fit,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   //内存图片文件
@@ -155,18 +194,22 @@ class JImage extends BaseStatelessWidget {
     ImageConfig? config,
     ImageEditorConfig? editorConfig,
     ImageGestureConfig? gestureConfig,
-    this.imageTap,
-    this.imageLongTap,
-  })  : image = MemoryImage(bytes),
-        this.config = (config ?? ImageConfig()).copyWith(
-          width: size ?? width,
-          height: size ?? height,
-          fit: fit,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
+  }) : this(
+          dataSource: ImageDataSource.memory(bytes),
+          width: width,
+          height: height,
           errorBuilder: errorBuilder,
           placeholderBuilder: placeholderBuilder,
           clip: clip,
+          size: size,
+          fit: fit,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   //网络图片文件
@@ -184,29 +227,33 @@ class JImage extends BaseStatelessWidget {
     ImageConfig? config,
     ImageEditorConfig? editorConfig,
     ImageGestureConfig? gestureConfig,
-    this.imageTap,
-    this.imageLongTap,
-  })  : image = ExtendedNetworkImageProvider(
-          imageUrl,
-          cacheKey: cacheKey,
-          headers: headers,
-        ),
-        this.config = (config ?? ImageConfig()).copyWith(
-          width: size ?? width,
-          height: size ?? height,
-          fit: fit,
+    VoidCallback? imageTap,
+    VoidCallback? imageLongTap,
+  }) : this(
+          dataSource: ImageDataSource.net(
+            imageUrl,
+            cacheKey: cacheKey,
+            headers: headers,
+          ),
+          width: width,
+          height: height,
           errorBuilder: errorBuilder,
           placeholderBuilder: placeholderBuilder,
           clip: clip,
+          size: size,
+          fit: fit,
+          config: config,
           editorConfig: editorConfig,
           gestureConfig: gestureConfig,
+          imageTap: imageTap,
+          imageLongTap: imageLongTap,
         );
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: ExtendedImage(
-        image: image,
+        image: dataSource.image,
         width: config.width,
         height: config.height,
         fit: null != config.editorConfig ? BoxFit.contain : config.fit,
@@ -244,7 +291,7 @@ class JImage extends BaseStatelessWidget {
                   context, state.lastException, state.lastStack);
           }
         },
-        onDoubleTap: (state){
+        onDoubleTap: (state) {
           ///等待方法实现
           // var pointerDownPosition = state.pointerDownPosition;
           // var begin = state.gestureDetails?.totalScale;

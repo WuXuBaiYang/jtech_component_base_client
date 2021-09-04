@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'clip.dart';
@@ -225,4 +230,49 @@ class ImageGestureConfig extends BaseConfig {
       inPageView: inPageView ?? this.inPageView,
     );
   }
+}
+
+/*
+* 图片数据源管理
+* @author jtechjh
+* @Time 2021/9/4 10:27 上午
+*/
+class ImageDataSource {
+  //图片对象代理
+  final ImageProvider image;
+
+  ImageDataSource(this.image);
+
+  //从jFileInfo中自动判断类型
+  ImageDataSource.fileInfo(JFileInfo fileInfo)
+      : this(fileInfo.isNetFile
+            ? ExtendedNetworkImageProvider(fileInfo.uri)
+            : FileImage(fileInfo.file) as ImageProvider);
+
+  //文件加载
+  ImageDataSource.file(File file) : this(FileImage(file));
+
+  //文件路径加载
+  ImageDataSource.filePath(String filePath) : this.file(File(filePath));
+
+  //assets资源
+  ImageDataSource.assets(
+    String name, {
+    AssetBundle? bundle,
+    String? package,
+  }) : this(AssetImage(name, bundle: bundle, package: package));
+
+  //内存资源
+  ImageDataSource.memory(Uint8List bytes) : this(MemoryImage(bytes));
+
+  //网络图片
+  ImageDataSource.net(
+    String imageUrl, {
+    String? cacheKey,
+    Map<String, String>? headers,
+  }) : this(ExtendedNetworkImageProvider(
+          imageUrl,
+          cacheKey: cacheKey,
+          headers: headers,
+        ));
 }

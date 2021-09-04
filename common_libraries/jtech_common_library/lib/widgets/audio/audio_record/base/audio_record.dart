@@ -231,7 +231,7 @@ abstract class BaseJAudioRecordState extends BaseState<JAudioRecord> {
                 children: [
                   Expanded(
                       child: JAudioPlayer.simple(
-                    dataSource: DataSource.file(fileInfo.file),
+                    dataSource: AudioDataSource.file(fileInfo.file),
                     elevation: 0,
                   )),
                   IconButton(

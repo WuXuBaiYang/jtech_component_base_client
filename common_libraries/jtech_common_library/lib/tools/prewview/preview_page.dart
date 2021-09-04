@@ -114,7 +114,7 @@ class PreviewPage extends StatelessWidget {
     }
     if (fileInfo.isAudioType) {
       return JAudioPlayer.full(
-        dataSource: DataSource.fileInfo(fileInfo),
+        dataSource: AudioDataSource.fileInfo(fileInfo),
       );
     }
     return Column(

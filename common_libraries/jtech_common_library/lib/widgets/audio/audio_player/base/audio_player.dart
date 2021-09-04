@@ -16,7 +16,7 @@ class JAudioPlayer extends BaseStatefulWidgetMultiply {
   final AudioPlayerConfig config;
 
   //播放资源管理
-  final DataSource dataSource;
+  final AudioDataSource dataSource;
 
   JAudioPlayer({
     required BaseJAudioPlayerState currentState,
@@ -28,7 +28,7 @@ class JAudioPlayer extends BaseStatefulWidgetMultiply {
   //构建完整版音频播放器
   static JAudioPlayer full({
     //默认配置结构
-    required DataSource dataSource,
+    required AudioDataSource dataSource,
     JAudioPlayerController? controller,
     AudioPlayerConfig? config,
     bool? autoPlay,
@@ -63,7 +63,7 @@ class JAudioPlayer extends BaseStatefulWidgetMultiply {
   //构建简易音频播放器
   static JAudioPlayer simple({
     //默认配置结构
-    required DataSource dataSource,
+    required AudioDataSource dataSource,
     JAudioPlayerController? controller,
     AudioPlayerConfig? config,
     bool? autoPlay,

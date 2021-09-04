@@ -84,7 +84,7 @@ class AudioDemo extends BaseStatelessPage {
             Text("完整版音频播放器"),
             SizedBox(height: 35),
             JAudioPlayer.full(
-              dataSource: DataSource.net(audioSourceUrl),
+              dataSource: AudioDataSource.net(audioSourceUrl),
               controller: playerControllerFull,
               fullConfig: FullAudioPlayerConfig(
                 title: Text("这里是播放器标题"),
@@ -94,7 +94,7 @@ class AudioDemo extends BaseStatelessPage {
             Text("简易版音频播放器"),
             SizedBox(height: 35),
             JAudioPlayer.simple(
-              dataSource: DataSource.net(audioSourceUrl),
+              dataSource: AudioDataSource.net(audioSourceUrl),
               controller: playerControllerSimple,
             ),
             SizedBox(height: 35),

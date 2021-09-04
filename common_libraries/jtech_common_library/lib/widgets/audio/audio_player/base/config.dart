@@ -75,7 +75,7 @@ class AudioPlayerConfig extends BaseConfig {
 * @author jtechjh
 * @Time 2021/8/10 9:58 上午
 */
-class DataSource {
+class AudioDataSource {
   //asset资源标头
   static final String _assetHead = "assets:";
 
@@ -86,21 +86,21 @@ class DataSource {
   Uint8List? _sourceData;
 
   //从fileInfo中加载资源
-  DataSource.fileInfo(JFileInfo fileInfo) : _sourceUri = fileInfo.uri;
+  AudioDataSource.fileInfo(JFileInfo fileInfo) : _sourceUri = fileInfo.uri;
 
   //加载远程资源地址
-  DataSource.net(this._sourceUri);
+  AudioDataSource.net(this._sourceUri);
 
   //加载本地文件资源地址
-  DataSource.file(File file) : this._sourceUri = file.absolute.path;
+  AudioDataSource.file(File file) : this._sourceUri = file.absolute.path;
 
   //加载assets资源
-  DataSource.asset(String assetName, {String? package})
+  AudioDataSource.asset(String assetName, {String? package})
       : this._sourceUri =
             "$_assetHead${null == package ? assetName : "packages/$package/$assetName"}";
 
   //加载内存资源
-  DataSource.memory(this._sourceData);
+  AudioDataSource.memory(this._sourceData);
 
   //获取路径资源地址
   String? get audioURI {
