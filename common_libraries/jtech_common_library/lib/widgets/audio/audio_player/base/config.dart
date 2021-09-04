@@ -12,10 +12,10 @@ import 'package:jtech_common_library/jcommon.dart';
 */
 class AudioPlayerConfig extends BaseConfig {
   //外间距
-  EdgeInsetsGeometry margin;
+  EdgeInsets margin;
 
   //内间距
-  EdgeInsetsGeometry padding;
+  EdgeInsets padding;
 
   //悬浮高度
   double elevation;
@@ -52,8 +52,8 @@ class AudioPlayerConfig extends BaseConfig {
     Duration? startAt,
     double? volume,
     double? speed,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     Color? backgroundColor,
   }) {

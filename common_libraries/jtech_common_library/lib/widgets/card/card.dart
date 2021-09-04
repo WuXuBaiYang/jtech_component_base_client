@@ -16,10 +16,10 @@ class JCard extends BaseStatelessWidget {
   final List<Widget> children;
 
   //外间距
-  final EdgeInsetsGeometry margin;
+  final EdgeInsets margin;
 
   //内间距
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
 
   //形状
   final ShapeBorder shape;

@@ -21,7 +21,7 @@ class FullAudioPlayerConfig extends BaseConfig {
   Widget? title;
 
   //标题部分内间距
-  EdgeInsetsGeometry titlePadding;
+  EdgeInsets titlePadding;
 
   FullAudioPlayerConfig({
     this.allowVolume = true,
@@ -38,7 +38,7 @@ class FullAudioPlayerConfig extends BaseConfig {
     bool? allowSpeakerToggle,
     Widget? title,
     bool? centerTitle,
-    EdgeInsetsGeometry? titlePadding,
+    EdgeInsets? titlePadding,
   }) {
     return FullAudioPlayerConfig(
       allowVolume: allowVolume ?? this.allowVolume,

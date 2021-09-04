@@ -26,13 +26,13 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
     //基本录音器参数
     JAudioRecordController? controller,
     AudioRecordConfig? config,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     //完整版录音器参数
     FullAudioRecordConfig? fullConfig,
     Widget? title,
-    EdgeInsetsGeometry? titlePadding,
+    EdgeInsets? titlePadding,
   }) {
     return JAudioRecord(
       controller: controller ?? JAudioRecordController(),
@@ -55,8 +55,8 @@ class JAudioRecord extends BaseStatefulWidgetMultiply {
     //基本录音器参数
     JAudioRecordController? controller,
     AudioRecordConfig? config,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     Duration? maxDuration,
   }) {

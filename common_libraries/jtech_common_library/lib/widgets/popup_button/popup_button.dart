@@ -24,7 +24,7 @@ class JPopupButton extends BaseStatefulWidget {
   static JPopupButton icon<T>(
     BuildContext context, {
     required Widget icon,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(8.0),
+    EdgeInsets padding = const EdgeInsets.all(8.0),
     double iconSize = 24,
     Color? color,
     //弹窗相关配置

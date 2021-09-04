@@ -11,7 +11,7 @@ class FullAudioRecordConfig extends BaseConfig {
   Widget? title;
 
   //标题部分内间距
-  EdgeInsetsGeometry titlePadding;
+  EdgeInsets titlePadding;
 
   FullAudioRecordConfig({
     this.title,
@@ -21,7 +21,7 @@ class FullAudioRecordConfig extends BaseConfig {
   @override
   FullAudioRecordConfig copyWith({
     Widget? title,
-    EdgeInsetsGeometry? titlePadding,
+    EdgeInsets? titlePadding,
   }) {
     return FullAudioRecordConfig(
       title: title ?? this.title,

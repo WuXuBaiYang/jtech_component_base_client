@@ -31,10 +31,10 @@ class JForm extends BaseStatelessWidget {
   final List<Widget> children;
 
   //外间距
-  final EdgeInsetsGeometry margin;
+  final EdgeInsets margin;
 
   //内间距
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
 
   //表单分割线构造器
   final FormDividerBuilder? dividerBuilder;

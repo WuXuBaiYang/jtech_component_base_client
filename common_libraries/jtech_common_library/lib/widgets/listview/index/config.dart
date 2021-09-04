@@ -67,7 +67,7 @@ class IndexBarConfig extends BaseConfig {
   AlignmentGeometry alignment;
 
   //索引条外间距
-  EdgeInsetsGeometry? margin;
+  EdgeInsets? margin;
 
   //是否需要重建
   bool needRebuild;
@@ -170,7 +170,7 @@ class IndexBarConfig extends BaseConfig {
     double? height,
     double? itemHeight,
     AlignmentGeometry? alignment,
-    EdgeInsetsGeometry? margin,
+    EdgeInsets? margin,
     bool? needRebuild,
     bool? ignoreDragCancel,
     Color? color,

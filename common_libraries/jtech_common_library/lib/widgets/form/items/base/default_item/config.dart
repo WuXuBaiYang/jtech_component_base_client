@@ -10,13 +10,13 @@ import 'default_item.dart';
 */
 class DefaultItemConfig<V> extends BaseConfig{
   //外间距
-  EdgeInsetsGeometry margin;
+  EdgeInsets margin;
 
   //内间距
-  EdgeInsetsGeometry padding;
+  EdgeInsets padding;
 
   //内容部分内间距
-  EdgeInsetsGeometry contentPadding;
+  EdgeInsets contentPadding;
 
   //水平方向
   bool vertical;

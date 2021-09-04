@@ -15,10 +15,10 @@ typedef SheetOptionTap<T> = T? Function();
 */
 class SheetConfig<T> extends BaseConfig {
   //外间距
-  EdgeInsetsGeometry margin;
+  EdgeInsets margin;
 
   //内间距
-  EdgeInsetsGeometry padding;
+  EdgeInsets padding;
 
   //sheet背景色
   Color sheetColor;
@@ -33,7 +33,7 @@ class SheetConfig<T> extends BaseConfig {
   Widget? title;
 
   //标题部分内间距
-  EdgeInsetsGeometry titlePadding;
+  EdgeInsets titlePadding;
 
   //标题是否居中
   bool centerTitle;
@@ -60,7 +60,7 @@ class SheetConfig<T> extends BaseConfig {
   Widget? content;
 
   //内容部分内间距
-  EdgeInsetsGeometry contentPadding;
+  EdgeInsets contentPadding;
 
   //如果点击事件返回null，是否继续关闭dialog
   bool nullToDismiss;
@@ -107,18 +107,18 @@ class SheetConfig<T> extends BaseConfig {
 
   @override
   SheetConfig<T> copyWith({
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     Color? sheetColor,
     Color? barrierColor,
     double? sheetHeight,
     Widget? title,
-    EdgeInsetsGeometry? titlePadding,
+    EdgeInsets? titlePadding,
     bool? centerTitle,
     Widget? cancelItem,
     Widget? confirmItem,
     Widget? content,
-    EdgeInsetsGeometry? contentPadding,
+    EdgeInsets? contentPadding,
     SheetOptionTap<T>? cancelTap,
     SheetOptionTapAsync<T>? cancelTapAsync,
     SheetOptionTap<T>? confirmTap,

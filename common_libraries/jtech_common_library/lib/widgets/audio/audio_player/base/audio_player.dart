@@ -33,13 +33,13 @@ class JAudioPlayer extends BaseStatefulWidgetMultiply {
     AudioPlayerConfig? config,
     bool? autoPlay,
     Duration? startAt,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     //完整播放器参数
     FullAudioPlayerConfig? fullConfig,
     Widget? title,
-    EdgeInsetsGeometry? titlePadding,
+    EdgeInsets? titlePadding,
   }) {
     return JAudioPlayer(
       controller: controller ?? JAudioPlayerController(),
@@ -68,8 +68,8 @@ class JAudioPlayer extends BaseStatefulWidgetMultiply {
     AudioPlayerConfig? config,
     bool? autoPlay,
     Duration? startAt,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
   }) {
     return JAudioPlayer(

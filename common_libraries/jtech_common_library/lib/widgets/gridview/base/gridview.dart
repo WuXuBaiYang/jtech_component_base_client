@@ -103,7 +103,7 @@ class JGridView<T extends JListViewController<V>, V>
       OnGridItemTap<JFileInfo>? itemTap,
       OnGridItemLongTap<JFileInfo>? itemLongTap,
       JStaggeredTile? staggeredTile,
-      EdgeInsetsGeometry margin = const EdgeInsets.all(8),
+      EdgeInsets margin = const EdgeInsets.all(8),
       GridViewConfig<JFileInfo>? config,
       //附件表格组件参数
       int maxCount = 9,

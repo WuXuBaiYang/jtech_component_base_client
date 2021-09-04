@@ -32,10 +32,10 @@ class JBanner extends BaseStatefulWidget {
   final double height;
 
   //外间距
-  final EdgeInsetsGeometry margin;
+  final EdgeInsets margin;
 
   //内间距
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
 
   //背景色
   final Color backgroundColor;
@@ -62,10 +62,10 @@ class JBanner extends BaseStatefulWidget {
   final Color titleBackgroundColor;
 
   //子项标题内间距
-  final EdgeInsetsGeometry titlePadding;
+  final EdgeInsets titlePadding;
 
   //子项标题外间距
-  final EdgeInsetsGeometry titleMargin;
+  final EdgeInsets titleMargin;
 
   //子项标题位置
   final BannerAlign titleAlign;

@@ -59,7 +59,7 @@ class JFilePicker extends BaseManage {
     List<String>? allowedExtensions,
     VoidCallback? onTap,
     //图片处理部分参数
-    bool compress = true,
+    bool compress = false,
     bool crop = false,
     CameraResolution? resolution,
   }) {
@@ -111,7 +111,7 @@ class JFilePicker extends BaseManage {
     List<String>? allowedExtensions,
     VoidCallback? onTap,
     //视频处理部分参数
-    bool compress = true,
+    bool compress = false,
   }) {
     List<PickerMenuItem> items = [
       PickerMenuItem.video(
@@ -291,8 +291,9 @@ class JFilePicker extends BaseManage {
     List<JFileInfo> tempList = [];
     for (var f in files) {
       for (var p in process) {
-        tempList.add(await p.process(f));
+        f = await p.process(f);
       }
+      tempList.add(f);
     }
     return tempList;
   }

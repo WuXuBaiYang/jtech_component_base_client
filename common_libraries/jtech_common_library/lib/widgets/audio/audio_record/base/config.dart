@@ -9,10 +9,10 @@ import 'package:jtech_common_library/jcommon.dart';
 */
 class AudioRecordConfig extends BaseConfig {
   //外间距
-  EdgeInsetsGeometry margin;
+  EdgeInsets margin;
 
   //内间距
-  EdgeInsetsGeometry padding;
+  EdgeInsets padding;
 
   //悬浮高度
   double elevation;
@@ -33,8 +33,8 @@ class AudioRecordConfig extends BaseConfig {
 
   @override
   AudioRecordConfig copyWith({
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     Color? backgroundColor,
     String? savePath,

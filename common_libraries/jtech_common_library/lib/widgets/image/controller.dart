@@ -63,7 +63,7 @@ class ImageEditorController extends BaseController {
     if (null == result) return null;
     return JFileInfo.fromMemory(
       result,
-      fileName: "${jTools.getDateSign()}.jpeg",
+      fileName:  "${jTools.generateID()}.jpeg",
       cachePath: await jFile.getImageCacheDirPath(),
     );
   }

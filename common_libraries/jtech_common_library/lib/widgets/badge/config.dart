@@ -33,10 +33,10 @@ class BadgeConfig extends BaseConfig {
   final bool circle;
 
   //外间距
-  final EdgeInsetsGeometry margin;
+  final EdgeInsets margin;
 
   //内间距
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets padding;
 
   //角标悬浮高度
   final double elevation;
@@ -71,8 +71,8 @@ class BadgeConfig extends BaseConfig {
     Color? color,
     double? radius,
     bool? circle,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
+    EdgeInsets? margin,
+    EdgeInsets? padding,
     double? elevation,
     BadgeConfig? empty,
   }) {

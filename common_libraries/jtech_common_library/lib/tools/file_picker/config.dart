@@ -51,16 +51,12 @@ class PickerMenuItem<T extends BaseFileProcess> extends MenuItem {
     List<String>? allowedExtensions,
     VoidCallback? onTap,
     //图片处理部分参数
-    bool compress = true,
+    bool compress = false,
     bool crop = false,
   }) {
-    List<BaseImageProcess> temp = [];
-    if (crop) temp.add(ImageCrop());
-    if (compress) temp.add(ImageCompress());
-    if (temp.isNotEmpty) {
-      process ??= [];
-      process.insertAll(0, temp);
-    }
+    process ??= [];
+    if (crop) process.add(ImageCrop());
+    if (compress) process.add(ImageCompress());
     return PickerMenuItem(
       title: title ?? Text("图片选择"),
       subTitle: subTitle,
@@ -81,17 +77,13 @@ class PickerMenuItem<T extends BaseFileProcess> extends MenuItem {
     List<BaseImageProcess>? process,
     VoidCallback? onTap,
     //图片处理部分参数
-    bool compress = true,
+    bool compress = false,
     bool crop = false,
     CameraResolution? resolution,
   }) {
-    List<BaseImageProcess> temp = [];
-    if (crop) temp.add(ImageCrop());
-    if (compress) temp.add(ImageCompress());
-    if (temp.isNotEmpty) {
-      process ??= [];
-      process.insertAll(0, temp);
-    }
+    process ??= [];
+    if (crop) process.add(ImageCrop());
+    if (compress) process.add(ImageCompress());
     return PickerMenuItem(
       title: title ?? Text("图片拍摄"),
       subTitle: subTitle,
@@ -113,14 +105,10 @@ class PickerMenuItem<T extends BaseFileProcess> extends MenuItem {
     List<String>? allowedExtensions,
     VoidCallback? onTap,
     //视频处理部分参数
-    bool compress = true,
+    bool compress = false,
   }) {
-    List<BaseVideoProcess> temp = [];
-    if (compress) temp.add(VideoCompress());
-    if (temp.isNotEmpty) {
-      process ??= [];
-      process.insertAll(0, temp);
-    }
+    process ??= [];
+    if (compress) process.add(VideoCompress());
     return PickerMenuItem(
       title: title ?? Text("视频选择"),
       subTitle: subTitle,
@@ -141,16 +129,12 @@ class PickerMenuItem<T extends BaseFileProcess> extends MenuItem {
     List<BaseVideoProcess>? process,
     VoidCallback? onTap,
     //视频处理部分参数
-    bool compress = true,
+    bool compress = false,
     Duration? maxRecordDuration,
     CameraResolution? resolution,
   }) {
-    List<BaseVideoProcess> temp = [];
-    if (compress) temp.add(VideoCompress());
-    if (temp.isNotEmpty) {
-      process ??= [];
-      process.insertAll(0, temp);
-    }
+    process ??= [];
+    if (compress) process.add(VideoCompress());
     return PickerMenuItem(
       title: title ?? Text("视频录制"),
       subTitle: subTitle,

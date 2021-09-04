@@ -256,23 +256,50 @@ class ImageDataSource {
                 headers: headers,
                 cacheRawData: cacheRawData,
               )
-            : FileImage(fileInfo.file) as ImageProvider);
+            : ExtendedFileImageProvider(
+                fileInfo.file,
+                cacheRawData: cacheRawData,
+              ) as ImageProvider);
 
   //文件加载
-  ImageDataSource.file(File file) : this(FileImage(file));
+  ImageDataSource.file(
+    File file, {
+    bool cacheRawData = false,
+  }) : this(ExtendedFileImageProvider(
+          file,
+          cacheRawData: cacheRawData,
+        ));
 
   //文件路径加载
-  ImageDataSource.filePath(String filePath) : this.file(File(filePath));
+  ImageDataSource.filePath(
+    String filePath, {
+    bool cacheRawData = false,
+  }) : this.file(
+          File(filePath),
+          cacheRawData: cacheRawData,
+        );
 
   //assets资源
   ImageDataSource.assets(
     String name, {
     AssetBundle? bundle,
     String? package,
-  }) : this(AssetImage(name, bundle: bundle, package: package));
+    bool cacheRawData = false,
+  }) : this(ExtendedAssetImageProvider(
+          name,
+          bundle: bundle,
+          package: package,
+          cacheRawData: cacheRawData,
+        ));
 
   //内存资源
-  ImageDataSource.memory(Uint8List bytes) : this(MemoryImage(bytes));
+  ImageDataSource.memory(
+    Uint8List bytes, {
+    bool cacheRawData = false,
+  }) : this(ExtendedMemoryImageProvider(
+          bytes,
+          cacheRawData: cacheRawData,
+        ));
 
   //网络图片
   ImageDataSource.net(

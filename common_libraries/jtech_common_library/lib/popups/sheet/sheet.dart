@@ -93,8 +93,8 @@ class JSheet extends BaseManage {
     BuildContext context, {
     required List<T> items,
     SheetConfig<V>? config,
-    EdgeInsetsGeometry padding = EdgeInsets.zero,
-    EdgeInsetsGeometry contentPadding = EdgeInsets.zero,
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets contentPadding = EdgeInsets.zero,
     bool showDivider = true,
     OnMenuItemTap<T>? onItemTap,
     OnMenuItemLongPress<T>? onItemLongPress,

@@ -21,12 +21,15 @@ class ImageCompress extends BaseImageProcess {
   @override
   Future<JFileInfo> process(JFileInfo fileInfo) async {
     var compressPath = path ?? await jFile.getImageCacheDirPath();
-    var result = await FlutterImageCompress.compressAndGetFile(
+    var result = await FlutterImageCompress.compressWithFile(
       fileInfo.uri,
-      join(compressPath, jTools.generateID(), ".jpeg"),
+      // join(compressPath, jTools.generateID(), ".jpeg"),
       quality: quality,
     );
     if (null == result) return fileInfo;
-    return JFileInfo.fromFile(result);
+    return JFileInfo.fromMemory(
+      result,
+      fileName: "${jTools.generateID()}.jpeg",
+    );
   }
 }

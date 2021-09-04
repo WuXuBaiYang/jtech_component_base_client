@@ -21,7 +21,7 @@ typedef StaggeredTileBuilder<V> = JStaggeredTile? Function(V item, int index);
 */
 class GridViewConfig<V> extends BaseConfig {
   //整体边距
-  final EdgeInsetsGeometry margin;
+  final EdgeInsets margin;
 
   //主方向元素间距
   final double mainAxisSpacing;
@@ -59,7 +59,7 @@ class GridViewConfig<V> extends BaseConfig {
     double? mainAxisSpacing,
     double? crossAxisSpacing,
     JStaggeredTile? staggeredTile,
-    EdgeInsetsGeometry? margin,
+    EdgeInsets? margin,
   }) {
     return GridViewConfig<V>(
       itemTap: itemTap ?? this.itemTap,

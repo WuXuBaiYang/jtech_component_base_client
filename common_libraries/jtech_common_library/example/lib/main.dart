@@ -8,6 +8,7 @@ import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 import 'audio/audio_demo.dart';
+import 'avatar/card_demo.dart';
 import 'banner/banner_demo.dart';
 import 'button/button_demo.dart';
 import 'camera/camera_demo.dart';
@@ -53,6 +54,7 @@ void main() {
       "/test/audio_demo": (_) => AudioDemo(),
       "/test/file_picker": (_) => FilePickerDemo(),
       "/test/manage_demo": (_) => ManageDemo(),
+      "/test/avatar_demo": (_) => AvatarDemo(),
     },
     welcomePage: WelcomePage(),
     homePage: MyHomePage(),
@@ -67,6 +69,7 @@ void main() {
 class MyHomePage extends BaseStatelessPage {
   //demo测试页面
   final Map<String, String> pages = {
+    "头像组件": "/test/avatar_demo",
     "管理工具": "/test/manage_demo",
     "附件选择方法": "/test/file_picker",
     "音频组件": "/test/audio_demo",
