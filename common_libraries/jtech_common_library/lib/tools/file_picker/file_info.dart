@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
@@ -78,6 +79,24 @@ class JFileInfo {
         name: file.name,
         suffixes: file.suffixes,
       );
+
+  //从内存中加载
+  static Future<JFileInfo> fromMemory(
+    Uint8List bytes, {
+    required String fileName,
+    String? cachePath,
+  }) async {
+    cachePath ??= await jFile.getCacheDirPath();
+    var file = File(join(cachePath, fileName));
+    file = await file.writeAsBytes(bytes);
+    return JFileInfo(
+      uri: file.path,
+      length: await file.length(),
+      name: file.name,
+      suffixes: file.suffixes,
+    );
+    ;
+  }
 
   //获取为file类型
   File get file => File(uri);

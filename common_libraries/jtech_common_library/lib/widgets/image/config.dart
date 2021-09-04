@@ -244,9 +244,18 @@ class ImageDataSource {
   ImageDataSource(this.image);
 
   //从jFileInfo中自动判断类型
-  ImageDataSource.fileInfo(JFileInfo fileInfo)
-      : this(fileInfo.isNetFile
-            ? ExtendedNetworkImageProvider(fileInfo.uri)
+  ImageDataSource.fileInfo(
+    JFileInfo fileInfo, {
+    String? cacheKey,
+    Map<String, String>? headers,
+    bool cacheRawData = false,
+  }) : this(fileInfo.isNetFile
+            ? ExtendedNetworkImageProvider(
+                fileInfo.uri,
+                cacheKey: cacheKey,
+                headers: headers,
+                cacheRawData: cacheRawData,
+              )
             : FileImage(fileInfo.file) as ImageProvider);
 
   //文件加载
@@ -270,9 +279,11 @@ class ImageDataSource {
     String imageUrl, {
     String? cacheKey,
     Map<String, String>? headers,
+    bool cacheRawData = false,
   }) : this(ExtendedNetworkImageProvider(
           imageUrl,
           cacheKey: cacheKey,
           headers: headers,
+          cacheRawData: cacheRawData,
         ));
 }

@@ -45,6 +45,7 @@ export 'tools/file_picker/file_info.dart';
 export 'tools/file_picker/pages/camera_page.dart';
 export 'tools/file_picker/pages/record_video_page.dart';
 export 'tools/file_picker/pages/take_photo_page.dart';
+export 'tools/file_picker/pages/image_editor_page.dart';
 export 'tools/file_picker/config.dart';
 export 'tools/file_picker/picker.dart';
 export 'tools/file_picker/process/process.dart';

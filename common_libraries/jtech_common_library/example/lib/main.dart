@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:jtech_base_library/base/base_page.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/popups/popups.dart';
 import 'audio/audio_demo.dart';
 import 'banner/banner_demo.dart';
 import 'button/button_demo.dart';
@@ -99,6 +98,15 @@ class MyHomePage extends BaseStatelessPage {
           title: Text(item),
           onTap: () => jRouter.pushNamed(pages[item]!),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.info_outline_rounded),
+        onPressed: () {
+          jRouter.push(ImageEditorPagePage(ImageDataSource.net(
+            "https://th.bing.com/th/id/OIP.M2dHJdmuNPhuODWuMLIK_gHaEo?w=296&h=184&c=7&r=0&o=5&dpr=2&pid=1.7",
+            cacheRawData: true,
+          )));
+        },
       ),
     );
   }

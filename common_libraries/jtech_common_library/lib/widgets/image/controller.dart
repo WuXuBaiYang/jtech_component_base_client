@@ -56,11 +56,16 @@ class ImageEditorController extends BaseController {
     if (action.hasRotateAngle) {
       editorOption.addOption(RotateOption(rotateAngle));
     }
-    var result = await ImageEditor.editImageAndGetFile(
+    var result = await ImageEditor.editImage(
       image: imageData,
       imageEditorOption: editorOption,
     );
-    return JFileInfo.fromFile(result);
+    if (null == result) return null;
+    return JFileInfo.fromMemory(
+      result,
+      fileName: "${jTools.getDateSign()}.jpeg",
+      cachePath: await jFile.getImageCacheDirPath(),
+    );
   }
 }
 
