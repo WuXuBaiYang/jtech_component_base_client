@@ -93,27 +93,27 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
   //构建头像表单项
   static JFormItem avatar({
     //基本属性
-    FormFieldSetter<String>? onSaved,
-    FormFieldValidator<String>? validator,
-    FormItemConfig<String>? baseConfig,
+    FormFieldSetter<ImageDataSource>? onSaved,
+    FormFieldValidator<ImageDataSource>? validator,
+    FormItemConfig<ImageDataSource>? baseConfig,
     //默认结构属性
     Widget? title,
     Widget? leading,
     bool? isArrow,
-    OnFormItemTap<String>? onTap,
-    OnFormItemTap<String>? onLongTap,
-    DefaultItemConfig<String>? defaultConfig,
-    //头像属性
-    required String url,
+    OnFormItemTap<ImageDataSource>? onTap,
+    OnFormItemTap<ImageDataSource>? onLongTap,
+    DefaultItemConfig<ImageDataSource>? defaultConfig,
+    //头像资源对象
+    required ImageDataSource dataSource,
   }) {
     return JFormItem(
       currentState: JFormAvatarItemState(),
-      config: (baseConfig ?? FormItemConfig<String>()).copyWith(
-        initialValue: url,
+      config: (baseConfig ?? FormItemConfig<ImageDataSource>()).copyWith(
+        initialValue: dataSource,
         onSaved: onSaved,
         validator: validator,
       ),
-      defaultConfig: (defaultConfig ?? DefaultItemConfig<String>()).copyWith(
+      defaultConfig: (defaultConfig ?? DefaultItemConfig<ImageDataSource>()).copyWith(
         title: title,
         leading: leading,
         isArrow: isArrow,

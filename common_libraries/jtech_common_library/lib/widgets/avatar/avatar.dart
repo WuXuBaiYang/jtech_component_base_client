@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-
-//头像选择完成后，异步上传回调(如果传空或者异常，则不会刷新当前所选图片)
-typedef OnAvatarUpload = Future<JFileInfo?> Function(String path);
+import 'package:jtech_common_library/widgets/avatar/controller.dart';
 
 //头像点击事件
 typedef OnAvatarTap = void Function(ImageDataSource dataSource);
@@ -15,20 +13,14 @@ typedef OnAvatarTap = void Function(ImageDataSource dataSource);
 * @Time 2021/7/26 上午10:53
 */
 class JAvatar extends BaseStatelessWidget {
-  //头像上传回调(为空则不执行上传操作)
-  final OnAvatarUpload? onAvatarUpload;
-
   //头像点击事件
-  final OnAvatarTap? onAvatarTap;
+  final OnAvatarTap? onTap;
 
   //背景色
   final Color color;
 
   //悬浮高度
   final double elevation;
-
-  //图片资源管理
-  final ValueChangeNotifier<ImageDataSource> dataSource;
 
   //占位图
   final ErrorBuilder? errorBuilder;
@@ -51,13 +43,12 @@ class JAvatar extends BaseStatelessWidget {
   //外间距
   final EdgeInsets margin;
 
-  //选择头像菜单集合
-  final List<PickerMenuItem> pickerMenuItems;
+  //头像组件控制器
+  final JAvatarController controller;
 
   JAvatar({
-    required ImageDataSource dataSource,
-    this.onAvatarUpload,
-    this.onAvatarTap,
+    required this.controller,
+    this.onTap,
     this.color = Colors.white,
     this.elevation = 0.0,
     this.placeholderBuilder,
@@ -67,18 +58,13 @@ class JAvatar extends BaseStatelessWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
-    this.pickerMenuItems = const [],
-  })  : assert(
-          pickerMenuItems.isNotEmpty && null != onAvatarUpload,
-          "当启用头像选择时，头像上传功能不能为空",
-        ),
-        this.dataSource = ValueChangeNotifier(dataSource);
+  });
 
   //矩形头像
   JAvatar.square({
     required ImageDataSource dataSource,
     OnAvatarUpload? onAvatarUpload,
-    OnAvatarTap? onAvatarTap,
+    OnAvatarTap? onTap,
     Color color = Colors.white,
     double elevation = 0.0,
     PlaceholderBuilder? placeholderBuilder,
@@ -90,9 +76,12 @@ class JAvatar extends BaseStatelessWidget {
     bool pickImage = false,
     bool takePhoto = false,
   }) : this(
-          dataSource: dataSource,
-          onAvatarUpload: onAvatarUpload,
-          onAvatarTap: onAvatarTap,
+          controller: JAvatarController(
+            dataSource: dataSource,
+            onAvatarUpload: onAvatarUpload,
+            pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
+          ),
+          onTap: onTap,
           color: color,
           elevation: elevation,
           placeholderBuilder: placeholderBuilder,
@@ -102,14 +91,13 @@ class JAvatar extends BaseStatelessWidget {
           margin: margin,
           padding: padding,
           circle: false,
-          pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
         );
 
   //圆形头像
   JAvatar.circle({
     required ImageDataSource dataSource,
     OnAvatarUpload? onAvatarUpload,
-    OnAvatarTap? onAvatarTap,
+    OnAvatarTap? onTap,
     Color color = Colors.white,
     double elevation = 0.0,
     PlaceholderBuilder? placeholderBuilder,
@@ -121,20 +109,22 @@ class JAvatar extends BaseStatelessWidget {
     bool pickImage = false,
     bool takePhoto = false,
   }) : this(
-    dataSource: dataSource,
-    onAvatarUpload: onAvatarUpload,
-    onAvatarTap: onAvatarTap,
-    color: color,
-    elevation: elevation,
-    placeholderBuilder: placeholderBuilder,
-    errorBuilder: errorBuilder,
-    size: size,
-    borderRadius: borderRadius,
-    margin: margin,
-    padding: padding,
-    circle: true,
-    pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
-  );
+          controller: JAvatarController(
+            dataSource: dataSource,
+            onAvatarUpload: onAvatarUpload,
+            pickerMenuItems: _generatePickerMenu(pickImage, takePhoto),
+          ),
+          onTap: onTap,
+          color: color,
+          elevation: elevation,
+          placeholderBuilder: placeholderBuilder,
+          errorBuilder: errorBuilder,
+          size: size,
+          borderRadius: borderRadius,
+          margin: margin,
+          padding: padding,
+          circle: true,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -148,14 +138,17 @@ class JAvatar extends BaseStatelessWidget {
         circle: circle,
         color: color,
       ),
-      onTap: () => _onAvatarTap(context),
+      onTap: () {
+        onTap?.call(controller.dataSource);
+        controller.pickAvatar(context);
+      },
     );
   }
 
   //构建头像
   Widget _buildAvatar(BuildContext context) {
     return ValueListenableBuilder<ImageDataSource>(
-      valueListenable: dataSource,
+      valueListenable: controller.dataSourceListenable,
       builder: (context, value, child) {
         return JImage(
           size: size,
@@ -169,24 +162,6 @@ class JAvatar extends BaseStatelessWidget {
         );
       },
     );
-  }
-
-  //头像点击事件
-  void _onAvatarTap(BuildContext context) async {
-    onAvatarTap?.call(dataSource.value);
-    if (pickerMenuItems.isEmpty) return;
-    var result = await jFilePicker.pick(
-      context,
-      items: pickerMenuItems,
-    );
-    if (null != result && result.isNoEmpty) {
-      var fileInfo = result.singleFile;
-      fileInfo = await onAvatarUpload!(fileInfo!.uri);
-      if (null == fileInfo) return;
-      dataSource.setValue(
-        ImageDataSource.fileInfo(fileInfo),
-      );
-    }
   }
 
   //生成选择菜单
