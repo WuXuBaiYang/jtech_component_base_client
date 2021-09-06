@@ -70,7 +70,7 @@ class SheetConfig<T> extends BaseConfig {
 
   SheetConfig({
     this.margin = EdgeInsets.zero,
-    this.padding = const EdgeInsets.all(15),
+    this.padding =  EdgeInsets.zero,
     this.sheetColor = Colors.white,
     this.barrierColor = kCupertinoModalBarrierColor,
     this.sheetHeight,

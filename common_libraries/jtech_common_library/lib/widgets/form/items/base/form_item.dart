@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_common_library/widgets/form/items/base/config.dart';
 
 /*
 * 表单子项基类
@@ -244,7 +241,7 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
     DefaultItemConfig<String>? defaultConfig,
     //文本项属性
     TextStyle? textStyle,
-    TextAlign textAlign = TextAlign.start,
+    TextAlign textAlign = TextAlign.end,
   }) {
     return JFormItem<String>(
       currentState: JFormTextItemState(
@@ -253,6 +250,52 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
       ),
       config: (baseConfig ?? FormItemConfig()).copyWith(
         initialValue: text,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+      defaultConfig: (defaultConfig ?? DefaultItemConfig()).copyWith(
+        title: title,
+        leading: leading,
+        isArrow: isArrow,
+        onTap: onTap,
+        onLongTap: onLongTap,
+      ),
+    );
+  }
+
+  //构建选择表单项
+  static JFormItem select<T extends SelectItem>({
+    //基本属性
+    FormFieldSetter<List<T>>? onSaved,
+    FormFieldValidator<List<T>>? validator,
+    FormItemConfig<List<T>>? baseConfig,
+    //默认结构属性
+    Widget? title,
+    Widget? leading,
+    bool? isArrow,
+    OnFormItemTap<List<T>>? onTap,
+    OnFormItemTap<List<T>>? onLongTap,
+    DefaultItemConfig<List<T>>? defaultConfig,
+    //选择项属性
+    List<T>? selectedItems,
+    TextStyle? textStyle,
+    TextAlign textAlign = TextAlign.end,
+    List<T> originList = const [],
+    OnCustomTextBuilder<T>? customTextBuilder,
+    int maxSelect = 1,
+    OnCustomSelectBuilder<T>? customSelectBuilder,
+  }) {
+    return JFormItem<List<T>>(
+      currentState: JFormSelectItemState<T>(
+        textStyle: textStyle,
+        textAlign: textAlign,
+        originList: originList,
+        customTextBuilder: customTextBuilder,
+        maxSelect: maxSelect,
+        customSelectBuilder: customSelectBuilder,
+      ),
+      config: (baseConfig ?? FormItemConfig()).copyWith(
+        initialValue: selectedItems,
         onSaved: onSaved,
         validator: validator,
       ),

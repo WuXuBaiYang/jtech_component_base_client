@@ -93,6 +93,8 @@ export 'widgets/card/card.dart';
 export 'widgets/form/controller.dart';
 export 'widgets/form/form.dart';
 export 'widgets/form/items/items.dart';
+export 'widgets/form/items/select/form_select_item.dart';
+export 'widgets/form/items/select/config.dart';
 export 'widgets/gridview/base/controller.dart';
 export 'widgets/gridview/base/gridview.dart';
 export 'widgets/gridview/base/staggered.dart';

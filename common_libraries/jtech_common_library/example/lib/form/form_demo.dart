@@ -103,6 +103,16 @@ class FormDemo extends BaseStatelessPage {
               onAvatarUpload: (filePath) async {
                 return JFileInfo(uri: filePath);
               }),
+          JFormItem.select(
+            title: Text("表单选择-标题"),
+            isArrow: true,
+            selectedItems: [SelectItem(id: 0, text: "项目一")],
+            originList: <SelectItem>[
+              SelectItem(id: 0, text: "项目一"),
+              SelectItem(id: 1, text: "项目二"),
+              SelectItem(id: 2, text: "项目三"),
+            ],
+          ),
         ],
         dividerBuilder: (_, index) => Divider(indent: 15),
       ),
