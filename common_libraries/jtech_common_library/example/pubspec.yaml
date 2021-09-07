@@ -27,9 +27,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # 依赖通用组件库
-  jtech_common_library:
-    path: ../
+  # 依赖组件化库，最外层
+  jtech_component_library:
+    path: ../../../component_libraries/jtech_component_library/
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runMaterialAPP(
-    title: "jtech base library",
+    title: "jtech component library",
     welcomePage: WelcomePage(),
     homePage: MyHomePage(),
     routes: {},
@@ -21,7 +21,7 @@ class MyHomePage extends BaseStatelessPage {
   @override
   Widget build(BuildContext context) {
     return MaterialPageRoot(
-      appBarTitle: "example_base",
+      appBarTitle: "example_component",
       appBarLeadingType: AppBarLeading.none,
       body: EmptyBox(),
     );

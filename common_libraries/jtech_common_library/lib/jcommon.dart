@@ -112,7 +112,6 @@ export 'widgets/image/config.dart';
 export 'widgets/image/image.dart';
 export 'widgets/image/controller.dart';
 export 'widgets/root_app/material_app.dart';
-export 'widgets/root_app/run.dart';
 export 'widgets/video_player/config.dart';
 export 'widgets/video_player/controller.dart';
 export 'widgets/video_player/video_player.dart';
@@ -158,6 +157,9 @@ class JCommon extends BaseManage {
   //工具箱管理
   final tools = JTools();
 
+  //管理方法
+  final manage=JManage();
+
   //初始化方法
   @override
   Future init() async {
@@ -165,6 +167,8 @@ class JCommon extends BaseManage {
     await popups.init();
     //初始化工具方法
     await tools.init();
+    //初始化管理方法
+    await manage.init();
   }
 }
 

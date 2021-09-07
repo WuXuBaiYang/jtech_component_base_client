@@ -1,5 +1,4 @@
-import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_component_library/jcomponent.dart';
 import 'package:flutter/material.dart';
 
 import 'audio/audio_demo.dart';
