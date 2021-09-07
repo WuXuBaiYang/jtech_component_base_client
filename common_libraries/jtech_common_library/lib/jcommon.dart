@@ -4,6 +4,9 @@ import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/tools/tools.dart';
 import 'popups/popups.dart';
 
+//导出基础依赖
+export 'package:jtech_base_library/jbase.dart';
+
 //导出基本方法
 export 'base/base_config.dart';
 export 'base/base_controller.dart';

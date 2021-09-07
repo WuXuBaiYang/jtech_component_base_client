@@ -139,7 +139,7 @@ class JAudioPlayerController extends BaseAudioController {
   //设置播放速度
   Future<bool> setSpeed(double speed) async {
     if (speed < 0 || speed > 3) return false;
-    var result = await _player.setPlaybackRate(playbackRate: speed);
+    var result = await _player.setPlaybackRate(speed);
     if (_setupSuccess(result)) {
       return _audioSpeed.setValue(speed);
     }

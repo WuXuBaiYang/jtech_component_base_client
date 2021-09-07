@@ -25,6 +25,13 @@ abstract class BaseStatefulPageMultiply extends BaseStatefulWidgetMultiply {
 }
 
 /*
+* 页面状态基类
+* @author jtechjh
+* @Time 2021/9/7 4:46 下午
+*/
+abstract class BaseStatePage<T extends StatefulWidget> extends BaseState<T> {}
+
+/*
 * 无状态页面基类
 * @author jtechjh
 * @Time 2021/8/12 5:28 下午

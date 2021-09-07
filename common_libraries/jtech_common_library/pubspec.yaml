@@ -66,7 +66,7 @@ dependencies:
   chewie: ^1.2.2
 
   # 音频播放器
-  audioplayers: ^0.19.1
+  audioplayers: ^0.20.0
 
   # 录音器
   record: ^3.0.0
