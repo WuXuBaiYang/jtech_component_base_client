@@ -1,8 +1,7 @@
 library common_library;
 
 import 'package:jtech_base_library/jbase.dart';
-import 'package:jtech_common_library/tools/tools.dart';
-import 'popups/popups.dart';
+import 'package:jtech_common_library/jcommon.dart';
 
 //导出基础依赖
 export 'package:jtech_base_library/jbase.dart';
@@ -27,6 +26,7 @@ export 'popups/toast/config.dart';
 export 'popups/toast/toast.dart';
 export 'popups/overlay/config.dart';
 export 'popups/overlay/overlay.dart';
+export 'popups/popups.dart';
 
 //管理工具
 export 'manage/net/api_cancel.dart';

@@ -31,10 +31,6 @@ dependencies:
   jtech_common_library:
     path: ../
 
-#  # 基础依赖库
-#  jtech_base_library:
-#    path: ../../../jtech_base_library
-
   # 路径管理
   path_provider: ^2.0.3
 
