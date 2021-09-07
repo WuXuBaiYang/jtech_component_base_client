@@ -59,7 +59,7 @@ class JFormSelectItemState<T extends SelectItem>
       defaultConfig: widget.defaultConfig?.copyWith(
         onTap: (value) async {
           widget.defaultConfig?.onTap?.call(value);
-          value = await _showSelectMenu(context, value);
+          value = await showSelectMenu(context, value);
           field.didChange(value);
         },
       ),
@@ -67,7 +67,7 @@ class JFormSelectItemState<T extends SelectItem>
   }
 
   //展示选择菜单集合
-  Future<List<T>?> _showSelectMenu(BuildContext context, List<T>? value) async {
+  Future<List<T>?> showSelectMenu(BuildContext context, List<T>? value) async {
     if (null != customSelectBuilder) {
       return customSelectBuilder!(originList, value ?? [], maxSelect);
     } else {
