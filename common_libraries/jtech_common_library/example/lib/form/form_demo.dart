@@ -106,7 +106,10 @@ class FormDemo extends BaseStatelessPage {
           JFormItem.select(
             title: Text("表单选择-标题"),
             isArrow: true,
-            selectedItems: [SelectItem(id: 0, text: "项目一")],
+            maxSelect: 2,
+            selectedItems: [
+              SelectItem(id: 2, text: "项目三"),
+            ],
             originList: <SelectItem>[
               SelectItem(id: 0, text: "项目一"),
               SelectItem(id: 1, text: "项目二"),

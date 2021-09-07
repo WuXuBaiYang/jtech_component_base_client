@@ -17,9 +17,9 @@ class SelectItem extends BaseModel {
     required this.text,
   });
 
-  // @override
-  // int get hashCode => id.hashCode;
-  //
-  // @override
-  // bool operator ==(Object other) => id == other.id;
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) => hashCode == other.hashCode;
 }

@@ -4,11 +4,11 @@ import 'package:jtech_common_library/jcommon.dart';
 
 //自定义展示文本构造器
 typedef OnCustomTextBuilder<T extends SelectItem> = String Function(
-    List<T> items);
+    List<T> selectedItems);
 
 //自定义选择页面/弹层构造器
 typedef OnCustomSelectBuilder<T extends SelectItem> = Future<List<T>?> Function(
-    List<T>? items, List<T>? selectedItems, int maxSelect);
+    List<T> items, List<T> selectedItems, int maxSelect);
 
 /*
 * 表单文本子项
@@ -50,7 +50,9 @@ class JFormSelectItemState<T extends SelectItem>
     return buildDefaultItem(
       field: field,
       child: Text(
-        _getSelectText(field.value),
+        customTextBuilder?.call(field.value ?? []) ??
+            field.value?.map((e) => e.text).join(",") ??
+            "",
         style: textStyle,
         textAlign: textAlign,
       ),
@@ -64,26 +66,21 @@ class JFormSelectItemState<T extends SelectItem>
     );
   }
 
-  //获取选择文本
-  String _getSelectText(List<T>? value) {
-    if (null == value) return "";
-    return customTextBuilder?.call(value) ?? value.map((e) => e.text).join(",");
-  }
-
   //展示选择菜单集合
   Future<List<T>?> _showSelectMenu(BuildContext context, List<T>? value) async {
     if (null != customSelectBuilder) {
-      return customSelectBuilder!(originList, value, maxSelect);
+      return customSelectBuilder!(originList, value ?? [], maxSelect);
     } else {
-      value ??= [];
+      var tmpValue = List<T>.from(value ?? []);
       return jSheet.showCustomBottomSheet(
         context,
         config: SheetConfig(
           title: widget.defaultConfig?.title,
           contentPadding: EdgeInsets.zero,
           cancelItem: Icon(Icons.close),
-          confirmItem: Icon(Icons.done),
-          confirmTap: () => value,
+          cancelTap: () => value,
+          confirmItem: Icon(Icons.done_all),
+          confirmTap: () => tmpValue,
           content: StatefulBuilder(
             builder: (context, setState) => ListView.separated(
               shrinkWrap: true,
@@ -92,19 +89,22 @@ class JFormSelectItemState<T extends SelectItem>
               separatorBuilder: (_, __) => Divider(),
               itemBuilder: (context, index) {
                 var item = originList[index];
-                var isSelected = value!.contains(item);
+                var isSelected = tmpValue.contains(item);
                 return ListTile(
                   title: Text(item.text),
-                  trailing: Icon(
-                    Icons.check_circle_outline,
-                    color: isSelected ? Colors.blueAccent : Colors.grey[200],
+                  trailing: Visibility(
+                    visible: isSelected,
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                   onTap: () => setState(() {
                     if (isSelected) {
-                      value!.remove(item);
+                      tmpValue.remove(item);
                     } else {
-                      if (maxSelect == 1) value!.clear();
-                      value!.add(item);
+                      if (maxSelect == 1) tmpValue.clear();
+                      if (maxSelect > tmpValue.length) tmpValue.add(item);
                     }
                   }),
                 );
