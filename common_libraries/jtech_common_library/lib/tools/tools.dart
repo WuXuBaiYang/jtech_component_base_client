@@ -37,12 +37,6 @@ class JTools extends BaseManage {
   //文件选择器
   final filePicker = JFilePicker();
 
-  //日期选择器
-  final datePicker = JDatePicker();
-
-  //地址选择器
-  final addressPicker = JAddressPicker();
-
   //预览工具方法
   final preview = JPreview();
 
@@ -62,10 +56,6 @@ class JTools extends BaseManage {
     await permission.init();
     //初始化文件选择器
     await filePicker.init();
-    //日期选择器
-    await datePicker.init();
-    //地址选择器
-    await addressPicker.init();
     //预览工具方法
     await preview.init();
   }
