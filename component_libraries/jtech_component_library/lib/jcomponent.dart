@@ -3,6 +3,7 @@ library component_library;
 import 'package:flutter/widgets.dart';
 import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
+import 'package:jtech_component_library/auth/auth.dart';
 import 'package:jtech_component_library/jcomponent.dart';
 
 //导出基础依赖
@@ -11,6 +12,10 @@ export 'package:jtech_common_library/jcommon.dart';
 
 //导出基本方法
 export 'run.dart';
+
+//导出授权模块
+export 'auth/auth.dart';
+export 'auth/model.dart';
 
 /*
 * 基本业务组件入口
@@ -27,7 +32,10 @@ class JComponent extends BaseManage {
 
   //初始化方法
   @override
-  Future init() async {}
+  Future init() async {
+    //初始化授权管理
+    await jAuth.init();
+  }
 }
 
 //单例调用
