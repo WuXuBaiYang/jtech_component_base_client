@@ -20,10 +20,8 @@ class ImageCompress extends BaseImageProcess {
 
   @override
   Future<JFileInfo> process(JFileInfo fileInfo) async {
-    var compressPath = path ?? await jFile.getImageCacheDirPath();
     var result = await FlutterImageCompress.compressWithFile(
       fileInfo.uri,
-      // join(compressPath, jTools.generateID(), ".jpeg"),
       quality: quality,
     );
     if (null == result) return fileInfo;

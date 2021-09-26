@@ -137,7 +137,13 @@ export 'widgets/listview/listview_default.dart';
 export 'widgets/listview/base/config.dart';
 export 'widgets/listview/base/listView.dart';
 export 'widgets/popup_button/popup_button.dart';
+
+//导出依赖方法
+export 'package:crypto/crypto.dart';
+export 'package:camera/camera.dart';
+export 'package:path_provider/path_provider.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
+export 'package:shared_preferences/shared_preferences.dart';
 
 /*
 * 通用组件方法入口
