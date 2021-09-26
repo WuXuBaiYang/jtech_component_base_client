@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:jtech_common_library/jcommon.dart';
 import '../jcomponent.dart';
 
@@ -16,10 +18,13 @@ class JAuthManage extends BaseManage {
   //缓存当前授权对象表
   late Map<String, AuthModel> _authMap;
 
+  //sp缓存管理
+  late SharedPreferences _sp;
+
   @override
   Future<void> init() async {
-    await jCache.init();
-    _authMap = jCache.getJson(authCacheKey, def: {}).map<String, AuthModel>(
+    _sp = await SharedPreferences.getInstance();
+    _authMap = _getJsonCache(authCacheKey, {}).map<String, AuthModel>(
       (k, v) => MapEntry(k, AuthModel.from(v)),
     );
   }
@@ -54,7 +59,7 @@ class JAuthManage extends BaseManage {
     var extState = true;
     if (delete) {
       _authMap.remove(key);
-      extState = await jCache.remove(_getAuthExtKey(key));
+      extState = await _sp.remove(_getAuthExtKey(key));
     }
     return extState && await _updateAuthCache();
   }
@@ -86,7 +91,7 @@ class JAuthManage extends BaseManage {
   T getLoginExtInfo<T extends BaseModel>({String? key, required T extData}) {
     var authKey = getLoginInfo(key: key).key;
     var extCacheKey = _getAuthExtKey(authKey);
-    var extJson = jCache.getJson(extCacheKey, def: {});
+    var extJson = _getJsonCache(extCacheKey, {});
     return extData..from(extJson);
   }
 
@@ -97,7 +102,7 @@ class JAuthManage extends BaseManage {
   Future<bool> _updateAuthExtCache<T extends BaseModel>(
       String authKey, T extData) async {
     var extCacheKey = _getAuthExtKey(authKey);
-    return jCache.setJsonMap(extCacheKey, extData.to());
+    return _setJsonCache(extCacheKey, extData.to());
   }
 
   //更新存储状态
@@ -105,7 +110,17 @@ class JAuthManage extends BaseManage {
     var cacheJson = _authMap.map<String, dynamic>(
       (key, value) => MapEntry(key, value.to()),
     );
-    return jCache.setJsonMap(authCacheKey, cacheJson);
+    return _setJsonCache(authCacheKey, cacheJson);
+  }
+
+  //读取json格式的对象
+  Map<String, dynamic> _getJsonCache(String key, Map<String, dynamic> def) {
+    return jsonDecode(_sp.getString(key) ?? "") ?? def;
+  }
+
+  //写入json格式对象
+  Future<bool> _setJsonCache(String key, Map<String, dynamic> value) {
+    return _sp.setString(key, jsonEncode(value));
   }
 }
 
