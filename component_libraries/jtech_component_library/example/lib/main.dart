@@ -1,3 +1,4 @@
+import 'package:example/pages/auth_demo/auth_demo.dart';
 import 'package:jtech_component_library/jcomponent.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,9 @@ void main() {
     title: "jtech component library",
     welcomePage: WelcomePage(),
     homePage: MyHomePage(),
-    routes: {},
+    routes: {
+      "/test/auth_demo": (_) => AuthDemoPage(),
+    },
   );
 }
 
@@ -16,12 +19,26 @@ void main() {
 * @Time 2021/8/31 5:28 下午
 */
 class MyHomePage extends BaseStatelessPage {
+  //demo测试页面
+  final Map<String, String> pages = {
+    "授权模块测试": "/test/auth_demo",
+  };
+
   @override
   Widget build(BuildContext context) {
     return MaterialPageRoot(
       appBarTitle: "example_component",
       appBarLeadingType: AppBarLeading.none,
-      body: EmptyBox(),
+      body: JListView.def<String>(
+        controller: JListViewController(
+          dataList: pages.keys.toList(),
+        ),
+        dividerBuilder: (_, index) => Divider(),
+        itemBuilder: (context, item, index) => ListTile(
+          title: Text(item),
+          onTap: () => jRouter.pushNamed(pages[item]!),
+        ),
+      ),
     );
   }
 }
