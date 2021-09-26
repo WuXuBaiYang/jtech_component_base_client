@@ -3,4 +3,8 @@
 * @author jtechjh
 * @Time 2021/8/13 8:56 上午
 */
-abstract class BaseModel {}
+abstract class BaseModel {
+  void from(obj) {}
+
+  Map<String, dynamic> to() {}
+}

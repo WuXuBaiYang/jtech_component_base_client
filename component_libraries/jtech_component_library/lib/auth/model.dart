@@ -6,28 +6,41 @@ import 'package:jtech_component_library/jcomponent.dart';
 * @Time 2021/9/24 16:50
 */
 class AuthModel extends BaseModel {
-  //用户id
-  String id;
+  //标识字段
+  String _key;
 
   //授权凭证
-  String token;
+  String _token;
 
   //是否正在使用
-  bool active;
+  bool _active;
+
+  String get key => _key;
+
+  String get token => _token;
+
+  bool get active => _active;
+
+  //修改active状态
+  set modifyActive(bool active) => _active = active;
 
   AuthModel({
-    required this.id,
-    required this.token,
-    this.active = true,
-  });
+    required String token,
+    String? key,
+    bool active = true,
+  })  : this._key = key ?? jTools.generateID(),
+        this._token = token,
+        this._active = active;
 
-  //转换为json存储
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "token": token,
-        "active": active,
-      }..addAll(handleExtData());
+  AuthModel.from(obj)
+      : _key = obj["key"],
+        _token = obj["token"],
+        _active = obj["active"];
 
-  //存储额外数据
-  Map<String, dynamic> handleExtData() => {};
+  @override
+  Map<String, dynamic> to() => {
+        "key": _key,
+        "token": _token,
+        "active": _active,
+      };
 }
