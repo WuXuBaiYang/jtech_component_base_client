@@ -63,7 +63,7 @@ class JTools extends BaseManage {
   //生成id
   String generateID({int? seed}) {
     var time = DateTime.now().millisecondsSinceEpoch;
-    return "${time}_${Random(seed ?? time).nextDouble()}";
+    return md5("${time}_${Random(seed ?? time).nextDouble()}");
   }
 
   //生成时间戳签名

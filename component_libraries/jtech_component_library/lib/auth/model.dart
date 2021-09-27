@@ -13,16 +13,11 @@ class AuthModel extends BaseModel {
   String _token;
 
   //是否正在使用
-  bool _active;
+  bool active;
 
   String get key => _key;
 
   String get token => _token;
-
-  bool get active => _active;
-
-  //修改active状态
-  set modifyActive(bool active) => _active = active;
 
   AuthModel({
     required String token,
@@ -30,17 +25,17 @@ class AuthModel extends BaseModel {
     bool active = true,
   })  : this._key = key ?? jTools.generateID(),
         this._token = token,
-        this._active = active;
+        this.active = active;
 
   AuthModel.from(obj)
       : _key = obj["key"],
         _token = obj["token"],
-        _active = obj["active"];
+        active = obj["active"];
 
   @override
   Map<String, dynamic> to() => {
         "key": _key,
         "token": _token,
-        "active": _active,
+        "active": active,
       };
 }

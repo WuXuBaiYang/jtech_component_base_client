@@ -34,8 +34,8 @@ class JAuthManage extends BaseManage {
     AuthModel authModel, {
     T? extData,
   }) async {
-    _authMap.values.forEach((item) => item.modifyActive = false);
-    authModel.modifyActive = true;
+    _authMap.values.forEach((item) => item.active = false);
+    authModel.active = true;
     return update(authModel, extData: extData);
   }
 
@@ -53,44 +53,47 @@ class JAuthManage extends BaseManage {
   }
 
   //注销
-  Future<bool> logout(String key, {bool delete = true}) async {
-    if (!_authMap.containsKey(key)) return false;
-    _authMap[key]!.modifyActive = false;
-    var extState = true;
-    if (delete) {
-      _authMap.remove(key);
-      extState = await _sp.remove(_getAuthExtKey(key));
-    }
-    return extState && await _updateAuthCache();
+  Future<bool> logout({bool delete = true}) async {
+    var loginAuth = getLoginInfo();
+    if (null == loginAuth) return false;
+    loginAuth.active = false;
+    var removeState = true;
+    if (delete) removeState = await removeAuth(loginAuth.key);
+    return removeState && await _updateAuthCache();
   }
 
   //判断是否已登录（是否存在激活的授权信息）
-  bool isLogin({String? key}) {
-    if (null != key && key.isNotEmpty) {
-      if (_authMap.containsKey(key)) {
-        return _authMap[key]!.active;
-      }
-    }
-    return _authMap.values.any((item) => item.active);
-  }
+  bool isLogin() => _authMap.values.any((item) => item.active);
 
-  //获取已登录账户（激活状态的授权信息）
-  AuthModel getLoginInfo({String? key}) {
-    if (null != key && key.isNotEmpty) {
-      if (_authMap.containsKey(key)) {
-        return _authMap[key]!;
-      }
-    }
-    return _authMap.values.singleWhere((item) => item.active);
+  //获取单个的授权信息
+  AuthModel? getAuthInfo(String key) {
+    if (key.isEmpty || !_authMap.containsKey(key)) return null;
+    return _authMap[key];
   }
 
   //获取所有授权信息
-  List<AuthModel> getAllInfo() => _authMap.values.toList();
+  List<AuthModel> getAuthList() => _authMap.values.toList();
+
+  //获取已登录账户（激活状态的授权信息）
+  AuthModel? getLoginInfo() {
+    for (var item in _authMap.values) {
+      if (item.active) return item;
+    }
+    return null;
+  }
+
+  //移除授权信息
+  Future<bool> removeAuth(String key) async {
+    if (key.isEmpty || !_authMap.containsKey(key)) return false;
+    return null != _authMap.remove(key) &&
+        await _sp.remove(_getAuthExtKey(key));
+  }
 
   //获取当前登录的附带信息
-  T getLoginExtInfo<T extends BaseModel>({String? key, required T extData}) {
-    var authKey = getLoginInfo(key: key).key;
-    var extCacheKey = _getAuthExtKey(authKey);
+  T? getLoginExtInfo<T extends BaseModel>(T extData) {
+    var loginAuth = getLoginInfo();
+    if (null == loginAuth) return null;
+    var extCacheKey = _getAuthExtKey(loginAuth.key);
     var extJson = _getJsonCache(extCacheKey, {});
     return extData..from(extJson);
   }
@@ -115,7 +118,7 @@ class JAuthManage extends BaseManage {
 
   //读取json格式的对象
   Map<String, dynamic> _getJsonCache(String key, Map<String, dynamic> def) {
-    return jsonDecode(_sp.getString(key) ?? "") ?? def;
+    return jsonDecode(_sp.getString(key) ?? "{}") ?? def;
   }
 
   //写入json格式对象
