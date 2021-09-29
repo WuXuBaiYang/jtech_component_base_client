@@ -5,4 +5,4 @@ import 'package:jtech_component_library/jcomponent.dart';
 * @author wuxubaiyang
 * @Time 2021/9/28 10:49
 */
-abstract class BaseAuthController extends BaseController {}
+class JAuthController extends BaseController {}

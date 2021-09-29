@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:jtech_component_library/auth/view/login/controller.dart';
 import 'package:jtech_component_library/jcomponent.dart';
 
 /*
@@ -6,7 +7,7 @@ import 'package:jtech_component_library/jcomponent.dart';
 * @author wuxubaiyang
 * @Time 2021/9/28 10:38
 */
-class JAuth<T extends JListViewController> extends BaseStatefulWidgetMultiply {
+class JAuth<T extends JAuthController> extends BaseStatefulWidgetMultiply {
   //控制器
   final T controller;
 
@@ -18,6 +19,18 @@ class JAuth<T extends JListViewController> extends BaseStatefulWidgetMultiply {
     required this.controller,
     required this.config,
   }) : super(currentState: currentState);
+
+  //常用登录组件
+  static JAuth login({
+    JAuthLoginController? controller,
+    AuthConfig? config,
+  }) {
+    return JAuth<JAuthLoginController>(
+      currentState: JAuthLoginState(),
+      controller: controller ?? JAuthLoginController(),
+      config: (config ?? AuthConfig()).copyWith(),
+    );
+  }
 }
 
 /*
