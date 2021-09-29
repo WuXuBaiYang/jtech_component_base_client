@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:jtech_common_library/jcommon.dart';
-import 'package:jtech_component_library/auth/view/base/auth.dart';
+import 'package:jtech_component_library/jcomponent.dart';
 
 /*
 * 登录状态组件

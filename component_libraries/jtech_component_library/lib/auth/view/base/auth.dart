@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:jtech_component_library/auth/view/base/config.dart';
 import 'package:jtech_component_library/jcomponent.dart';
 
 /*

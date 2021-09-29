@@ -16,6 +16,10 @@ export 'run.dart';
 //导出授权模块
 export 'auth/auth.dart';
 export 'auth/model.dart';
+export 'auth/view/base/auth.dart';
+export 'auth/view/base/config.dart';
+export 'auth/view/base/controller.dart';
+export 'auth/view/login/login.dart';
 
 /*
 * 基本业务组件入口
