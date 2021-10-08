@@ -1,4 +1,4 @@
-import 'package:jtech_component_library/auth/view/base/controller.dart';
+import 'package:jtech_component_library/jcomponent.dart';
 
 /*
 * 登录授权控制

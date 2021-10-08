@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:jtech_common_library/jcommon.dart';
-import '../jcomponent.dart';
+import 'package:jtech_component_library/jcomponent.dart';
 
 /*
 * 授权方法入口

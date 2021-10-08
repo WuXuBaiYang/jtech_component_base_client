@@ -19,6 +19,7 @@ export 'auth/model.dart';
 export 'auth/view/base/auth.dart';
 export 'auth/view/base/config.dart';
 export 'auth/view/base/controller.dart';
+export 'auth/view/login/controller.dart';
 export 'auth/view/login/login.dart';
 
 /*
