@@ -1,6 +1,5 @@
 import 'package:jtech_base_library/jbase.dart';
 import 'dart:async';
-import 'model.dart';
 
 /*
 * 消息总线管理

@@ -1,6 +1,5 @@
 library common_library;
 
-import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 //导出基础依赖

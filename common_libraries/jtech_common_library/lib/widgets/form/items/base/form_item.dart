@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
@@ -141,7 +139,7 @@ class JFormItem<V> extends BaseStatefulWidgetMultiply {
         validator: validator,
       ),
       defaultConfig:
-          (defaultConfig ?? DefaultItemConfig<ImageDataSource>()).copyWith(
+      (defaultConfig ?? DefaultItemConfig<ImageDataSource>()).copyWith(
         title: title,
         leading: leading,
         isArrow: isArrow,

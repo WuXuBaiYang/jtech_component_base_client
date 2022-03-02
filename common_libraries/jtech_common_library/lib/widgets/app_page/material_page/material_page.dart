@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jtech_base_library/jbase.dart';
 import 'package:jtech_common_library/jcommon.dart';
 
 /*
@@ -139,6 +137,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
         title: Text(appBarTitle),
         leading: appBarLeading ?? appBarLeadingType.leading,
         actions: appBarActions,
+        toolbarHeight: showAppbar ? null : 2,
         bottom: JNavigation.tabBar(
           controller: controller,
           tabBarColor: tabBarColor,
@@ -149,7 +148,7 @@ class MaterialPageRoot extends BaseStatelessWidget {
           indicatorConfig: indicatorConfig,
         ),
       ),
-      showAppbar: showAppbar,
+      // showAppbar: showAppbar,
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
@@ -166,11 +165,11 @@ class MaterialPageRoot extends BaseStatelessWidget {
     return Scaffold(
       appBar: showAppbar
           ? appBar ??
-              AppBar(
-                leading: appBarLeading ?? appBarLeadingType.leading,
-                title: Text(appBarTitle),
-                actions: appBarActions,
-              )
+          AppBar(
+            leading: appBarLeading ?? appBarLeadingType.leading,
+            title: Text(appBarTitle),
+            actions: appBarActions,
+          )
           : null,
       body: body,
       backgroundColor: backgroundColor,

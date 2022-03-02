@@ -17,6 +17,8 @@ class SelectItem extends BaseModel {
     required this.text,
   });
 
+  SelectItem.same(this.text) :id=text;
+
   @override
   int get hashCode => id.hashCode;
 

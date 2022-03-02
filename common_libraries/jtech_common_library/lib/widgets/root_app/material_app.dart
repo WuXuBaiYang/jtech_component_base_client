@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jtech_base_library/jbase.dart';
+import 'package:jtech_common_library/widgets/root_app/chinese_cupertino_localizations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /*
@@ -49,16 +49,17 @@ class MaterialAPPRoot extends BaseStatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         title: title,
         navigatorKey: navigatorKey,
-        theme: theme ?? ThemeData.light(),
-        locale: locale ?? const Locale('zh', ''),
+        theme: theme,
+        locale: locale,
         localizationsDelegates: [
           RefreshLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
+          ChineseCupertinoLocalizations.delegate,
         ]..addAll(localizationsDelegates ?? []),
         supportedLocales: [
-          const Locale('en'),
-          const Locale('zh'),
+          const Locale('en', 'US'),
+          const Locale('zh', 'CN'),
         ]..addAll(supportedLocales ?? []),
         routes: routes,
         home: homePage,

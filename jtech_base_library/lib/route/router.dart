@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jtech_base_library/jbase.dart';
-import 'package:flutter/cupertino.dart';
 
 /*
 * 路由管理类
@@ -24,6 +23,15 @@ class JRouter extends BaseManage {
   //初始化方法
   @override
   Future init() async {}
+
+  //获取页面参数
+  V? find<V>(BuildContext context, String key, {V? def}) {
+    var arguments = ModalRoute.of(context)?.settings.arguments;
+    if (arguments is Map) {
+      return arguments[key] ?? def;
+    }
+    return arguments as V;
+  }
 
   //页面跳转
   Future<T?>? push<T>(
