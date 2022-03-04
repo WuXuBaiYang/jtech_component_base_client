@@ -58,7 +58,7 @@ class JCard extends BaseStatelessWidget {
     BorderRadiusGeometry borderRadius =
         const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
-    this.elevation = 8.0,
+    this.elevation = 1.0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.crossAxisAlignment = CrossAxisAlignment.center,
@@ -78,7 +78,7 @@ class JCard extends BaseStatelessWidget {
     BorderRadiusGeometry borderRadius =
         const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
-    this.elevation = 8.0,
+    this.elevation = 1.0,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.min,
     this.crossAxisAlignment = CrossAxisAlignment.center,
@@ -98,7 +98,7 @@ class JCard extends BaseStatelessWidget {
     BorderRadiusGeometry borderRadius =
         const BorderRadius.all(Radius.circular(8)),
     this.color = Colors.white,
-    this.elevation = 8.0,
+    this.elevation = 1.0,
     this.clipBehavior,
     this.shadowColor,
   })  : this.layout = CardLayout.none,
