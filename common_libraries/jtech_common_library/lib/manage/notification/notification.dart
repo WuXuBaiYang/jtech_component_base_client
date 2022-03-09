@@ -152,7 +152,7 @@ class JNotificationManage extends BaseManage {
     var androidSpecifics = AndroidNotificationDetails(
       androidConfig.channelId ?? "${config.id}",
       androidConfig.channelName ?? "${config.id}",
-      androidConfig.channelDescription ?? "${config.id}",
+      channelDescription: androidConfig.channelDescription ?? "${config.id}",
       channelShowBadge: androidConfig.channelShowBadge,
       importance: Importance.max,
       priority: Priority.high,

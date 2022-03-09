@@ -40,7 +40,8 @@ abstract class BaseStatefulWidgetMultiply extends StatefulWidget {
 * @author wuxubaiyang
 * @Time 2021/6/30 下午1:19
 */
-abstract class BaseState<T extends StatefulWidget> extends State<T> {}
+abstract class BaseState<T extends StatefulWidget> extends State<T> {
+}
 
 /*
 * 无状态组件基类

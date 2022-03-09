@@ -22,8 +22,7 @@ class JToast extends BaseManage {
   final FToast _toast;
 
   //显示toast
-  void showToast(
-    BuildContext context, {
+  void showToast(BuildContext context, {
     required ToastConfig config,
   }) {
     _toast.init(context);
@@ -35,8 +34,7 @@ class JToast extends BaseManage {
   }
 
   //显示长toast文本
-  void showLongToastTxt(
-    BuildContext context, {
+  void showLongToastTxt(BuildContext context, {
     String text = "",
     Color color = Colors.white,
     double fontSize = 16,
@@ -56,8 +54,7 @@ class JToast extends BaseManage {
   }
 
   //显示短toast文本
-  void showShortToastTxt(
-    BuildContext context, {
+  void showShortToastTxt(BuildContext context, {
     required String text,
     Color color = Colors.white,
     double fontSize = 16,
@@ -77,8 +74,7 @@ class JToast extends BaseManage {
   }
 
   //显示长时间toast
-  void showLongToast(
-    BuildContext context, {
+  void showLongToast(BuildContext context, {
     required Widget child,
     ToastConfig? config,
   }) {
@@ -92,8 +88,7 @@ class JToast extends BaseManage {
   }
 
   //显示短时间toast
-  void showShortToast(
-    BuildContext context, {
+  void showShortToast(BuildContext context, {
     required Widget child,
     ToastConfig? config,
   }) {
