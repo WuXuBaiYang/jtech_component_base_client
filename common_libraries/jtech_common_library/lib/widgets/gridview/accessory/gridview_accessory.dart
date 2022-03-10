@@ -17,7 +17,8 @@ typedef OnAccessoryFileNoPreview = bool Function(JFileInfo item, int index);
 * @Time 2021/7/20 下午3:15
 */
 class JAccessoryGridViewState extends BaseJGridViewState<
-    JAccessoryGridViewController<JFileInfo>, JFileInfo> {
+    JAccessoryGridViewController<JFileInfo>,
+    JFileInfo> {
   //判断是否可滚动
   final bool canScroll;
 
@@ -166,38 +167,39 @@ class JAccessoryGridViewState extends BaseJGridViewState<
             ),
           ),
         ),
-        Align(
-          alignment: deleteAlign,
-          child: deleteButton ??
-              JCard.single(
-                elevation: 1,
-                padding: EdgeInsets.zero,
-                margin: EdgeInsets.zero,
-                child: IconButton(
-                  splashRadius: 14,
-                  padding: EdgeInsets.all(6),
-                  iconSize: 18,
-                  color: Colors.black26,
-                  icon: Icon(Icons.close),
-                  constraints: BoxConstraints(
-                    minHeight: 20,
-                    minWidth: 20,
+        Visibility(
+          visible: modify,
+          child: Align(
+            alignment: deleteAlign,
+            child: deleteButton ??
+                JCard.single(
+                  elevation: 1,
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  child: IconButton(
+                    splashRadius: 14,
+                    padding: EdgeInsets.all(6),
+                    iconSize: 18,
+                    color: Colors.black26,
+                    icon: Icon(Icons.close),
+                    constraints: BoxConstraints(
+                      minHeight: 20,
+                      minWidth: 20,
+                    ),
+                    onPressed: () => widget.controller.remove(item),
                   ),
-                  onPressed: () => widget.controller.remove(item),
+                  circle: true,
                 ),
-                circle: true,
-              ),
+          ),
         ),
       ],
     );
   }
 
   //构建表格子项的缩略图
-  Widget _buildGridItemThumbnail(
-    BuildContext context,
-    JFileInfo item,
-    int index,
-  ) {
+  Widget _buildGridItemThumbnail(BuildContext context,
+      JFileInfo item,
+      int index,) {
     //优先匹配用户定义的对照表
     if (null != itemThumbnailMap && itemThumbnailMap!.isNotEmpty) {
       var patternStr = "${item.uri}${item.suffixes}";
@@ -248,7 +250,8 @@ class JAccessoryGridViewState extends BaseJGridViewState<
     List<JFileInfo> tempList = widget.controller.dataList;
     index = 0;
     tempList.removeWhere(
-        (it) => it != item && (onFileNoPreview?.call(it, index++) ?? false));
+            (it) =>
+        it != item && (onFileNoPreview?.call(it, index++) ?? false));
     jPreview.show(
       fileList: tempList,
       initialIndex: tempList.indexOf(item),
@@ -262,7 +265,7 @@ class JAccessoryGridViewState extends BaseJGridViewState<
 
   //获取数据长度
   int get dataLength =>
-      widget.controller.dataList.length + (modify && hasMaxCount ? 0 : 1);
+      widget.controller.dataList.length + (!modify || hasMaxCount ? 0 : 1);
 
   //判断是否已达到最大数据量
   bool get hasMaxCount => widget.controller.dataList.length >= maxCount;

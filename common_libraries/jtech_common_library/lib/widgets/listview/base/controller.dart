@@ -81,8 +81,8 @@ class JListViewController<V> extends BaseController {
   @override
   void dispose() {
     super.dispose();
-    //销毁数据集合
-    _originDateList?.clear();
-    _dataList.dispose();
+    // //销毁数据集合
+    // _originDateList?.clear();
+    // _dataList.dispose();
   }
 }
