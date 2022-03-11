@@ -220,6 +220,9 @@ class JAccessoryGridViewState extends BaseJGridViewState<
             clip: ImageClipRRect(
               borderRadius: itemRadius,
             ),
+            placeholderBuilder: (_) {
+              return Icon(Icons.image_outlined, color: Colors.grey[200]);
+            },
           ),
         );
       }

@@ -88,7 +88,7 @@ class PreviewPage extends StatelessWidget {
           child: JImage.fileInfo(
             fileInfo,
             width: double.maxFinite,
-            placeholderBuilder: (context) => CircularProgressIndicator(),
+            placeholderBuilder: (context) => Center(child:CircularProgressIndicator()),
             errorBuilder: (context, error, stackTrace) => Icon(
               Icons.broken_image_outlined,
               color: Colors.white,
