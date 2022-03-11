@@ -177,9 +177,9 @@ class JAccessoryGridViewState extends BaseJGridViewState<
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
                   child: IconButton(
-                    splashRadius: 14,
-                    padding: EdgeInsets.all(6),
-                    iconSize: 18,
+                    splashRadius: 12,
+                    padding: EdgeInsets.all(4),
+                    iconSize: 16,
                     color: Colors.black26,
                     icon: Icon(Icons.close),
                     constraints: BoxConstraints(
