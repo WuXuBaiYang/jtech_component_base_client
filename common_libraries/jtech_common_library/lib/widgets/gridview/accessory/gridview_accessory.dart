@@ -298,8 +298,10 @@ final Map<String, IconData> _fileTypeMap = {
   ".svg": FontAwesomeIcons.fileImage,
   //文档类型
   ".docx": FontAwesomeIcons.fileWord,
+  ".doc": FontAwesomeIcons.fileWord,
   ".pdf": FontAwesomeIcons.filePdf,
   ".ppt": FontAwesomeIcons.filePowerpoint,
+  ".pptx": FontAwesomeIcons.filePowerpoint,
   ".text": FontAwesomeIcons.fileAlt,
   ".txt": FontAwesomeIcons.fileAlt,
   ".xlsx": FontAwesomeIcons.fileExcel,

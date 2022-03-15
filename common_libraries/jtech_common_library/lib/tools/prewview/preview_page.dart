@@ -26,7 +26,8 @@ class PreviewPage extends StatelessWidget {
     required this.config,
     required this.fileList,
     int initialIndex = 0,
-  })  : this.currentIndex = ValueChangeNotifier(initialIndex),
+  })
+      : this.currentIndex = ValueChangeNotifier(initialIndex),
         this.controller = PageController(initialPage: initialIndex),
         super(key: key);
 
@@ -49,7 +50,7 @@ class PreviewPage extends StatelessWidget {
                   width: double.infinity,
                   height: double.infinity,
                 ),
-                onTapDown: (_) => _popPreview(),
+                onTap: () => _popPreview(),
               ),
               config.itemBuilder?.call(context, item, index) ??
                   Center(child: _buildPreviewItem(item, index)),
@@ -88,17 +89,22 @@ class PreviewPage extends StatelessWidget {
           child: JImage.fileInfo(
             fileInfo,
             width: double.maxFinite,
-            placeholderBuilder: (context) => Center(child:CircularProgressIndicator()),
-            errorBuilder: (context, error, stackTrace) => Icon(
-              Icons.broken_image_outlined,
+            config: ImageConfig(
               color: Colors.white,
-              size: 55,
             ),
+            placeholderBuilder: (context) =>
+                Center(child: CircularProgressIndicator()),
+            errorBuilder: (context, error, stackTrace) =>
+                Icon(
+                  Icons.broken_image_outlined,
+                  color: Colors.white,
+                  size: 55,
+                ),
             gestureConfig: ImageGestureConfig(
               inPageView: true,
             ),
           ),
-          onTapDown: (_) => _popPreview(),
+          onTap: () => _popPreview(),
         ),
       );
     }
