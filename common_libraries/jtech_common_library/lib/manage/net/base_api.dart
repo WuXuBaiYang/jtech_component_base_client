@@ -110,6 +110,7 @@ abstract class BaseJAPI {
         data: requestModel?.data,
         options: Options(
           method: method.text,
+          followRedirects: false,
           headers: requestModel?.headers,
         ),
         cancelToken: jAPICancel.generateToken(cancelKey),

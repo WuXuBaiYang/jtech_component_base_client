@@ -35,6 +35,7 @@ export 'manage/cache/cache.dart';
 export 'manage/manage.dart';
 export 'manage/notification/notification.dart';
 export 'manage/notification/config.dart';
+export 'package:dio/dio.dart';
 
 //导出工具方法
 export 'tools/data_format.dart';
