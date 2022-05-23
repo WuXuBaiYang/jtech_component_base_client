@@ -98,6 +98,7 @@ abstract class BaseJAPI {
     APIMethod method = APIMethod.get,
     RequestModel? requestModel,
     String? cancelKey,
+    Map<String, dynamic>? headers,
     OnResponseHandle<T>? responseHandle,
     OnProgressCallback? onSendProgress,
     OnProgressCallback? onReceiveProgress,
@@ -111,7 +112,7 @@ abstract class BaseJAPI {
         options: Options(
           method: method.text,
           followRedirects: false,
-          headers: requestModel?.headers,
+          headers: requestModel?.headers ?? headers,
         ),
         cancelToken: jAPICancel.generateToken(cancelKey),
         onSendProgress: onSendProgress,
@@ -137,7 +138,6 @@ abstract class BaseJAPI {
     } on DioError catch (e) {
       statusCode = e.response?.statusCode ?? -1;
       statusMessage = e.response?.statusMessage ?? "${e.error}";
-      data = e.response?.data;
     } catch (e) {
       statusCode = -1;
       statusMessage = "请求失败";
